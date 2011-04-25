@@ -96,18 +96,40 @@ namespace PicasaStarter
         }
     }
       
+    /// <summary>
+    /// This class manages the settings to be used within PicasaStarter.
+    /// </summary>
     public class Settings
     {
+        /// <summary>
+        /// The Name of the Picasa database that should be selected by default when starting PicasaStarter.
+        /// </summary>
         public string picasaDefaultSelectedDB;
 
+        /// <summary>
+        /// The Paths to Picasa.exe that are known. The list contains one path for every computer
+        /// PicasaStarter is used on so the settings can be put centrally for different computers. 
+        /// 
+        /// Remark: this member is put as being public to be able to use the default serializing functionality from .NET.
+        /// </summary>
         public PathOnComputerCollection PicasaExePaths = new PathOnComputerCollection();
+
+        /// <summary>
+        /// The list of databases defined in PicasaStarter.
+        /// </summary>
         [NonSerialized] public List<PicasaDB> picasaDBs = new List<PicasaDB> ();
 
+        /// <summary>
+        /// Contstructor of the settings class.
+        /// </summary>
         public Settings()
         {
             PicasaExePaths.SetPath(new PathOnComputer(Environment.MachineName, SettingsHelper.ProgramFilesx86() + "\\google\\Picasa3\\picasa3.exe"));
         }
 
+        /// <summary>
+        /// Get or Set the Patch where Picasa3.exe can be found on this computer.
+        /// </summary>
         public string PicasaExePath
         {
             get { return PicasaExePaths.GetPath(Environment.MachineName); }
