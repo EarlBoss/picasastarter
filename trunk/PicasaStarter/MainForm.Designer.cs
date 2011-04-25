@@ -96,6 +96,7 @@
             this.textBoxDBName.Size = new System.Drawing.Size(317, 20);
             this.textBoxDBName.TabIndex = 26;
             this.textBoxDBName.TextChanged += new System.EventHandler(this.textBoxDBName_TextChanged);
+            this.textBoxDBName.Leave += new System.EventHandler(this.textBoxDBName_Leave);
             // 
             // listBoxPicasaDBs
             // 
@@ -258,8 +259,8 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "PicasaStarter";
-            this.Load += new System.EventHandler(this.MainForm_Load);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

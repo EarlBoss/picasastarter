@@ -98,6 +98,16 @@ namespace PicasaStarter
                 MessageBox.Show("Please choose a picasa database from the list first");
                 return;
             }
+        }
+
+        private void textBoxDBName_Leave(object sender, EventArgs e)
+        {
+            if (listBoxPicasaDBs.SelectedIndex == -1
+                || listBoxPicasaDBs.SelectedIndex >= _settings.picasaDBs.Count)
+            {
+                MessageBox.Show("Please choose a picasa database from the list first");
+                return;
+            }
 
             // if the User is changing the field, update the settings and the list as well...
             if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].Name != textBoxDBName.Text)

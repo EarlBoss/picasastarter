@@ -129,8 +129,12 @@ namespace PicasaStarter
 
         /// <summary>
         /// Get or Set the Patch where Picasa3.exe can be found on this computer.
+        /// 
+        /// BugFix: added XmlIgnore so the current path to use isn't serialized to the XML anymore. Bug had as result
+        /// that the feature to have a path per computer didn't work: this "last used path" always overruled 
+        /// the previously saved path because it was deserialised later than the saved paths.
         /// </summary>
-        public string PicasaExePath
+        [XmlIgnore] public string PicasaExePath
         {
             get { return PicasaExePaths.GetPath(Environment.MachineName); }
             set { PicasaExePaths.SetPath(new PathOnComputer(Environment.MachineName, value)); }
@@ -259,15 +263,20 @@ namespace PicasaStarter
             Settings settings = (Settings)serializer.Deserialize(tr);
             tr.Close();
 
-            // Overwrite the default DB with the just added version...
+            // Loop through the PicasaDB object to set some things right after deserialising...
             bool defaultDBFound = false;
             for (int i = 0; i < settings.picasaDBs.Count; i++)
             {
+                // Overwrite the default DB with the just added version...
                 if (settings.picasaDBs[i].IsStandardDB == true)
                 {
                     settings.picasaDBs[i] = GetDefaultPicasaDB();
                     defaultDBFound = true;
                 }
+
+                // NewLine's in an XML file are stored as \n while Windows wants \r\n in it's textboxes,...
+                // Because the description can contain newlines... replace them.
+                settings.picasaDBs[i].Description = settings.picasaDBs[i].Description.Replace("\n", Environment.NewLine);
             }
 
             if (defaultDBFound == false)
