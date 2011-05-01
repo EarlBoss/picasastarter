@@ -64,7 +64,7 @@ namespace PicasaStarter
                     }
                     else
                     {
-                        MessageBox.Show("The /autorun directive should be folowed by an existing Picasa database name");
+                        MessageBox.Show("The /autorun directive should be followed by an existing Picasa database name or \"Personal\"");
                     }
                 }
                 else if (arg.Equals("/CreateSymbolicLink", StringComparison.CurrentCultureIgnoreCase))
@@ -102,33 +102,43 @@ namespace PicasaStarter
             //---------------------------------------------------------------------------
             if (autoRunDatabaseName != null)
             {
-                PicasaDB foundDB = null;
-                foreach (PicasaDB db in settings.picasaDBs)
+                // First check if he wants to run with the standard personal database...
+                if (autoRunDatabaseName.Equals("personal", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    if (db.Name.Equals(autoRunDatabaseName, StringComparison.CurrentCultureIgnoreCase))
-                        foundDB = db;
-                }
-
-                if (foundDB != null)
-                {
+                    // If the user wants to run his personal default database... (cmd line arg was null or "personal") 
                     PicasaRunner runner = new PicasaRunner(appDataDir, settings.PicasaExePath);
-
-                    // If the user wants to run his personal default database... 
-                    if (foundDB.IsStandardDB == true)
-                        runner.RunPicasa(null);
-                    // If the user wants to run a custom database...
-                    else
-                    {
-                        if (Directory.Exists(foundDB.BaseDir))
-                            runner.RunPicasa(foundDB.BaseDir);
-                        else
-                            MessageBox.Show("The base directory of this database doesn't exist or you didn't choose one yet.");
-                    }
+                    runner.RunPicasa(null);
                 }
                 else
                 {
-                    MessageBox.Show("The database passed with the /autorun parameter was not found: " + autoRunDatabaseName);
-                    autoRunDatabaseName = null;
+                    PicasaDB foundDB = null;
+                    foreach (PicasaDB db in settings.picasaDBs)
+                    {
+                        if (db.Name.Equals(autoRunDatabaseName, StringComparison.CurrentCultureIgnoreCase))
+                            foundDB = db;
+                    }
+
+                    if (foundDB != null)
+                    {
+                        PicasaRunner runner = new PicasaRunner(appDataDir, settings.PicasaExePath);
+
+                        // If the user wants to run his personal default database... 
+                        if (foundDB.IsStandardDB == true)
+                            runner.RunPicasa(null);
+                        // If the user wants to run a custom database...
+                        else
+                        {
+                            if (Directory.Exists(foundDB.BaseDir))
+                                runner.RunPicasa(foundDB.BaseDir);
+                            else
+                                MessageBox.Show("The base directory of this database doesn't exist or you didn't choose one yet.");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("The database passed with the /autorun parameter was not found: " + autoRunDatabaseName);
+                        autoRunDatabaseName = null;
+                    }
                 }
             }
 
