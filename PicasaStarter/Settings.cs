@@ -144,11 +144,14 @@ namespace PicasaStarter
     public static class SettingsHelper
     {
         public const string SettingsFileName = "PicasaStarterSettings.xml";
+        public const string IniFileName = "PicasaStarterSettingsDir.ini";
+        public static string SettingsIniDir;
 
         public static string DetermineSettingsDir()
         {
             // Determine what directory the settings will be saved in?
             string settingsDir = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);  // Default
+            SettingsIniDir = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);  // Default
             string settingsDirAppData = Environment.GetEnvironmentVariable("appdata") + "\\PicasaStarter"; // If exe dir read-only
 
             // For backwards compatibility, rename old settings filename to new...
@@ -177,23 +180,46 @@ namespace PicasaStarter
                 settingsDir = settingsDirAppData;
             }
             // If there isn't a settings file yet in exe dir, recuperate it from appdata if it exists there...
+            // Leave a copy in the apps dir in case there is more than one copy of PicasaStarter on the PC,
+            //   and some of those copies are in protected directories.
             else
             {
                 if(!File.Exists(settingsDir + "\\" + SettingsFileName))
                 {
-                    if(File.Exists(settingsDirAppData + "\\" + SettingsFileName))
+                    if (File.Exists(settingsDirAppData + "\\" + SettingsFileName))
                     {
                         try
                         {
-                            File.Move(settingsDirAppData + "\\" + SettingsFileName,
+                            File.Copy(settingsDirAppData + "\\" + SettingsFileName,
                                     settingsDir + "\\" + SettingsFileName);
-                            Directory.Delete(settingsDirAppData);
+                            //Directory.Delete(settingsDirAppData);
                         }
                         catch (Exception)
-                        { }                        
+                        { }
+                    }
+                    // Get a copy of the INI file also if it exists
+                    if (File.Exists(settingsDirAppData + "\\" + IniFileName))
+                    {
+                        try
+                        {
+                            File.Copy(settingsDirAppData + "\\" + IniFileName,
+                                    settingsDir + "\\" + IniFileName);
+                            //Directory.Delete(settingsDirAppData);
+                        }
+                        catch (Exception)
+                        { }
                     }
                 }
             }
+            // Remember the original settings directory which contains the INI file so it isn't redirected
+            SettingsIniDir = settingsDir;  
+            // Point at new settings directory if it has been redirected - efb
+            if (File.Exists(SettingsIniDir + "\\" + IniFileName))
+            {
+                settingsDir = (File.ReadAllText(SettingsIniDir + "\\" + IniFileName).Trim(new char[] { '"', ' ', '\r', '\n' }));  
+ 
+            } //else settings dir remains the exe file path
+
 
             return settingsDir;
         }
@@ -278,6 +304,11 @@ namespace PicasaStarter
                 // Because the description can contain newlines... replace them.
                 settings.picasaDBs[i].Description = settings.picasaDBs[i].Description.Replace("\n", Environment.NewLine);
             }
+
+            // Check if the settings contained a PicasaExePath. It will be null if the settings don't contain
+            // an entry yet for the Path of this OS type (x86/x64) for this PC.  Set it to likely path if not.
+            if (settings.PicasaExePath == "")
+                settings.PicasaExePath = (SettingsHelper.ProgramFilesx86() + "\\google\\Picasa3\\picasa3.exe");
 
             if (defaultDBFound == false)
             {
