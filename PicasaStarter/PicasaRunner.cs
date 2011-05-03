@@ -107,7 +107,7 @@ namespace PicasaStarter
 
                     // Check if it is a localized version of windows that is running...
                     if (localAppDataXPLocalPart1 != localAppDataXPEngPart1
-                            && localAppDataXPLocalPart2 != localAppDataXPEngPart2)
+                            || localAppDataXPLocalPart2 != localAppDataXPEngPart2)
                     {
                         isLocalizedXP = true;
                         CustomDBFullPath = CustomDBBasePath + localAppDataXPLocalPart1 + localAppDataXPLocalPart2;
