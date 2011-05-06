@@ -305,5 +305,19 @@ namespace PicasaStarter
                 _settings.picasaDefaultSelectedDB = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].Name;
             }
         }
+
+        private void ButtonCreateShortcut_Click(object sender, EventArgs e)
+        {
+            string databasename = "Personal";
+            if (listBoxPicasaDBs.SelectedIndex != 0)
+                databasename = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].Name;
+
+            CreateShortcutDialog createShortcutDialog = new CreateShortcutDialog(_appSettingsDir, databasename);
+            DialogResult result = createShortcutDialog.ShowDialog();
+
+ 
+            
+
+        }
     }
 }
