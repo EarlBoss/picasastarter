@@ -70,6 +70,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CreateShortcutDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CreateShortcutDialog.Designer.cs">
+      <DependentUpon>CreateShortcutDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Helper.cs" />
     <Compile Include="GeneralSettingsDialog.cs">
       <SubType>Form</SubType>
@@ -92,6 +98,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="CreateShortcutDialog.resx">
+      <DependentUpon>CreateShortcutDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GeneralSettingsDialog.resx">
       <DependentUpon>GeneralSettingsDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -162,6 +171,17 @@
     <Content Include="picasa.ico" />
     <Content Include="Picasa3_105.ico" />
     <Content Include="picasastarter_logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="IWshRuntimeLibrary">
+      <Guid>{F935DC20-1CF0-11D0-ADB9-00C04FD58A0B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

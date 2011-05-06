@@ -48,6 +48,7 @@
             this.textBoxDBFullDir = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.buttonDBOpenFullDir = new System.Windows.Forms.Button();
+            this.ButtonCreateShortcut = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label7
@@ -232,11 +233,22 @@
             this.buttonDBOpenFullDir.UseVisualStyleBackColor = true;
             this.buttonDBOpenFullDir.Click += new System.EventHandler(this.buttonDBOpenFullDir_Click);
             // 
+            // ButtonCreateShortcut
+            // 
+            this.ButtonCreateShortcut.Location = new System.Drawing.Point(244, 322);
+            this.ButtonCreateShortcut.Name = "ButtonCreateShortcut";
+            this.ButtonCreateShortcut.Size = new System.Drawing.Size(124, 23);
+            this.ButtonCreateShortcut.TabIndex = 40;
+            this.ButtonCreateShortcut.Text = "Create Shortcut";
+            this.ButtonCreateShortcut.UseVisualStyleBackColor = true;
+            this.ButtonCreateShortcut.Click += new System.EventHandler(this.ButtonCreateShortcut_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(719, 357);
+            this.Controls.Add(this.ButtonCreateShortcut);
             this.Controls.Add(this.buttonDBOpenFullDir);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textBoxDBFullDir);
@@ -287,6 +299,7 @@
         private System.Windows.Forms.TextBox textBoxDBFullDir;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button buttonDBOpenFullDir;
+        private System.Windows.Forms.Button ButtonCreateShortcut;
     }
 }
 

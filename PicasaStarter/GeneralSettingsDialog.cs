@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;                    // Added to use Path class
 
+
 namespace PicasaStarter
 {
     public partial class GeneralSettingsDialog : Form
