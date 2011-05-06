@@ -45,14 +45,14 @@ namespace PicasaStarter
             }
         }
 
-        public Settings Settings { get { return _settings; } 
-            set 
-            {
-                _settings.picasaDBs = value.picasaDBs;
-                _settings.picasaDefaultSelectedDB = value.picasaDefaultSelectedDB;
-                _settings.PicasaExePath = value.PicasaExePath;
-            } 
-        }
+        //public Settings Settings { get { return _settings; } 
+        //    set 
+        //    {
+        //        _settings.picasaDBs = value.picasaDBs;
+        //        _settings.picasaDefaultSelectedDB = value.picasaDefaultSelectedDB;
+        //        _settings.PicasaExePath = value.PicasaExePath;
+        //    } 
+        //}
         private void buttonBrowseDBBaseDir_Click(object sender, EventArgs e)
         {
             textBoxDBBaseDir.Text = AskDirectoryPath(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir);
@@ -237,10 +237,24 @@ namespace PicasaStarter
             {
                 if (generalSettingsDialog.ReturnPicasaSettings != null)
                 {
-                    Settings = generalSettingsDialog.ReturnPicasaSettings;
+                    _settings = generalSettingsDialog.ReturnPicasaSettings;
                     ReFillPicasaDBList(false);
                 }
                 _settings.PicasaExePath = generalSettingsDialog.ReturnPicasaExePath;
+                _appSettingsDir = generalSettingsDialog.ReturnAppSettingsDir;
+                // Initialise all controls on the screen with the proper data
+                ReFillPicasaDBList(false);
+
+                // If the saved defaultselectedDB is valid, select it in the list...
+                int defaultSelectedDBIndex = listBoxPicasaDBs.FindStringExact(_settings.picasaDefaultSelectedDB);
+                if (defaultSelectedDBIndex != ListBox.NoMatches)
+                    listBoxPicasaDBs.SelectedIndex = defaultSelectedDBIndex;
+
+                if (_firstRun == true)
+                {
+                    ShowHelp();
+                }
+               
             }
         }
 

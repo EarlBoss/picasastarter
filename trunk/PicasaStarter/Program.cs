@@ -105,7 +105,7 @@ namespace PicasaStarter
                 // First check if he wants to run with the standard personal database...
                 if (autoRunDatabaseName.Equals("personal", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    // If the user wants to run his personal default database... (cmd line arg was null or "personal") 
+                    // If the user wants to run his personal default database... (cmd line arg was "personal") 
                     PicasaRunner runner = new PicasaRunner(appDataDir, settings.PicasaExePath);
                     runner.RunPicasa(null);
                 }
