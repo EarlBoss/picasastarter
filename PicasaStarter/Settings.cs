@@ -141,19 +141,31 @@ namespace PicasaStarter
         }
     }
 
+    /// <summary>
+    /// This class manages the Configuration values in PicasaStarter.
+    /// Presently the only value used is the path to the settings directory
+    /// </summary>
+    public class Configuration
+    {
+        /// <summary>
+        /// The Directory that holds the PicasaStarterSettings.xml file when starting PicasaStarter.
+        /// </summary>
+        public string picasaStarterSettingsXMLPath;
+    }
+
     public static class SettingsHelper
     {
         public const string SettingsFileName = "PicasaStarterSettings.xml";
-        public const string IniFileName = "PicasaStarterSettingsDir.ini";
-        public static string SettingsIniDir;
+        public const string ConfigFileName = "PicasaStarterConfiguration.xml";
+        public static string ConfigurationDir;
 
         public static string DetermineSettingsDir()
         {
             // Determine what directory the settings will be saved in?
             string settingsDir = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);  // Default
-            SettingsIniDir = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);  // Default
+            ConfigurationDir = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);  // Default
             string settingsDirAppData = Environment.GetEnvironmentVariable("appdata") + "\\PicasaStarter"; // If exe dir read-only
-
+            Configuration config;
             // For backwards compatibility, rename old settings filename to new...
             const string OldSettingsFileName = "Settings.xml";
             if (File.Exists(settingsDir + "\\" + OldSettingsFileName))
@@ -198,12 +210,12 @@ namespace PicasaStarter
                         { }
                     }
                     // Get a copy of the INI file also if it exists
-                    if (File.Exists(settingsDirAppData + "\\" + IniFileName))
+                    if (File.Exists(settingsDirAppData + "\\" + ConfigFileName))
                     {
                         try
                         {
-                            File.Copy(settingsDirAppData + "\\" + IniFileName,
-                                    settingsDir + "\\" + IniFileName);
+                            File.Copy(settingsDirAppData + "\\" + ConfigFileName,
+                                    settingsDir + "\\" + ConfigFileName);
                             //Directory.Delete(settingsDirAppData);
                         }
                         catch (Exception)
@@ -211,12 +223,14 @@ namespace PicasaStarter
                     }
                 }
             }
-            // Remember the original settings directory which contains the INI file so it isn't redirected
-            SettingsIniDir = settingsDir;  
-            // Point at new settings directory if it has been redirected - efb
-            if (File.Exists(SettingsIniDir + "\\" + IniFileName))
+            // Remember the original settings directory which contains the Configuration file so it isn't redirected
+            ConfigurationDir = settingsDir;  
+            // Point at new Settings directory if it has been redirected - efb
+            config = SettingsHelper.DeSerializeConfig(
+                ConfigurationDir + "\\" + SettingsHelper.ConfigFileName);
+            if (config.picasaStarterSettingsXMLPath != "" )
             {
-                settingsDir = (File.ReadAllText(SettingsIniDir + "\\" + IniFileName).Trim(new char[] { '"', ' ', '\r', '\n' }));  
+                settingsDir = config.picasaStarterSettingsXMLPath;  
  
             } //else settings dir remains the exe file path
 
@@ -316,6 +330,46 @@ namespace PicasaStarter
             }
 
             return settings;
-        }    
+        }
+
+        public static void SerializeConfig(Configuration config, string configFilePath)
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(configFilePath));
+
+            // Serialize configuration to file
+            XmlSerializer serializer = new XmlSerializer(typeof(Configuration));
+            TextWriter tw = new StreamWriter(configFilePath);
+            serializer.Serialize(tw, config);
+            tw.Close();
+        }
+
+        public static Configuration DeSerializeConfig(string configFilePath)
+        {
+            Configuration config;
+            // Deserialize Configuration
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(Configuration));
+                TextReader tr = new StreamReader(configFilePath);
+                config = (Configuration)serializer.Deserialize(tr);
+                tr.Close();
+            }
+            catch (Exception)
+            {
+                // If the config file couldn't be loaded, create new pointing at the default directory...
+                config = new Configuration();
+                config.picasaStarterSettingsXMLPath = "";
+                try
+                {
+                    SettingsHelper.SerializeConfig(config,
+                            SettingsHelper.ConfigurationDir + "\\" + SettingsHelper.ConfigFileName);
+                }
+                catch (Exception)
+                { }
+            }
+
+            return config;
+        }
+
     }
 }
