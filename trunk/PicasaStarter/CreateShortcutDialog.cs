@@ -34,7 +34,7 @@ namespace PicasaStarter
             // See if we create a shortcut in the Apps Directory
             if (checkShortutAppsDir.Checked)
             {
-                shortcutpath = Application.StartupPath + "\\" + textShortcutName.Text + ".lnk";
+                shortcutpath = SettingsHelper.ConfigurationDir + "\\" + textShortcutName.Text + ".lnk";
                 DoShortcut(shortcutpath, _databasename, Application.StartupPath);
             }
             if (checkDesktopShortcut.Checked)

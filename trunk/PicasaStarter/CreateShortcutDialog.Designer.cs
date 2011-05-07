@@ -56,9 +56,10 @@
             this.checkShortutAppsDir.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkShortutAppsDir.Location = new System.Drawing.Point(12, 77);
             this.checkShortutAppsDir.Name = "checkShortutAppsDir";
-            this.checkShortutAppsDir.Size = new System.Drawing.Size(176, 30);
+            this.checkShortutAppsDir.Size = new System.Drawing.Size(176, 43);
             this.checkShortutAppsDir.TabIndex = 1;
-            this.checkShortutAppsDir.Text = "Place Shortcut in PicasaStarter \r\nApplication Directory";
+            this.checkShortutAppsDir.Text = "Place Shortcut in PicasaStarter \r\nApplication Directory or\r\nAppsData if Applicati" +
+                "on is R/O";
             this.checkShortutAppsDir.UseVisualStyleBackColor = true;
             this.checkShortutAppsDir.CheckedChanged += new System.EventHandler(this.checkShortutAppsDir_CheckedChanged);
             // 
