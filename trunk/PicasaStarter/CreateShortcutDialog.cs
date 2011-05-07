@@ -26,6 +26,7 @@ namespace PicasaStarter
         private void CreateShortcutDialog_Load(object sender, EventArgs e)
         {
             this.Text = "Create Shortcut to: \" " + _databasename + " \" Database";
+            textShortcutName.Text = "Picasa " + _databasename;
         }
 
         private void buttonCreateShortcut_Click(object sender, EventArgs e)
@@ -76,20 +77,6 @@ namespace PicasaStarter
  
         }
 
-        private void textShortcutName_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void checkDesktopShortcut_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void checkShortutAppsDir_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
 
     }
 }
