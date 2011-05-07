@@ -47,7 +47,6 @@
             this.checkDesktopShortcut.TabIndex = 0;
             this.checkDesktopShortcut.Text = "Place Shortcut on Desktop";
             this.checkDesktopShortcut.UseVisualStyleBackColor = true;
-            this.checkDesktopShortcut.CheckedChanged += new System.EventHandler(this.checkDesktopShortcut_CheckedChanged);
             // 
             // checkShortutAppsDir
             // 
@@ -61,7 +60,6 @@
             this.checkShortutAppsDir.Text = "Place Shortcut in PicasaStarter \r\nApplication Directory or\r\nAppsData if Applicati" +
                 "on is R/O";
             this.checkShortutAppsDir.UseVisualStyleBackColor = true;
-            this.checkShortutAppsDir.CheckedChanged += new System.EventHandler(this.checkShortutAppsDir_CheckedChanged);
             // 
             // textShortcutName
             // 
@@ -71,7 +69,6 @@
             this.textShortcutName.Size = new System.Drawing.Size(228, 20);
             this.textShortcutName.TabIndex = 2;
             this.textShortcutName.Text = "Picasa Shared Database";
-            this.textShortcutName.TextChanged += new System.EventHandler(this.textShortcutName_TextChanged);
             // 
             // label1
             // 
