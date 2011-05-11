@@ -49,6 +49,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.buttonDBOpenFullDir = new System.Windows.Forms.Button();
             this.ButtonCreateShortcut = new System.Windows.Forms.Button();
+            this.textSettingsDir = new System.Windows.Forms.TextBox();
+            this.labelShared = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label7
@@ -102,7 +104,7 @@
             // listBoxPicasaDBs
             // 
             this.listBoxPicasaDBs.FormattingEnabled = true;
-            this.listBoxPicasaDBs.Location = new System.Drawing.Point(12, 44);
+            this.listBoxPicasaDBs.Location = new System.Drawing.Point(12, 54);
             this.listBoxPicasaDBs.Name = "listBoxPicasaDBs";
             this.listBoxPicasaDBs.Size = new System.Drawing.Size(253, 199);
             this.listBoxPicasaDBs.TabIndex = 22;
@@ -141,11 +143,11 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 23);
+            this.label1.Location = new System.Drawing.Point(12, 15);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(96, 13);
+            this.label1.Size = new System.Drawing.Size(112, 13);
             this.label1.TabIndex = 30;
-            this.label1.Text = "Picasa Databases:";
+            this.label1.Text = "Databases Defined in:";
             // 
             // buttonHelp
             // 
@@ -167,7 +169,7 @@
             // 
             // buttonAddDB
             // 
-            this.buttonAddDB.Location = new System.Drawing.Point(12, 251);
+            this.buttonAddDB.Location = new System.Drawing.Point(12, 261);
             this.buttonAddDB.Name = "buttonAddDB";
             this.buttonAddDB.Size = new System.Drawing.Size(108, 23);
             this.buttonAddDB.TabIndex = 33;
@@ -177,7 +179,7 @@
             // 
             // buttonRemoveDB
             // 
-            this.buttonRemoveDB.Location = new System.Drawing.Point(126, 251);
+            this.buttonRemoveDB.Location = new System.Drawing.Point(126, 261);
             this.buttonRemoveDB.Name = "buttonRemoveDB";
             this.buttonRemoveDB.Size = new System.Drawing.Size(104, 23);
             this.buttonRemoveDB.TabIndex = 34;
@@ -243,11 +245,35 @@
             this.ButtonCreateShortcut.UseVisualStyleBackColor = true;
             this.ButtonCreateShortcut.Click += new System.EventHandler(this.ButtonCreateShortcut_Click);
             // 
+            // textSettingsDir
+            // 
+            this.textSettingsDir.Location = new System.Drawing.Point(125, 12);
+            this.textSettingsDir.Name = "textSettingsDir";
+            this.textSettingsDir.ReadOnly = true;
+            this.textSettingsDir.Size = new System.Drawing.Size(499, 20);
+            this.textSettingsDir.TabIndex = 41;
+            this.textSettingsDir.Text = "Location of the PicasaStarter Settings Directory";
+            // 
+            // labelShared
+            // 
+            this.labelShared.AutoSize = true;
+            this.labelShared.BackColor = System.Drawing.SystemColors.Control;
+            this.labelShared.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelShared.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.labelShared.Location = new System.Drawing.Point(630, 12);
+            this.labelShared.Name = "labelShared";
+            this.labelShared.Size = new System.Drawing.Size(55, 13);
+            this.labelShared.TabIndex = 42;
+            this.labelShared.Text = "(Shared)";
+            this.labelShared.Visible = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(719, 357);
+            this.Controls.Add(this.labelShared);
+            this.Controls.Add(this.textSettingsDir);
             this.Controls.Add(this.ButtonCreateShortcut);
             this.Controls.Add(this.buttonDBOpenFullDir);
             this.Controls.Add(this.label3);
@@ -300,6 +326,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button buttonDBOpenFullDir;
         private System.Windows.Forms.Button ButtonCreateShortcut;
+        private System.Windows.Forms.TextBox textSettingsDir;
+        private System.Windows.Forms.Label labelShared;
     }
 }
 

@@ -210,6 +210,11 @@ namespace PicasaStarter
 
         private void ReFillPicasaDBList(bool selectLastItem)
         {
+            textSettingsDir.Text = _appSettingsDir;
+            if(_appSettingsDir == SettingsHelper.ConfigurationDir)
+                labelShared.Visible = false;
+            else
+                labelShared.Visible = true;
             listBoxPicasaDBs.BeginUpdate();
             listBoxPicasaDBs.SelectedIndex = -1;
             listBoxPicasaDBs.Items.Clear();
@@ -238,7 +243,7 @@ namespace PicasaStarter
                 if (generalSettingsDialog.ReturnPicasaSettings != null)
                 {
                     _settings = generalSettingsDialog.ReturnPicasaSettings;
-                    ReFillPicasaDBList(false);
+                   // ReFillPicasaDBList(false);
                 }
                 _settings.PicasaExePath = generalSettingsDialog.ReturnPicasaExePath;
                 _appSettingsDir = generalSettingsDialog.ReturnAppSettingsDir;
