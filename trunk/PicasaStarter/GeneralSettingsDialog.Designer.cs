@@ -48,11 +48,11 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(30, 19);
+            this.label2.Location = new System.Drawing.Point(33, 19);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(92, 26);
+            this.label2.Size = new System.Drawing.Size(91, 26);
             this.label2.TabIndex = 7;
-            this.label2.Text = "Path to Picasa \r\nExecutable (.exe):";
+            this.label2.Text = "Path to picasa \r\nexecutable (.exe):";
             this.label2.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // buttonBrowsePicasaExePath
@@ -61,7 +61,7 @@
             this.buttonBrowsePicasaExePath.Name = "buttonBrowsePicasaExePath";
             this.buttonBrowsePicasaExePath.Size = new System.Drawing.Size(75, 27);
             this.buttonBrowsePicasaExePath.TabIndex = 6;
-            this.buttonBrowsePicasaExePath.Text = "...";
+            this.buttonBrowsePicasaExePath.Text = "Browse...";
             this.buttonBrowsePicasaExePath.UseVisualStyleBackColor = true;
             this.buttonBrowsePicasaExePath.Click += new System.EventHandler(this.buttonBrowsePicasaExePath_Click);
             // 
@@ -133,11 +133,11 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 66);
+            this.label3.Location = new System.Drawing.Point(4, 66);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(110, 26);
+            this.label3.Size = new System.Drawing.Size(123, 26);
             this.label3.TabIndex = 13;
-            this.label3.Text = "Path to Picasa Starter\r\nSettings (.xml):";
+            this.label3.Text = "Path to picasa starter\r\n database settings (.xml):";
             this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // textBoxSettingsXMLPath
@@ -168,7 +168,7 @@
             this.SelXMLPath.Name = "SelXMLPath";
             this.SelXMLPath.Size = new System.Drawing.Size(75, 27);
             this.SelXMLPath.TabIndex = 16;
-            this.SelXMLPath.Text = "Select";
+            this.SelXMLPath.Text = "Browse...";
             this.SelXMLPath.UseVisualStyleBackColor = true;
             this.SelXMLPath.Click += new System.EventHandler(this.SelXMLPath_Click);
             // 
