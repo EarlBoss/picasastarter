@@ -28,12 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.checkDesktopShortcut = new System.Windows.Forms.CheckBox();
             this.checkShortutAppsDir = new System.Windows.Forms.CheckBox();
             this.textShortcutName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonCreateShortcut = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // checkDesktopShortcut
@@ -43,9 +45,9 @@
             this.checkDesktopShortcut.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkDesktopShortcut.Location = new System.Drawing.Point(15, 43);
             this.checkDesktopShortcut.Name = "checkDesktopShortcut";
-            this.checkDesktopShortcut.Size = new System.Drawing.Size(154, 17);
+            this.checkDesktopShortcut.Size = new System.Drawing.Size(152, 17);
             this.checkDesktopShortcut.TabIndex = 0;
-            this.checkDesktopShortcut.Text = "Place Shortcut on Desktop";
+            this.checkDesktopShortcut.Text = "Place shortcut on Desktop";
             this.checkDesktopShortcut.UseVisualStyleBackColor = true;
             // 
             // checkShortutAppsDir
@@ -85,6 +87,7 @@
             this.buttonCreateShortcut.Size = new System.Drawing.Size(100, 21);
             this.buttonCreateShortcut.TabIndex = 4;
             this.buttonCreateShortcut.Text = "Create Shortcut(s)";
+            this.toolTip1.SetToolTip(this.buttonCreateShortcut, "Create the shortcuts as choosen above...");
             this.buttonCreateShortcut.UseVisualStyleBackColor = true;
             this.buttonCreateShortcut.Click += new System.EventHandler(this.buttonCreateShortcut_Click);
             // 
@@ -95,6 +98,7 @@
             this.buttonCancel.Size = new System.Drawing.Size(100, 21);
             this.buttonCancel.TabIndex = 5;
             this.buttonCancel.Text = "Cancel";
+            this.toolTip1.SetToolTip(this.buttonCancel, "Cancel without creating the shortcuts");
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
@@ -125,5 +129,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonCreateShortcut;
         private System.Windows.Forms.Button buttonCancel;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
