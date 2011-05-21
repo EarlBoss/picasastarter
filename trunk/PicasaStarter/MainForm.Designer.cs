@@ -56,13 +56,14 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(305, 171);
+            this.label7.Location = new System.Drawing.Point(6, 143);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(77, 13);
             this.label7.TabIndex = 24;
@@ -71,7 +72,7 @@
             // 
             // textBoxDBBaseDir
             // 
-            this.textBoxDBBaseDir.Location = new System.Drawing.Point(388, 168);
+            this.textBoxDBBaseDir.Location = new System.Drawing.Point(89, 140);
             this.textBoxDBBaseDir.Name = "textBoxDBBaseDir";
             this.textBoxDBBaseDir.ReadOnly = true;
             this.textBoxDBBaseDir.Size = new System.Drawing.Size(250, 20);
@@ -81,7 +82,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(344, 57);
+            this.label8.Location = new System.Drawing.Point(45, 29);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(38, 13);
             this.label8.TabIndex = 25;
@@ -90,7 +91,7 @@
             // 
             // buttonBrowseDBBaseDir
             // 
-            this.buttonBrowseDBBaseDir.Location = new System.Drawing.Point(644, 165);
+            this.buttonBrowseDBBaseDir.Location = new System.Drawing.Point(345, 137);
             this.buttonBrowseDBBaseDir.Name = "buttonBrowseDBBaseDir";
             this.buttonBrowseDBBaseDir.Size = new System.Drawing.Size(61, 23);
             this.buttonBrowseDBBaseDir.TabIndex = 5;
@@ -101,7 +102,7 @@
             // 
             // textBoxDBName
             // 
-            this.textBoxDBName.Location = new System.Drawing.Point(388, 54);
+            this.textBoxDBName.Location = new System.Drawing.Point(89, 26);
             this.textBoxDBName.Name = "textBoxDBName";
             this.textBoxDBName.Size = new System.Drawing.Size(317, 20);
             this.textBoxDBName.TabIndex = 26;
@@ -135,7 +136,7 @@
             this.buttonClose.Size = new System.Drawing.Size(101, 23);
             this.buttonClose.TabIndex = 28;
             this.buttonClose.Text = "Close";
-            this.toolTip1.SetToolTip(this.buttonClose, "Close PicasaStarter");
+            this.toolTip1.SetToolTip(this.buttonClose, "Save the settings and close PicasaStarter");
             this.buttonClose.UseVisualStyleBackColor = true;
             this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
             // 
@@ -202,7 +203,7 @@
             // 
             // textBoxDBDescription
             // 
-            this.textBoxDBDescription.Location = new System.Drawing.Point(388, 80);
+            this.textBoxDBDescription.Location = new System.Drawing.Point(89, 52);
             this.textBoxDBDescription.Multiline = true;
             this.textBoxDBDescription.Name = "textBoxDBDescription";
             this.textBoxDBDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -213,7 +214,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(319, 83);
+            this.label2.Location = new System.Drawing.Point(20, 55);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(63, 13);
             this.label2.TabIndex = 36;
@@ -222,7 +223,7 @@
             // 
             // textBoxDBFullDir
             // 
-            this.textBoxDBFullDir.Location = new System.Drawing.Point(388, 194);
+            this.textBoxDBFullDir.Location = new System.Drawing.Point(89, 166);
             this.textBoxDBFullDir.Name = "textBoxDBFullDir";
             this.textBoxDBFullDir.ReadOnly = true;
             this.textBoxDBFullDir.Size = new System.Drawing.Size(250, 20);
@@ -231,7 +232,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(313, 197);
+            this.label3.Location = new System.Drawing.Point(14, 169);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(69, 13);
             this.label3.TabIndex = 38;
@@ -240,7 +241,7 @@
             // 
             // buttonDBOpenFullDir
             // 
-            this.buttonDBOpenFullDir.Location = new System.Drawing.Point(644, 192);
+            this.buttonDBOpenFullDir.Location = new System.Drawing.Point(345, 164);
             this.buttonDBOpenFullDir.Name = "buttonDBOpenFullDir";
             this.buttonDBOpenFullDir.Size = new System.Drawing.Size(61, 23);
             this.buttonDBOpenFullDir.TabIndex = 39;
@@ -294,6 +295,16 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.textBoxDBName);
+            this.groupBox2.Controls.Add(this.label7);
+            this.groupBox2.Controls.Add(this.textBoxDBBaseDir);
+            this.groupBox2.Controls.Add(this.buttonDBOpenFullDir);
+            this.groupBox2.Controls.Add(this.label8);
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.buttonBrowseDBBaseDir);
+            this.groupBox2.Controls.Add(this.textBoxDBFullDir);
+            this.groupBox2.Controls.Add(this.textBoxDBDescription);
+            this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Location = new System.Drawing.Point(298, 38);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(420, 214);
@@ -320,11 +331,6 @@
             this.Controls.Add(this.listBoxPicasaDBs);
             this.Controls.Add(this.labelShared);
             this.Controls.Add(this.textSettingsDir);
-            this.Controls.Add(this.buttonDBOpenFullDir);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBoxDBFullDir);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.textBoxDBDescription);
             this.Controls.Add(this.buttonRemoveDB);
             this.Controls.Add(this.buttonAddDB);
             this.Controls.Add(this.panel1);
@@ -332,11 +338,6 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonGeneralSettings);
             this.Controls.Add(this.buttonClose);
-            this.Controls.Add(this.textBoxDBName);
-            this.Controls.Add(this.buttonBrowseDBBaseDir);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.textBoxDBBaseDir);
-            this.Controls.Add(this.label7);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox3);
@@ -345,6 +346,8 @@
             this.Text = "PicasaStarter";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
