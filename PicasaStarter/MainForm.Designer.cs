@@ -39,7 +39,6 @@
             this.buttonRunPicasa = new System.Windows.Forms.Button();
             this.buttonClose = new System.Windows.Forms.Button();
             this.buttonGeneralSettings = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.buttonHelp = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.buttonAddDB = new System.Windows.Forms.Button();
@@ -50,8 +49,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.buttonDBOpenFullDir = new System.Windows.Forms.Button();
             this.ButtonCreateShortcut = new System.Windows.Forms.Button();
-            this.textSettingsDir = new System.Windows.Forms.TextBox();
-            this.labelShared = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -112,7 +109,7 @@
             // listBoxPicasaDBs
             // 
             this.listBoxPicasaDBs.FormattingEnabled = true;
-            this.listBoxPicasaDBs.Location = new System.Drawing.Point(22, 64);
+            this.listBoxPicasaDBs.Location = new System.Drawing.Point(23, 37);
             this.listBoxPicasaDBs.Name = "listBoxPicasaDBs";
             this.listBoxPicasaDBs.Size = new System.Drawing.Size(253, 199);
             this.listBoxPicasaDBs.TabIndex = 22;
@@ -131,7 +128,7 @@
             // 
             // buttonClose
             // 
-            this.buttonClose.Location = new System.Drawing.Point(623, 348);
+            this.buttonClose.Location = new System.Drawing.Point(624, 321);
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(101, 23);
             this.buttonClose.TabIndex = 28;
@@ -142,7 +139,7 @@
             // 
             // buttonGeneralSettings
             // 
-            this.buttonGeneralSettings.Location = new System.Drawing.Point(112, 347);
+            this.buttonGeneralSettings.Location = new System.Drawing.Point(113, 320);
             this.buttonGeneralSettings.Name = "buttonGeneralSettings";
             this.buttonGeneralSettings.Size = new System.Drawing.Size(96, 23);
             this.buttonGeneralSettings.TabIndex = 29;
@@ -151,18 +148,9 @@
             this.buttonGeneralSettings.UseVisualStyleBackColor = true;
             this.buttonGeneralSettings.Click += new System.EventHandler(this.buttonGeneralSettings_Click);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 15);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(112, 13);
-            this.label1.TabIndex = 30;
-            this.label1.Text = "Databases Defined in:";
-            // 
             // buttonHelp
             // 
-            this.buttonHelp.Location = new System.Drawing.Point(10, 345);
+            this.buttonHelp.Location = new System.Drawing.Point(11, 318);
             this.buttonHelp.Name = "buttonHelp";
             this.buttonHelp.Size = new System.Drawing.Size(96, 23);
             this.buttonHelp.TabIndex = 31;
@@ -174,14 +162,14 @@
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Location = new System.Drawing.Point(16, 328);
+            this.panel1.Location = new System.Drawing.Point(17, 301);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(703, 1);
             this.panel1.TabIndex = 32;
             // 
             // buttonAddDB
             // 
-            this.buttonAddDB.Location = new System.Drawing.Point(21, 273);
+            this.buttonAddDB.Location = new System.Drawing.Point(22, 246);
             this.buttonAddDB.Name = "buttonAddDB";
             this.buttonAddDB.Size = new System.Drawing.Size(108, 23);
             this.buttonAddDB.TabIndex = 33;
@@ -192,7 +180,7 @@
             // 
             // buttonRemoveDB
             // 
-            this.buttonRemoveDB.Location = new System.Drawing.Point(138, 273);
+            this.buttonRemoveDB.Location = new System.Drawing.Point(139, 246);
             this.buttonRemoveDB.Name = "buttonRemoveDB";
             this.buttonRemoveDB.Size = new System.Drawing.Size(104, 23);
             this.buttonRemoveDB.TabIndex = 34;
@@ -262,31 +250,9 @@
             this.ButtonCreateShortcut.UseVisualStyleBackColor = true;
             this.ButtonCreateShortcut.Click += new System.EventHandler(this.ButtonCreateShortcut_Click);
             // 
-            // textSettingsDir
-            // 
-            this.textSettingsDir.Location = new System.Drawing.Point(125, 12);
-            this.textSettingsDir.Name = "textSettingsDir";
-            this.textSettingsDir.ReadOnly = true;
-            this.textSettingsDir.Size = new System.Drawing.Size(499, 20);
-            this.textSettingsDir.TabIndex = 41;
-            this.textSettingsDir.Text = "Location of the PicasaStarter Settings Directory";
-            // 
-            // labelShared
-            // 
-            this.labelShared.AutoSize = true;
-            this.labelShared.BackColor = System.Drawing.SystemColors.Control;
-            this.labelShared.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelShared.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelShared.Location = new System.Drawing.Point(630, 12);
-            this.labelShared.Name = "labelShared";
-            this.labelShared.Size = new System.Drawing.Size(55, 13);
-            this.labelShared.TabIndex = 42;
-            this.labelShared.Text = "(Shared)";
-            this.labelShared.Visible = false;
-            // 
             // groupBox1
             // 
-            this.groupBox1.Location = new System.Drawing.Point(10, 38);
+            this.groupBox1.Location = new System.Drawing.Point(11, 11);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(275, 272);
             this.groupBox1.TabIndex = 43;
@@ -305,7 +271,7 @@
             this.groupBox2.Controls.Add(this.textBoxDBFullDir);
             this.groupBox2.Controls.Add(this.textBoxDBDescription);
             this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Location = new System.Drawing.Point(298, 38);
+            this.groupBox2.Location = new System.Drawing.Point(299, 11);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(420, 214);
             this.groupBox2.TabIndex = 44;
@@ -316,7 +282,7 @@
             // 
             this.groupBox3.Controls.Add(this.buttonRunPicasa);
             this.groupBox3.Controls.Add(this.ButtonCreateShortcut);
-            this.groupBox3.Location = new System.Drawing.Point(298, 258);
+            this.groupBox3.Location = new System.Drawing.Point(299, 231);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(420, 51);
             this.groupBox3.TabIndex = 45;
@@ -327,15 +293,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(736, 383);
+            this.ClientSize = new System.Drawing.Size(736, 355);
             this.Controls.Add(this.listBoxPicasaDBs);
-            this.Controls.Add(this.labelShared);
-            this.Controls.Add(this.textSettingsDir);
             this.Controls.Add(this.buttonRemoveDB);
             this.Controls.Add(this.buttonAddDB);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.buttonHelp);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonGeneralSettings);
             this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.groupBox1);
@@ -350,7 +313,6 @@
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -365,7 +327,6 @@
         private System.Windows.Forms.Button buttonRunPicasa;
         private System.Windows.Forms.Button buttonClose;
         private System.Windows.Forms.Button buttonGeneralSettings;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonHelp;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button buttonAddDB;
@@ -376,8 +337,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button buttonDBOpenFullDir;
         private System.Windows.Forms.Button ButtonCreateShortcut;
-        private System.Windows.Forms.TextBox textSettingsDir;
-        private System.Windows.Forms.Label labelShared;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
