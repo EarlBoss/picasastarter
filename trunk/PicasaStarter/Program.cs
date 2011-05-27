@@ -142,21 +142,23 @@ namespace PicasaStarter
                 }
             }
 
-            if(showGUI == true)
+            if (showGUI == true)
             {
                 Application.Run(new MainForm(settings, appDataDir, appSettingsDir, firstRun));
             }
-
-            // Save settings
-            //---------------------------------------------------------------------------
-            try
+            else
             {
-                SettingsHelper.SerializeSettings(settings, 
-                        appSettingsDir + "\\" + SettingsHelper.SettingsFileName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error saving settings: " + ex.Message);
+                // Save settings
+                //---------------------------------------------------------------------------
+                try
+                {
+                    SettingsHelper.SerializeSettings(settings,
+                            appSettingsDir + "\\" + SettingsHelper.SettingsFileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error saving settings: " + ex.Message);
+                }
             }
         }
     }
