@@ -31,6 +31,24 @@ namespace PicasaStarter
             // Set version in title bar
             this.Text = this.Text + " " + System.Diagnostics.FileVersionInfo.GetVersionInfo(Application.ExecutablePath).FileVersion;
 
+            //Ask for apps dir and exe path if new instance
+            if (_firstRun == true)
+            {
+                FirstRunWizard firstRunWizard = new FirstRunWizard(_appSettingsDir, _settings);
+                DialogResult result = firstRunWizard.ShowDialog();
+
+                if (result == DialogResult.OK)
+                {
+                    if (firstRunWizard.ReturnPicasaSettings != null)
+                    {
+                        _settings = firstRunWizard.ReturnPicasaSettings;
+                        _appSettingsDir = firstRunWizard.ReturnAppSettingsDir;
+                    }
+                    _settings.PicasaExePath = firstRunWizard.ReturnPicasaExePath;
+
+                }
+            }
+
             // Initialise all controls on the screen with the proper data
             ReFillPicasaDBList(false);
 
@@ -39,10 +57,6 @@ namespace PicasaStarter
             if (defaultSelectedDBIndex != ListBox.NoMatches)
                 listBoxPicasaDBs.SelectedIndex = defaultSelectedDBIndex;
 
-            if (_firstRun == true)
-            {
-                ShowHelp();
-            }
         }
 
         //public Settings Settings { get { return _settings; } 
@@ -208,16 +222,16 @@ namespace PicasaStarter
                 return InitialDirectory;
         }
 
-        private void ReFillPicasaDBList(bool selectLastItem)
+         private void ReFillPicasaDBList(bool selectLastItem)
         {
-            textSettingsDir.Text = _appSettingsDir;
+            string tip = "";
             if(_appSettingsDir == SettingsHelper.ConfigurationDir)
-                labelShared.Visible = false;
-            else
-                labelShared.Visible = true;
-            listBoxPicasaDBs.BeginUpdate();
+                tip = "Default: ";
+             listBoxPicasaDBs.BeginUpdate();
             listBoxPicasaDBs.SelectedIndex = -1;
             listBoxPicasaDBs.Items.Clear();
+            // Set the tooltip for the DBList to the settings path
+            toolTip1.SetToolTip(listBoxPicasaDBs, "Database Settings Path: \r\n" + tip + _appSettingsDir);
             for (int i = 0; i < _settings.picasaDBs.Count; i++)
             {
                 listBoxPicasaDBs.Items.Add(_settings.picasaDBs[i].Name);
@@ -293,6 +307,17 @@ namespace PicasaStarter
 
         private void buttonClose_Click(object sender, EventArgs e)
         {
+            // Save settings
+            //---------------------------------------------------------------------------
+            try
+            {
+                SettingsHelper.SerializeSettings(_settings,
+                        _appSettingsDir + "\\" + SettingsHelper.SettingsFileName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error saving settings: " + ex.Message);
+            }
             Close();
         }
 
