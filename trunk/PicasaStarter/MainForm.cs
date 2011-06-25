@@ -178,7 +178,7 @@ namespace PicasaStarter
             }
 
             DialogResult result = MessageBox.Show("Remark: This won't delete the picasa database itself, it will only remove the entry from this list!!!\n\n"
-                    + "If you als want to recuperate the (little) diskspace taken by the database, it is better to do this first.\n\n"
+                    + "If you also want to recuperate the (little) diskspace taken by the database, it is better to do this first.\n\n"
                     + "Click \"OK\" if you want to remove the entry from the list, \"Cancel\" to... cancel",
                 "Do you want to do this?", MessageBoxButtons.OKCancel);
             if (result == DialogResult.OK)
