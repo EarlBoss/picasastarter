@@ -307,18 +307,7 @@ namespace PicasaStarter
 
         private void buttonClose_Click(object sender, EventArgs e)
         {
-            // Save settings
-            //---------------------------------------------------------------------------
-            try
-            {
-                SettingsHelper.SerializeSettings(_settings,
-                        _appSettingsDir + "\\" + SettingsHelper.SettingsFileName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error saving settings: " + ex.Message);
-            }
-            Close();
+             Close();
         }
 
         private void ShowHelp()
@@ -329,10 +318,21 @@ namespace PicasaStarter
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if((listBoxPicasaDBs.SelectedIndex > -1)
+            if ((listBoxPicasaDBs.SelectedIndex > -1)
                     && listBoxPicasaDBs.SelectedIndex < _settings.picasaDBs.Count)
             {
                 _settings.picasaDefaultSelectedDB = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].Name;
+            }
+           // Save settings
+            //---------------------------------------------------------------------------
+            try
+            {
+                SettingsHelper.SerializeSettings(_settings,
+                        _appSettingsDir + "\\" + SettingsHelper.SettingsFileName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error saving settings: " + ex.Message);
             }
         }
 

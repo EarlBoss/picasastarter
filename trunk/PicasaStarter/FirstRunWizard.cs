@@ -36,9 +36,15 @@ namespace PicasaStarter
         {
             textBoxPicasaExePath.Text = _picasaExePath;
             if (_appSettingsDir == SettingsHelper.ConfigurationDir)
-                textBoxSettingsXMLPath.Text = "Default: " + SettingsHelper.ConfigurationDir;
+             {
+               textBoxSettingsXMLPath.Text = SettingsHelper.ConfigurationDir;
+               _setDefaultIniPath = true;
+            }
             else
+            {
                 textBoxSettingsXMLPath.Text = _appSettingsDir;
+                _setDefaultIniPath = false;
+            }
 
         }
 
@@ -87,7 +93,7 @@ namespace PicasaStarter
 
         private void SetXMLToDef_Click(object sender, EventArgs e)
         {
-            textBoxSettingsXMLPath.Text = "Default: " + SettingsHelper.ConfigurationDir;
+            textBoxSettingsXMLPath.Text = SettingsHelper.ConfigurationDir;
             _appSettingsDir = SettingsHelper.ConfigurationDir;
             try
             {
@@ -109,8 +115,8 @@ namespace PicasaStarter
         private void buttonOK_Click(object sender, EventArgs e)
         {
             Configuration config = new Configuration();
-            if (_iniPathChanged)
-            {
+            //if (_iniPathChanged)
+            //{
                 _localSettings.PicasaExePath = _picasaExePath;
                 ReturnPicasaSettings = _localSettings;
 
@@ -134,7 +140,7 @@ namespace PicasaStarter
                     MessageBox.Show("Error saving config file: " + ex.Message);
                 }
                 ReturnAppSettingsDir = _returnAppSettingsDir;
-            }
+            //}
             ReturnPicasaExePath = _picasaExePath;
                 
  

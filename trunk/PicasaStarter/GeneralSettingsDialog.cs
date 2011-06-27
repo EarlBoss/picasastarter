@@ -40,7 +40,7 @@ namespace PicasaStarter
         {
             textBoxPicasaExePath.Text = _picasaExePath;
             if (_appSettingsDir == SettingsHelper.ConfigurationDir)
-                textBoxSettingsXMLPath.Text = "Default: " + SettingsHelper.ConfigurationDir;
+                textBoxSettingsXMLPath.Text = SettingsHelper.ConfigurationDir;
             else 
                 textBoxSettingsXMLPath.Text = _appSettingsDir;
 
@@ -96,7 +96,7 @@ namespace PicasaStarter
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show("Error saving settings: " + ex.Message);
+                            MessageBox.Show("Gs Error saving settings: " + ex.Message);
                         }
                     }
                     ReturnPicasaSettings = _localSettings;
@@ -149,7 +149,7 @@ namespace PicasaStarter
 
         private void SetXMLToDef_Click(object sender, EventArgs e)
         {
-            textBoxSettingsXMLPath.Text = "Default: " + SettingsHelper.ConfigurationDir;
+            textBoxSettingsXMLPath.Text = SettingsHelper.ConfigurationDir;
             _appSettingsDir = SettingsHelper.ConfigurationDir;
             try
             {
