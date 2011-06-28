@@ -157,7 +157,7 @@ namespace PicasaStarter
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Ss Error saving settings: " + ex.Message);
+                    MessageBox.Show("Error saving settings: " + ex.Message);
                 }
             }
         }
