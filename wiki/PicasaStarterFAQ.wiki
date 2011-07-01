@@ -1,4 +1,4 @@
-#summary FAQ Page
+#summary FAQ Page for Picasa Starter
 
 = Introduction =
 This FAQ Page was copied from: 
