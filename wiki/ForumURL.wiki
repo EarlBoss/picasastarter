@@ -1,7 +1,5 @@
 URL for PicasaStarter Forum
 
-= Introduction =
-
 Please go to the Picasa Starter forum to make comments or report problems:
 
 http://groups.google.com/group/picasastarter 
