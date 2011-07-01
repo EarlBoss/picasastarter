@@ -1,4 +1,4 @@
-#URL for Picasa Starter Forum
+#summary URL for Picasa Starter Forum
 
 =Picasa Starter Forum URL=
 
