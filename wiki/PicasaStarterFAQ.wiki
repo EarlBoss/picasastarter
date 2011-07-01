@@ -1,0 +1,68 @@
+#summary FAQ Page
+
+= Introduction =
+This FAQ Page was copied from: 
+  URL: http://sites.google.com/site/picasastartersite/home
+
+= Details =
+
+*FAQ*
+
+*1) Picasa doesn't find my pictures on my external hard disk when I attach it to another computer. What to do?*
+
+Probably the drive letter assigned to the external hard disk is differnt on both computers. You can change the drive letter using this procedure:
+http://www.wikihow.com/Change-a-Drive-Letter-in-Windows-XP
+ 
+Remark: If you change the drive letter, normally if you disconnect and reconnect the external hard disk Windows will reuse the last used letter for this hard disk. It is a good idea to choose another drive letter than A, B, C, D, E and F. This way chances are little that you would need to change the drive letter to an already occupied letter... which would be a problem!
+
+
+
+*2) Can I reuse my existing Picasa database when I want to move it to another place?*
+
+Yes, you can. Follow these steps to reuse your default database:
+
+a) Select the predefined database that is always present in Picasa Starter, and click the button "Explore..." at the right-hand side of the Picasa Starter dialog. A windows explorer window will open at the place the database is located. Select the folders "Picasa2" and Picasa2Albums" located there and do "right-click"/"copy".
+
+b) If you didn't add a new detabase yet, create a new one in Picasa Starter using "New database" and do "Browse..." to choose the folder where you would like to put it. If you want to share this database between multiple users/computers, make sure you choose a folder that is accessible for all of them (with read AND write access).
+
+c) Select the database you want to copy the original one to, and click "Explore..." for this database as well. Do "right-click"/"Paste" in this directory to put the original database there.
+
+
+When you do "Run Picasa" with the new database selected... you should have reused all information.
+
+
+
+*3) Can I start Picasa with a custom database without actually seeing PicasaStarter*
+
+Yes! After you defined one or more custom Picasa Databases by starting Picasastarter normally, you can:
+
+a) Navigate (using windows explorer or My computer) to the place where you saved PicasaStarter.exe on you computer.
+
+b) Create a shortcut to Picasastarter by rightclicking PicasaStarter.exe and choose "Create shortcut".
+
+c) Do right-click on the shortcut and choose "Properties".
+
+d) On the tab "Shortcut" add the following text at the end of the "Target" field: /autorun "[DatabaseName]", with [DatabaseName] the name you gave to the database you want to run Picasa with automatically. The double quotes around [DatabaseName] are only necessary if you have spaces in the database name. 
+Eg.: "C:\Programs\PicasaStarter\PicasaStarter.exe" /autorun "Test database 1"
+
+This shortcut can be renamed and placed wherever you want of course... par example on your desktop.
+
+
+*4) Can I create a "portable" solution for Picasa using PicasaStarter?*
+
+Yes! Picasa itself will still need to be installed on all computers you want to use it on, but all data and settings will be portable.
+ 
+a) Move all your images to an external harddisk. If you want to reuse your picasa database, you need to move the images in Picasa itself.
+
+b) Put PicasaStarter on the external herddisk.
+
+c) Start PicasaStarter and create a new database, with the "base path" located on the external harddisk.
+
+d) Optional: if you want to reuse an existing database, check out frequently asked question nb. 2.
+
+e) Optional: create a shortcut to PicasaStarter somewhere on the external harddisk as explained in frequently asked question nb. 3.   
+
+Now you can attach you external harddisk to any computer having Picasa installed and run PicasaStarter to manage your image collection...
+
+
+*Remark:* making a backup of all images + metadata like face tags,... becomes quite easy this way as well: just make a copy of the entire hard disk. 
