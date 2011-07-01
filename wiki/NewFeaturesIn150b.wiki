@@ -1,0 +1,18 @@
+#summary Improvements in Picasa Starter Version 1.5.0 beta
+
+= Introduction =
+
+*Enhancements in Picasa Starter Version 1.5.0:*
+  * Allow the user to specify the location of the Picasa Starter settings file. This allows the users to have Picasa Starter on their own account or PC while still using a common settings file on the shared or network drive. 
+  * A new *First Run Wizard* that asks for some settings the first time Picasa Starter is run.
+  * A new *Create Shortcut* function to make it simple to create shortcuts to Picasa Starter databases.
+
+*Bug Fixes:*
+  * Improved the ability of Picasa Starter to run in a mixed Windows7 x64 and windows XP x32 environment.
+  * Fixed a bug with mixed English and other language environments.
+  * Improved database naming and description to correctly recognize spaces and returns.
+
+
+= Details =
+
+To Be Included.
