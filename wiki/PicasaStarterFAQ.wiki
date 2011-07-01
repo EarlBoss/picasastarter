@@ -6,8 +6,6 @@ This FAQ Page was copied from:
 
 = FAQ =
 
-*FAQ*
-
 *1) Picasa doesn't find my pictures on my external hard disk when I attach it to another computer. What to do?*
 
 Probably the drive letter assigned to the external hard disk is differnt on both computers. You can change the drive letter using this procedure:
