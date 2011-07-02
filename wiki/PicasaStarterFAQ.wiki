@@ -23,7 +23,7 @@ a) Select the predefined database that is always present in Picasa Starter, and 
 
 b) If you didn't add a new detabase yet, create a new one in Picasa Starter using "New database" and do "Browse..." to choose the folder where you would like to put it (or create a new folder). If you want to share this database between multiple users/computers, make sure you choose a folder that is accessible for all of them (with read AND write access).
 
-c) Select the database you want to copy the original one to, and click "Explore..." for this database as well. Do "right-click"/"Paste" in this directory to put the original database there.
+c) Select the database you want to copy the original one to, and click "Explore..." for this database as well. Do "right-click"/"Paste" in this directory to put a copy of the original database there.
 
 When you do "Run Picasa" with the new database selected... you should have reused all information. If there is a problem, erase the 2  folders Picasa2 and Picasa2Albums from the new database folder, and recopy them using the procedure above.
 
