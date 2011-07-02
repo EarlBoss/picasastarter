@@ -21,11 +21,12 @@ Yes, you can. Follow these steps to reuse your default database:
 
 a) Select the predefined database that is always present in Picasa Starter, and click the button "Explore..." at the right-hand side of the Picasa Starter dialog. A windows explorer window will open at the place the database is located. Select the folders "Picasa2" and Picasa2Albums" located there and do "right-click"/"copy".
 
-b) If you didn't add a new detabase yet, create a new one in Picasa Starter using "New database" and do "Browse..." to choose the folder where you would like to put it. If you want to share this database between multiple users/computers, make sure you choose a folder that is accessible for all of them (with read AND write access).
+b) If you didn't add a new detabase yet, create a new one in Picasa Starter using "New database" and do "Browse..." to choose the folder where you would like to put it (or create a new folder). If you want to share this database between multiple users/computers, make sure you choose a folder that is accessible for all of them (with read AND write access).
 
 c) Select the database you want to copy the original one to, and click "Explore..." for this database as well. Do "right-click"/"Paste" in this directory to put the original database there.
 
-When you do "Run Picasa" with the new database selected... you should have reused all information.
+When you do "Run Picasa" with the new database selected... you should have reused all information. If there is a problem, erase the 2  folders Picasa2 and Picasa2Albums from the new database folder, and recopy them using the procedure above.
+
 
 ----
 
@@ -68,7 +69,9 @@ c) Start PicasaStarter from this folder and create a new database, with the "bas
 
 d) Optional: if you want to reuse an existing database, check out frequently asked question nb. 2.
 
-e) Optional: create a shortcut to PicasaStarter somewhere on the external harddisk as explained in frequently asked question nb. 3.   
+e) Start Picasa from Picasastarter with the new database selected, and immediately go to Tools-Folder Manager.  In Folder Manager, ensure that only the external drive pictures folder and folders with pictures there are selected for "Scan Always". All other folders (Including "My Pictures") should be "Remove From Picasa". Fix them if they aren't. 
+
+f) Optional: create a shortcut to PicasaStarter somewhere on the external harddisk as explained in frequently asked question nb. 3.   
 
 Now you can attach your external harddisk to any computer having Picasa installed and run PicasaStarter to manage your image collection...
 Just remember that the external harddisk must have the same drive letter on all computers, see question 1) above.
