@@ -53,17 +53,25 @@ This shortcut can be renamed and placed wherever you want of course... par examp
 
 Yes! Picasa itself will still need to be installed on all computers you want to use it on, but all data and settings will be portable.
 
-a) Move all your images to an external harddisk. If you want to reuse your picasa database, you need to move the images in Picasa itself.
+a) Move all your images to an external harddisk. If you want to reuse your Picasa database, you need to move the images in Picasa itself using the Move Folder command.
 
-b) Put PicasaStarter on the external herddisk.
+*NOTES:* 
+  * _It is suggested that a folder such as \Pictures be created on the external drive. Then all the pictures and folders to be moved would be moved into this folder._
 
-c) Start PicasaStarter and create a new database, with the "base path" located on the external harddisk.
+  * _For the external drive to be portable, All pictures and picture folders must be moved to the external drive, since pictures on other drives will not be available on other computers!_ 
+
+  * _If you want to keep your pictures in the original locations too, you should back up your original pictures and picasa database, so you can restore them after the end of this procedure._
+
+b) Put PicasaStarter on the external harddisk, for instance in a folder called Picasastarter.
+
+c) Start PicasaStarter from this folder and create a new database, with the "base path" located on the external harddisk, for instance in a folder called Picasadata.
 
 d) Optional: if you want to reuse an existing database, check out frequently asked question nb. 2.
 
 e) Optional: create a shortcut to PicasaStarter somewhere on the external harddisk as explained in frequently asked question nb. 3.   
 
-Now you can attach you external harddisk to any computer having Picasa installed and run PicasaStarter to manage your image collection...
+Now you can attach your external harddisk to any computer having Picasa installed and run PicasaStarter to manage your image collection...
+Just remember that the external harddisk must have the same drive letter on all computers, see question 1) above.
 
 ----
 
