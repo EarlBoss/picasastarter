@@ -2,7 +2,7 @@
 
 = Introduction =
 This FAQ Page was copied from: 
-  URL: http://sites.google.com/site/picasastartersite/home
+  URL: http://sites.google.com/site/picasastartersite/home  (with a few additions)
 
 = FAQ =
 
@@ -78,4 +78,21 @@ Just remember that the external harddisk must have the same drive letter on all 
 
 ----
 
-*Remark:* making a backup of all images + metadata like face tags,... becomes quite easy this way as well: just make a copy of the entire hard disk. 
+*5) Is there a Network NAS solution for Picasa using PicasaStarter?*
+
+
+Yes! Picasa itself will still need to be installed on all computers you want to use it on, but all data and settings can be on the network drive.
+
+The first step is to map the network drive or folder to contain the pictures and data to the same drive letter on all networked computers. The network drive can be either a shared drive (or folder) from another user, or it can be a NAS drive.
+
+It is suggested that unless the drive is to be used only for Picasa, it would be better to make a folder on the drive called something like "Picasa Picture P Drive", and only share that folder and map it to a drive letter such as P: (for pictures). This will improve security since the whole drive will not be shared.
+
+After the Pictures drive is mapped to a drive letter, Just do the procedure for putting the pictures on a portable drive as shown in question *4)* above.
+
+A disadvantage of running Picasastarter from a network drive is you will get a UAC message from windows asking you to confirm that you want to run a program from a network drive.  In Picasastarter 1.5.0 and above you can avoid the UAC by putting a copy of Picasastarter on each local PC and setting it up to get it's settings from the P:\Picasastarter directory _(or wherever the network copy of Picasastarter is located)_. This way Picasastarter will be running from the local PC while sharing the settings on the network.
+
+NOTE: any shortcuts on the local PC should be for the local copy of Picasastarter in this case.
+
+----
+
+*Remark:* making a backup of all images + metadata like face tags,... becomes quite easy on portable of network drives as well: just make a copy of the entire drive. 
