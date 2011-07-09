@@ -95,4 +95,21 @@ NOTE: any shortcuts on the local PC should be for the local copy of Picasastarte
 
 ----
 
-*Remark:* making a backup of all images + metadata like face tags,... becomes quite easy on portable of network drives as well: just make a copy of the entire drive. 
+*Remark:* making a backup of all images + metadata like face tags,... becomes quite easy on portable of network drives as well: just make a copy of the entire drive.
+ 
+----
+
+*6) Can I make collages and movies in Picasa when using PicasaStarter?*
+
+Yes, with limitations: 
+PicasaStarter can only work externally to Picasa, so we can re-map directories and drives and trick Picasa into running with another database, but we can't get inside it where collages and movies are made. Because of this, Windows XP can only view movies and collages, not create or edit them, while Windows 7 can create and edit them subject to some limitations.
+
+You can view both collages and movies in XP by doing what I will describe below, but you cannot edit or create them. Windows 7 is a better case, you can create, edit, and view both collages and movies in win7 (Note, I have only tried this in the 64 bit version of win7). 
+
+After you have created a collage in Win7, go into Tools-Folder Manager, and browse to your Database directory, then browse in that directory to the "PICASA\COLLAGES" folder and set it to SCAN ALWAYS. (For Example: My database is on the P: drive in the DatabaseP folder so I browsed to P:\databasep\picasa\collages, and set it to scan always) Your collages will show up in the "Collages" folder in your folders list in addition to the "Other Stuff" list. You will be able to use "locate on disk" edit collage, etc. in the folder list location.
+
+The same steps apply to movies you create using the Picasa Movie creation feature, except the folder to Scan Always is the "PICASA \MOVIES" folder. For some reason, a second movies folder is shown in the "Other Stuff" list rather than in the folders list as the collages were. 
+
+You may have to exit and restart Picasa for the new collages and movies folders to show up. Once they show up you can view them in XP also. 
+
+Warning: trying to edit movies in XP sometimes causes Picasa to lock up or crash. Trying to edit collages just seems to cause them to not be created or changed. 
