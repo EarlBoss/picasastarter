@@ -261,7 +261,7 @@ namespace PicasaStarter
             {
                 string versionSpecificDir;
                 if (Environment.OSVersion.Version.Major <= 5)
-                    versionSpecificDir = "\\Local Settings\\Application Data";
+                    versionSpecificDir = "\\Local Settings\\Application Data\\Google";
                 else
                     versionSpecificDir = "\\Appdata\\Local\\Google";
                 fullDBDirectory = picasaDB.BaseDir + versionSpecificDir;
