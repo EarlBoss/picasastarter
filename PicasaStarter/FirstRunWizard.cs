@@ -17,7 +17,7 @@ namespace PicasaStarter
         private Settings _returnSettings = null;
         private Settings _localSettings = null;
         private bool _setDefaultIniPath = false;
-        private bool _iniPathChanged = false;
+        //private bool _iniPathChanged = false;
         private string _returnPicasaExePath;
 
         public string ReturnPicasaExePath { get { return _returnPicasaExePath; } private set { _returnPicasaExePath = value; } }
@@ -86,7 +86,7 @@ namespace PicasaStarter
                     _localSettings.picasaDBs.Add(SettingsHelper.GetDefaultPicasaDB());
                 }
                 _setDefaultIniPath = false;
-                _iniPathChanged = true;
+                //_iniPathChanged = true;
             }
 
         }
@@ -108,7 +108,7 @@ namespace PicasaStarter
             }
             //PicasaExePath = _localSettings.PicasaExePath;
             _setDefaultIniPath = true;
-            _iniPathChanged = true;
+            //_iniPathChanged = true;
 
         }
 

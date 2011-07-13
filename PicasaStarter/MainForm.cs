@@ -294,7 +294,8 @@ namespace PicasaStarter
                 MessageBox.Show("The base directory of this database doesn't exist or you didn't choose one yet.");
                 return;
             }
-
+           // Hide();
+            WindowState = FormWindowState.Minimized; //Remove PicasaStarter window from desktop while Picasa is running
             PicasaRunner runner = new PicasaRunner(_appDataDir, _settings.PicasaExePath);
 
             // If the user wants to run his personal default database... 
@@ -303,6 +304,8 @@ namespace PicasaStarter
             // If the user wants to run a custom database...
             else
                 runner.RunPicasa(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir);
+            WindowState = FormWindowState.Normal;
+            //Show();
         }
 
         private void buttonClose_Click(object sender, EventArgs e)

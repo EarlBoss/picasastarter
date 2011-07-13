@@ -55,6 +55,11 @@ namespace PicasaStarter
         {
             // Create a new instance of WshShellClass
              WshShell = new WshShellClass();
+             string _localdatabasename = databasename;
+
+             if (checkDBMenu1.Checked)
+                 _localdatabasename = "AskUser";
+
              // Create the shortcut
              IWshRuntimeLibrary.IWshShortcut MyShortcut;
 
@@ -65,7 +70,7 @@ namespace PicasaStarter
              MyShortcut.TargetPath = target + "\\" + "picasastarter.exe";
              MyShortcut.WorkingDirectory = target;
 
-             MyShortcut.Arguments = "/autorun \"" + databasename + "\"";
+             MyShortcut.Arguments = "/autorun \"" + _localdatabasename + "\"";
              // Description for the shortcut
              MyShortcut.Description = "Start Picasa with custom database";
 
@@ -75,6 +80,11 @@ namespace PicasaStarter
              // Create the shortcut at the given path
              MyShortcut.Save();
  
+        }
+
+        private void checkDBMenu1_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
