@@ -82,6 +82,12 @@
     <Compile Include="FirstRunWizard.Designer.cs">
       <DependentUpon>FirstRunWizard.cs</DependentUpon>
     </Compile>
+    <Compile Include="SelectDBForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectDBForm.Designer.cs">
+      <DependentUpon>SelectDBForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Helper.cs" />
     <Compile Include="GeneralSettingsDialog.cs">
       <SubType>Form</SubType>
@@ -109,6 +115,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FirstRunWizard.resx">
       <DependentUpon>FirstRunWizard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectDBForm.resx">
+      <DependentUpon>SelectDBForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GeneralSettingsDialog.resx">
       <DependentUpon>GeneralSettingsDialog.cs</DependentUpon>

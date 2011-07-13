@@ -102,6 +102,19 @@ namespace PicasaStarter
             //---------------------------------------------------------------------------
             if (autoRunDatabaseName != null)
             {
+                // First check if he wants to be asked which database to run
+                if (autoRunDatabaseName.Equals("AskUser", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    // Show Database selection menu 
+                    SelectDBForm selectDBForm = new SelectDBForm(settings);
+                   selectDBForm.ShowDialog();
+
+                    if (selectDBForm.ReturnDBName != null)
+                    {
+                        autoRunDatabaseName = selectDBForm.ReturnDBName;
+                    }
+
+                }
                 // First check if he wants to run with the standard personal database...
                 if (autoRunDatabaseName.Equals("personal", StringComparison.CurrentCultureIgnoreCase))
                 {
@@ -111,6 +124,12 @@ namespace PicasaStarter
                 }
                 else
                 {
+                    // Exit if the Ask menu was cancelled
+                    if (autoRunDatabaseName.Equals("AskUser", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        return;
+                    }
+
                     PicasaDB foundDB = null;
                     foreach (PicasaDB db in settings.picasaDBs)
                     {
@@ -136,7 +155,7 @@ namespace PicasaStarter
                     }
                     else
                     {
-                        MessageBox.Show("The database passed with the /autorun parameter was not found: " + autoRunDatabaseName);
+                        MessageBox.Show("The database passed with the /autorun parameter was not found: (" + autoRunDatabaseName + ")");
                         autoRunDatabaseName = null;
                     }
                 }
