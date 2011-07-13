@@ -36,3 +36,4 @@ To run Picasastarter and automatically start Picasa with a different database, a
 
 The *Create Shortcut* button allows the user to create these shortcuts at the press of a button.  Shortcuts can be named whatever the user wants, and can be created on the desktop and/or in the Application Directory.
 
+A shortcut option "AskUser" has been added that brings up a selection menu of all databases when the shortcut is run. This makes it unnecessary to run PicasaStarter in background to select a database to run
