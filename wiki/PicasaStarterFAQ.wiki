@@ -32,7 +32,7 @@ When you do "Run Picasa" with the new database selected... you should have reuse
 
 *3) Can I start Picasa with a custom database without actually seeing PicasaStarter?*
 
-*New In Version 1.5:* A Create Shortcut button has been added to Picasa Starter to simplify this process. It adds a shortcut to Picasa Starter with the selected database to the desktop and optionally to the Apps directory.
+*New In Version 1.5:* A Create Shortcut button has been added to Picasa Starter to simplify this process. It adds a shortcut to Picasa Starter with the selected database to the desktop and optionally to the Apps directory. An option checkbox is provided to have the shortcut bring up a menu of databases to ease selection.
 
 Yes! After you defined one or more custom Picasa Databases by starting Picasastarter normally, you can:
 
