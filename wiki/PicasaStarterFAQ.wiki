@@ -8,8 +8,11 @@ This FAQ Page was copied from:
 
 *1) Picasa doesn't find my pictures on my external hard disk when I attach it to another computer. What to do?*
 
-Probably the drive letter assigned to the external hard disk is differnt on both computers. You can change the drive letter using this procedure:
-http://www.wikihow.com/Change-a-Drive-Letter-in-Windows-XP
+Probably the drive letter assigned to the external hard disk is different on both computers.
+
+a) You can change the drive letter using this procedure: http://www.wikihow.com/Change-a-Drive-Letter-in-Windows-XP
+
+b) Another possibility is to look over the RunPicasa.bat file under Other Tools at the http://sites.google.com/site/picasastartersite/home site. It maps the drive it is installed on to a fixed directory using the subst command line tool and may be useful.
 
 Remark: If you change the drive letter, normally if you disconnect and reconnect the external hard disk Windows will reuse the last used letter for this hard disk. It is a good idea to choose another drive letter than A, B, C, D, E and F. This way chances are little that you would need to change the drive letter to an already occupied letter... which would be a problem!  One suggestion would be to use the P (for Photos) drive.
 
