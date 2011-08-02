@@ -119,7 +119,7 @@
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.Location = new System.Drawing.Point(12, 20);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(460, 169);
+            this.label6.Size = new System.Drawing.Size(493, 169);
             this.label6.TabIndex = 25;
             this.label6.Text = resources.GetString("label6.Text");
             // 
@@ -222,9 +222,9 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(23, 482);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(414, 13);
+            this.label8.Size = new System.Drawing.Size(415, 13);
             this.label8.TabIndex = 29;
-            this.label8.Text = "Note: These settings can be changes later by clicking on the  General Settings bu" +
+            this.label8.Text = "Note: These settings can be changed later by clicking on the  General Settings bu" +
                 "tton.";
             // 
             // FirstRunWizard
@@ -237,6 +237,10 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FirstRunWizard";
             this.Text = "First Run Settings";
             this.Load += new System.EventHandler(this.FirstRunWizard_Load);

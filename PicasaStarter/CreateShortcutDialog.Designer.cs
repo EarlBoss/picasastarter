@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreateShortcutDialog));
             this.checkDesktopShortcut = new System.Windows.Forms.CheckBox();
             this.checkShortutAppsDir = new System.Windows.Forms.CheckBox();
             this.textShortcutName = new System.Windows.Forms.TextBox();
@@ -126,6 +127,8 @@
             this.Controls.Add(this.textShortcutName);
             this.Controls.Add(this.checkShortutAppsDir);
             this.Controls.Add(this.checkDesktopShortcut);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "CreateShortcutDialog";
             this.Text = "Create Shortcut";
             this.Load += new System.EventHandler(this.CreateShortcutDialog_Load);
