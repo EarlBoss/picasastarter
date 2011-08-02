@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GeneralSettingsDialog));
             this.label2 = new System.Windows.Forms.Label();
             this.buttonBrowsePicasaExePath = new System.Windows.Forms.Button();
             this.textBoxPicasaExePath = new System.Windows.Forms.TextBox();
-            this.generalSettingsDialogBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -43,6 +43,7 @@
             this.SetXMLToDef = new System.Windows.Forms.Button();
             this.SelXMLPath = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.generalSettingsDialogBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.generalSettingsDialogBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -78,10 +79,6 @@
             this.textBoxPicasaExePath.TabIndex = 5;
             this.textBoxPicasaExePath.Tag = "";
             this.textBoxPicasaExePath.TextChanged += new System.EventHandler(this.textBoxPicasaExePath_TextChanged);
-            // 
-            // generalSettingsDialogBindingSource
-            // 
-            this.generalSettingsDialogBindingSource.DataSource = typeof(PicasaStarter.GeneralSettingsDialog);
             // 
             // buttonCancel
             // 
@@ -180,6 +177,10 @@
             this.SelXMLPath.UseVisualStyleBackColor = true;
             this.SelXMLPath.Click += new System.EventHandler(this.SelXMLPath_Click);
             // 
+            // generalSettingsDialogBindingSource
+            // 
+            this.generalSettingsDialogBindingSource.DataSource = typeof(PicasaStarter.GeneralSettingsDialog);
+            // 
             // GeneralSettingsDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -197,6 +198,10 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.buttonBrowsePicasaExePath);
             this.Controls.Add(this.textBoxPicasaExePath);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "GeneralSettingsDialog";
             this.Text = "General settings";
             this.Load += new System.EventHandler(this.GeneralSettingsForm_Load);
