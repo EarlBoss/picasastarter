@@ -119,6 +119,7 @@ namespace PicasaStarter
             //{
                 _localSettings.PicasaExePath = _picasaExePath;
                 ReturnPicasaSettings = _localSettings;
+                config.configPicasaExePath = _picasaExePath;
 
                 if (_setDefaultIniPath)
                 {

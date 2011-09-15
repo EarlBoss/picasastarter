@@ -15,11 +15,10 @@ namespace PicasaStarter
         private string _appDataDir = "";
         private string _appSettingsDir = "";
         private bool _firstRun = false;
-        
+
         public MainForm(Settings settings, string appDataDir, string appSettingsDir, bool firstRun)
         {
             InitializeComponent();
-
             _settings = settings;
             _appDataDir = appDataDir;
             _appSettingsDir = appSettingsDir;
@@ -263,7 +262,6 @@ namespace PicasaStarter
                 _appSettingsDir = generalSettingsDialog.ReturnAppSettingsDir;
                 // Initialise all controls on the screen with the proper data
                 ReFillPicasaDBList(false);
-
                 // If the saved defaultselectedDB is valid, select it in the list...
                 int defaultSelectedDBIndex = listBoxPicasaDBs.FindStringExact(_settings.picasaDefaultSelectedDB);
                 if (defaultSelectedDBIndex != ListBox.NoMatches)
@@ -294,7 +292,6 @@ namespace PicasaStarter
                 MessageBox.Show("The base directory of this database doesn't exist or you didn't choose one yet.");
                 return;
             }
-           // Hide();
             WindowState = FormWindowState.Minimized; //Remove PicasaStarter window from desktop while Picasa is running
             PicasaRunner runner = new PicasaRunner(_appDataDir, _settings.PicasaExePath);
 
@@ -327,7 +324,6 @@ namespace PicasaStarter
                 _settings.picasaDefaultSelectedDB = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].Name;
             }
            // Save settings
-            //---------------------------------------------------------------------------
             try
             {
                 SettingsHelper.SerializeSettings(_settings,
@@ -337,6 +333,7 @@ namespace PicasaStarter
             {
                 MessageBox.Show("Error saving settings: " + ex.Message);
             }
+
         }
 
         private void ButtonCreateShortcut_Click(object sender, EventArgs e)

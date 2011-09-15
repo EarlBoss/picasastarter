@@ -143,7 +143,7 @@ namespace PicasaStarter
 
     /// <summary>
     /// This class manages the Configuration values in PicasaStarter.
-    /// Presently the only value used is the path to the settings directory
+    /// It contains the path to the settings directory, and the Picasa Exe Path on the local PC
     /// </summary>
     public class Configuration
     {
@@ -151,27 +151,22 @@ namespace PicasaStarter
         /// The Directory that holds the PicasaStarterSettings.xml file when starting PicasaStarter.
         /// </summary>
         public string picasaStarterSettingsXMLPath;
+        public string configPicasaExePath;
     }
 
     public static class SettingsHelper
     {
         public const string SettingsFileName = "PicasaStarterSettings.xml";
         public const string ConfigFileName = "PicasaStarterConfiguration.xml";
-        public static string ConfigurationDir;
+        public static string ConfigurationDir = "";
+        public static string ConfigPicasaExePath = "";
 
-        public static string DetermineSettingsDir()
+        public static string DetermineConfigDir()
         {
-            // Determine what directory the settings will be saved in?
-            string settingsDir = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);  // Default
-            ConfigurationDir = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);  // Default
-            string settingsDirAppData = Environment.GetEnvironmentVariable("appdata") + "\\PicasaStarter"; // If exe dir read-only
-            Configuration config;
-            // For backwards compatibility, rename old settings filename to new...
-            const string OldSettingsFileName = "Settings.xml";
-            if (File.Exists(settingsDir + "\\" + OldSettingsFileName))
-                File.Move(settingsDir + "\\" + OldSettingsFileName, settingsDir + "\\" + SettingsFileName);
-            if (File.Exists(settingsDirAppData + "\\" + OldSettingsFileName))
-                File.Move(settingsDirAppData + "\\" + OldSettingsFileName, settingsDirAppData + "\\" + SettingsFileName);
+            // Determine what directory the Config File will be saved in?
+            string configurationDir = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);  // Default
+            string configDirAppData = Environment.GetEnvironmentVariable("appdata") + "\\PicasaStarter"; // If exe dir read-only
+            //Configuration config;
 
             // Check if the user has the necesarry rights on the default dir
             bool hasNeededRightsOnDefault = false;
@@ -179,43 +174,32 @@ namespace PicasaStarter
             try
             {
                 // Write test file to make sure we have the necessary rights...
-                File.WriteAllText(settingsDir + "\\testPicasaStarterSettings.txt", "test");
-                File.Delete(settingsDir + "\\testPicasaStarterSettings.txt");
+                File.WriteAllText(configurationDir + "\\testPicasaStarterSettings.txt", "test");
+                File.Delete(configurationDir + "\\testPicasaStarterSettings.txt");
                 hasNeededRightsOnDefault = true;
             }
             catch (Exception)
-            {}
+            { }
 
             // If not enough rights... set appSettingDir to appdata...
             if (hasNeededRightsOnDefault == false)
             {
-                settingsDir = settingsDirAppData;
+                configurationDir = configDirAppData;
             }
-            // If there isn't a settings file yet in exe dir, recuperate it from appdata if it exists there...
+            // If there isn't a config file yet in exe dir, recuperate it from appdata if it exists there...
             // Leave a copy in the apps dir in case there is more than one copy of PicasaStarter on the PC,
             //   and some of those copies are in protected directories.
             else
             {
-                if(!File.Exists(settingsDir + "\\" + SettingsFileName))
+                if (!File.Exists(configurationDir + "\\" + ConfigFileName))
                 {
-                    if (File.Exists(settingsDirAppData + "\\" + SettingsFileName))
+                    // Get a copy of the Config file  if it exists
+                    if (File.Exists(configDirAppData + "\\" + ConfigFileName))
                     {
                         try
                         {
-                            File.Copy(settingsDirAppData + "\\" + SettingsFileName,
-                                    settingsDir + "\\" + SettingsFileName);
-                            //Directory.Delete(settingsDirAppData);
-                        }
-                        catch (Exception)
-                        { }
-                    }
-                    // Get a copy of the INI file also if it exists
-                    if (File.Exists(settingsDirAppData + "\\" + ConfigFileName))
-                    {
-                        try
-                        {
-                            File.Copy(settingsDirAppData + "\\" + ConfigFileName,
-                                    settingsDir + "\\" + ConfigFileName);
+                            File.Copy(configDirAppData + "\\" + ConfigFileName,
+                                    configurationDir + "\\" + ConfigFileName);
                             //Directory.Delete(settingsDirAppData);
                         }
                         catch (Exception)
@@ -223,20 +207,79 @@ namespace PicasaStarter
                     }
                 }
             }
-            // Remember the original settings directory which contains the Configuration file so it isn't redirected
-            ConfigurationDir = settingsDir;  
-            // Point at new Settings directory if it has been redirected - efb
-            config = SettingsHelper.DeSerializeConfig(
-                ConfigurationDir + "\\" + SettingsHelper.ConfigFileName);
-            if (config.picasaStarterSettingsXMLPath != "" )
+            ConfigurationDir = configurationDir;
+            return configurationDir;
+        }
+
+
+
+        public static string DetermineSettingsDir(string ConfigurationDir)
+        {
+            // Determine what directory the settings will be saved in?
+            string settingsDir = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);  // Default
+            //string ConfigurationDir = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);  // Default
+            string settingsDirAppData = Environment.GetEnvironmentVariable("appdata") + "\\PicasaStarter"; // If exe dir read-only
+            Configuration config;
+
+            bool hasNeededRightsOnDefault = false;
+            try
             {
-                settingsDir = config.picasaStarterSettingsXMLPath;  
- 
-            } //else settings dir remains the exe file path
+                config = SettingsHelper.DeSerializeConfig(
+                    ConfigurationDir + "\\" + SettingsHelper.ConfigFileName);
+                if (config.picasaStarterSettingsXMLPath != "")
+                {
+                    settingsDir = config.picasaStarterSettingsXMLPath;
+
+                } //else settings dir is the config dir
+                else
+                {
+                    settingsDir = ConfigurationDir;
+                }
+           }
+            catch (Exception) //No Config File
+            {
+                // Check if the user has the necesary rights on the default dir
+
+                try
+                {
+                    // Write test file to make sure we have the necessary rights...
+                    File.WriteAllText(settingsDir + "\\testPicasaStarterSettings.txt", "test");
+                    File.Delete(settingsDir + "\\testPicasaStarterSettings.txt");
+                    hasNeededRightsOnDefault = true;
+                }
+                catch (Exception)
+                {}
 
 
+                // If not enough rights... set appSettingDir to appdata...
+                if (hasNeededRightsOnDefault == false)
+                {
+                    settingsDir = settingsDirAppData;
+                }
+                // If there isn't a settings file yet in exe dir, recuperate it from appdata if it exists there...
+                // Leave a copy in the apps dir in case there is more than one copy of PicasaStarter on the PC,
+                //   and some of those copies are in protected directories.
+                else
+                {
+                    if(!File.Exists(settingsDir + "\\" + SettingsFileName))
+                    {
+                        if (File.Exists(settingsDirAppData + "\\" + SettingsFileName))
+                        {
+                            try
+                            {
+                                File.Copy(settingsDirAppData + "\\" + SettingsFileName,
+                                        settingsDir + "\\" + SettingsFileName);
+                                //Directory.Delete(settingsDirAppData);
+                            }
+                            catch (Exception)
+                            { }
+                        }
+                    }
+                }
+            }
             return settingsDir;
         }
+
 
         public static PicasaDB GetDefaultPicasaDB()
         {
@@ -347,26 +390,10 @@ namespace PicasaStarter
         {
             Configuration config;
             // Deserialize Configuration
-            try
-            {
                 XmlSerializer serializer = new XmlSerializer(typeof(Configuration));
                 TextReader tr = new StreamReader(configFilePath);
                 config = (Configuration)serializer.Deserialize(tr);
                 tr.Close();
-            }
-            catch (Exception)
-            {
-                // If the config file couldn't be loaded, create new pointing at the default directory...
-                config = new Configuration();
-                config.picasaStarterSettingsXMLPath = "";
-                try
-                {
-                    SettingsHelper.SerializeConfig(config,
-                            SettingsHelper.ConfigurationDir + "\\" + SettingsHelper.ConfigFileName);
-                }
-                catch (Exception)
-                { }
-            }
 
             return config;
         }

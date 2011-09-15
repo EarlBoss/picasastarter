@@ -16,15 +16,27 @@ namespace PicasaStarter
         public PicasaRunner(string symlinkBaseDir, string picasaExePath)
         {
             _symlinkBaseDir = symlinkBaseDir;
-            _picasaExePath = picasaExePath;
+            _picasaExePath = picasaExePath;     //Path from the settings File
         }
 
         public void RunPicasa(string CustomDBBasePath)
         {
-            // Check if the chosen executable exists...
+            // Check if the executable from settings exists...
             if (!File.Exists(_picasaExePath))
             {
-                MessageBox.Show("Picasa executable isn't found here: " + _picasaExePath);
+                //Saved path doesn't exist, try Path from local Config File
+                _picasaExePath = (SettingsHelper.ConfigPicasaExePath);
+
+            }
+            if (!File.Exists(_picasaExePath))
+            {
+                //Saved path doesn't exist, try default for this OS
+                _picasaExePath = (SettingsHelper.ProgramFilesx86() + "\\google\\Picasa3\\picasa3.exe");
+
+            }
+            if (!File.Exists(_picasaExePath))
+            {
+                 MessageBox.Show("Picasa executable isn't found here: " + _picasaExePath);
                 return;
             }
 
@@ -193,6 +205,7 @@ namespace PicasaStarter
                     // If symlink doesn't exist
                     if (!Directory.Exists(symLinkPath))
                     {
+                        //Create Symlink
                         try
                         {
                             IOHelper.CreateSymbolicLink(symLinkPath, symLinkDest, true);
@@ -201,12 +214,15 @@ namespace PicasaStarter
                         {
                             // If the code says the user doesn't have enough privileges, or in Windows 7 he gives another stupid fault, 
                             // try with elevated rights...)
+                            
                             if ((ex.NativeErrorCode == 1314)
                                 || (ex.NativeErrorCode == 2))
                             {
+
                                 MessageBox.Show("The first time you use a custom database, PicasaStarter needs more privileges to initialise some things. "
-                                    + "In the next popup will be asked if you want to allow this...");
-                                
+                                    + "In the next popup you will be asked if you want to allow this...", "Ask For Admin Privileges");
+
+                               
                                 // Create a process to launch Picasa in...
                                 Process createSymLink = new Process();
                                 createSymLink.StartInfo.FileName = Application.ExecutablePath;
@@ -218,7 +234,8 @@ namespace PicasaStarter
                                 createSymLink.WaitForExit();
 
                                 // Release the resources        
-                                createSymLink.Close();                                
+                                createSymLink.Close();
+                                
                             }
                             else
                             {
@@ -230,12 +247,11 @@ namespace PicasaStarter
                     }
 
                     // To be sure, check again before continuing...
-                    if (!Directory.Exists(symLinkPath))
+                   if (!Directory.Exists(symLinkPath))
                     {
-                        MessageBox.Show("There was an error creating the necessary symbolic link. Try this procedure please:\n1) Close PicasaStarter\n2) Run PicasaStarter once as administrator and click \"Run Picasa\" with this database");
+                        MessageBox.Show("There was an error creating the necessary symbolic link. Try this procedure please:\n1) Close PicasaStarter\n2) Run PicasaStarter once as administrator and click \"Run Picasa\" with this database", "Symlink Not Created");
                         return;
                     }
-                    
                     // To finish, the userprofile will be put to the picasaRunTempPath. 
                     // The symlink will route it to the proper DBPath
                     tmpUserProfile = symLinkBaseDir;
