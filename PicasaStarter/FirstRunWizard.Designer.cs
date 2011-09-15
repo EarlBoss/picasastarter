@@ -108,10 +108,10 @@
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(12, -1);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(382, 32);
+            this.label1.Size = new System.Drawing.Size(442, 32);
             this.label1.TabIndex = 22;
-            this.label1.Text = "This copy of Picasa Starter is running for the first time, \r\nso we need to initia" +
-                "lize  some settings.";
+            this.label1.Text = "This  Picasa Starter instance is running for the first time, \r\nor has no saved se" +
+                "ttings,so we need to initialize these settings.";
             // 
             // label6
             // 
