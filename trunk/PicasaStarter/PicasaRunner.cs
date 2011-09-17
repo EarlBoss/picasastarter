@@ -64,7 +64,7 @@ namespace PicasaStarter
                         + Environment.NewLine + Environment.NewLine + messageRead + Environment.NewLine + Environment.NewLine
                         + "If you are really sure this is not the case, you can override this check. So are you sure you want to start Picasa?",
                         "Are you sure there is no other Picasa running using the same database?", 
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2, (MessageBoxOptions)0x40000);
 
                     // If the user isn't sure that there is no other Picasa is running... stop!
                     if (res == DialogResult.No)
@@ -220,28 +220,45 @@ namespace PicasaStarter
                             {
 
                                 MessageBox.Show("The first time you use a custom database, PicasaStarter needs more privileges to initialise some things. "
-                                    + "In the next popup you will be asked if you want to allow this...", "Ask For Admin Privileges");
+                                    + "In the next popup you will be asked if you want to allow this...", "Ask For Admin Privileges",
+                                MessageBoxButtons.OK, 
+                                MessageBoxIcon.Exclamation, 
+                                MessageBoxDefaultButton.Button1,  // specify "Yes" as the default 
+                                (MessageBoxOptions)0x40000);      // specify MB_TOPMOST 
+                                try
+                                {
+                                    // Create a process to launch Picasa in...
+                                    Process createSymLink = new Process();
+                                    createSymLink.StartInfo.FileName = Application.ExecutablePath;
+                                    createSymLink.StartInfo.Verb = "runas";
+                                    createSymLink.StartInfo.Arguments = "/CreateSymbolicLink \"" + symLinkPath + "\" \"" + symLinkDest + "\"";
+                                    createSymLink.Start();
 
-                               
-                                // Create a process to launch Picasa in...
-                                Process createSymLink = new Process();
-                                createSymLink.StartInfo.FileName = Application.ExecutablePath;
-                                createSymLink.StartInfo.Verb = "runas";
-                                createSymLink.StartInfo.Arguments = "/CreateSymbolicLink \"" + symLinkPath + "\" \"" + symLinkDest + "\"";
-                                createSymLink.Start();
+                                    // Wait until the process started is finished
+                                    createSymLink.WaitForExit();
 
-                                // Wait until the process started is finished
-                                createSymLink.WaitForExit();
-
-                                // Release the resources        
-                                createSymLink.Close();
+                                    // Release the resources        
+                                    createSymLink.Close();
+                                }
+                                catch 
+                                {
+                                    MessageBox.Show("Administrative Privileges Not Allowed By Operator", "Symlink Not Created",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Exclamation,
+                                    MessageBoxDefaultButton.Button1,  // specify "Yes" as the default 
+                                    (MessageBoxOptions)0x40000);      // specify MB_TOPMOST 
+                                    return;
+                                }
                                 
                             }
                             else
                             {
-                                MessageBox.Show("Error creating symbolic link: " + ex.Message + ", errorcode: " + ex.NativeErrorCode);
-                                File.Delete(lockFilePath);
-                                return;
+                                MessageBox.Show("There was an error creating the necessary symbolic link. Try this procedure please:\n1) Close PicasaStarter\n2) Run PicasaStarter once as administrator and click \"Run Picasa\" with this database", "Symlink Not Created",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Exclamation,
+                                MessageBoxDefaultButton.Button1,  // specify "Yes" as the default 
+                                (MessageBoxOptions)0x40000);      // specify MB_TOPMOST 
+                               return;
                             }
                         }
                     }
@@ -249,7 +266,11 @@ namespace PicasaStarter
                     // To be sure, check again before continuing...
                    if (!Directory.Exists(symLinkPath))
                     {
-                        MessageBox.Show("There was an error creating the necessary symbolic link. Try this procedure please:\n1) Close PicasaStarter\n2) Run PicasaStarter once as administrator and click \"Run Picasa\" with this database", "Symlink Not Created");
+                        MessageBox.Show("There was an error creating the necessary symbolic link. Try this procedure please:\n1) Close PicasaStarter\n2) Run PicasaStarter once as administrator and click \"Run Picasa\" with this database", "Symlink Not Created",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Exclamation,
+                        MessageBoxDefaultButton.Button1,  // specify "Yes" as the default 
+                        (MessageBoxOptions)0x40000);      // specify MB_TOPMOST 
                         return;
                     }
                     // To finish, the userprofile will be put to the picasaRunTempPath. 
