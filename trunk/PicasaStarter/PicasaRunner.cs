@@ -321,19 +321,37 @@ namespace PicasaStarter
                 // Rename DB directory to english on a localized Windows XP...
                 if(isLocalizedXP == true)
                 {
-                    try
+                    string caption = "Create English Dir failed"; 
+                    DialogResult result = DialogResult.Retry;
+                    while (result == DialogResult.Retry)
                     {
-                        // Be sure that the english version exists...
-                        Directory.CreateDirectory(CustomDBBasePath + localAppDataXPEngPart1);
+                    
+                        try
+                        {
+                            // Be sure that the english version exists...
+                            Directory.CreateDirectory(CustomDBBasePath + localAppDataXPEngPart1);
 
-                        // Move and rename the localized directory...
-                        Directory.Move(CustomDBBasePath + localAppDataXPLocalPart1 + localAppDataXPLocalPart2,
-                                CustomDBBasePath + localAppDataXPEngPart1 + localAppDataXPEngPart2);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message + ": <" + CustomDBBasePath + localAppDataXPLocalPart1 + localAppDataXPLocalPart2,
-                                CustomDBBasePath + localAppDataXPEngPart1 + localAppDataXPEngPart2 + ">");
+                            caption = "Localized Database Move Failure";
+
+                            // Move and rename the localized directory...
+                            Directory.Move(CustomDBBasePath + localAppDataXPLocalPart1 + localAppDataXPLocalPart2,
+                                    CustomDBBasePath + localAppDataXPEngPart1 + localAppDataXPEngPart2);
+                            result = DialogResult.Cancel;
+                        }
+                        catch (Exception ex)
+                        {
+                            // Ask operator to retry if there was an error
+                            string message = "In XP, the localized database path could not be renamed to English. \n The error was: " + ex.Message + 
+                                "\nLocalized Path: " + CustomDBBasePath + localAppDataXPLocalPart1 + localAppDataXPLocalPart2 +
+                                "\nEnglish Path:   " + CustomDBBasePath + localAppDataXPEngPart1 + localAppDataXPEngPart2 +
+                                "\n\nPush RETRY to try again, or push CANCEL to exit";
+                            MessageBoxButtons buttons = MessageBoxButtons.RetryCancel;
+
+                            // Displays the MessageBox.
+
+                            result = MessageBox.Show(message, caption, buttons);
+
+                        }
                     }
                 }
 
