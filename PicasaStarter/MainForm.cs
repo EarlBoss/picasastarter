@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;                       // Added to be able to check if a directory exists
+using PRBackup;
 
 namespace PicasaStarter
 {
@@ -71,6 +72,11 @@ namespace PicasaStarter
             textBoxDBBaseDir.Text = AskDirectoryPath(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir);
         }
 
+        private void buttonBrowseBackupDir_Click(object sender, EventArgs e)
+        {
+            textBoxBackupDir.Text = AskDirectoryPath(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir);
+        }
+
         private void listBoxPicasaDBs_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (listBoxPicasaDBs.SelectedIndex < 0)
@@ -83,6 +89,7 @@ namespace PicasaStarter
 
             textBoxDBName.Text = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].Name;
             textBoxDBBaseDir.Text = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir;
+            textBoxBackupDir.Text = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir;
             textBoxDBDescription.Text = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].Description;
             textBoxDBFullDir.Text = SettingsHelper.GetFullDBDirectory(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex]);
 
@@ -155,6 +162,17 @@ namespace PicasaStarter
             }
             _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir = textBoxDBBaseDir.Text;
             textBoxDBFullDir.Text = SettingsHelper.GetFullDBDirectory(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex]);
+        }
+
+        private void textBoxBackupDir_TextChanged(object sender, EventArgs e)
+        {
+            if (listBoxPicasaDBs.SelectedIndex == -1
+                    || listBoxPicasaDBs.SelectedIndex >= _settings.picasaDBs.Count)
+            {
+                MessageBox.Show("Please choose a picasa database from the list first");
+                return;
+            }
+            _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir = textBoxBackupDir.Text;
         }
 
         private void buttonAddDB_Click(object sender, EventArgs e)
@@ -305,6 +323,59 @@ namespace PicasaStarter
             //Show();
         }
 
+        private void ButtonCreateShortcut_Click(object sender, EventArgs e)
+        {
+            string databasename = "Personal";
+            if (listBoxPicasaDBs.SelectedIndex != 0)
+                databasename = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].Name;
+
+            CreateShortcutDialog createShortcutDialog = new CreateShortcutDialog(_appSettingsDir, databasename);
+            DialogResult result = createShortcutDialog.ShowDialog();
+        }
+
+        private void buttonBackupPics_Click(object sender, EventArgs e)
+        {
+            if (listBoxPicasaDBs.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please choose a picasa database from the list first");
+                return;
+            }
+            if (!Directory.Exists(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir))
+            {
+                MessageBox.Show("The base directory of this database doesn't exist or you didn't choose one yet.");
+                return;
+            }
+            if (!Directory.Exists(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir))
+            {
+                MessageBox.Show("The backup directory of this database doesn't exist or you didn't choose one yet.");
+                return;
+            }
+
+            // Read directories watched/excluded by Picasa
+            String picasaDatabasePath = SettingsHelper.GetFullDBDirectory(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex]) + "\\Picasa2Albums";
+            try
+            {
+                string watched = File.ReadAllText(picasaDatabasePath + "\\watchedfolders.txt");
+                string excluded = File.ReadAllText(picasaDatabasePath + "\\frexcludefolders.txt");
+
+                string[] watchedDirs = watched.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                string[] excludedDirs = excluded.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+
+                Backup backup = new Backup();
+                backup.DestinationDir = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir;
+                backup.DirsToBackup.AddRange(watchedDirs);
+                backup.DirsToExclude.AddRange(excludedDirs);
+
+                backup.Strategy = Backup.BackupStrategy.SISRotating;
+
+                backup.StartBackup();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
         private void buttonClose_Click(object sender, EventArgs e)
         {
             Close();
@@ -323,6 +394,7 @@ namespace PicasaStarter
             {
                 _settings.picasaDefaultSelectedDB = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].Name;
             }
+
             // Save settings
             try
             {
@@ -342,24 +414,7 @@ namespace PicasaStarter
                 // Displays the MessageBox.
 
                 MessageBox.Show(message, caption);
- 
-              
             }
-        }
-
-
-        private void ButtonCreateShortcut_Click(object sender, EventArgs e)
-        {
-            string databasename = "Personal";
-            if (listBoxPicasaDBs.SelectedIndex != 0)
-                databasename = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].Name;
-
-            CreateShortcutDialog createShortcutDialog = new CreateShortcutDialog(_appSettingsDir, databasename);
-            DialogResult result = createShortcutDialog.ShowDialog();
-
- 
-            
-
         }
     }
 }

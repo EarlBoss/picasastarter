@@ -70,6 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Backup\Backup.cs" />
     <Compile Include="CreateShortcutDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -82,6 +83,9 @@
     <Compile Include="FirstRunWizard.Designer.cs">
       <DependentUpon>FirstRunWizard.cs</DependentUpon>
     </Compile>
+    <Compile Include="Logger\FileLogger.cs" />
+    <Compile Include="Logger\Log.cs" />
+    <Compile Include="Logger\Logger.cs" />
     <Compile Include="SelectDBForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -201,6 +205,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

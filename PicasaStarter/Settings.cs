@@ -12,11 +12,13 @@ namespace PicasaStarter
         private string _name;
         private string _description;
         private string _baseDir;
+        private string _backupDir;
         private bool _isDefaultDB;
 
         public string Name { get { return _name; } set { _name = value.Trim(new char[] { ' ', '"' }); } }
         public string Description { get { return _description; } set { _description = value; } }
         public string BaseDir { get { return _baseDir; } set { _baseDir = value; } }
+        public string BackupDir { get { return _backupDir; } set { _backupDir = value; } }
         public bool IsStandardDB { get { return _isDefaultDB; } set { _isDefaultDB = value; } }
 
         public PicasaDB()
@@ -24,6 +26,7 @@ namespace PicasaStarter
             _name = "";
             _description = "";
             _baseDir = "";
+            _backupDir = "";
             _isDefaultDB = false;
         }
 
@@ -32,6 +35,7 @@ namespace PicasaStarter
             _name = name;
             _description = "";
             _baseDir = "";
+            _backupDir = "";
             _isDefaultDB = false;
         }
     }
@@ -353,7 +357,9 @@ namespace PicasaStarter
                 // Overwrite the default DB with the just added version...
                 if (settings.picasaDBs[i].IsStandardDB == true)
                 {
+                    string backupDir = settings.picasaDBs[i].BackupDir;
                     settings.picasaDBs[i] = GetDefaultPicasaDB();
+                    settings.picasaDBs[i].BackupDir = backupDir;
                     defaultDBFound = true;
                 }
 
