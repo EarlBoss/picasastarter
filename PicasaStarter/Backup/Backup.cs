@@ -75,12 +75,14 @@ namespace PRBackup
 
         #region Private Members
 
-        private BackupStrategy _Strategy = BackupStrategy.SISRotating;
-        private string _DestinationDir = "";
-        private List<string> _DirsToBackup = new List<string>();
-        private List<string> _DirsToExclude = new List<string>();
+        private BackupStrategy _strategy = BackupStrategy.SISRotating;
+        private string _destinationDir = "";
+        private List<string> _dirsToBackup = new List<string>();
+        private List<string> _dirsToExclude = new List<string>();
 
-        Boolean _OnlySimulate = false;      // If true, the backup isn't actualy created, only the logging is written...
+        private Boolean _onlySimulate = false;      // If true, the backup isn't actualy created, only the logging is written...
+        private string _dirPrevBackup = "";
+        private string _dirToBackupTo = "";
 
         #endregion
 
@@ -97,10 +99,30 @@ namespace PRBackup
 
         #region Public Enums
 
+        /// <summary>
+        /// The strategy to use for the backups.
+        /// </summary>
         public enum BackupStrategy
         {
+            /// <summary>
+            /// Create a new backup directory every time, with all files in it, but files that didn't 
+            /// change don't take any diskspace (=Single Instance Store or deduplication).
+            /// 
+            /// Remark: only supported on NTFS filesystems not located on a network drive.
+            /// </summary>
             SISRotating = 0,
-            Full = 1
+            /// <summary>
+            /// Create a new backup directory every time, with only changed or new files put in the new backup.
+            /// </summary>
+            Incremental = 1,
+            /// <summary>
+            /// Create a full backup every time (takes most diskspace).
+            /// </summary>
+            FullRotating = 2,
+            /// <summary>
+            /// Mirror the data to the backup location.
+            /// </summary>
+            Mirror = 3
         }
 
         #endregion Public Enums
@@ -109,28 +131,28 @@ namespace PRBackup
 
         public BackupStrategy Strategy
         { 
-            get { return _Strategy; } 
-            set { _Strategy = value; } 
+            get { return _strategy; } 
+            set { _strategy = value; } 
         }
         public List<string> DirsToBackup
         {
-            get { return _DirsToBackup; }
-            set { _DirsToBackup = value; }
+            get { return _dirsToBackup; }
+            set { _dirsToBackup = value; }
         }
         public List<string> DirsToExclude
         {
-            get { return _DirsToExclude; }
-            set { _DirsToExclude = value; }
+            get { return _dirsToExclude; }
+            set { _dirsToExclude = value; }
         }
         public string DestinationDir
         {
-            get { return _DestinationDir; }
-            set { _DestinationDir = value; }
+            get { return _destinationDir; }
+            set { _destinationDir = value; }
         }
         public Boolean OnlySimulate
         {
-            get { return _OnlySimulate; }
-            set { _OnlySimulate = value; }
+            get { return _onlySimulate; }
+            set { _onlySimulate = value; }
         }
         #endregion
 
@@ -141,9 +163,8 @@ namespace PRBackup
         #region Public Methods
 
         /// <summary>
-        ///   Starts the backup.
+        /// Starts the backup.
         /// </summary>
-        /// <param name="backupProfile"></param>
         /// <remarks> This function can raise exceptions </remarks>
         public void StartBackup()
         {
@@ -152,8 +173,26 @@ namespace PRBackup
             // Timestamp for the start of the backup.
             startTicks = DateTime.Now.Ticks;
 
-            // Start the backup
-            StartBackupFullRotatingSIS();
+            Log.Info("Start backup, using this strategy: " + Strategy);
+
+            // For these types of backup it is necessary to check if a file exists already in the previous backup
+            if (Strategy == BackupStrategy.Incremental 
+                    || Strategy == BackupStrategy.SISRotating)
+                _dirPrevBackup = GetPreviousBackupDir();
+
+            // For these backup strategies we need a new, unique backup directory in the base backup directory
+            if (Strategy == BackupStrategy.Incremental
+                    || Strategy == BackupStrategy.SISRotating
+                    || Strategy == BackupStrategy.FullRotating)
+                _dirToBackupTo = GetNewBackupDir();
+            else
+                _dirToBackupTo = DestinationDir;
+            
+            // Loop over every directory to backup
+            foreach (string CurDirToBackup in DirsToBackup)
+            {
+                BackupDir(CurDirToBackup);
+            }
 
             // Timestamp for end of backup.
             finishTicks = DateTime.Now.Ticks;
@@ -189,48 +228,16 @@ namespace PRBackup
         }
         #endregion
 
-        #region Private methods: Backup FullRotatingWithSIS
+        #region Private methods: Backup
 
         /// <summary>
-        /// Starts a backup of type FullBackupWithSingleInstanceStore.
-        ///
-        /// This is a full backup (all files are copied to a new directory), but if a file wasn't modified and exists
-        /// already in the last previous backup, a hardlink is created instead of making a new copy.
-        ///
-        /// This way full backups are available, while they only take the diskspace of incremental backups.
-        /// </summary>
-        /// <remarks>
-        /// Only files that are on the same place in the directory tree of the previous backup are hardlinked. Files that
-        /// are moved still get a copy in the current implementation instead of a hardlink.
-        /// </remarks>
-        private void StartBackupFullRotatingSIS()
-        {
-            // Check if there is already a backup directory, this way it is easy to create
-            // hardlinks instead of making a physical copy for existing files...
-            string DirPrevBackup = GetPreviousBackupDir();
-
-            // Create a new, unique backup directory in the base backup directory
-            string DirToBackupTo = GetNewBackupDir();
-
-            // Loop over every directory to backup
-            foreach (string CurDirToBackup in DirsToBackup)
-            {
-                BackupFullRotatingSISDir(CurDirToBackup, DirToBackupTo, DirPrevBackup);
-            }
-        }
-
-        /// <summary>
-        /// Backup a directory recursively, using the SIS principle: if a file exists already in 
-        /// the previous backup, create a hardlink instead of making another copy.
+        /// Backup a directory recursively.
         /// </summary>
         /// <param name="DirToBackup"> Full path to the dir to backuped (recursively) </param>
-        /// <param name="BaseDirToBackupTo"> Base directory to backup to </param>
-        /// <param name="BaseDirPrevBackup"> Base directory of the previous backup </param>
-        private void BackupFullRotatingSISDir(string DirToBackup, string BaseDirToBackupTo, string BaseDirPrevBackup)
+        private void BackupDir(string DirToBackup)
         {
             // Get list of all files...
             string[] ListSrcFiles = null;
-
             try
             {
                 ListSrcFiles = Directory.GetFiles(DirToBackup, "*.*", SearchOption.AllDirectories);
@@ -252,7 +259,7 @@ namespace PRBackup
             for (int i = 0; i <= (NbFiles - 1); i++)
             {
                 CurFileToBackup = ListSrcFiles[i];
-                pE = new ProgressEventParams(BaseDirToBackupTo, NbFiles, NbFilesChanged, NbFilesNotChanged, CurFileToBackup);
+                pE = new ProgressEventParams(_dirToBackupTo, NbFiles, NbFilesChanged, NbFilesNotChanged, CurFileToBackup);
                 OnProgressEvent(pE);
 
                 // Check if the file is in an "Excluded" directory...
@@ -260,11 +267,13 @@ namespace PRBackup
                 foreach (string DirToExclude in DirsToExclude)
                     Excluded = CurFileToBackup.StartsWith(DirToExclude);
 
+                // Backup the file...
                 if (Excluded == false)
-                    FileChanged = BackupFullRotatingSISFile(CurFileToBackup, BaseDirToBackupTo, BaseDirPrevBackup);
+                    FileChanged = BackupFile(CurFileToBackup, _dirToBackupTo, _dirPrevBackup);
                 else
                     FileChanged = false;
 
+                // Change the counters for the progress reporting...
                 if (FileChanged == true)
                     NbFilesChanged++;
                 else
@@ -272,7 +281,7 @@ namespace PRBackup
             }
 
             // Also progress the last file...
-            pE = new ProgressEventParams(BaseDirToBackupTo, NbFiles, NbFilesChanged, NbFilesNotChanged, CurFileToBackup);
+            pE = new ProgressEventParams(_dirToBackupTo, NbFiles, NbFilesChanged, NbFilesNotChanged, CurFileToBackup);
             OnProgressEvent(pE);
         }
 
@@ -284,7 +293,7 @@ namespace PRBackup
         /// <param name="BaseDirToBackupTo"> Base directory to backup to </param>
         /// <param name="BaseDirPrevBackup"> Base directory of the previous backup </param>
         /// <returns> true if the file was actualy copied, false if the file didn't change since a previous backup </returns>
-        private Boolean BackupFullRotatingSISFile(string FilePathSrc, string BaseDirToBackupTo, string BaseDirPrevBackup)
+        private Boolean BackupFile(string FilePathSrc, string BaseDirToBackupTo, string BaseDirPrevBackup)
         {
             Boolean FileChanged = false;
             
@@ -311,8 +320,7 @@ namespace PRBackup
                 // Check if the file was backed up in the previous backup and wasn't changed afterwards, 
                 // to create a hardlink rather then copying the file again.
                 if (File.Exists(FilePathBackupPrev) && Compare(FilePathBackupPrev, FilePathSrc))
-                {
-                    FileChanged = false;
+                {                    FileChanged = false;
 
                     if (OnlySimulate != true)
                         CreateHardLink(FilePathBackup, FilePathBackupPrev, IntPtr.Zero);

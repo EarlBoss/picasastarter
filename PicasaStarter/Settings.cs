@@ -215,8 +215,6 @@ namespace PicasaStarter
             return configurationDir;
         }
 
-
-
         public static string DetermineSettingsDir(string ConfigurationDir)
         {
             // Determine what directory the settings will be saved in?
@@ -283,7 +281,6 @@ namespace PicasaStarter
             }
             return settingsDir;
         }
-
 
         public static PicasaDB GetDefaultPicasaDB()
         {

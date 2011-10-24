@@ -365,10 +365,16 @@ namespace PicasaStarter
                 backup.DestinationDir = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir;
                 backup.DirsToBackup.AddRange(watchedDirs);
                 backup.DirsToExclude.AddRange(excludedDirs);
-
                 backup.Strategy = Backup.BackupStrategy.SISRotating;
+                
+                BackupProgressForm progressForm = new BackupProgressForm();
+                progressForm.Show();
+
+                backup.ProgressEvent += new Backup.ProgressEventHandler(progressForm.Progress);
 
                 backup.StartBackup();
+
+                progressForm.Hide();
             }
             catch (Exception ex)
             {

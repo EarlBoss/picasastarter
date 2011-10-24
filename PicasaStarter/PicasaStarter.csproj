@@ -70,6 +70,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackupProgressForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BackupProgressForm.Designer.cs">
+      <DependentUpon>BackupProgressForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Backup\Backup.cs" />
     <Compile Include="CreateShortcutDialog.cs">
       <SubType>Form</SubType>
@@ -114,6 +120,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="BackupProgressForm.resx">
+      <DependentUpon>BackupProgressForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CreateShortcutDialog.resx">
       <DependentUpon>CreateShortcutDialog.cs</DependentUpon>
     </EmbeddedResource>
