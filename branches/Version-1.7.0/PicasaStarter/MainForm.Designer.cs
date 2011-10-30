@@ -51,12 +51,12 @@
             this.ButtonCreateShortcut = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.buttonBackupPics = new System.Windows.Forms.Button();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.buttonBackupDir = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxBackupDir = new System.Windows.Forms.TextBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.buttonBackupPics = new System.Windows.Forms.Button();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -98,7 +98,7 @@
             this.buttonBrowseDBBaseDir.Size = new System.Drawing.Size(61, 23);
             this.buttonBrowseDBBaseDir.TabIndex = 5;
             this.buttonBrowseDBBaseDir.Text = "Browse...";
-            this.toolTip1.SetToolTip(this.buttonBrowseDBBaseDir, "Browse to a folder where you would like to put the database");
+            this.toolTip.SetToolTip(this.buttonBrowseDBBaseDir, "Browse to a folder where you would like to put the database");
             this.buttonBrowseDBBaseDir.UseVisualStyleBackColor = true;
             this.buttonBrowseDBBaseDir.Click += new System.EventHandler(this.buttonBrowseDBBaseDir_Click);
             // 
@@ -127,7 +127,7 @@
             this.buttonRunPicasa.Size = new System.Drawing.Size(100, 23);
             this.buttonRunPicasa.TabIndex = 27;
             this.buttonRunPicasa.Text = "Run Picasa";
-            this.toolTip1.SetToolTip(this.buttonRunPicasa, "Run Picasa using this database");
+            this.toolTip.SetToolTip(this.buttonRunPicasa, "Run Picasa using this database");
             this.buttonRunPicasa.UseVisualStyleBackColor = true;
             this.buttonRunPicasa.Click += new System.EventHandler(this.buttonRunPicasa_Click);
             // 
@@ -138,7 +138,7 @@
             this.buttonClose.Size = new System.Drawing.Size(101, 23);
             this.buttonClose.TabIndex = 28;
             this.buttonClose.Text = "Close";
-            this.toolTip1.SetToolTip(this.buttonClose, "Save the settings and close PicasaStarter");
+            this.toolTip.SetToolTip(this.buttonClose, "Save the settings and close PicasaStarter");
             this.buttonClose.UseVisualStyleBackColor = true;
             this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
             // 
@@ -149,7 +149,7 @@
             this.buttonGeneralSettings.Size = new System.Drawing.Size(96, 23);
             this.buttonGeneralSettings.TabIndex = 29;
             this.buttonGeneralSettings.Text = "General settings";
-            this.toolTip1.SetToolTip(this.buttonGeneralSettings, "Set some general settings");
+            this.toolTip.SetToolTip(this.buttonGeneralSettings, "Set some general settings");
             this.buttonGeneralSettings.UseVisualStyleBackColor = true;
             this.buttonGeneralSettings.Click += new System.EventHandler(this.buttonGeneralSettings_Click);
             // 
@@ -160,7 +160,7 @@
             this.buttonHelp.Size = new System.Drawing.Size(96, 23);
             this.buttonHelp.TabIndex = 31;
             this.buttonHelp.Text = "Help";
-            this.toolTip1.SetToolTip(this.buttonHelp, "Help... says it all I suppose...");
+            this.toolTip.SetToolTip(this.buttonHelp, "Help... says it all I suppose...");
             this.buttonHelp.UseVisualStyleBackColor = true;
             this.buttonHelp.Click += new System.EventHandler(this.buttonHelp_Click);
             // 
@@ -179,7 +179,7 @@
             this.buttonAddDB.Size = new System.Drawing.Size(108, 23);
             this.buttonAddDB.TabIndex = 33;
             this.buttonAddDB.Text = "Add database";
-            this.toolTip1.SetToolTip(this.buttonAddDB, "Add a new database to the list");
+            this.toolTip.SetToolTip(this.buttonAddDB, "Add a new database to the list");
             this.buttonAddDB.UseVisualStyleBackColor = true;
             this.buttonAddDB.Click += new System.EventHandler(this.buttonAddDB_Click);
             // 
@@ -190,7 +190,7 @@
             this.buttonRemoveDB.Size = new System.Drawing.Size(104, 23);
             this.buttonRemoveDB.TabIndex = 34;
             this.buttonRemoveDB.Text = "Remove database";
-            this.toolTip1.SetToolTip(this.buttonRemoveDB, "Remove the selected database from the list");
+            this.toolTip.SetToolTip(this.buttonRemoveDB, "Remove the selected database from the list");
             this.buttonRemoveDB.UseVisualStyleBackColor = true;
             this.buttonRemoveDB.Click += new System.EventHandler(this.buttonRemoveDB_Click);
             // 
@@ -239,7 +239,7 @@
             this.buttonDBOpenFullDir.Size = new System.Drawing.Size(61, 23);
             this.buttonDBOpenFullDir.TabIndex = 39;
             this.buttonDBOpenFullDir.Text = "Explore...";
-            this.toolTip1.SetToolTip(this.buttonDBOpenFullDir, "Open an explorer window on this path");
+            this.toolTip.SetToolTip(this.buttonDBOpenFullDir, "Open an explorer window on this path");
             this.buttonDBOpenFullDir.UseVisualStyleBackColor = true;
             this.buttonDBOpenFullDir.Click += new System.EventHandler(this.buttonDBOpenFullDir_Click);
             // 
@@ -251,7 +251,7 @@
             this.ButtonCreateShortcut.TabIndex = 40;
             this.ButtonCreateShortcut.Tag = "";
             this.ButtonCreateShortcut.Text = "Create Shortcut";
-            this.toolTip1.SetToolTip(this.ButtonCreateShortcut, "Create a shortcut to start Picasa immediately using this database");
+            this.toolTip.SetToolTip(this.ButtonCreateShortcut, "Create a shortcut to start Picasa immediately using this database");
             this.ButtonCreateShortcut.UseVisualStyleBackColor = true;
             this.ButtonCreateShortcut.Click += new System.EventHandler(this.ButtonCreateShortcut_Click);
             // 
@@ -288,29 +288,6 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Database details";
             // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.buttonBackupPics);
-            this.groupBox3.Controls.Add(this.buttonRunPicasa);
-            this.groupBox3.Controls.Add(this.ButtonCreateShortcut);
-            this.groupBox3.Location = new System.Drawing.Point(300, 263);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(446, 51);
-            this.groupBox3.TabIndex = 45;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Database actions";
-            // 
-            // buttonBackupPics
-            // 
-            this.buttonBackupPics.Location = new System.Drawing.Point(221, 19);
-            this.buttonBackupPics.Name = "buttonBackupPics";
-            this.buttonBackupPics.Size = new System.Drawing.Size(100, 23);
-            this.buttonBackupPics.TabIndex = 41;
-            this.buttonBackupPics.Text = "Backup Pictures";
-            this.toolTip1.SetToolTip(this.buttonBackupPics, "Run Picasa using this database");
-            this.buttonBackupPics.UseVisualStyleBackColor = true;
-            this.buttonBackupPics.Click += new System.EventHandler(this.buttonBackupPics_Click);
-            // 
             // buttonBackupDir
             // 
             this.buttonBackupDir.Location = new System.Drawing.Point(372, 190);
@@ -318,7 +295,7 @@
             this.buttonBackupDir.Size = new System.Drawing.Size(61, 23);
             this.buttonBackupDir.TabIndex = 42;
             this.buttonBackupDir.Text = "Browse...";
-            this.toolTip1.SetToolTip(this.buttonBackupDir, "Open an explorer window on this path");
+            this.toolTip.SetToolTip(this.buttonBackupDir, "Open an explorer window on this path");
             this.buttonBackupDir.UseVisualStyleBackColor = true;
             this.buttonBackupDir.Click += new System.EventHandler(this.buttonBrowseBackupDir_Click);
             // 
@@ -340,6 +317,29 @@
             this.textBoxBackupDir.Size = new System.Drawing.Size(250, 20);
             this.textBoxBackupDir.TabIndex = 40;
             this.textBoxBackupDir.TextChanged += new System.EventHandler(this.textBoxBackupDir_TextChanged);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.buttonBackupPics);
+            this.groupBox3.Controls.Add(this.buttonRunPicasa);
+            this.groupBox3.Controls.Add(this.ButtonCreateShortcut);
+            this.groupBox3.Location = new System.Drawing.Point(300, 263);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(446, 51);
+            this.groupBox3.TabIndex = 45;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Database actions";
+            // 
+            // buttonBackupPics
+            // 
+            this.buttonBackupPics.Location = new System.Drawing.Point(221, 19);
+            this.buttonBackupPics.Name = "buttonBackupPics";
+            this.buttonBackupPics.Size = new System.Drawing.Size(100, 23);
+            this.buttonBackupPics.TabIndex = 41;
+            this.buttonBackupPics.Text = "Backup Pictures";
+            this.toolTip.SetToolTip(this.buttonBackupPics, "Run Picasa using this database");
+            this.buttonBackupPics.UseVisualStyleBackColor = true;
+            this.buttonBackupPics.Click += new System.EventHandler(this.buttonBackupPics_Click);
             // 
             // MainForm
             // 
@@ -394,7 +394,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.Button buttonBackupPics;
         private System.Windows.Forms.Button buttonBackupDir;
         private System.Windows.Forms.Label label1;

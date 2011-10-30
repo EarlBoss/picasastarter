@@ -6,10 +6,11 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.InteropServices;  // Necessary for creating Hardlinks
-using Logger;                          // Static logging class
+using System.ComponentModel;            // Necessary for BackgroundWorker...
+using System.Runtime.InteropServices;   // Necessary for creating Hardlinks
+using Logger;                           // Static logging class
 
-namespace PRBackup
+namespace BackupNS
 {
     /// <summary>
     /// Backup Class
@@ -19,11 +20,14 @@ namespace PRBackup
     /// </summary>
     public class Backup
     {
-        #region ProgessEventParams Stuff
+        #region Events
 
         // Delegate declarations.
-        public delegate void ProgressEventHandler(object sender, ProgressEventParams e);
+        public delegate void BackupProgressEventHandler(object sender, ProgressEventParams e);
 
+        // Delegate declarations.
+        public delegate void BackupCompletedEventHandler(object sender, CompletedEventParams e);
+        
         /// <summary>
         ///  ProgressEventParams:   Defines a  progress event. Used for displaying file backup progress.
         /// </summary>
@@ -71,6 +75,65 @@ namespace PRBackup
 
             #endregion
         }
+
+        public class CompletedEventParams : EventArgs
+        {
+            public bool Success = false;
+            public bool Cancelled = false;
+            public Exception Error = null;
+        }
+
+        // The protected OnProgressEvent method raises the event by invoking
+        // the delegate. The sender is always this: the current instance 
+        // of the class.
+        protected virtual void OnProgressEvent(ProgressEventParams e)
+        {
+            if (ProgressEvent != null)
+            {
+                // Invokes the delegate. 
+                ProgressEvent(this, e);
+            }
+        }
+
+        // The protected OnCompletedEvent method raises the event by invoking
+        // the delegate. The sender is always this: the current instance 
+        // of the class.
+        protected virtual void OnCompletedEvent(CompletedEventParams e)
+        {
+            if (CompletedEvent != null)
+            {
+                // Invokes the delegate. 
+                CompletedEvent(this, e);
+            }
+        }
+
+        #endregion
+
+        #region Private classes
+
+        private class DirectoryWithFiles
+        {
+            private DirectoryInfo _dir;
+            private FileInfo[] _files;
+
+            public DirectoryInfo Dir
+            {
+                get { return _dir; }
+                set { _dir = value; }
+            }
+            public FileInfo[] Files
+            {
+                get { return _files; }
+                set { _files = value; }
+            }
+
+            public DirectoryWithFiles(DirectoryInfo dir, FileInfo[] files)
+            {
+                _dir = dir;
+                _files = files;
+            }
+        }
+
         #endregion
 
         #region Private Members
@@ -83,6 +146,9 @@ namespace PRBackup
         private Boolean _onlySimulate = false;      // If true, the backup isn't actualy created, only the logging is written...
         private string _dirPrevBackup = "";
         private string _dirToBackupTo = "";
+
+        private BackgroundWorker _bw = null;
+        private bool _backupCancelled = false;
 
         #endregion
 
@@ -157,10 +223,57 @@ namespace PRBackup
         #endregion
 
         #region Public Events
-        public event ProgressEventHandler ProgressEvent;
+
+        public event BackupProgressEventHandler ProgressEvent;
+        public event BackupCompletedEventHandler CompletedEvent;
+        
         #endregion
 
         #region Public Methods
+
+        /// <summary>
+        /// Start the backup assynchronous. You can follow progress using the appropriate events...
+        /// </summary>
+        public void StartBackupAssync()
+        {
+            // If there is still a backup busy, return!
+            if (_bw != null)
+            {
+                return;
+            }
+
+            _bw = new BackgroundWorker
+            {
+                WorkerReportsProgress = true,
+                WorkerSupportsCancellation = true
+            };
+
+            // Initialise the cancelled flag to false...
+            _backupCancelled = false;
+
+            // Register event handlers to follow progress of the background thread...
+            _bw.DoWork += bw_DoWork;
+            _bw.ProgressChanged += bw_ProgressChanged;
+            _bw.RunWorkerCompleted += bw_RunWorkerCompleted;
+
+            // Go!
+            _bw.RunWorkerAsync();
+        }
+
+        /// <summary>
+        /// Cancels the running backup... but only possible if the backup was started assync!
+        /// </summary>
+        public void CancelBackupAssync()
+        {
+            if (_bw == null)
+                return;
+
+            if (_bw.IsBusy)
+            {
+                _bw.CancelAsync();
+                _backupCancelled = true;
+            }
+        }
 
         /// <summary>
         /// Starts the backup.
@@ -187,12 +300,8 @@ namespace PRBackup
                 _dirToBackupTo = GetNewBackupDir();
             else
                 _dirToBackupTo = DestinationDir;
-            
-            // Loop over every directory to backup
-            foreach (string CurDirToBackup in DirsToBackup)
-            {
-                BackupDir(CurDirToBackup);
-            }
+
+            BackupDirs(DirsToBackup.ToArray(), DirsToExclude.ToArray());
 
             // Timestamp for end of backup.
             finishTicks = DateTime.Now.Ticks;
@@ -215,132 +324,242 @@ namespace PRBackup
 
         #region Protected Methods
 
-        // The protected OnProgressEvent method raises the event by invoking
-        // the delegate. The sender is always this: the current instance 
-        // of the class.
-        protected virtual void OnProgressEvent(ProgressEventParams e)
+        protected void bw_DoWork(object sender, DoWorkEventArgs e)
         {
-            if (ProgressEvent != null)
-            {
-                // Invokes the delegate. 
-                ProgressEvent(this, e);
-            }
+            StartBackup();
         }
+
+        protected void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            CompletedEventParams completed = new CompletedEventParams();
+            if (_backupCancelled == true)
+                completed.Cancelled = true;
+            else if (e.Error != null)
+                completed.Error = e.Error;
+            else
+                completed.Success = true;
+
+            OnCompletedEvent(completed);
+        }
+
+        protected void bw_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            OnProgressEvent((ProgressEventParams)e.UserState);
+        }
+
         #endregion
 
         #region Private methods: Backup
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dirsToBackup"></param>
+        /// <param name="dirsToExclude"></param>
+        private void BackupDirs(string[] dirsToBackup, string[] dirsToExclude)
+        {
+            List<DirectoryInfo> dirs = new List<DirectoryInfo>();
+            List<DirectoryInfo> dirsExcl = new List<DirectoryInfo>();
+
+            foreach (string dir in dirsToBackup)
+            {
+                try
+                {
+                    dirs.Add(new DirectoryInfo(dir));
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("Directory to backup <" + dir + "> gives error: " + ex.Message);
+                }
+            }
+            foreach (string dir in dirsToExclude)
+            {
+                try
+                {
+                    dirsExcl.Add(new DirectoryInfo(dir));
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("Directory to exclude <" + dir + "> gives error: " + ex.Message);
+                }
+            }
+
+            BackupDirs(dirs.ToArray(), dirsExcl.ToArray());
+        }
+        
+        /// <summary>
         /// Backup a directory recursively.
         /// </summary>
-        /// <param name="DirToBackup"> Full path to the dir to backuped (recursively) </param>
-        private void BackupDir(string DirToBackup)
+        /// <param name="dirsToBackup"> Full path to the dir to backuped (recursively) </param>
+        /// <param name="dirsToExclude"> Full path to the dir to backuped (recursively) </param>
+        private void BackupDirs(DirectoryInfo[] dirsToBackup, DirectoryInfo[] dirsToExclude)
         {
             // Get list of all files...
-            string[] ListSrcFiles = null;
+            DirectoryWithFiles[] DirsAndFiles = null;
+            Log.Info("Start getting dirs and files");
+           
             try
             {
-                ListSrcFiles = Directory.GetFiles(DirToBackup, "*.*", SearchOption.AllDirectories);
+                DirsAndFiles = GetDirectoriesWithFiles(dirsToBackup, dirsToExclude);
             }
             catch (Exception ex)
             {
-                Log.Debug("ERROR " + DirToBackup + ": " + ex.Message);
+                Log.Error(ex.Message);
                 return;
             }
 
-            string CurFileToBackup = "";
+            Log.Info("Stop getting dirs and files");
+           
+            FileInfo CurFileToBackup = null;
+            string CurDirToBackup = null;
+
             ProgressEventParams pE;
-            Boolean FileChanged;
-            int NbFiles = ListSrcFiles.Length;
+            Boolean FileChanged = false;
             int NbFilesChanged = 0;
             int NbFilesNotChanged = 0;
+            int NbDirs = DirsAndFiles.Length;
 
-            // Take the necessary actions file per file...
-            for (int i = 0; i <= (NbFiles - 1); i++)
+            // Count the total number of files to backup...
+            int TotalNbFiles = 0;
+            for (int i = 0; i <= (NbDirs - 1); i++)
             {
-                CurFileToBackup = ListSrcFiles[i];
-                pE = new ProgressEventParams(_dirToBackupTo, NbFiles, NbFilesChanged, NbFilesNotChanged, CurFileToBackup);
-                OnProgressEvent(pE);
-
-                // Check if the file is in an "Excluded" directory...
-                bool Excluded = false;
-                foreach (string DirToExclude in DirsToExclude)
-                    Excluded = CurFileToBackup.StartsWith(DirToExclude);
-
-                // Backup the file...
-                if (Excluded == false)
-                    FileChanged = BackupFile(CurFileToBackup, _dirToBackupTo, _dirPrevBackup);
-                else
-                    FileChanged = false;
-
-                // Change the counters for the progress reporting...
-                if (FileChanged == true)
-                    NbFilesChanged++;
-                else
-                    NbFilesNotChanged++;
+                TotalNbFiles += DirsAndFiles[i].Files.Length;
             }
 
-            // Also progress the last file...
-            pE = new ProgressEventParams(_dirToBackupTo, NbFiles, NbFilesChanged, NbFilesNotChanged, CurFileToBackup);
-            OnProgressEvent(pE);
+            Log.Info("Stop counting files");
+
+            // Take the necessary actions directory per directory...
+            for (int i = 0; i <= (NbDirs - 1); i++)
+            {
+                int NbFiles = DirsAndFiles[i].Files.Length;
+                CurDirToBackup = DirsAndFiles[i].Dir.FullName;
+
+                // Prepare the dir where to put the file inside the backup directory
+                string CurDirTmp = '\\' + System.Environment.MachineName + "_Drive-" + CurDirToBackup.Replace(":", "");
+                string CurDirToBackupTo = _dirToBackupTo + CurDirTmp;
+                string PrevDirBackedupTo = _dirPrevBackup + CurDirTmp;
+
+                // If not simulating the backup, create the directory if it doesn't exist...
+                if (OnlySimulate != true)
+                    Directory.CreateDirectory(CurDirToBackupTo);
+
+                // Take the necessary actions file per file...           
+                for (int j = 0; j <= (NbFiles - 1); j++)
+                {
+                    if (_bw != null && _bw.CancellationPending) 
+                    { 
+//                        e.Cancel = true; 
+                        Log.Info("Backup cancelled...");
+                        return; 
+                    }
+                    
+                    // The file to be backed up...
+                    string CurFileNameToBackup = DirsAndFiles[i].Files[j].Name;
+                    CurFileToBackup = new FileInfo(CurDirToBackup + '\\' + CurFileNameToBackup);
+                    // Where does the backup need to be put?
+                    FileInfo CurFileToBackupTo = new FileInfo(CurDirToBackupTo + '\\' + CurFileNameToBackup);
+                    // Where is the previous backup of the file standing, if it exists...
+                    FileInfo PrevFileBackedupTo = new FileInfo(PrevDirBackedupTo + '\\' + CurFileNameToBackup);
+
+                    FileChanged = BackupFile(CurFileToBackup, CurFileToBackupTo, PrevFileBackedupTo);
+
+                    // Change the counters for the progress reporting...
+                    if (FileChanged == true)
+                        NbFilesChanged++;
+                    else
+                        NbFilesNotChanged++;
+
+                    pE = new ProgressEventParams(CurDirToBackup, TotalNbFiles, NbFilesChanged, NbFilesNotChanged, CurFileNameToBackup);
+                    
+                    // If running assynchronously, report via backgroundworker object...
+                    if(_bw != null)
+                        _bw.ReportProgress(i, pE);
+                    else
+                        OnProgressEvent(pE);
+                }
+            }
         }
 
         /// <summary>
         /// Backup a file, using the SIS principle: if the file exists already in the previous backup, 
         /// create a hardlink instead of making another copy.
         /// </summary>
-        /// <param name="FilePathSrc"> Full path to the file to backuped </param>
-        /// <param name="BaseDirToBackupTo"> Base directory to backup to </param>
+        /// <param name="FileToBackup"> Full path to the file to backuped </param>
+        /// <param name="FileToBackupTo"> Base directory to backup to </param>
         /// <param name="BaseDirPrevBackup"> Base directory of the previous backup </param>
         /// <returns> true if the file was actualy copied, false if the file didn't change since a previous backup </returns>
-        private Boolean BackupFile(string FilePathSrc, string BaseDirToBackupTo, string BaseDirPrevBackup)
+        private Boolean BackupFile(FileInfo FileToBackup, FileInfo FileToBackupTo, FileInfo PrevBackupFile)
         {
             Boolean FileChanged = false;
             
-            // Prepare the path where to put the file inside the backup directory
-            string FilePathInBackupPath = System.Environment.MachineName + "_Drive-" + FilePathSrc.Replace(":", "");
-            //string FilePathInBackupPath = "Drive-" + FilePathSrc.Replace(":", "");
-
-            // Create the complete file path for the actual backup
-            string FilePathBackup = BaseDirToBackupTo + '\\' + FilePathInBackupPath;
-            
             try
             {
-                // If not simulating the backup, create the directory if it doesn't exist...
-                if (OnlySimulate != true)
-                {
-                    FileInfo FileInfoBackup = new FileInfo(FilePathBackup);
-                    string DirBackup = FileInfoBackup.DirectoryName;
-                    Directory.CreateDirectory(DirBackup);
-                }
-
-                // Recreate the file path of the previous backup
-                string FilePathBackupPrev = BaseDirPrevBackup + '\\' + FilePathInBackupPath;
-
                 // Check if the file was backed up in the previous backup and wasn't changed afterwards, 
                 // to create a hardlink rather then copying the file again.
-                if (File.Exists(FilePathBackupPrev) && Compare(FilePathBackupPrev, FilePathSrc))
-                {                    FileChanged = false;
+                if (PrevBackupFile.Exists && Compare(PrevBackupFile, FileToBackup, false))
+                {                    
+                    FileChanged = false;
 
                     if (OnlySimulate != true)
-                        CreateHardLink(FilePathBackup, FilePathBackupPrev, IntPtr.Zero);
-                    Log.Debug("HARDLINK " + FilePathBackup + " TO " + FilePathBackupPrev + " (Previous backup exists at " + BaseDirPrevBackup + ")");
+                        CreateHardLink(FileToBackupTo, PrevBackupFile, IntPtr.Zero);
+                    Log.Debug("HARDLINK " + FileToBackupTo.FullName + " TO " + PrevBackupFile + " (= previous backup");
                 }
                 else
                 {
                     FileChanged = true;
 
                     if (OnlySimulate != true)
-                        File.Copy(FilePathSrc, FilePathBackup);
-                    Log.Debug("COPY " + FilePathSrc + " TO " + FilePathBackup);
+                        File.Copy(FileToBackup.FullName, FileToBackupTo.FullName);
+                    Log.Debug("COPY " + FileToBackup + " TO " + FileToBackupTo.FullName);
                 }
             }
             catch (Exception ex)
             {
-                Log.Debug("ERROR " + FilePathSrc + " TO " + FilePathBackup + ": " + ex.Message);
+                Log.Error(FileToBackup + " TO " + FileToBackupTo.FullName + ": " + ex.Message);
             }
 
             return FileChanged;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="baseDirs"></param>
+        /// <param name="dirsToExclude"></param>
+        /// <returns></returns>
+        private DirectoryWithFiles[] GetDirectoriesWithFiles(DirectoryInfo[] baseDirs, DirectoryInfo[] dirsToExclude)
+        {
+            List<DirectoryWithFiles> dirList = new List<DirectoryWithFiles>();
+
+            foreach (DirectoryInfo dir in baseDirs)
+            {
+                bool exclude = false; 
+                foreach (DirectoryInfo dirToExclude in dirsToExclude)
+                {
+                    if (dir == dirToExclude)
+                        exclude = true;
+                }
+                if (exclude == true)
+                    continue;
+
+                try
+                {
+                    FileInfo[] files = dir.GetFiles();
+                    
+                    if (files.Length > 0)
+                        dirList.Add(new DirectoryWithFiles(dir, files));
+
+                    DirectoryInfo[] dirs = dir.GetDirectories();
+                    if (dirs.Length > 0)
+                        dirList.AddRange(GetDirectoriesWithFiles(dirs, dirsToExclude));
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(dir + ": " + ex.Message);
+                }
+            }
+
+            return (dirList.ToArray());
         }
 
         /// <summary>
@@ -424,6 +643,11 @@ namespace PRBackup
             return ReturnPath;
         }
 
+        private bool CreateHardLink(FileInfo newHardLink, FileInfo existingFile, IntPtr lpSecurityAttributes)
+        {
+            return CreateHardLink(newHardLink.FullName, existingFile.FullName, lpSecurityAttributes);
+        }
+
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         static extern bool CreateHardLink(string lpFileName, string lpExistingFileName, IntPtr lpSecurityAttributes);
 
@@ -447,33 +671,31 @@ namespace PRBackup
         ///       - Different file size = not identical
         ///       - Different modify date = not identical
         /// </summary>
-        /// <param name="filePath1"></param>
-        /// <param name="filePath2"></param>
+        /// <param name="file1"></param>
+        /// <param name="file2"></param>
+        /// <param name="compareBinary"> Should the files be binary compared to be sure they are the same? </param>
         /// <returns></returns>
         /// <remarks>
         ///   This function can throw exceptions is a file isn't found or something like that...
         /// </remarks>
-        private bool Compare(string filePath1, string filePath2)
+        private bool Compare(FileInfo file1, FileInfo file2, bool compareBinary)
         {
             // If user has selected the same file as file one and file two....
-            if ((filePath1 == filePath2))
+            if ((file1 == file2))
             {
                 return true;
             }
 
-            // Get the FileInfo for each file.
-            FileInfo fileInfo1 = new FileInfo(filePath1);
-            FileInfo fileInfo2 = new FileInfo(filePath2);
-
-            // If the files are not the same length or the modify time is different...
-            if ((fileInfo1.Length != fileInfo2.Length) | (fileInfo1.LastWriteTime != fileInfo2.LastWriteTime))
+            // If the files are the same length and the modify time is different... they are probably the same...
+            if ((file1.Length == file2.Length) && (file1.LastWriteTime == file2.LastWriteTime))
             {
-                return false;
+                if (compareBinary == false)
+                    return true;
+                else
+                    return CompareBinary(file1, file2);
             }
             else
-            {
-                return CompareBinary(filePath1, filePath2);
-            }
+                return false;
         }
 
         /// <summary>
@@ -482,16 +704,16 @@ namespace PRBackup
         ///       - Different file size = not identical
         ///       - Complete binary comparison of data
         /// </summary>
-        /// <param name="filePath1"></param>
-        /// <param name="filePath2"></param>
+        /// <param name="file1"></param>
+        /// <param name="file2"></param>
         /// <returns></returns>
         /// <remarks>
         ///   This function can throw exceptions is a file isn't foud or something like that...
         /// </remarks>
-        private bool CompareBinary(string filePath1, string filePath2)
+        private bool CompareBinary(FileInfo file1, FileInfo file2)
         {
             // If user has selected the same file as file one and file two....
-            if ((filePath1 == filePath2))
+            if ((file1 == file2))
             {
                 return true;
             }
@@ -501,8 +723,8 @@ namespace PRBackup
             FileStream fileStream1 = default(FileStream);
             FileStream fileStream2 = default(FileStream);
 
-            fileStream1 = new FileStream(filePath1, FileMode.Open, FileAccess.Read, FileShare.Read, ReadBufferSize, FileOptions.SequentialScan);
-            fileStream2 = new FileStream(filePath2, FileMode.Open, FileAccess.Read, FileShare.Read, ReadBufferSize, FileOptions.SequentialScan);
+            fileStream1 = new FileStream(file1.FullName, FileMode.Open, FileAccess.Read, FileShare.Read, ReadBufferSize, FileOptions.SequentialScan);
+            fileStream2 = new FileStream(file2.FullName, FileMode.Open, FileAccess.Read, FileShare.Read, ReadBufferSize, FileOptions.SequentialScan);
 
             // If the files are not the same length...
             if ((fileStream1.Length != fileStream2.Length))
