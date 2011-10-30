@@ -37,13 +37,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.buttonCancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(15, 12);
+            this.progressBar.Location = new System.Drawing.Point(12, 12);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(237, 23);
+            this.progressBar.Size = new System.Drawing.Size(559, 23);
             this.progressBar.TabIndex = 0;
             // 
             // labelDir
@@ -118,11 +119,22 @@
             this.label4.TabIndex = 8;
             this.label4.Text = "Number of files unchanged:";
             // 
+            // buttonCancel
+            // 
+            this.buttonCancel.Location = new System.Drawing.Point(495, 121);
+            this.buttonCancel.Name = "buttonCancel";
+            this.buttonCancel.Size = new System.Drawing.Size(75, 23);
+            this.buttonCancel.TabIndex = 9;
+            this.buttonCancel.Text = "Cancel";
+            this.buttonCancel.UseVisualStyleBackColor = true;
+            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
+            // 
             // BackupProgressForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 156);
+            this.ClientSize = new System.Drawing.Size(583, 156);
+            this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -150,5 +162,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button buttonCancel;
     }
 }
