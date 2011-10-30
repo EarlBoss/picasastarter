@@ -73,7 +73,7 @@ namespace Logger
 
                 // Create the message
                 message.Append(System.DateTime.Now.ToString("G", DateTimeFormatInfo.InvariantInfo))
-                   .Append(" | ").Append(Message);
+                   .Append(" | ").Append(Level.ToString()).Append(" | ").Append(Message);
 
                 // Force the write to the underlying file
                 writer.WriteLine(message.ToString());
