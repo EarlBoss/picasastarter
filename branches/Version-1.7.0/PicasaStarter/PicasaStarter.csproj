@@ -116,7 +116,7 @@
     <Compile Include="2-BusinessLogic\PicasaRunner.cs" />
     <Compile Include="3-HelperClasses\DateTimeHelper.cs" />
     <Compile Include="3-HelperClasses\FileLogger.cs" />
-    <Compile Include="3-HelperClasses\Helper.cs" />
+    <Compile Include="3-HelperClasses\IOHelper.cs" />
     <Compile Include="3-HelperClasses\Log.cs" />
     <Compile Include="3-HelperClasses\Logger.cs" />
     <Compile Include="Program.cs" />
