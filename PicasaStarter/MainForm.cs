@@ -339,7 +339,14 @@ namespace PicasaStarter
             // If the user wants to run a custom database...
             else
                 runner.RunPicasa(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir);
+            
             WindowState = FormWindowState.Normal;
+
+            DialogResult result = MessageBox.Show("Do you wan't to take a backup of the latest version of your images and database?",
+                    "Backup?", MessageBoxButtons.YesNo);
+
+            if(result == DialogResult.Yes)
+                StartBackup();
             //Show();
         }
 
@@ -354,6 +361,23 @@ namespace PicasaStarter
         }
 
         private void buttonBackupPics_Click(object sender, EventArgs e)
+        {
+            StartBackup();
+        }
+
+        private void BackupCompleted(object sender, EventArgs e)
+        {
+            this.Enabled = true;
+            _progressForm.Hide();
+            _progressForm = null;
+            _backup = null;
+        }
+
+        #endregion
+
+        #region Private helper functions
+
+        private void StartBackup()
         {
             if (listBoxPicasaDBs.SelectedIndex == -1)
             {
@@ -375,25 +399,31 @@ namespace PicasaStarter
                 MessageBox.Show("There is a backup still running... please wait until it is finished before starting one again.");
                 return;
             }
-
-            // Read directories watched/excluded by Picasa
-            String picasaDatabasePath = SettingsHelper.GetFullDBDirectory(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex]) + "\\Picasa2Albums";
+            
             try
             {
-                string watched = File.ReadAllText(picasaDatabasePath + "\\watchedfolders.txt");
-                string excluded = File.ReadAllText(picasaDatabasePath + "\\frexcludefolders.txt");
+                // Initialise the paths where the database and the albums can be found
+                String picasaDBPath = SettingsHelper.GetFullDBDirectory(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex]) + "\\Picasa2";
+                String picasaAlbumsPath = SettingsHelper.GetFullDBDirectory(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex]) + "\\Picasa2Albums";
+
+                // Read directories watched/excluded by Picasa in the text files in the Album dir... 
+                string watched = File.ReadAllText(picasaAlbumsPath + "\\watchedfolders.txt");
+                string excluded = File.ReadAllText(picasaAlbumsPath + "\\frexcludefolders.txt");
 
                 string[] watchedDirs = watched.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                 string[] excludedDirs = excluded.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
                 _backup = new Backup();
                 _backup.DestinationDir = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir;
-                _backup.DirsToBackup.AddRange(watchedDirs);
-                _backup.DirsToExclude.AddRange(excludedDirs);
-                _backup.Strategy = Backup.BackupStrategy.SISRotating;
+                _backup.DirsToBackup.AddRange(watchedDirs);     // Backup watched dirs
+                _backup.DirsToBackup.Add(picasaDBPath);         // Backup Picasa database
+                _backup.DirsToBackup.Add(picasaAlbumsPath);     // Backup albums
+                _backup.DirsToExclude.AddRange(excludedDirs);   // Exclude explicitly unwatched dirs
+                _backup.MaxNbBackups = 100;                     // Max nb. backups to keep
 
                 _progressForm = new BackupProgressForm(this);
                 _progressForm.Show();
+                this.Enabled = false;
 
                 _backup.ProgressEvent += new Backup.BackupProgressEventHandler(_progressForm.Progress);
                 _backup.CompletedEvent += new Backup.BackupCompletedEventHandler(BackupCompleted);
@@ -406,17 +436,6 @@ namespace PicasaStarter
                 MessageBox.Show(ex.Message);
             }
         }
-
-        private void BackupCompleted(object sender, EventArgs e)
-        {
-            _progressForm.Hide();
-            _progressForm = null;
-            _backup = null;
-        }
-
-        #endregion
-
-        #region Private helper functions
 
         private string AskDirectoryPath(string InitialDirectory)
         {
