@@ -227,36 +227,36 @@ namespace BackupNS
         {
             string fileNameTest = DirToBackupTo.FullName + '\\' + "testFile.txt";
             string fileNameTestHardLink = DirToBackupTo.FullName + '\\' + "testFileHardLink.txt";
-
+            
             try
             {
                 FileInfo fileTest = new FileInfo(fileNameTest);
                 FileInfo fileTestHardLink = new FileInfo(fileNameTestHardLink);
 
                 // Delete them first to be sure...
+                if (fileTestHardLink.Exists)
+                    fileTestHardLink.Delete();
                 if(fileTest.Exists)
                     fileTest.Delete();
-                if (fileTestHardLink.Exists)
-                    fileTestHardLink.Delete();
 
                 File.WriteAllText(fileNameTest, "Test");
+                IOHelper.CreateHardLink(fileTestHardLink.FullName, fileTest.FullName);
 
-                IOHelper.CreateHardLink(fileTestHardLink, fileTest);
+                // Delete test files...
+                fileTest = new FileInfo(fileNameTest);
+                fileTestHardLink = new FileInfo(fileNameTestHardLink);
 
-                // Delete test files, but files are not visible yet in quite some cases her, so commented out :-(...
-                // Delete them first to be sure...
-                if (fileTest.Exists)
-                    fileTest.Delete();
                 if (fileTestHardLink.Exists)
                     fileTestHardLink.Delete();
-
-                return true;
+                if (fileTest.Exists)
+                    fileTest.Delete();
             }
             catch (Exception ex)
             {
                 Log.Error(ex.Message);
                 throw;
             }
+            return true;
         }
 
         /// <summary>
@@ -592,7 +592,7 @@ namespace BackupNS
                     fileChanged = false;
 
                     if (OnlySimulate != true)
-                        IOHelper.CreateHardLink(fileToBackupTo, prevBackupFile);
+                        IOHelper.CreateHardLink(fileToBackupTo.FullName, prevBackupFile.FullName);
                     Log.Debug("HARDLINK " + fileToBackupTo.FullName + " TO " + prevBackupFile + " (= previous backup");
                 }
                 else

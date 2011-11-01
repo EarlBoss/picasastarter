@@ -70,29 +70,32 @@ namespace HelperClasses
         /// <param name="newHardLink">The file to link from.</param>
         /// <param name="existingFile">The file to link to.</param>
         /// <returns></returns>
-        public static void CreateHardLink(FileInfo newHardLink, FileInfo existingFile)
+        public static void CreateHardLink(string newHardLinkPath, string existingFilePath)
         {
+            if (!CreateHardLink(newHardLinkPath, existingFilePath, IntPtr.Zero))
+            {
+                Win32Exception ex = new Win32Exception(Marshal.GetLastWin32Error());
+                throw new IOException("Error in CreateHardLink: " + ex.Message, ex);
+            }
+             
             int tryCount = 1;
 
-            while (true)
+            while(true)
             {
-                if (!CreateHardLink(newHardLink.FullName, existingFile.FullName,
-                  IntPtr.Zero))
-                {
-                    Win32Exception ex = new Win32Exception(Marshal.GetLastWin32Error());
-                    throw new IOException(ex.Message, ex);
-                }
-
                 // Check the hardlink's file size... as I got cases where a bad hardlink was created...
-                long hardLinkFileSize = newHardLink.Length;
+                FileInfo hardLink = new FileInfo(newHardLinkPath);
+                long hardLinkFileSize = 0;
+
+                if (hardLink.Exists)
+                    hardLinkFileSize = hardLink.Length;
                 if (hardLinkFileSize != 0)
                     break;
                 else
                 {
-                    if (existingFile.Length == 0)
+                    FileInfo existingFile = new FileInfo(existingFilePath);
+                
+                    if(existingFile.Exists && existingFile.Length == 0)
                         break;
-                    else
-                        newHardLink.Delete();
                 }
 
                 if (tryCount > 1)
@@ -100,8 +103,8 @@ namespace HelperClasses
 
                 if (tryCount == 3)
                 {
-                    throw new IOException("Error Creating Hardlink. Source file " + existingFile.FullName +
-                        ",Destination file: " + newHardLink.FullName);
+                    throw new IOException("Error Creating Hardlink. Source file " + existingFilePath +
+                        ", Destination file: " + newHardLinkPath);
                 }
 
                 tryCount++;
