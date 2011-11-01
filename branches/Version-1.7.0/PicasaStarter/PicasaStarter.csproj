@@ -70,78 +70,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Backup.cs" />
-    <Compile Include="BackupProgressForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BackupProgressForm.Designer.cs">
-      <DependentUpon>BackupProgressForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CreateShortcutDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CreateShortcutDialog.Designer.cs">
-      <DependentUpon>CreateShortcutDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DateTimeHelper.cs" />
-    <Compile Include="FileLogger.cs" />
-    <Compile Include="FirstRunWizard.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FirstRunWizard.Designer.cs">
-      <DependentUpon>FirstRunWizard.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GeneralSettingsDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GeneralSettingsDialog.Designer.cs">
-      <DependentUpon>GeneralSettingsDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="HelpDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="HelpDialog.Designer.cs">
-      <DependentUpon>HelpDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Helper.cs" />
-    <Compile Include="IOHelper.cs" />
-    <Compile Include="Log.cs" />
-    <Compile Include="Logger.cs" />
-    <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PicasaRunner.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SelectDBForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SelectDBForm.designer.cs">
-      <DependentUpon>SelectDBForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="Settings.partial.cs" />
-    <EmbeddedResource Include="BackupProgressForm.resx">
-      <DependentUpon>BackupProgressForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CreateShortcutDialog.resx">
-      <DependentUpon>CreateShortcutDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FirstRunWizard.resx">
-      <DependentUpon>FirstRunWizard.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GeneralSettingsDialog.resx">
-      <DependentUpon>GeneralSettingsDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="HelpDialog.resx">
-      <DependentUpon>HelpDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -152,9 +84,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="SelectDBForm.resx">
-      <DependentUpon>SelectDBForm.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="PicasaStarter_TemporaryKey.pfx" />
     <None Include="Properties\DataSources\GeneralSettingsDialog.datasource" />
