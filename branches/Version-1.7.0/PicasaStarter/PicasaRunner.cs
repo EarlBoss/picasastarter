@@ -5,6 +5,7 @@ using System.Diagnostics;               // Needed for creating a process...
 using System.IO;
 using System.Windows.Forms;             // Added to be able to show messageboxes
 using System.ComponentModel;            // Added to use Win32Exception
+using HelperClasses;                    // Needed to make symbolic links,...
 
 namespace PicasaStarter
 {
@@ -26,17 +27,15 @@ namespace PicasaStarter
             {
                 //Saved path doesn't exist, try Path from local Config File
                 _picasaExePath = (SettingsHelper.ConfigPicasaExePath);
-
             }
             if (!File.Exists(_picasaExePath))
             {
                 //Saved path doesn't exist, try default for this OS
                 _picasaExePath = (SettingsHelper.ProgramFilesx86() + "\\google\\Picasa3\\picasa3.exe");
-
             }
             if (!File.Exists(_picasaExePath))
             {
-                 MessageBox.Show("Picasa executable isn't found here: " + _picasaExePath);
+                MessageBox.Show("Picasa executable isn't found here: " + _picasaExePath);
                 return;
             }
 
@@ -94,13 +93,22 @@ namespace PicasaStarter
             string localAppDataXPLocalPart2 = "";
             bool isLocalizedXP = false;
             
-            // If a custom path was provided...
-            if (CustomDBBasePath != null)
+            // If no custom path was provided... only init DB so popup doesn't show to scan entire PC...
+            if (CustomDBBasePath == null)
+            {
+                // This is the path where the Picasa database will be put...
+                string fullLocalAppDataLocalized = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+
+                this.InitializeDB(fullLocalAppDataLocalized + "\\Google");
+            }
+            else
             {
                 string tmpUserProfile;
 
                 // Default database path is the path for Windows XP. Needed for mixed systems.
                 string CustomDBFullPath = CustomDBBasePath + localAppDataXPEngPart1 + localAppDataXPEngPart2;
+
+                this.InitializeDB(CustomDBFullPath + "\\Google");
 
                 // If we are running on a Windows XP with a non-default language, we need to adapt the 
                 // path where the Picasa database is stored...
@@ -109,7 +117,7 @@ namespace PicasaStarter
                     string fullLocalAppDataLocalized = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
                     string[] splitted = fullLocalAppDataLocalized.Split(new Char[] { '\\' });
 
-                    if(splitted.Length <= 2)
+                    if (splitted.Length <= 2)
                     {
                         MessageBox.Show("Error getting LocalAppData directory:" + fullLocalAppDataLocalized);
                     }
@@ -163,7 +171,7 @@ namespace PicasaStarter
                 {
                     tmpUserProfile = CustomDBBasePath;
                 }
-                
+
                 // Starting from Vista or higher, create temporary symbolic links to point to the DBPath, and the 
                 // environment variables have to point to the symbolic links...
                 // This way we can always put the picasa database in a structure as required by windows XP
@@ -214,15 +222,15 @@ namespace PicasaStarter
                         {
                             // If the code says the user doesn't have enough privileges, or in Windows 7 he gives another stupid fault, 
                             // try with elevated rights...)
-                            
+
                             if ((ex.NativeErrorCode == 1314)
                                 || (ex.NativeErrorCode == 2))
                             {
 
                                 MessageBox.Show("The first time you use a custom database, PicasaStarter needs more privileges to initialise some things. "
                                     + "In the next popup you will be asked if you want to allow this...", "Ask For Admin Privileges",
-                                MessageBoxButtons.OK, 
-                                MessageBoxIcon.Exclamation, 
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Exclamation,
                                 MessageBoxDefaultButton.Button1,  // specify "Yes" as the default 
                                 (MessageBoxOptions)0x40000);      // specify MB_TOPMOST 
                                 try
@@ -240,7 +248,7 @@ namespace PicasaStarter
                                     // Release the resources        
                                     createSymLink.Close();
                                 }
-                                catch 
+                                catch
                                 {
                                     MessageBox.Show("Administrative Privileges Not Allowed By Operator", "Symlink Not Created",
                                     MessageBoxButtons.OK,
@@ -249,7 +257,7 @@ namespace PicasaStarter
                                     (MessageBoxOptions)0x40000);      // specify MB_TOPMOST 
                                     return;
                                 }
-                                
+
                             }
                             else
                             {
@@ -258,13 +266,13 @@ namespace PicasaStarter
                                 MessageBoxIcon.Exclamation,
                                 MessageBoxDefaultButton.Button1,  // specify "Yes" as the default 
                                 (MessageBoxOptions)0x40000);      // specify MB_TOPMOST 
-                               return;
+                                return;
                             }
                         }
                     }
 
                     // To be sure, check again before continuing...
-                   if (!Directory.Exists(symLinkPath))
+                    if (!Directory.Exists(symLinkPath))
                     {
                         MessageBox.Show("There was an error creating the necessary symbolic link. Try this procedure please:\n1) Close PicasaStarter\n2) Run PicasaStarter once as administrator and click \"Run Picasa\" with this database", "Symlink Not Created",
                         MessageBoxButtons.OK,
@@ -375,6 +383,34 @@ namespace PicasaStarter
 
                 File.Delete(lockFilePath);
             }
+        }
+
+        private void InitializeDB(string googleDir)
+        {
+            // If the DB existst already... don't do anything...
+            string PicasaAlbumsDir = googleDir + "\\Picasa2Albums";
+            string PicasaDBDir = googleDir + "\\Picasa2";
+            if (Directory.Exists(PicasaAlbumsDir))
+                return;
+            
+            // Ask if the user want the popup to let Picasa scan the computer...
+            DialogResult result = MessageBox.Show(
+            "Do you want to let Picasa search for all your images on your computer?" +
+            "\n\nIf not, you need to add the folders you want to be scanned by Picasa using " +
+            "\"File\"/\"Add folder to Picasa\".", "Do you want to let Picasa search your images?",
+            MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, (MessageBoxOptions)0x40000);
+
+            // If yes, nothing more to do...
+            if (result == DialogResult.Yes)
+                return;
+
+            // Otherwise, initialise the necessary files so the popup for choosing doesn't show...
+            Directory.CreateDirectory(PicasaAlbumsDir);
+            File.WriteAllText(PicasaAlbumsDir + "\\watchedfolders.txt", "");
+            File.WriteAllText(PicasaAlbumsDir + "\\frexcludefolders.txt", "");
+            if (!Directory.Exists(PicasaDBDir + "\\db3"))
+                Directory.CreateDirectory(PicasaDBDir + "\\db3");
+            File.WriteAllBytes(PicasaDBDir + "\\db3\\thumbs_index.db", Properties.Resources.thumbs_index);
         }
     }
 }
