@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Diagnostics;           // Needed for working with process...
 using System.IO;
+using HelperClasses;                // Needed for making symbolic links,...
 
 namespace PicasaStarter
 {

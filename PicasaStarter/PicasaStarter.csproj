@@ -17,7 +17,7 @@
     <ManifestKeyFile>PicasaStarter_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <SignManifests>true</SignManifests>
-    <ApplicationIcon>Picasa3_105.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Picasa3_105.ico</ApplicationIcon>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -70,75 +70,76 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BackupProgressForm.cs">
+    <Compile Include="HelperClasses\DateTimeHelper.cs" />
+    <Compile Include="Views\BackupProgressForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="BackupProgressForm.Designer.cs">
+    <Compile Include="Views\BackupProgressForm.Designer.cs">
       <DependentUpon>BackupProgressForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Backup\Backup.cs" />
-    <Compile Include="CreateShortcutDialog.cs">
+    <Compile Include="BusinessLogic\Backup.cs" />
+    <Compile Include="Views\CreateShortcutDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CreateShortcutDialog.Designer.cs">
+    <Compile Include="Views\CreateShortcutDialog.Designer.cs">
       <DependentUpon>CreateShortcutDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="FirstRunWizard.cs">
+    <Compile Include="Views\FirstRunWizard.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FirstRunWizard.Designer.cs">
+    <Compile Include="Views\FirstRunWizard.Designer.cs">
       <DependentUpon>FirstRunWizard.cs</DependentUpon>
     </Compile>
-    <Compile Include="Logger\FileLogger.cs" />
-    <Compile Include="Logger\Log.cs" />
-    <Compile Include="Logger\Logger.cs" />
+    <Compile Include="HelperClasses\FileLogger.cs" />
+    <Compile Include="HelperClasses\Log.cs" />
+    <Compile Include="HelperClasses\Logger.cs" />
     <Compile Include="SelectDBForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="SelectDBForm.Designer.cs">
       <DependentUpon>SelectDBForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Helper.cs" />
-    <Compile Include="GeneralSettingsDialog.cs">
+    <Compile Include="HelperClasses\IOHelper.cs" />
+    <Compile Include="Views\GeneralSettingsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GeneralSettingsDialog.Designer.cs">
+    <Compile Include="Views\GeneralSettingsDialog.Designer.cs">
       <DependentUpon>GeneralSettingsDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="HelpDialog.cs">
+    <Compile Include="Views\HelpDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="HelpDialog.Designer.cs">
+    <Compile Include="Views\HelpDialog.Designer.cs">
       <DependentUpon>HelpDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="PicasaRunner.cs" />
-    <Compile Include="MainForm.cs">
+    <Compile Include="BusinessLogic\PicasaRunner.cs" />
+    <Compile Include="Views\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="Views\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="BackupProgressForm.resx">
+    <EmbeddedResource Include="Views\BackupProgressForm.resx">
       <DependentUpon>BackupProgressForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CreateShortcutDialog.resx">
+    <EmbeddedResource Include="Views\CreateShortcutDialog.resx">
       <DependentUpon>CreateShortcutDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FirstRunWizard.resx">
+    <EmbeddedResource Include="Views\FirstRunWizard.resx">
       <DependentUpon>FirstRunWizard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SelectDBForm.resx">
       <DependentUpon>SelectDBForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GeneralSettingsDialog.resx">
+    <EmbeddedResource Include="Views\GeneralSettingsDialog.resx">
       <DependentUpon>GeneralSettingsDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="HelpDialog.resx">
+    <EmbeddedResource Include="Views\HelpDialog.resx">
       <DependentUpon>HelpDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="Views\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -163,8 +164,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Settings.cs" />
-    <Compile Include="Settings.partial.cs" />
+    <Compile Include="BusinessLogic\Settings.cs" />
+    <Compile Include="BusinessLogic\Settings.partial.cs" />
+    <None Include="Resources\thumbs_index.db" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -199,9 +201,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="picasa.ico" />
-    <Content Include="Picasa3_105.ico" />
-    <Content Include="picasastarter_logo.ico" />
+    <Content Include="Resources\picasa.ico" />
+    <Content Include="Resources\Picasa3_105.ico" />
+    <Content Include="Resources\picasastarter_logo.ico" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="IWshRuntimeLibrary">
