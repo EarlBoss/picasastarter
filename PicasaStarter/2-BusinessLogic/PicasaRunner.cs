@@ -329,58 +329,48 @@ namespace PicasaStarter
                 // Rename DB directory to english on a localized Windows XP...
                 if (isLocalizedXP == true)
                 {
-                    string caption = "Create English Dir failed";
                     DialogResult result = DialogResult.Retry;
-                    try
+                    string caption = "";
+                    int tryCount = 0;
+
+                    // Try several times, as it is possible that there is a delay on slow NAS devices...
+                    while (result == DialogResult.Retry)
                     {
-                        // Be sure that the english version exists...
-                        Directory.CreateDirectory(CustomDBBasePath + localAppDataXPEngPart1);
-                        // Move and rename the localized directory...
-                        Directory.Move(CustomDBBasePath + localAppDataXPLocalPart1 + localAppDataXPLocalPart2,
-                                CustomDBBasePath + localAppDataXPEngPart1 + localAppDataXPEngPart2);
-                    }
-                    catch
-                    {
-                        while (result == DialogResult.Retry)
+                        tryCount++;
+
+                        try
                         {
+                            // Be sure that the english version exists...
+                            caption = "Create English Dir failed";
+                            Directory.CreateDirectory(CustomDBBasePath + localAppDataXPEngPart1);
 
-                            System.Threading.Thread.Sleep(4000); // wait 4 seconds for each retry
-
-                            try
-                            {
-                                // Be sure that the english version exists...
-                                Directory.CreateDirectory(CustomDBBasePath + localAppDataXPEngPart1);
-
-                                caption = "Localized Database Move Failure";
-
-                                // Move and rename the localized directory...
-                                Directory.Move(CustomDBBasePath + localAppDataXPLocalPart1 + localAppDataXPLocalPart2,
-                                        CustomDBBasePath + localAppDataXPEngPart1 + localAppDataXPEngPart2);
-                                result = DialogResult.Cancel;
-                            }
-                            catch (Exception ex)
+                            // Move and rename the localized directory...
+                            caption = "Localized Database Move Failure";
+                            Directory.Move(CustomDBBasePath + localAppDataXPLocalPart1 + localAppDataXPLocalPart2,
+                                    CustomDBBasePath + localAppDataXPEngPart1 + localAppDataXPEngPart2);
+                            result = DialogResult.Cancel;
+                        }
+                        catch (Exception ex)
+                        {
+                            // Every 8 tries, ask the user if he wants to continue trying...
+                            if (tryCount % 8 == 0)
                             {
                                 // Ask operator to retry if there was an error
                                 string message = "In XP, the localized database path could not be renamed to English. \n The error was: " + ex.Message +
                                     "\nLocalized Path: " + CustomDBBasePath + localAppDataXPLocalPart1 + localAppDataXPLocalPart2 +
                                     "\nEnglish Path:   " + CustomDBBasePath + localAppDataXPEngPart1 + localAppDataXPEngPart2 +
                                     "\n\nPush RETRY to try again, or push CANCEL to exit";
-                                MessageBoxButtons buttons = MessageBoxButtons.RetryCancel;
-                                MessageBoxIcon icon = MessageBoxIcon.Exclamation;
-                                MessageBoxDefaultButton defbutton = MessageBoxDefaultButton.Button1;
-                                MessageBoxOptions opt = (MessageBoxOptions)0x40000; //restore message box if minimized
 
-                                // Displays the MessageBox.
-
-                                result = MessageBox.Show(message, caption, buttons,
-                                         icon, defbutton, opt);
-
+                                result = MessageBox.Show(message, caption, MessageBoxButtons.RetryCancel,
+                                            MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1,
+                                            (MessageBoxOptions)0x40000);
                             }
-                        }
 
+                            System.Threading.Thread.Sleep(500); // wait .5 seconds for each retry
+                        }                      
                     }
                 }
-
+                
                 File.Delete(lockFilePath);
             }
         }
