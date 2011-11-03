@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Logger
+namespace HelperClasses.Logger
 {
     /// <remarks>
     /// Abstract class to dictate the format for the logs that our logger will use.

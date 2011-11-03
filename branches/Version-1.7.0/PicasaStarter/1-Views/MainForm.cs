@@ -7,6 +7,8 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;                       // Added to be able to check if a directory exists
 using BackupNS;
+using HelperClasses;                    
+using HelperClasses.Logger;            // Static logging class
 
 namespace PicasaStarter
 {
@@ -74,7 +76,6 @@ namespace PicasaStarter
             int defaultSelectedDBIndex = listBoxPicasaDBs.FindStringExact(_settings.picasaDefaultSelectedDB);
             if (defaultSelectedDBIndex != ListBox.NoMatches)
                 listBoxPicasaDBs.SelectedIndex = defaultSelectedDBIndex;
-
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -110,6 +111,13 @@ namespace PicasaStarter
         #endregion
 
         #region Event handlers for buttons at the bottom of the main form
+
+        private void buttonPicasaButtons_Click(object sender, EventArgs e)
+        {
+            ListPicasaButtonForm listPicasaButtonForm = new ListPicasaButtonForm(_settings, _appSettingsDir);
+
+            listPicasaButtonForm.ShowDialog();
+        }
 
         private void buttonGeneralSettings_Click(object sender, EventArgs e)
         {
@@ -223,12 +231,12 @@ namespace PicasaStarter
 
         private void buttonBrowseDBBaseDir_Click(object sender, EventArgs e)
         {
-            textBoxDBBaseDir.Text = AskDirectoryPath(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir);
+            textBoxDBBaseDir.Text = DialogHelper.AskDirectoryPath(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir);
         }
 
         private void buttonBrowseBackupDir_Click(object sender, EventArgs e)
         {
-            textBoxBackupDir.Text = AskDirectoryPath(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir);
+            textBoxBackupDir.Text = DialogHelper.AskDirectoryPath(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir);
         }
 
         private void textBoxDBName_TextChanged(object sender, EventArgs e)
@@ -331,15 +339,31 @@ namespace PicasaStarter
                 return;
             }
             WindowState = FormWindowState.Minimized; //Remove PicasaStarter window from desktop while Picasa is running
+            
             PicasaRunner runner = new PicasaRunner(_appDataDir, _settings.PicasaExePath);
 
             // If the user wants to run his personal default database... 
             if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].IsStandardDB == true)
+            {
+                // First copy custom buttons the user created to have in Picasa
+                string sourceButtonDir = _appSettingsDir + '\\' + SettingsHelper.PicasaButtonVisibleDir;
+                string destButtonDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
+                        "\\Google\\Picasa2\\buttons";
+                IOHelper.TryCopyDirectory(sourceButtonDir, destButtonDir);
+
                 runner.RunPicasa(null);
+            }
             // If the user wants to run a custom database...
             else
+            {
+                string sourceButtonDir = _appSettingsDir + '\\' + SettingsHelper.PicasaButtonVisibleDir;
+                string destButtonDir = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir +
+                    "\\Local Settings\\Application Data\\Google\\Picasa2\\buttons";
+                IOHelper.TryCopyDirectory(sourceButtonDir, destButtonDir);
+
                 runner.RunPicasa(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir);
-            
+            }
+
             WindowState = FormWindowState.Normal;
 
             DialogResult result = MessageBox.Show("Do you wan't to take a backup of the latest version of your images and database?",
@@ -437,18 +461,6 @@ namespace PicasaStarter
             }
         }
 
-        private string AskDirectoryPath(string InitialDirectory)
-        {
-            FolderBrowserDialog fd = new FolderBrowserDialog();
-            fd.ShowNewFolderButton = true;
-            fd.SelectedPath = InitialDirectory;
-
-            if (fd.ShowDialog() == DialogResult.OK)
-                return fd.SelectedPath;
-            else
-                return InitialDirectory;
-        }
-
         private void ReFillPicasaDBList(bool selectLastItem)
         {
             string tip = "";
@@ -481,5 +493,6 @@ namespace PicasaStarter
         }
 
         #endregion
+
     }
 }

@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Forms;
 
-namespace Logger
+namespace HelperClasses.Logger
 {
     /// <summary>
     /// Write out messages using the logging provider.

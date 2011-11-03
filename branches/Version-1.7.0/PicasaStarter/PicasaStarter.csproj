@@ -61,6 +61,9 @@
     <StartupObject>PicasaStarter.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\..\..\..\Libraries\DotNetZipLib-DevKit-v1.9\zip-v1.9\Release\Ionic.Zip.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Management" />
     <Reference Include="System.Data" />
@@ -75,6 +78,12 @@
     </Compile>
     <Compile Include="1-Views\BackupProgressForm.Designer.cs">
       <DependentUpon>BackupProgressForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="1-Views\CreatePicasaButtonForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="1-Views\CreatePicasaButtonForm.Designer.cs">
+      <DependentUpon>CreatePicasaButtonForm.cs</DependentUpon>
     </Compile>
     <Compile Include="1-Views\CreateShortcutDialog.cs">
       <SubType>Form</SubType>
@@ -100,6 +109,12 @@
     <Compile Include="1-Views\HelpDialog.Designer.cs">
       <DependentUpon>HelpDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="1-Views\ListPicasaButtonForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="1-Views\ListPicasaButtonForm.Designer.cs">
+      <DependentUpon>ListPicasaButtonForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="1-Views\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -113,8 +128,10 @@
       <DependentUpon>SelectDBForm.cs</DependentUpon>
     </Compile>
     <Compile Include="2-BusinessLogic\Backup.cs" />
+    <Compile Include="2-BusinessLogic\PicasaButton.cs" />
     <Compile Include="2-BusinessLogic\PicasaRunner.cs" />
     <Compile Include="3-HelperClasses\DateTimeHelper.cs" />
+    <Compile Include="3-HelperClasses\DialogHelper.cs" />
     <Compile Include="3-HelperClasses\FileLogger.cs" />
     <Compile Include="3-HelperClasses\IOHelper.cs" />
     <Compile Include="3-HelperClasses\Log.cs" />
@@ -125,6 +142,9 @@
     <Compile Include="Settings.partial.cs" />
     <EmbeddedResource Include="1-Views\BackupProgressForm.resx">
       <DependentUpon>BackupProgressForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="1-Views\CreatePicasaButtonForm.resx">
+      <DependentUpon>CreatePicasaButtonForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="1-Views\CreateShortcutDialog.resx">
       <DependentUpon>CreateShortcutDialog.cs</DependentUpon>
@@ -137,6 +157,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="1-Views\HelpDialog.resx">
       <DependentUpon>HelpDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="1-Views\ListPicasaButtonForm.resx">
+      <DependentUpon>ListPicasaButtonForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="1-Views\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -155,7 +178,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
-    <None Include="DataSources\GeneralSettingsDialog.datasource" />
     <None Include="PicasaStarter_TemporaryKey.pfx" />
     <None Include="Properties\DataSources\GeneralSettingsDialog.datasource" />
     <None Include="Properties\Settings.settings">
@@ -167,6 +189,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Resources\ButtonStitch\{71E08F18-FA51-11E0-BC03-FA184824019B}_reg.pbf" />
+    <None Include="Resources\ButtonStitch\{71E08F18-FA51-11E0-BC03-FA184824019B}.psd" />
+    <None Include="Resources\ButtonStitch\{71E08F18-FA51-11E0-BC03-FA184824019B}.pbf" />
     <None Include="Resources\thumbs_index.db" />
   </ItemGroup>
   <ItemGroup>
@@ -202,6 +227,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\ButtonStitch\StitchInstall.html" />
     <Content Include="Resources\picasa.ico" />
     <Content Include="Resources\Picasa3_105.ico" />
     <Content Include="Resources\picasastarter_logo.ico" />

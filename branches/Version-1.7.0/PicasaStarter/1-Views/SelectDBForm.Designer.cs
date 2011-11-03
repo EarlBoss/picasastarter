@@ -44,17 +44,17 @@
             this.listBoxPicasaDBs.FormattingEnabled = true;
             this.listBoxPicasaDBs.Location = new System.Drawing.Point(12, 27);
             this.listBoxPicasaDBs.Name = "listBoxPicasaDBs";
-            this.listBoxPicasaDBs.Size = new System.Drawing.Size(253, 199);
+            this.listBoxPicasaDBs.Size = new System.Drawing.Size(253, 186);
             this.listBoxPicasaDBs.TabIndex = 23;
             this.listBoxPicasaDBs.SelectedIndexChanged += new System.EventHandler(this.listBoxPicasaDBs_SelectedIndexChanged_1);
             // 
             // textBoxDBDescription
             // 
-            this.textBoxDBDescription.Location = new System.Drawing.Point(271, 27);
+            this.textBoxDBDescription.Location = new System.Drawing.Point(274, 27);
             this.textBoxDBDescription.Multiline = true;
             this.textBoxDBDescription.Name = "textBoxDBDescription";
             this.textBoxDBDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxDBDescription.Size = new System.Drawing.Size(317, 108);
+            this.textBoxDBDescription.Size = new System.Drawing.Size(304, 124);
             this.textBoxDBDescription.TabIndex = 36;
             this.textBoxDBDescription.Text = "Database Description";
             this.textBoxDBDescription.TextChanged += new System.EventHandler(this.textBoxDBDescription_TextChanged);
@@ -62,11 +62,11 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(271, 147);
+            this.label2.Location = new System.Drawing.Point(271, 177);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(98, 13);
+            this.label2.Size = new System.Drawing.Size(101, 13);
             this.label2.TabIndex = 39;
-            this.label2.Text = "Database Directory";
+            this.label2.Text = "Database Directory:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // label1
@@ -82,7 +82,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 9);
+            this.label3.Location = new System.Drawing.Point(9, 9);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(63, 13);
             this.label3.TabIndex = 41;
@@ -91,15 +91,15 @@
             // 
             // textBoxDBBaseDir
             // 
-            this.textBoxDBBaseDir.Location = new System.Drawing.Point(271, 163);
+            this.textBoxDBBaseDir.Location = new System.Drawing.Point(274, 193);
             this.textBoxDBBaseDir.Name = "textBoxDBBaseDir";
             this.textBoxDBBaseDir.ReadOnly = true;
-            this.textBoxDBBaseDir.Size = new System.Drawing.Size(317, 20);
+            this.textBoxDBBaseDir.Size = new System.Drawing.Size(304, 20);
             this.textBoxDBBaseDir.TabIndex = 42;
             // 
             // buttonRunPicasa
             // 
-            this.buttonRunPicasa.Location = new System.Drawing.Point(354, 199);
+            this.buttonRunPicasa.Location = new System.Drawing.Point(392, 233);
             this.buttonRunPicasa.Name = "buttonRunPicasa";
             this.buttonRunPicasa.Size = new System.Drawing.Size(100, 23);
             this.buttonRunPicasa.TabIndex = 43;
@@ -109,7 +109,7 @@
             // 
             // buttonClose
             // 
-            this.buttonClose.Location = new System.Drawing.Point(508, 199);
+            this.buttonClose.Location = new System.Drawing.Point(498, 233);
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(80, 23);
             this.buttonClose.TabIndex = 44;
@@ -121,7 +121,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(604, 234);
+            this.ClientSize = new System.Drawing.Size(590, 268);
             this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.buttonRunPicasa);
             this.Controls.Add(this.textBoxDBBaseDir);

@@ -4,8 +4,8 @@ using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.ComponentModel;            // Necessary for BackgroundWorker...
-using Logger;                           // Static logging class
 using HelperClasses;                    // Necessary for creating Hardlinks
+using HelperClasses.Logger;             // Static logging class
 
 namespace BackupNS
 {
