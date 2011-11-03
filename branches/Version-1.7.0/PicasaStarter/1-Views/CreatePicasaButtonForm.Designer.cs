@@ -30,8 +30,6 @@
         {
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textBoxButtonID = new System.Windows.Forms.TextBox();
             this.textBoxTooltip = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxLabel = new System.Windows.Forms.TextBox();
@@ -70,22 +68,6 @@
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 41);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(59, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Button ID*:";
-            // 
-            // textBoxButtonID
-            // 
-            this.textBoxButtonID.Location = new System.Drawing.Point(84, 38);
-            this.textBoxButtonID.Name = "textBoxButtonID";
-            this.textBoxButtonID.Size = new System.Drawing.Size(148, 20);
-            this.textBoxButtonID.TabIndex = 3;
-            // 
             // textBoxTooltip
             // 
             this.textBoxTooltip.Location = new System.Drawing.Point(84, 173);
@@ -106,7 +88,7 @@
             // 
             this.textBoxLabel.Location = new System.Drawing.Point(84, 12);
             this.textBoxLabel.Name = "textBoxLabel";
-            this.textBoxLabel.Size = new System.Drawing.Size(148, 20);
+            this.textBoxLabel.Size = new System.Drawing.Size(250, 20);
             this.textBoxLabel.TabIndex = 7;
             // 
             // label4
@@ -176,7 +158,7 @@
             // 
             this.textBoxArguments.Location = new System.Drawing.Point(84, 225);
             this.textBoxArguments.Name = "textBoxArguments";
-            this.textBoxArguments.Size = new System.Drawing.Size(191, 20);
+            this.textBoxArguments.Size = new System.Drawing.Size(250, 20);
             this.textBoxArguments.TabIndex = 17;
             // 
             // label7
@@ -192,7 +174,7 @@
             // 
             this.textBox1.Location = new System.Drawing.Point(84, 277);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(191, 20);
+            this.textBox1.Size = new System.Drawing.Size(250, 20);
             this.textBox1.TabIndex = 19;
             // 
             // label8
@@ -206,16 +188,16 @@
             // 
             // textBoxDescription
             // 
-            this.textBoxDescription.Location = new System.Drawing.Point(84, 64);
+            this.textBoxDescription.Location = new System.Drawing.Point(84, 38);
             this.textBoxDescription.Multiline = true;
             this.textBoxDescription.Name = "textBoxDescription";
-            this.textBoxDescription.Size = new System.Drawing.Size(407, 103);
+            this.textBoxDescription.Size = new System.Drawing.Size(407, 129);
             this.textBoxDescription.TabIndex = 21;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(9, 67);
+            this.label9.Location = new System.Drawing.Point(9, 41);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(63, 13);
             this.label9.TabIndex = 20;
@@ -242,8 +224,6 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textBoxLabel);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.textBoxButtonID);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.buttonCancel);
             this.Name = "CreatePicasaButtonForm";
@@ -257,8 +237,6 @@
 
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Button buttonOK;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBoxButtonID;
         private System.Windows.Forms.TextBox textBoxTooltip;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxLabel;
