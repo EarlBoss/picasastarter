@@ -12,7 +12,10 @@ namespace PicasaStarter
     {
         private PicasaButton _picasaButton;
         private string _appSettingsDir;
+
+        // Some PicasaButton properties needn't be shown, so just put them in member variables...
         private bool _visible = true;           // Should the button be visible in Picasa or not?
+        private string _buttonID = "";
 
         public PicasaButton PicasaButton
         {
@@ -24,6 +27,10 @@ namespace PicasaStarter
             InitializeComponent();
 
             _appSettingsDir = appSettingsDir;
+
+            // Init the ID field with a new GUID...
+            Guid guid = Guid.NewGuid();
+            _buttonID = '{' + guid.ToString() + '}';
         }
 
         public CreatePicasaButtonForm(PicasaButton button, string appSettingsDir)
@@ -32,7 +39,7 @@ namespace PicasaStarter
 
             _appSettingsDir = appSettingsDir;
 
-            textBoxButtonID.Text = button.ButtonID;
+            _buttonID = button.ButtonID;
 //            textBoxVersion.Text = 1;
             textBoxLabel.Text = button.Label;
             textBoxDescription.Text = button.Description;
@@ -47,7 +54,7 @@ namespace PicasaStarter
         {
             _picasaButton = new PicasaButton();
 
-            _picasaButton.ButtonID = textBoxButtonID.Text;
+            _picasaButton.ButtonID = _buttonID;
             _picasaButton.Version = 1;
             _picasaButton.Label = textBoxLabel.Text;
             _picasaButton.Description = textBoxDescription.Text;
