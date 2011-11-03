@@ -50,16 +50,17 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(33, 19);
+            this.label2.Location = new System.Drawing.Point(12, 20);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(91, 26);
+            this.label2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label2.Size = new System.Drawing.Size(162, 13);
             this.label2.TabIndex = 7;
-            this.label2.Text = "Path to picasa \r\nexecutable (.exe):";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.label2.Text = "Path to picasa executable (.exe):";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // buttonBrowsePicasaExePath
             // 
-            this.buttonBrowsePicasaExePath.Location = new System.Drawing.Point(480, 22);
+            this.buttonBrowsePicasaExePath.Location = new System.Drawing.Point(503, 36);
             this.buttonBrowsePicasaExePath.Name = "buttonBrowsePicasaExePath";
             this.buttonBrowsePicasaExePath.Size = new System.Drawing.Size(75, 23);
             this.buttonBrowsePicasaExePath.TabIndex = 6;
@@ -73,16 +74,16 @@
             this.textBoxPicasaExePath.AccessibleDescription = "";
             this.textBoxPicasaExePath.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generalSettingsDialogBindingSource, "PicasaExePath", true));
             this.textBoxPicasaExePath.Enabled = false;
-            this.textBoxPicasaExePath.Location = new System.Drawing.Point(134, 25);
+            this.textBoxPicasaExePath.Location = new System.Drawing.Point(12, 36);
             this.textBoxPicasaExePath.Name = "textBoxPicasaExePath";
-            this.textBoxPicasaExePath.Size = new System.Drawing.Size(340, 20);
+            this.textBoxPicasaExePath.Size = new System.Drawing.Size(485, 20);
             this.textBoxPicasaExePath.TabIndex = 5;
             this.textBoxPicasaExePath.Tag = "";
             this.textBoxPicasaExePath.TextChanged += new System.EventHandler(this.textBoxPicasaExePath_TextChanged);
             // 
             // buttonCancel
             // 
-            this.buttonCancel.Location = new System.Drawing.Point(480, 181);
+            this.buttonCancel.Location = new System.Drawing.Point(503, 233);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 8;
@@ -92,7 +93,7 @@
             // 
             // buttonOK
             // 
-            this.buttonOK.Location = new System.Drawing.Point(399, 181);
+            this.buttonOK.Location = new System.Drawing.Point(422, 233);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
             this.buttonOK.TabIndex = 9;
@@ -103,7 +104,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 149);
+            this.label1.Location = new System.Drawing.Point(12, 149);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(117, 13);
             this.label1.TabIndex = 10;
@@ -111,7 +112,7 @@
             // 
             // buttonExportSettings
             // 
-            this.buttonExportSettings.Location = new System.Drawing.Point(128, 144);
+            this.buttonExportSettings.Location = new System.Drawing.Point(133, 144);
             this.buttonExportSettings.Name = "buttonExportSettings";
             this.buttonExportSettings.Size = new System.Drawing.Size(75, 23);
             this.buttonExportSettings.TabIndex = 11;
@@ -122,7 +123,7 @@
             // 
             // buttonImportSettings
             // 
-            this.buttonImportSettings.Location = new System.Drawing.Point(209, 144);
+            this.buttonImportSettings.Location = new System.Drawing.Point(214, 144);
             this.buttonImportSettings.Name = "buttonImportSettings";
             this.buttonImportSettings.Size = new System.Drawing.Size(75, 23);
             this.buttonImportSettings.TabIndex = 12;
@@ -134,28 +135,28 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(4, 66);
+            this.label3.Location = new System.Drawing.Point(12, 68);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(123, 26);
+            this.label3.Size = new System.Drawing.Size(223, 13);
             this.label3.TabIndex = 13;
-            this.label3.Text = "Path to picasa starter\r\n database settings (.xml):";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.label3.Text = "Path to picasa starter database settings (.xml):";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // textBoxSettingsXMLPath
             // 
             this.textBoxSettingsXMLPath.AccessibleDescription = "";
             this.textBoxSettingsXMLPath.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generalSettingsDialogBindingSource, "PicasaExePath", true));
             this.textBoxSettingsXMLPath.Enabled = false;
-            this.textBoxSettingsXMLPath.Location = new System.Drawing.Point(134, 72);
+            this.textBoxSettingsXMLPath.Location = new System.Drawing.Point(12, 84);
             this.textBoxSettingsXMLPath.Name = "textBoxSettingsXMLPath";
-            this.textBoxSettingsXMLPath.Size = new System.Drawing.Size(340, 20);
+            this.textBoxSettingsXMLPath.Size = new System.Drawing.Size(485, 20);
             this.textBoxSettingsXMLPath.TabIndex = 14;
             this.textBoxSettingsXMLPath.Tag = "";
             this.textBoxSettingsXMLPath.TextChanged += new System.EventHandler(this.textBoxSettingsXMLPath_TextChanged);
             // 
             // SetXMLToDef
             // 
-            this.SetXMLToDef.Location = new System.Drawing.Point(480, 98);
+            this.SetXMLToDef.Location = new System.Drawing.Point(503, 117);
             this.SetXMLToDef.Name = "SetXMLToDef";
             this.SetXMLToDef.Size = new System.Drawing.Size(75, 22);
             this.SetXMLToDef.TabIndex = 15;
@@ -167,7 +168,7 @@
             // 
             // SelXMLPath
             // 
-            this.SelXMLPath.Location = new System.Drawing.Point(480, 70);
+            this.SelXMLPath.Location = new System.Drawing.Point(503, 82);
             this.SelXMLPath.Name = "SelXMLPath";
             this.SelXMLPath.Size = new System.Drawing.Size(75, 23);
             this.SelXMLPath.TabIndex = 16;
@@ -185,7 +186,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(567, 216);
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(590, 268);
             this.Controls.Add(this.SelXMLPath);
             this.Controls.Add(this.SetXMLToDef);
             this.Controls.Add(this.textBoxSettingsXMLPath);

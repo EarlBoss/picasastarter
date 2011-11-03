@@ -4,7 +4,7 @@ using System.Text;
 using System.Globalization;
 
 
-namespace Logger
+namespace HelperClasses.Logger
 {
     /// <remarks>
     /// Log messages to a file location.

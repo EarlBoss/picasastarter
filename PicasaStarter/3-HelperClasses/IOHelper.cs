@@ -5,7 +5,7 @@ using System.IO;
 using System.Management;               // To be able to use ManagementObject
 using System.Runtime.InteropServices;
 using System.ComponentModel;           // Added to use kernel32.dll for creating symbolic links
-using Logger;                          // To be able to log error messages;
+using HelperClasses.Logger;             // Static logging class
 
 namespace HelperClasses
 {
@@ -89,13 +89,13 @@ namespace HelperClasses
                 if (hardLink.Exists)
                     hardLinkFileSize = hardLink.Length;
                 if (hardLinkFileSize != 0)
-                    break;
+                    return;
                 else
                 {
                     FileInfo existingFile = new FileInfo(existingFilePath);
                 
                     if(existingFile.Exists && existingFile.Length == 0)
-                        break;
+                        return;
                 }
 
                 if (tryCount > 1)
@@ -240,6 +240,39 @@ namespace HelperClasses
             fileStream2.Close();
 
             return areFilesEqual;
+        }
+
+        /// <summary>
+        /// Copies all files in a directory to another directory. This function never throws exceptions...
+        /// 
+        /// Remark: doesn't work recursive!
+        /// </summary>
+        /// <param name="directorySource"></param>
+        /// <param name="directoryDest"></param>
+        /// <returns></returns>
+        public static bool TryCopyDirectory(string directorySource, string directoryDest)
+        {
+            // Copy PicasaButtons if there are that need to be visible in Picasa...
+            try
+            {
+                DirectoryInfo dirSource = new DirectoryInfo(directorySource);
+                FileInfo[] files = dirSource.GetFiles();
+                DirectoryInfo dirDest = new DirectoryInfo(directoryDest);
+                if (!dirDest.Exists)
+                    dirDest.Create();
+
+                foreach (FileInfo file in files)
+                {
+                    file.CopyTo(directoryDest + '\\' + file.Name); 
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                return false;
+            }
+
+            return true;
         }
     }
 }

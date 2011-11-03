@@ -57,6 +57,7 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.buttonBackupPics = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.buttonPicasaButtons = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -341,11 +342,23 @@
             this.buttonBackupPics.UseVisualStyleBackColor = true;
             this.buttonBackupPics.Click += new System.EventHandler(this.buttonBackupPics_Click);
             // 
+            // buttonPicasaButtons
+            // 
+            this.buttonPicasaButtons.Location = new System.Drawing.Point(215, 337);
+            this.buttonPicasaButtons.Name = "buttonPicasaButtons";
+            this.buttonPicasaButtons.Size = new System.Drawing.Size(96, 23);
+            this.buttonPicasaButtons.TabIndex = 46;
+            this.buttonPicasaButtons.Text = "Picasa Buttons";
+            this.toolTip.SetToolTip(this.buttonPicasaButtons, "Set some general settings");
+            this.buttonPicasaButtons.UseVisualStyleBackColor = true;
+            this.buttonPicasaButtons.Click += new System.EventHandler(this.buttonPicasaButtons_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(758, 372);
+            this.Controls.Add(this.buttonPicasaButtons);
             this.Controls.Add(this.listBoxPicasaDBs);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.buttonHelp);
@@ -399,6 +412,7 @@
         private System.Windows.Forms.Button buttonBackupDir;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBoxBackupDir;
+        private System.Windows.Forms.Button buttonPicasaButtons;
     }
 }
 

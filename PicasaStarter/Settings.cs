@@ -124,6 +124,12 @@ namespace PicasaStarter
         [NonSerialized] public List<PicasaDB> picasaDBs = new List<PicasaDB> ();
 
         /// <summary>
+        /// The list of databases defined in PicasaStarter.
+        /// </summary>
+        [NonSerialized]
+        public List<PicasaButton> picasaButtons = new List<PicasaButton>();
+
+        /// <summary>
         /// Contstructor of the settings class.
         /// </summary>
         public Settings()
@@ -164,6 +170,8 @@ namespace PicasaStarter
         public const string ConfigFileName = "PicasaStarterConfiguration.xml";
         public static string ConfigurationDir = "";
         public static string ConfigPicasaExePath = "";
+        public static string PicasaButtonVisibleDir = "PicasaButton_visible";
+        public static string PicasaButtonHiddenDir = "PicasaButton_hidden";
 
         public static string DetermineConfigDir()
         {
