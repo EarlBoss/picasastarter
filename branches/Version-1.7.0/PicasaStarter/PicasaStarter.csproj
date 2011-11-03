@@ -234,12 +234,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\ButtonStitch\StitchInstall.html" />
-    <None Include="Resources\Interop.IWshRuntimeLibrary.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Ionic.Zip.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="Resources\Interop.IWshRuntimeLibrary.dll" />
+    <None Include="Resources\Ionic.Zip.dll" />
     <Content Include="Resources\picasa.ico" />
     <Content Include="Resources\Picasa3_105.ico" />
     <Content Include="Resources\picasastarter_logo.ico" />
