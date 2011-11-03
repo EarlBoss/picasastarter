@@ -132,10 +132,10 @@
     <Compile Include="2-BusinessLogic\PicasaRunner.cs" />
     <Compile Include="3-HelperClasses\DateTimeHelper.cs" />
     <Compile Include="3-HelperClasses\DialogHelper.cs" />
-    <Compile Include="3-HelperClasses\FileLogger.cs" />
     <Compile Include="3-HelperClasses\IOHelper.cs" />
-    <Compile Include="3-HelperClasses\Log.cs" />
-    <Compile Include="3-HelperClasses\Logger.cs" />
+    <Compile Include="3-HelperClasses\Logger\FileLogger.cs" />
+    <Compile Include="3-HelperClasses\Logger\Log.cs" />
+    <Compile Include="3-HelperClasses\Logger\Logger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
