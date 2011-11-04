@@ -12,15 +12,12 @@ namespace PicasaStarter
     public partial class CreateShortcutDialog : Form
     {
         private string _databasename = "";
-        private string _appSettingsDir = "";
         private WshShellClass WshShell;
     
-        public CreateShortcutDialog(string appSettingsDir, string dataBaseName)
+        public CreateShortcutDialog(string dataBaseName)
         {
             InitializeComponent();
             _databasename = dataBaseName;
-            _appSettingsDir = appSettingsDir;
-            
         }
 
         private void CreateShortcutDialog_Load(object sender, EventArgs e)

@@ -22,6 +22,7 @@ namespace PicasaStarter
         private bool _firstRun = false;
         private Backup _backup = null;
         private BackupProgressForm _progressForm = null;
+        private int lastSelectedIndexListBoxPicasaDBs = -1;
 
         #endregion
 
@@ -172,34 +173,65 @@ namespace PicasaStarter
                 MessageBox.Show("Invalid item choosen from the database list");
                 return;
             }
+        }
 
-            textBoxDBName.Text = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].Name;
-            textBoxDBBaseDir.Text = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir;
-            textBoxBackupDir.Text = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir;
-            textBoxDBDescription.Text = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].Description;
-            textBoxDBFullDir.Text = SettingsHelper.GetFullDBDirectory(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex]);
+        private void OnListBoxMouseMove(object sender, MouseEventArgs e)
+        {
+            // Get the item
+            int index = listBoxPicasaDBs.IndexFromPoint(e.Location);
 
-            // If it is the default database, fields should be read-only!
-            if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].IsStandardDB == true)
-            {
-                textBoxDBName.ReadOnly = true;
-                textBoxDBDescription.ReadOnly = true;
-                buttonBrowseDBBaseDir.Enabled = false;
-                buttonRemoveDB.Enabled = false;
-            }
+            if (index == lastSelectedIndexListBoxPicasaDBs)
+                return;
             else
-            {
-                textBoxDBName.ReadOnly = false;
-                textBoxDBDescription.ReadOnly = false;
-                buttonBrowseDBBaseDir.Enabled = true;
-                buttonRemoveDB.Enabled = true;
-            }
+                lastSelectedIndexListBoxPicasaDBs = index;
+
+            string toolTipText = "";
+            if ((index >= 0) && (index < listBoxPicasaDBs.Items.Count))
+                toolTipText = _settings.picasaDBs[index].Description;
+
+            // Limit the length of the text by adding newlines, otherwise doesn't look good.
+            toolTipText = StringHelper.DivideInLines(toolTipText, 100);
+            toolTip.SetToolTip(listBoxPicasaDBs, toolTipText);
         }
 
         private void buttonAddDB_Click(object sender, EventArgs e)
         {
-            _settings.picasaDBs.Add(new PicasaDB("New"));
-            ReFillPicasaDBList(true);
+            CreatePicasaDBForm createPicasaDB = new CreatePicasaDBForm();
+
+            DialogResult result = createPicasaDB.ShowDialog();
+
+            // If OK, add the picasaDB as defined in the createPicasaDBForm...
+            if (result == DialogResult.OK)
+            {
+                _settings.picasaDBs.Add(createPicasaDB.PicasaDB);
+                ReFillPicasaDBList(true);
+            }
+        }
+
+        private void buttonEdit_Click(object sender, EventArgs e)
+        {
+            bool isStandardDatabase = false;
+
+            if (listBoxPicasaDBs.SelectedIndex == -1
+                    || listBoxPicasaDBs.SelectedIndex >= _settings.picasaDBs.Count)
+            {
+                MessageBox.Show("Please choose a picasa database from the list first");
+                return;
+            }
+            if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].IsStandardDB == true)
+                isStandardDatabase = true;
+
+            PicasaDB picasaDB = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex];
+            CreatePicasaDBForm createPicasaDB = new CreatePicasaDBForm(picasaDB, isStandardDatabase);
+
+            DialogResult result = createPicasaDB.ShowDialog();
+
+            // If OK, update the picasaDB to the edited version
+            if (result == DialogResult.OK)
+            {
+                _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex] = createPicasaDB.PicasaDB;
+                ReFillPicasaDBList(true);
+            }
         }
 
         private void buttonRemoveDB_Click(object sender, EventArgs e)
@@ -212,7 +244,8 @@ namespace PicasaStarter
             }
             if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].IsStandardDB == true)
             {
-                MessageBox.Show("The default database Picasa creates for you in you user directory cannot be removed from the list...");
+                MessageBox.Show("The default database Picasa creates for you in you user directory cannot be removed...");
+                return;
             }
 
             DialogResult result = MessageBox.Show("Remark: This won't delete the picasa database itself, it will only remove the entry from this list!!!\n\n"
@@ -229,103 +262,6 @@ namespace PicasaStarter
         #endregion
 
         #region Event handlers for buttons/events... concerning actions on/changes to one chosen Picasa database
-
-        private void buttonBrowseDBBaseDir_Click(object sender, EventArgs e)
-        {
-            textBoxDBBaseDir.Text = DialogHelper.AskDirectoryPath(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir);
-        }
-
-        private void buttonBrowseBackupDir_Click(object sender, EventArgs e)
-        {
-            textBoxBackupDir.Text = DialogHelper.AskDirectoryPath(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir);
-        }
-
-        private void textBoxDBName_TextChanged(object sender, EventArgs e)
-        {
-            if (listBoxPicasaDBs.SelectedIndex == -1
-                || listBoxPicasaDBs.SelectedIndex >= _settings.picasaDBs.Count)
-            {
-                MessageBox.Show("Please choose a picasa database from the list first");
-                return;
-            }
-        }
-
-        private void textBoxDBName_Leave(object sender, EventArgs e)
-        {
-            if (listBoxPicasaDBs.SelectedIndex == -1
-                || listBoxPicasaDBs.SelectedIndex >= _settings.picasaDBs.Count)
-            {
-                MessageBox.Show("Please choose a picasa database from the list first");
-                return;
-            }
-
-            // if the User is changing the field, update the settings and the list as well...
-            if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].Name != textBoxDBName.Text)
-            {
-                int selectedIndexBackup = listBoxPicasaDBs.SelectedIndex;
-                _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].Name = textBoxDBName.Text;
-                listBoxPicasaDBs.Items.RemoveAt(selectedIndexBackup);
-                listBoxPicasaDBs.Items.Insert(selectedIndexBackup, textBoxDBName.Text);
-                //ReFillPicasaDBList(false);
-                listBoxPicasaDBs.SelectedIndex = selectedIndexBackup;
-            }
-        }
-
-        private void textBoxDBDescription_TextChanged(object sender, EventArgs e)
-        {
-            if (listBoxPicasaDBs.SelectedIndex == -1
-                || listBoxPicasaDBs.SelectedIndex >= _settings.picasaDBs.Count)
-            {
-                MessageBox.Show("Please choose a picasa database from the list first");
-                return;
-            }
-            _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].Description = textBoxDBDescription.Text;
-        }
-
-        private void textBoxDBBaseDir_TextChanged(object sender, EventArgs e)
-        {
-            if (listBoxPicasaDBs.SelectedIndex == -1
-                || listBoxPicasaDBs.SelectedIndex >= _settings.picasaDBs.Count)
-            {
-                MessageBox.Show("Please choose a picasa database from the list first");
-                return;
-            }
-            _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir = textBoxDBBaseDir.Text;
-            textBoxDBFullDir.Text = SettingsHelper.GetFullDBDirectory(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex]);
-        }
-
-        private void textBoxBackupDir_TextChanged(object sender, EventArgs e)
-        {
-            if (listBoxPicasaDBs.SelectedIndex == -1
-                    || listBoxPicasaDBs.SelectedIndex >= _settings.picasaDBs.Count)
-            {
-                MessageBox.Show("Please choose a picasa database from the list first");
-                return;
-            }
-            _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir = textBoxBackupDir.Text;
-        }
-
-        private void buttonDBOpenFullDir_Click(object sender, EventArgs e)
-        {
-            if (listBoxPicasaDBs.SelectedIndex == -1
-                    || listBoxPicasaDBs.SelectedIndex >= _settings.picasaDBs.Count)
-            {
-                MessageBox.Show("Please choose a picasa database from the list first");
-                return;
-            }
-
-            string DBFullDir = SettingsHelper.GetFullDBDirectory(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex]);
-
-            try
-            {
-                Directory.CreateDirectory(DBFullDir);
-                System.Diagnostics.Process.Start(DBFullDir);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error: " + ex.Message + ", when trying to open directory: " + DBFullDir);
-            }
-        }
 
         private void buttonRunPicasa_Click(object sender, EventArgs e)
         {
@@ -394,16 +330,6 @@ namespace PicasaStarter
                 StartBackup();
         }
 
-        private void ButtonCreateShortcut_Click(object sender, EventArgs e)
-        {
-            string databasename = "Personal";
-            if (listBoxPicasaDBs.SelectedIndex != 0)
-                databasename = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].Name;
-
-            CreateShortcutDialog createShortcutDialog = new CreateShortcutDialog(_appSettingsDir, databasename);
-            DialogResult result = createShortcutDialog.ShowDialog();
-        }
-
         private void buttonBackupPics_Click(object sender, EventArgs e)
         {
             StartBackup();
@@ -415,6 +341,32 @@ namespace PicasaStarter
             _progressForm.Hide();
             _progressForm = null;
             _backup = null;
+        }
+
+        private void buttonViewBackups_Click(object sender, EventArgs e)
+        {
+            if (listBoxPicasaDBs.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please choose a picasa database from the list first");
+                return;
+            }
+
+            string backupDir = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir;
+            if (!Directory.Exists(backupDir))
+            {
+                MessageBox.Show("The backup directory of this database doesn't exist or you didn't choose one yet.");
+                return;
+            }
+
+            try
+            {
+                Directory.CreateDirectory(backupDir);
+                System.Diagnostics.Process.Start(backupDir);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message + ", when trying to open directory: " + backupDir);
+            }
         }
 
         #endregion
@@ -481,16 +433,12 @@ namespace PicasaStarter
             }
         }
 
-        private void ReFillPicasaDBList(bool selectLastItem)
+        private void ReFillPicasaDBList(bool selectLastItem = false)
         {
-            string tip = "";
-            if(_appSettingsDir == SettingsHelper.ConfigurationDir)
-                tip = "Default: ";
-             listBoxPicasaDBs.BeginUpdate();
+            listBoxPicasaDBs.BeginUpdate();
             listBoxPicasaDBs.SelectedIndex = -1;
             listBoxPicasaDBs.Items.Clear();
-            // Set the tooltip for the DBList to the settings path
-            toolTip.SetToolTip(listBoxPicasaDBs, "Database Settings Path: \r\n" + tip + _appSettingsDir);
+            
             for (int i = 0; i < _settings.picasaDBs.Count; i++)
             {
                 listBoxPicasaDBs.Items.Add(_settings.picasaDBs[i].Name);
@@ -512,7 +460,6 @@ namespace PicasaStarter
             help.ShowDialog();
         }
 
-        #endregion
-
+        #endregion        
     }
 }
