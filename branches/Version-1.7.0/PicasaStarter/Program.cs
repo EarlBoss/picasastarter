@@ -51,7 +51,40 @@ namespace PicasaStarter
             // load settings...
             if (!firstRun)
             {
-                while (!settingsfound)
+                bool cancelSearching = false;
+
+                while (!settingsfound && cancelSearching == false)
+                {
+                    if (!File.Exists(appSettingsDir + "\\" + SettingsHelper.SettingsFileName))
+                    {
+                        // Take care of case where the settings file is not available but it is referenced in the config file (The settings drive/dir is missing).
+                        // Initializes the variables to pass to the MessageBox.Show method.
+                        string message = "The Picasa Starter settings file was not found in:   " + appSettingsDir + "\n\n If it is on a NAS or Portable Drive, " +
+                            "Please Connect the drive as the correct drive letter and push Retry.\n\n" +
+                            "To define a new Settings File location, Cancel this Message,\n" +
+                            "Then set the Settings File location in the First Run dialog";
+                        string caption = "Missing Settings File";
+
+                        // Displays the MessageBox.
+                        DialogResult result = MessageBox.Show(message, caption, MessageBoxButtons.RetryCancel);
+
+                        if (result == DialogResult.Retry)
+                        {
+                            settingsfound = false;
+                        }
+                        else if (result == DialogResult.Cancel)
+                        {
+                            firstRun = true;
+                            cancelSearching = true;
+                            settings.picasaDBs.Add(SettingsHelper.GetDefaultPicasaDB());
+                        }
+                    }
+                    else
+                        settingsfound = true;
+                }
+
+                // Try to read the settings file...
+                if (settingsfound == true)
                 {
                     try
                     {
@@ -59,37 +92,10 @@ namespace PicasaStarter
                             appSettingsDir + "\\" + SettingsHelper.SettingsFileName);
                         settingsfound = true;
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        // Take care of case where the settings file is not available but it is referenced in the config file (The settings drive/dir is missing).
-                        // Initializes the variables to pass to the MessageBox.Show method.
-
-                        string message = "The Picasa Starter settings file was not found in:   " + appSettingsDir + "\n\n If it is on a NAS or Portable Drive, " +
-                            "Please Connect the drive as the correct drive letter and push Retry.\n\n" +
-                            "To define a new Settings File location, Cancel this Message,\n" +
-                            "Then set the Settings File location in the First Run dialog";
-                        string caption = "Missing Settings File";
-                        MessageBoxButtons buttons = MessageBoxButtons.RetryCancel;
-                        DialogResult result;
-
-                        // Displays the MessageBox.
-
-                        result = MessageBox.Show(message, caption, buttons);
-
-                        if (result == DialogResult.Retry)
-                        {
-
-                            settingsfound = false;
-
-                        }
-                        if (result == DialogResult.Cancel)
-                        {
-
-                            firstRun = true;
-                            settingsfound = true;
-                            settings.picasaDBs.Add(SettingsHelper.GetDefaultPicasaDB());
-
-                        }
+                        MessageBox.Show("Error reading settings file: " + ex.Message);
+                        settings.picasaDBs.Add(SettingsHelper.GetDefaultPicasaDB());
                     }
                 }
             }
