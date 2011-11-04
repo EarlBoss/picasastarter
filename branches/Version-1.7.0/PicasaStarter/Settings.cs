@@ -10,69 +10,62 @@ namespace PicasaStarter
     public class PicasaDB
     {
         private string _name;
-        private string _description;
-        private string _baseDir;
-        private string _backupDir;
-        private bool _isDefaultDB;
 
         public string Name { get { return _name; } set { _name = value.Trim(new char[] { ' ', '"' }); } }
-        public string Description { get { return _description; } set { _description = value; } }
-        public string BaseDir { get { return _baseDir; } set { _baseDir = value; } }
-        public string BackupDir { get { return _backupDir; } set { _backupDir = value; } }
-        public bool IsStandardDB { get { return _isDefaultDB; } set { _isDefaultDB = value; } }
+        public string Description { get; set; }
+        public string BaseDir { get; set; }
+        public string BackupDir { get; set; }
+        public bool IsStandardDB { get; set; }
 
         public PicasaDB()
         {
-            _name = "";
-            _description = "";
-            _baseDir = "";
-            _backupDir = "";
-            _isDefaultDB = false;
         }
 
         public PicasaDB(string name)
         {
-            _name = name;
-            _description = "";
-            _baseDir = "";
-            _backupDir = "";
-            _isDefaultDB = false;
+            Name = name;
+        }
+
+        public PicasaDB(PicasaDB picasaDB)
+        {
+            Name = picasaDB.Name;
+            Description = picasaDB.Description;
+            BaseDir = picasaDB.BaseDir;
+            BackupDir = picasaDB.BackupDir;
+            IsStandardDB = picasaDB.IsStandardDB;
         }
     }
 
-
     public class PathOnComputer
-    {
-        private string _computerName;
-        private string _path;
-    
-        public string ComputerName { get { return _computerName; } set { _computerName = value; } }
-        public string Path { get { return _path; } set { _path = value; } }
+    {    
+        public string ComputerName { get; set; }
+        public string Path { get; set; }
 
         public PathOnComputer()
         {
-            _computerName = "";
-            _path = "";
         }
 
         public PathOnComputer(string computerName, string exePath)
         {
-            _computerName = computerName;
-            _path = exePath;
+            ComputerName = computerName;
+            Path = exePath;
         }
     }
 
     public class PathOnComputerCollection
     {
-        private List<PathOnComputer> _paths = new List<PathOnComputer>();
+        public List<PathOnComputer> Paths { get; set; }
 
-        public List<PathOnComputer> Paths { get { return _paths; } }
+        public PathOnComputerCollection()
+        {
+            Paths = new List<PathOnComputer>();
+        }
 
         public void SetPath(PathOnComputer path)
         {
             bool found = false;
 
-            foreach (PathOnComputer curPath in _paths)
+            foreach (PathOnComputer curPath in Paths)
             {
                 if (curPath.ComputerName == path.ComputerName)
                 {
@@ -83,12 +76,12 @@ namespace PicasaStarter
             }
 
             if (found != true)
-                _paths.Add(path);
+                Paths.Add(path);
         }
 
         public string GetPath(string computerName)
         {
-            foreach (PathOnComputer curPath in _paths)
+            foreach (PathOnComputer curPath in Paths)
             {
                 if (curPath.ComputerName == computerName)
                 {
