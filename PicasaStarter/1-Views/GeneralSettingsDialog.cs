@@ -194,9 +194,10 @@ namespace PicasaStarter
             }
         }
 
-        private void textBoxSettingsXMLPath_TextChanged(object sender, EventArgs e)
+        private void buttonExploreLogging_Click(object sender, EventArgs e)
         {
-
+            string logDir = Path.GetTempPath() + "\\PicasaStarter\\Log";
+            System.Diagnostics.Process.Start(logDir);
         }
     }
 }

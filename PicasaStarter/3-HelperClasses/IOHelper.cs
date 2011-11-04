@@ -263,7 +263,28 @@ namespace HelperClasses
 
                 foreach (FileInfo file in files)
                 {
-                    file.CopyTo(directoryDest + '\\' + file.Name); 
+                    file.CopyTo(directoryDest + '\\' + file.Name, true); 
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                return false;
+            }
+
+            return true;
+        }
+
+        public static bool TryDeleteFiles(string directory, string pattern)
+        {
+            try
+            {
+                DirectoryInfo dir = new DirectoryInfo(directory);
+                FileInfo[] files = dir.GetFiles(pattern);
+
+                foreach (FileInfo file in files)
+                {
+                    file.Delete();
                 }
             }
             catch (Exception ex)

@@ -54,7 +54,7 @@ namespace HelperClasses.Logger
 
                 // Create the message
                 messageBuilder.Append(System.DateTime.Now.ToString("yyyy'-'MM'-'dd' 'HH':'mm':'ss"))
-                   .Append(" | ").Append(level.ToString()).Append(" | ").Append(messageBuilder);
+                   .Append(" | ").Append(level.ToString()).Append(" | ").Append(message);
 
                 // Force the write to the underlying file
                 writer.WriteLine(messageBuilder.ToString());

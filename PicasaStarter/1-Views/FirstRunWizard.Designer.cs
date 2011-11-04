@@ -242,6 +242,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FirstRunWizard";
+            this.ShowInTaskbar = false;
             this.Text = "First Run Settings";
             this.Load += new System.EventHandler(this.FirstRunWizard_Load);
             this.groupBox1.ResumeLayout(false);

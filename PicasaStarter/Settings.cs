@@ -125,9 +125,8 @@ namespace PicasaStarter
 
         /// <summary>
         /// The list of databases defined in PicasaStarter.
-        /// </summary>
-        [NonSerialized]
-        public List<PicasaButton> picasaButtons = new List<PicasaButton>();
+        /// </summary>        
+        public PicasaButtons picasaButtons = new PicasaButtons();
 
         /// <summary>
         /// Contstructor of the settings class.
@@ -170,8 +169,7 @@ namespace PicasaStarter
         public const string ConfigFileName = "PicasaStarterConfiguration.xml";
         public static string ConfigurationDir = "";
         public static string ConfigPicasaExePath = "";
-        public static string PicasaButtonVisibleDir = "PicasaButton_visible";
-        public static string PicasaButtonHiddenDir = "PicasaButton_hidden";
+        public static string PicasaButtons = "PicasaButtons";
 
         public static string DetermineConfigDir()
         {
@@ -355,7 +353,7 @@ namespace PicasaStarter
             Settings settings = (Settings)serializer.Deserialize(tr);
             tr.Close();
 
-            // Loop through the PicasaDB object to set some things right after deserialising...
+            // Loop through the PicasaDB objects to set some things right after deserialising...
             bool defaultDBFound = false;
             for (int i = 0; i < settings.picasaDBs.Count; i++)
             {
@@ -371,6 +369,15 @@ namespace PicasaStarter
                 // NewLine's in an XML file are stored as \n while Windows wants \r\n in it's textboxes,...
                 // Because the description can contain newlines... replace them.
                 settings.picasaDBs[i].Description = settings.picasaDBs[i].Description.Replace("\n", Environment.NewLine);
+            }
+
+            // Loop through the PicasaButton objects to set some things right after deserialising...
+            for (int i = 0; i < settings.picasaButtons.ButtonList.Count; i++)
+            {
+                // NewLine's in an XML file are stored as \n while Windows wants \r\n in it's textboxes,...
+                // For all field that can contain newlines... replace them.
+                settings.picasaButtons.ButtonList[i].Description = settings.picasaButtons.ButtonList[i].Description.Replace("\n", Environment.NewLine);
+                settings.picasaButtons.ButtonList[i].Script = settings.picasaButtons.ButtonList[i].Script.Replace("\n", Environment.NewLine);
             }
 
             // Check if the settings contained a PicasaExePath. It will be null if the settings don't contain

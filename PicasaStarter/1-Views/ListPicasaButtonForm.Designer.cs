@@ -37,7 +37,6 @@
             this.buttonEdit = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.checkBoxVisible = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -67,7 +66,7 @@
             this.textBoxDescription.Location = new System.Drawing.Point(14, 36);
             this.textBoxDescription.Multiline = true;
             this.textBoxDescription.Name = "textBoxDescription";
-            this.textBoxDescription.Size = new System.Drawing.Size(309, 131);
+            this.textBoxDescription.Size = new System.Drawing.Size(309, 148);
             this.textBoxDescription.TabIndex = 22;
             // 
             // label2
@@ -124,7 +123,6 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.checkBoxVisible);
             this.groupBox2.Controls.Add(this.textBoxDescription);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Location = new System.Drawing.Point(235, 12);
@@ -134,17 +132,6 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Button details";
             // 
-            // checkBoxVisible
-            // 
-            this.checkBoxVisible.AutoSize = true;
-            this.checkBoxVisible.Location = new System.Drawing.Point(17, 173);
-            this.checkBoxVisible.Name = "checkBoxVisible";
-            this.checkBoxVisible.Size = new System.Drawing.Size(132, 17);
-            this.checkBoxVisible.TabIndex = 25;
-            this.checkBoxVisible.Text = "Show button in Picasa";
-            this.checkBoxVisible.UseVisualStyleBackColor = true;
-            this.checkBoxVisible.CheckedChanged += new System.EventHandler(this.checkBoxVisible_CheckedChanged);
-            // 
             // ListPicasaButtonForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -153,7 +140,9 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.buttonClose);
+            this.MaximizeBox = false;
             this.Name = "ListPicasaButtonForm";
+            this.ShowInTaskbar = false;
             this.Text = "List of Picasa Buttons";
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
@@ -173,6 +162,5 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button buttonDelete;
         private System.Windows.Forms.Button buttonEdit;
-        private System.Windows.Forms.CheckBox checkBoxVisible;
     }
 }
