@@ -32,11 +32,12 @@ namespace PicasaStarter
         private void buttonAdd_Click(object sender, EventArgs e)
         {
             CreatePicasaButtonForm createPicasaButtonForm = new CreatePicasaButtonForm(_appSettingsDir);
+
             createPicasaButtonForm.ShowDialog();
 
             if (createPicasaButtonForm.DialogResult == DialogResult.OK)
             {
-                _settings.picasaButtons.Add(createPicasaButtonForm.PicasaButton);
+                _settings.picasaButtons.ButtonList.Add(createPicasaButtonForm.PicasaButton);
                 this.ReFillPicasaButtonList();
             }
         }
@@ -44,19 +45,20 @@ namespace PicasaStarter
         private void buttonEdit_Click(object sender, EventArgs e)
         {
             if (listBoxPicasaButtons.SelectedIndex == -1
-                    || listBoxPicasaButtons.SelectedIndex >= _settings.picasaDBs.Count)
+                    || listBoxPicasaButtons.SelectedIndex >= _settings.picasaButtons.ButtonList.Count)
             {
                 MessageBox.Show("Please choose a picasa button from the list first");
                 return;
             }
 
-            PicasaButton curButton = _settings.picasaButtons[listBoxPicasaButtons.SelectedIndex];
+            PicasaButton curButton = _settings.picasaButtons.ButtonList[listBoxPicasaButtons.SelectedIndex];
             CreatePicasaButtonForm createPicasaButtonForm = new CreatePicasaButtonForm(curButton, _appSettingsDir);
+
             createPicasaButtonForm.ShowDialog();
 
             if (createPicasaButtonForm.DialogResult == DialogResult.OK)
             {
-                _settings.picasaButtons[listBoxPicasaButtons.SelectedIndex] = createPicasaButtonForm.PicasaButton;
+                _settings.picasaButtons.ButtonList[listBoxPicasaButtons.SelectedIndex] = createPicasaButtonForm.PicasaButton;
                 this.ReFillPicasaButtonList();
             }
         }
@@ -64,13 +66,13 @@ namespace PicasaStarter
         private void buttonDelete_Click(object sender, EventArgs e)
         {
             if (listBoxPicasaButtons.SelectedIndex == -1
-                    || listBoxPicasaButtons.SelectedIndex >= _settings.picasaDBs.Count)
+                    || listBoxPicasaButtons.SelectedIndex >= _settings.picasaButtons.ButtonList.Count)
             {
                 MessageBox.Show("Please choose a picasa button from the list first");
                 return;
             }
 
-            _settings.picasaButtons.RemoveAt(listBoxPicasaButtons.SelectedIndex);
+            _settings.picasaButtons.ButtonList.RemoveAt(listBoxPicasaButtons.SelectedIndex);
             this.ReFillPicasaButtonList();
         }
 
@@ -84,9 +86,9 @@ namespace PicasaStarter
             listBoxPicasaButtons.SelectedIndex = -1;
             listBoxPicasaButtons.Items.Clear();
 
-            for (int i = 0; i < _settings.picasaButtons.Count; i++)
+            for (int i = 0; i < _settings.picasaButtons.ButtonList.Count; i++)
             {
-                listBoxPicasaButtons.Items.Add(_settings.picasaButtons[i].Label);
+                listBoxPicasaButtons.Items.Add(_settings.picasaButtons.ButtonList[i].Label);
             }
 
             if (listBoxPicasaButtons.Items.Count > 0)
@@ -102,32 +104,16 @@ namespace PicasaStarter
             if (listBoxPicasaButtons.SelectedIndex < 0)
             {
                 textBoxDescription.Text = "";
-                checkBoxVisible.Checked = false;
                 return;
             }
 
-            if (listBoxPicasaButtons.SelectedIndex >= _settings.picasaButtons.Count)
+            if (listBoxPicasaButtons.SelectedIndex >= _settings.picasaButtons.ButtonList.Count)
             {
                 MessageBox.Show("Invalid item choosen from the list");
                 return;
             }
 
-            textBoxDescription.Text = _settings.picasaButtons[listBoxPicasaButtons.SelectedIndex].Description;
-            checkBoxVisible.Checked = _settings.picasaButtons[listBoxPicasaButtons.SelectedIndex].Visible;
+            textBoxDescription.Text = _settings.picasaButtons.ButtonList[listBoxPicasaButtons.SelectedIndex].Description;
         }
-
-        private void checkBoxVisible_CheckedChanged(object sender, EventArgs e)
-        {
-            if (listBoxPicasaButtons.SelectedIndex < 0)
-                return;
-            if (listBoxPicasaButtons.SelectedIndex >= _settings.picasaButtons.Count)
-            {
-                MessageBox.Show("Invalid item choosen from the list");
-                return;
-            }
-
-            _settings.picasaButtons[listBoxPicasaButtons.SelectedIndex].Visible = checkBoxVisible.Checked;
-        }
-
     }
 }

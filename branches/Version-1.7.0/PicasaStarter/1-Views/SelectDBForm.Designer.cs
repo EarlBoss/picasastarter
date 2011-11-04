@@ -135,6 +135,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "SelectDBForm";
+            this.ShowInTaskbar = false;
             this.Text = "Select Picasa Database to Run";
             this.Load += new System.EventHandler(this.SelectDBForm_Load);
             this.ResumeLayout(false);

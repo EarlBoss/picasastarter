@@ -69,7 +69,7 @@
             this.textShortcutName.Location = new System.Drawing.Point(162, 12);
             this.textShortcutName.MaxLength = 64;
             this.textShortcutName.Name = "textShortcutName";
-            this.textShortcutName.Size = new System.Drawing.Size(243, 20);
+            this.textShortcutName.Size = new System.Drawing.Size(316, 20);
             this.textShortcutName.TabIndex = 2;
             this.textShortcutName.Text = "Picasa Shared Database";
             // 
@@ -84,7 +84,7 @@
             // 
             // buttonCreateShortcut
             // 
-            this.buttonCreateShortcut.Location = new System.Drawing.Point(199, 136);
+            this.buttonCreateShortcut.Location = new System.Drawing.Point(272, 135);
             this.buttonCreateShortcut.Name = "buttonCreateShortcut";
             this.buttonCreateShortcut.Size = new System.Drawing.Size(100, 21);
             this.buttonCreateShortcut.TabIndex = 4;
@@ -95,7 +95,7 @@
             // 
             // buttonCancel
             // 
-            this.buttonCancel.Location = new System.Drawing.Point(305, 136);
+            this.buttonCancel.Location = new System.Drawing.Point(378, 136);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(100, 21);
             this.buttonCancel.TabIndex = 5;
@@ -119,7 +119,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(417, 166);
+            this.ClientSize = new System.Drawing.Size(490, 168);
             this.Controls.Add(this.checkDBMenu1);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonCreateShortcut);
@@ -129,7 +129,9 @@
             this.Controls.Add(this.checkDesktopShortcut);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "CreateShortcutDialog";
+            this.ShowInTaskbar = false;
             this.Text = "Create Shortcut";
             this.Load += new System.EventHandler(this.CreateShortcutDialog_Load);
             this.ResumeLayout(false);

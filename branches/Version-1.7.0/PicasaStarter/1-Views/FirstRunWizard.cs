@@ -27,6 +27,7 @@ namespace PicasaStarter
         public FirstRunWizard(string appsDirPath, Settings localSettings)
         {
             InitializeComponent();
+
             _returnAppSettingsDir = _appSettingsDir = appsDirPath;
             _localSettings = localSettings;
             _returnPicasaExePath = _picasaExePath = localSettings.PicasaExePath;
@@ -45,7 +46,6 @@ namespace PicasaStarter
                 textBoxSettingsXMLPath.Text = _appSettingsDir;
                 _setDefaultIniPath = false;
             }
-
         }
 
         private void buttonBrowsePicasaExePath_Click(object sender, EventArgs e)
@@ -61,7 +61,6 @@ namespace PicasaStarter
             {
                 textBoxPicasaExePath.Text = _picasaExePath = openFileDialog1.FileName;
             }
-
         }
 
         private void SelXMLPath_Click(object sender, EventArgs e)
@@ -88,7 +87,6 @@ namespace PicasaStarter
                 _setDefaultIniPath = false;
                 //_iniPathChanged = true;
             }
-
         }
 
         private void SetXMLToDef_Click(object sender, EventArgs e)
@@ -109,7 +107,6 @@ namespace PicasaStarter
             //PicasaExePath = _localSettings.PicasaExePath;
             _setDefaultIniPath = true;
             //_iniPathChanged = true;
-
         }
 
         private void buttonOK_Click(object sender, EventArgs e)
@@ -143,12 +140,9 @@ namespace PicasaStarter
                 ReturnAppSettingsDir = _returnAppSettingsDir;
             //}
             ReturnPicasaExePath = _picasaExePath;
-                
  
             this.DialogResult = DialogResult.OK;
             Close();
-
-
         }
     }
 }

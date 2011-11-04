@@ -33,6 +33,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.buttonBrowsePicasaExePath = new System.Windows.Forms.Button();
             this.textBoxPicasaExePath = new System.Windows.Forms.TextBox();
+            this.generalSettingsDialogBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -43,7 +44,8 @@
             this.SetXMLToDef = new System.Windows.Forms.Button();
             this.SelXMLPath = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.generalSettingsDialogBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.buttonExploreLogging = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.generalSettingsDialogBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -81,6 +83,10 @@
             this.textBoxPicasaExePath.Tag = "";
             this.textBoxPicasaExePath.TextChanged += new System.EventHandler(this.textBoxPicasaExePath_TextChanged);
             // 
+            // generalSettingsDialogBindingSource
+            // 
+            this.generalSettingsDialogBindingSource.DataSource = typeof(PicasaStarter.GeneralSettingsDialog);
+            // 
             // buttonCancel
             // 
             this.buttonCancel.Location = new System.Drawing.Point(503, 233);
@@ -104,7 +110,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 149);
+            this.label1.Location = new System.Drawing.Point(12, 148);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(117, 13);
             this.label1.TabIndex = 10;
@@ -112,7 +118,7 @@
             // 
             // buttonExportSettings
             // 
-            this.buttonExportSettings.Location = new System.Drawing.Point(133, 144);
+            this.buttonExportSettings.Location = new System.Drawing.Point(133, 143);
             this.buttonExportSettings.Name = "buttonExportSettings";
             this.buttonExportSettings.Size = new System.Drawing.Size(75, 23);
             this.buttonExportSettings.TabIndex = 11;
@@ -123,7 +129,7 @@
             // 
             // buttonImportSettings
             // 
-            this.buttonImportSettings.Location = new System.Drawing.Point(214, 144);
+            this.buttonImportSettings.Location = new System.Drawing.Point(214, 143);
             this.buttonImportSettings.Name = "buttonImportSettings";
             this.buttonImportSettings.Size = new System.Drawing.Size(75, 23);
             this.buttonImportSettings.TabIndex = 12;
@@ -152,7 +158,6 @@
             this.textBoxSettingsXMLPath.Size = new System.Drawing.Size(485, 20);
             this.textBoxSettingsXMLPath.TabIndex = 14;
             this.textBoxSettingsXMLPath.Tag = "";
-            this.textBoxSettingsXMLPath.TextChanged += new System.EventHandler(this.textBoxSettingsXMLPath_TextChanged);
             // 
             // SetXMLToDef
             // 
@@ -178,9 +183,25 @@
             this.SelXMLPath.UseVisualStyleBackColor = true;
             this.SelXMLPath.Click += new System.EventHandler(this.SelXMLPath_Click);
             // 
-            // generalSettingsDialogBindingSource
+            // buttonExploreLogging
             // 
-            this.generalSettingsDialogBindingSource.DataSource = typeof(PicasaStarter.GeneralSettingsDialog);
+            this.buttonExploreLogging.Location = new System.Drawing.Point(133, 173);
+            this.buttonExploreLogging.Name = "buttonExploreLogging";
+            this.buttonExploreLogging.Size = new System.Drawing.Size(75, 23);
+            this.buttonExploreLogging.TabIndex = 18;
+            this.buttonExploreLogging.Text = "Explore...";
+            this.toolTip1.SetToolTip(this.buttonExploreLogging, "Export the PicasaStarter database settings to an xml file");
+            this.buttonExploreLogging.UseVisualStyleBackColor = true;
+            this.buttonExploreLogging.Click += new System.EventHandler(this.buttonExploreLogging_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 178);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(117, 13);
+            this.label4.TabIndex = 17;
+            this.label4.Text = "Picasa Starter Logging:";
             // 
             // GeneralSettingsDialog
             // 
@@ -188,6 +209,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(590, 268);
+            this.Controls.Add(this.buttonExploreLogging);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.SelXMLPath);
             this.Controls.Add(this.SetXMLToDef);
             this.Controls.Add(this.textBoxSettingsXMLPath);
@@ -205,6 +228,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "GeneralSettingsDialog";
+            this.ShowInTaskbar = false;
             this.Text = "General settings";
             this.Load += new System.EventHandler(this.GeneralSettingsForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.generalSettingsDialogBindingSource)).EndInit();
@@ -229,5 +253,7 @@
         private System.Windows.Forms.Button SetXMLToDef;
         private System.Windows.Forms.Button SelXMLPath;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button buttonExploreLogging;
     }
 }

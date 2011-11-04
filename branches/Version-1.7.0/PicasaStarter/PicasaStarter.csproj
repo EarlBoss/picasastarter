@@ -17,7 +17,7 @@
     <ManifestKeyFile>PicasaStarter_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <SignManifests>true</SignManifests>
-    <ApplicationIcon>Resources\Picasa3_105.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\PicasaStarter_320.ico</ApplicationIcon>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -91,6 +91,12 @@
     <Compile Include="1-Views\CreatePicasaButtonForm.Designer.cs">
       <DependentUpon>CreatePicasaButtonForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="1-Views\CreatePicasaButtonScriptForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="1-Views\CreatePicasaButtonScriptForm.Designer.cs">
+      <DependentUpon>CreatePicasaButtonScriptForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="1-Views\CreateShortcutDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -135,6 +141,7 @@
     </Compile>
     <Compile Include="2-BusinessLogic\Backup.cs" />
     <Compile Include="2-BusinessLogic\PicasaButton.cs" />
+    <Compile Include="2-BusinessLogic\PicasaButtonList.cs" />
     <Compile Include="2-BusinessLogic\PicasaRunner.cs" />
     <Compile Include="3-HelperClasses\DateTimeHelper.cs" />
     <Compile Include="3-HelperClasses\DialogHelper.cs" />
@@ -150,6 +157,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="1-Views\CreatePicasaButtonForm.resx">
       <DependentUpon>CreatePicasaButtonForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="1-Views\CreatePicasaButtonScriptForm.resx">
+      <DependentUpon>CreatePicasaButtonScriptForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="1-Views\CreateShortcutDialog.resx">
       <DependentUpon>CreateShortcutDialog.cs</DependentUpon>
@@ -168,6 +178,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="1-Views\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="1-Views\SelectDBForm.resx">
       <DependentUpon>SelectDBForm.cs</DependentUpon>
@@ -232,10 +243,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\PicasaStarter_320.ico" />
     <Content Include="Resources\ButtonStitch\StitchInstall.html" />
     <None Include="Resources\Interop.IWshRuntimeLibrary.dll" />
     <None Include="Resources\Ionic.Zip.dll" />
-    <Content Include="Resources\picasa.ico" />
     <Content Include="Resources\Picasa3_105.ico" />
     <Content Include="Resources\picasastarter_logo.ico" />
   </ItemGroup>

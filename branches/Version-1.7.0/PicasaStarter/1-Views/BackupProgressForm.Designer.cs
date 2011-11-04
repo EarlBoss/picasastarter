@@ -194,7 +194,9 @@
             this.Controls.Add(this.labelNumberFiles);
             this.Controls.Add(this.labelStatus);
             this.Controls.Add(this.progressBar);
+            this.MaximizeBox = false;
             this.Name = "BackupProgressForm";
+            this.ShowInTaskbar = false;
             this.Text = "BackupProgressForm";
             this.ResumeLayout(false);
             this.PerformLayout();

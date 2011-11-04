@@ -63,6 +63,7 @@
             this.Controls.Add(this.richTextBoxHelp);
             this.Controls.Add(this.buttonClose);
             this.Name = "HelpDialog";
+            this.ShowInTaskbar = false;
             this.Text = "Help";
             this.Load += new System.EventHandler(this.HelpDialog_Load);
             this.ResumeLayout(false);

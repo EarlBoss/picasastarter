@@ -48,8 +48,9 @@ namespace PicasaStarter
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            // Set version in title bar
-            this.Text = this.Text + " " + System.Diagnostics.FileVersionInfo.GetVersionInfo(Application.ExecutablePath).FileVersion;
+            // Set version + build time in title bar
+            this.Text = this.Text + " " + System.Diagnostics.FileVersionInfo.GetVersionInfo(Application.ExecutablePath).FileVersion
+                + "   (Build of " + File.GetLastWriteTimeUtc(Application.ExecutablePath).ToString("u", System.Globalization.DateTimeFormatInfo.InvariantInfo) + ")";
 
             //Ask for apps dir and exe path if new instance
             if (_firstRun == true)
@@ -103,7 +104,6 @@ namespace PicasaStarter
                 string caption = "Can't Save Settings File";
 
                 // Displays the MessageBox.
-
                 MessageBox.Show(message, caption);
             }
         }
@@ -122,6 +122,7 @@ namespace PicasaStarter
         private void buttonGeneralSettings_Click(object sender, EventArgs e)
         {
             GeneralSettingsDialog generalSettingsDialog = new GeneralSettingsDialog(_appSettingsDir, _settings.PicasaExePath);
+
             DialogResult result = generalSettingsDialog.ShowDialog();
 
             if (result == DialogResult.OK)
@@ -343,35 +344,54 @@ namespace PicasaStarter
             PicasaRunner runner = new PicasaRunner(_appDataDir, _settings.PicasaExePath);
 
             // If the user wants to run his personal default database... 
+            String dbBaseDir;
+            string destButtonDir;
+
             if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].IsStandardDB == true)
             {
-                // First copy custom buttons the user created to have in Picasa
-                string sourceButtonDir = _appSettingsDir + '\\' + SettingsHelper.PicasaButtonVisibleDir;
-                string destButtonDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
-                        "\\Google\\Picasa2\\buttons";
-                IOHelper.TryCopyDirectory(sourceButtonDir, destButtonDir);
+                // For using the standard database, the BaseDir to pass needs to be null...
+                dbBaseDir = null;
 
-                runner.RunPicasa(null);
+                // Set the directory to put the PicasaButtons in the PicasaDB...
+                destButtonDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
+                        "\\Google\\Picasa2\\buttons";
             }
             // If the user wants to run a custom database...
             else
             {
-                string sourceButtonDir = _appSettingsDir + '\\' + SettingsHelper.PicasaButtonVisibleDir;
-                string destButtonDir = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir +
-                    "\\Local Settings\\Application Data\\Google\\Picasa2\\buttons";
-                IOHelper.TryCopyDirectory(sourceButtonDir, destButtonDir);
+                // Set the choosen BaseDir
+                dbBaseDir = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir;
 
-                runner.RunPicasa(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir);
+                // Set the directory to put the PicasaButtons in the PicasaDB...
+                destButtonDir = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir +
+                        "\\Local Settings\\Application Data\\Google\\Picasa2\\buttons";
             }
 
+            string sourceButtonDir = _appSettingsDir + '\\' + SettingsHelper.PicasaButtons;
+
+            // Copy Buttons and scripts and set the correct Path variable to be able to start scripts...
+            IOHelper.TryDeleteFiles(destButtonDir, "PS_Button*");
+            foreach (PicasaButton button in _settings.picasaButtons.ButtonList)
+            {
+                button.CreateButtonFile(destButtonDir);
+            }
+            string path = Environment.GetEnvironmentVariable("PATH");
+            path = destButtonDir + "\\;" + path;
+            Environment.SetEnvironmentVariable("PATH", path);
+            
+            _settings.picasaButtons.Registerbuttons();
+            
+            // Go!
+            runner.RunPicasa(dbBaseDir);
+            
+            // Restore the MainForm...
             WindowState = FormWindowState.Normal;
 
+            // Does the user want a backup?
             DialogResult result = MessageBox.Show("Do you wan't to take a backup of the latest version of your images and database?",
                     "Backup?", MessageBoxButtons.YesNo);
-
             if(result == DialogResult.Yes)
                 StartBackup();
-            //Show();
         }
 
         private void ButtonCreateShortcut_Click(object sender, EventArgs e)
