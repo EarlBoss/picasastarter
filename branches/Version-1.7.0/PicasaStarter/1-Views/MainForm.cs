@@ -35,6 +35,8 @@ namespace PicasaStarter
             _appDataDir = appDataDir;
             _appSettingsDir = appSettingsDir;
             _firstRun = firstRun;
+
+            ReFillPicasaButtonList();
         }
 
         internal void CancelBackup()
@@ -113,13 +115,6 @@ namespace PicasaStarter
 
         #region Event handlers for buttons at the bottom of the main form
 
-        private void buttonPicasaButtons_Click(object sender, EventArgs e)
-        {
-            ListPicasaButtonForm listPicasaButtonForm = new ListPicasaButtonForm(_settings, _appSettingsDir);
-
-            listPicasaButtonForm.ShowDialog();
-        }
-
         private void buttonGeneralSettings_Click(object sender, EventArgs e)
         {
             GeneralSettingsDialog generalSettingsDialog = new GeneralSettingsDialog(_appSettingsDir, _settings.PicasaExePath);
@@ -155,6 +150,12 @@ namespace PicasaStarter
             ShowHelp();
         }
 
+        private void ShowHelp()
+        {
+            HelpDialog help = new HelpDialog();
+            help.ShowDialog();
+        }
+
         private void buttonClose_Click(object sender, EventArgs e)
         {
             Close();
@@ -162,7 +163,7 @@ namespace PicasaStarter
 
         #endregion
 
-        #region Event handlers for buttons/events... concerning the list of Picasa databases
+        #region Tab PicasaDatabases
 
         private void listBoxPicasaDBs_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -208,7 +209,7 @@ namespace PicasaStarter
             }
         }
 
-        private void buttonEdit_Click(object sender, EventArgs e)
+        private void buttonEditDB_Click(object sender, EventArgs e)
         {
             bool isStandardDatabase = false;
 
@@ -258,10 +259,6 @@ namespace PicasaStarter
                 ReFillPicasaDBList(false);
             }
         }
-
-        #endregion
-
-        #region Event handlers for buttons/events... concerning actions on/changes to one chosen Picasa database
 
         private void buttonRunPicasa_Click(object sender, EventArgs e)
         {
@@ -369,10 +366,6 @@ namespace PicasaStarter
             }
         }
 
-        #endregion
-
-        #region Private helper functions
-
         private void StartBackup()
         {
             if (listBoxPicasaDBs.SelectedIndex == -1)
@@ -454,12 +447,91 @@ namespace PicasaStarter
             listBoxPicasaDBs.EndUpdate();
         }
 
-        private void ShowHelp()
+        #endregion        
+
+        #region Tab PicasaButtons
+
+        private void buttonAddPicasaButton_Click(object sender, EventArgs e)
         {
-            HelpDialog help = new HelpDialog();
-            help.ShowDialog();
+            CreatePicasaButtonForm createPicasaButtonForm = new CreatePicasaButtonForm(_appSettingsDir);
+
+            createPicasaButtonForm.ShowDialog();
+
+            if (createPicasaButtonForm.DialogResult == DialogResult.OK)
+            {
+                _settings.picasaButtons.ButtonList.Add(createPicasaButtonForm.PicasaButton);
+                this.ReFillPicasaButtonList();
+            }
         }
 
-        #endregion        
+        private void buttonEditPicasaButton_Click(object sender, EventArgs e)
+        {
+            if (listBoxPicasaButtons.SelectedIndex == -1
+                    || listBoxPicasaButtons.SelectedIndex >= _settings.picasaButtons.ButtonList.Count)
+            {
+                MessageBox.Show("Please choose a picasa button from the list first");
+                return;
+            }
+
+            PicasaButton curButton = _settings.picasaButtons.ButtonList[listBoxPicasaButtons.SelectedIndex];
+            CreatePicasaButtonForm createPicasaButtonForm = new CreatePicasaButtonForm(curButton, _appSettingsDir);
+
+            createPicasaButtonForm.ShowDialog();
+
+            if (createPicasaButtonForm.DialogResult == DialogResult.OK)
+            {
+                _settings.picasaButtons.ButtonList[listBoxPicasaButtons.SelectedIndex] = createPicasaButtonForm.PicasaButton;
+                this.ReFillPicasaButtonList();
+            }
+        }
+
+        private void buttonRemovePicasaButton_Click(object sender, EventArgs e)
+        {
+            if (listBoxPicasaButtons.SelectedIndex == -1
+                    || listBoxPicasaButtons.SelectedIndex >= _settings.picasaButtons.ButtonList.Count)
+            {
+                MessageBox.Show("Please choose a picasa button from the list first");
+                return;
+            }
+
+            _settings.picasaButtons.ButtonList.RemoveAt(listBoxPicasaButtons.SelectedIndex);
+            this.ReFillPicasaButtonList();
+        }
+
+        private void listBoxPicasaButtons_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listBoxPicasaButtons.SelectedIndex < 0)
+            {
+                textBoxPicasaButtonDesc.Text = "";
+                return;
+            }
+
+            if (listBoxPicasaButtons.SelectedIndex >= _settings.picasaButtons.ButtonList.Count)
+            {
+                MessageBox.Show("Invalid item choosen from the list");
+                return;
+            }
+
+            textBoxPicasaButtonDesc.Text = _settings.picasaButtons.ButtonList[listBoxPicasaButtons.SelectedIndex].Description;
+        }
+
+        private void ReFillPicasaButtonList()
+        {
+            listBoxPicasaButtons.BeginUpdate();
+            listBoxPicasaButtons.SelectedIndex = -1;
+            listBoxPicasaButtons.Items.Clear();
+
+            for (int i = 0; i < _settings.picasaButtons.ButtonList.Count; i++)
+            {
+                listBoxPicasaButtons.Items.Add(_settings.picasaButtons.ButtonList[i].Label);
+            }
+
+            if (listBoxPicasaButtons.Items.Count > 0)
+                listBoxPicasaButtons.SelectedIndex = 0;
+
+            listBoxPicasaButtons.EndUpdate();
+        }
+
+       #endregion
     }
 }
