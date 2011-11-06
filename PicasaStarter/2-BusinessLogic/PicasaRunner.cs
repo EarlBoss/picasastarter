@@ -6,6 +6,7 @@ using System.IO;
 using System.Windows.Forms;             // Added to be able to show messageboxes
 using System.ComponentModel;            // Added to use Win32Exception
 using HelperClasses;                    // Needed to make symbolic links,...
+using HelperClasses.Logger;              // For logging...
 
 namespace PicasaStarter
 {
@@ -298,6 +299,20 @@ namespace PicasaStarter
                 Environment.SetEnvironmentVariable("userprofile", tmpUserProfile);
             }        
 
+            // Run the Pre_RunPicasa.bat script if it exists, for users that want to do some preprocessing before starting Picasa.
+            try
+            {
+                FileInfo picasaStarterExeFile = new FileInfo(Application.ExecutablePath);
+                string batFilePreRunPicasa = picasaStarterExeFile.DirectoryName + "Pre_RunPicasa.bat";
+                if (File.Exists(batFilePreRunPicasa))
+                    System.Diagnostics.Process.Start(batFilePreRunPicasa);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex);
+                MessageBox.Show("Error running Pre_RunPicasa.bat: " + ex.Message);
+            }
+ 
             // Create a process to launch Picasa in...
             Process picasa = new Process();
             picasa.StartInfo.FileName = _picasaExePath;
@@ -313,6 +328,20 @@ namespace PicasaStarter
 
                 // Release the resources        
                 picasa.Close();
+
+                // Run the Post_RunPicasa.bat script if it exists, for users that want to do some preprocessing before starting Picasa.
+                try
+                {
+                    FileInfo picasaStarterExeFile = new FileInfo(Application.ExecutablePath);
+                    string batFilePostRunPicasa = picasaStarterExeFile.DirectoryName + "Post_RunPicasa.bat";
+                    if (File.Exists(batFilePostRunPicasa))
+                        System.Diagnostics.Process.Start(batFilePostRunPicasa);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex);
+                    MessageBox.Show("Error running Post_RunPicasa.bat: " + ex.Message);
+                }
             }
             catch (Exception ex)
             {
