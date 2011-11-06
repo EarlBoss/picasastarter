@@ -196,8 +196,16 @@ namespace PicasaStarter
 
         private void buttonExploreLogging_Click(object sender, EventArgs e)
         {
-            string logDir = Path.GetTempPath() + "\\PicasaStarter\\Log";
-            System.Diagnostics.Process.Start(logDir);
+            try
+            {
+                string logDir = Path.GetTempPath() + "\\PicasaStarter\\Log";
+                Directory.CreateDirectory(logDir);
+                System.Diagnostics.Process.Start(logDir);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error opening log dir: " + ex.Message);
+            }
         }
     }
 }

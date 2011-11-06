@@ -140,24 +140,26 @@
             // 
             // buttonRunPicasa
             // 
+            this.buttonRunPicasa.BackColor = System.Drawing.Color.Transparent;
             this.buttonRunPicasa.Location = new System.Drawing.Point(310, 42);
             this.buttonRunPicasa.Name = "buttonRunPicasa";
             this.buttonRunPicasa.Size = new System.Drawing.Size(150, 35);
             this.buttonRunPicasa.TabIndex = 44;
             this.buttonRunPicasa.Text = "Run Picasa!";
             this.toolTip.SetToolTip(this.buttonRunPicasa, "Run Picasa using this database");
-            this.buttonRunPicasa.UseVisualStyleBackColor = true;
+            this.buttonRunPicasa.UseVisualStyleBackColor = false;
             this.buttonRunPicasa.Click += new System.EventHandler(this.buttonRunPicasa_Click);
             // 
             // buttonAddDB
             // 
+            this.buttonAddDB.BackColor = System.Drawing.Color.Transparent;
             this.buttonAddDB.Location = new System.Drawing.Point(85, 210);
             this.buttonAddDB.Name = "buttonAddDB";
             this.buttonAddDB.Size = new System.Drawing.Size(60, 23);
             this.buttonAddDB.TabIndex = 45;
             this.buttonAddDB.Text = "Add";
             this.toolTip.SetToolTip(this.buttonAddDB, "Add a new database to the list");
-            this.buttonAddDB.UseVisualStyleBackColor = true;
+            this.buttonAddDB.UseVisualStyleBackColor = false;
             this.buttonAddDB.Click += new System.EventHandler(this.buttonAddDB_Click);
             // 
             // buttonRemoveDB
