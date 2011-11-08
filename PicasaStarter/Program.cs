@@ -180,7 +180,7 @@ namespace PicasaStarter
                     {
                         // If the user wants to run his personal default database... (cmd line arg was "personal") 
                         PicasaRunner runner = new PicasaRunner(appDataDir, settings.PicasaExePath);
-                        runner.RunPicasa(null);
+                        runner.RunPicasa(null, appSettingsDir);
                     }
                     else
                     {
@@ -203,12 +203,12 @@ namespace PicasaStarter
 
                             // If the user wants to run his personal default database... 
                             if (foundDB.IsStandardDB == true)
-                                runner.RunPicasa(null);
+                                runner.RunPicasa(null, appSettingsDir);
                             // If the user wants to run a custom database...
                             else
                             {
                                 if (Directory.Exists(foundDB.BaseDir))
-                                    runner.RunPicasa(foundDB.BaseDir);
+                                    runner.RunPicasa(foundDB.BaseDir, appSettingsDir);
                                 else
                                     MessageBox.Show("The base directory of this database doesn't exist or you didn't choose one yet.");
                             }
