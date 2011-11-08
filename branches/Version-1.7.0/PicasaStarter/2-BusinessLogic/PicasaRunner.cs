@@ -6,65 +6,63 @@ using System.IO;
 using System.Windows.Forms;             // Added to be able to show messageboxes
 using System.ComponentModel;            // Added to use Win32Exception
 using HelperClasses;                    // Needed to make symbolic links,...
-using HelperClasses.Logger;              // For logging...
+using HelperClasses.Logger;             // For logging...
 
 namespace PicasaStarter
 {
     class PicasaRunner
     {
-        private string _picasaExePath;
-        private string _symlinkBaseDir;
+        public string PicasaExePath { get; private set; }
+        public string SymlinkBaseDir { get; private set; }
+        public string PicasaDBBasePath { get; private set; }
+        public string GoogleAppDir { get; private set; }
+        public string AppSettingsDir { get; private set; }
 
         public PicasaRunner(string symlinkBaseDir, string picasaExePath)
         {
-            _symlinkBaseDir = symlinkBaseDir;
-            _picasaExePath = picasaExePath;     //Path from the settings File
+            SymlinkBaseDir = symlinkBaseDir;
+            PicasaExePath = picasaExePath;     //Path from the settings File
         }
 
-        public void RunPicasa(string CustomDBBasePath)
+        public void RunPicasa(string customDBBasePath, string appSettingsDir)
         {
+            PicasaDBBasePath = customDBBasePath;
+            AppSettingsDir = appSettingsDir;
+
             // Check if the executable from settings exists...
-            if (!File.Exists(_picasaExePath))
+            if (!File.Exists(PicasaExePath))
             {
                 //Saved path doesn't exist, try Path from local Config File
-                _picasaExePath = (SettingsHelper.ConfigPicasaExePath);
+                PicasaExePath = (SettingsHelper.ConfigPicasaExePath);
             }
-            if (!File.Exists(_picasaExePath))
+            if (!File.Exists(PicasaExePath))
             {
                 //Saved path doesn't exist, try default for this OS
-                _picasaExePath = (SettingsHelper.ProgramFilesx86() + "\\google\\Picasa3\\picasa3.exe");
+                PicasaExePath = (SettingsHelper.ProgramFilesx86() + "\\google\\Picasa3\\picasa3.exe");
             }
-            if (!File.Exists(_picasaExePath))
+            if (!File.Exists(PicasaExePath))
             {
-                MessageBox.Show("Picasa executable isn't found here: " + _picasaExePath);
+                MessageBox.Show("Picasa executable isn't found here: " + PicasaExePath);
                 return;
             }
 
-            // Check if a picasa is running already on this database...
-            string lockFileDir = CustomDBBasePath;
-            string lockFilePath = lockFileDir + "\\PicasaRunning.txt";
-
-            // If no custom path was provided... search the lock file in userprofile...
-            if (CustomDBBasePath == null)
-            {
-                lockFileDir = Environment.GetEnvironmentVariable("userprofile");
-                lockFilePath = lockFileDir + "\\PicasaRunning.txt";
-            }
-
+            FileInfo lockFile = null;
             try
             {
                 // Now check the lock file, and create it if it doesn't exist yet...
                 DialogResult res = DialogResult.Yes;
-                if (File.Exists(lockFilePath))
+                lockFile = GetLockFile();
+                if (lockFile.Exists)
                 {
-                    string messageRead = File.ReadAllText(lockFilePath);
+                    string messageRead = File.ReadAllText(lockFile.FullName);
 
-                    res = MessageBox.Show("Running Picasa two times on the same database leads to a corrupted database, so you shouldn't do this! " 
-                        + "PicasaStarter detected that another Picasa is probably running using this same database:"
-                        + Environment.NewLine + Environment.NewLine + messageRead + Environment.NewLine + Environment.NewLine
-                        + "If you are really sure this is not the case, you can override this check. So are you sure you want to start Picasa?",
-                        "Are you sure there is no other Picasa running using the same database?", 
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2, (MessageBoxOptions)0x40000);
+                    string message = "Running Picasa two times on the same database leads to a corrupted database, so you shouldn't do this! " 
+                            + "PicasaStarter detected that another Picasa is probably running using this same database:"
+                            + Environment.NewLine + Environment.NewLine + messageRead + Environment.NewLine + Environment.NewLine
+                            + "If you are really sure this is not the case, you can override this check. So are you sure you want to start Picasa?";
+                    res = MessageBox.Show(message, "Are you sure there is no other Picasa running using the same database?",
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2, 
+                            (MessageBoxOptions)0x40000);
 
                     // If the user isn't sure that there is no other Picasa is running... stop!
                     if (res == DialogResult.No)
@@ -73,12 +71,12 @@ namespace PicasaStarter
 
                 string messageToWrite = "That Picasa was started by " + Environment.UserName
                     + " on computer " + Environment.MachineName + " at " + DateTime.Now;
-                Directory.CreateDirectory(lockFileDir);
-                File.WriteAllText(lockFilePath, messageToWrite);
+                lockFile.Directory.Create();
+                File.WriteAllText(lockFile.FullName, messageToWrite);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error creating lock file in database path <" + CustomDBBasePath + ">: " 
+                MessageBox.Show("Error creating lock file in database path <" + PicasaDBBasePath + ">: " 
                         + Environment.NewLine + Environment.NewLine + ex.Message);
                 return;
             }
@@ -95,21 +93,23 @@ namespace PicasaStarter
             bool isLocalizedXP = false;
             
             // If no custom path was provided... only init DB so popup doesn't show to scan entire PC...
-            if (CustomDBBasePath == null)
+            if (PicasaDBBasePath == null)
             {
                 // This is the path where the Picasa database will be put...
-                string fullLocalAppDataLocalized = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                GoogleAppDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\Google";
 
-                this.InitializeDB(fullLocalAppDataLocalized + "\\Google");
+                this.InitializeDB(GoogleAppDir);
+                this.StartBatFile("Pre_RunPicasa.bat");
             }
             else
             {
                 string tmpUserProfile;
 
                 // Default database path is the path for Windows XP. Needed for mixed systems.
-                string CustomDBFullPath = CustomDBBasePath + localAppDataXPEngPart1 + localAppDataXPEngPart2;
+                string CustomDBFullPath = PicasaDBBasePath + localAppDataXPEngPart1 + localAppDataXPEngPart2;
+                GoogleAppDir = CustomDBFullPath + "\\Google";
 
-                this.InitializeDB(CustomDBFullPath + "\\Google");
+                this.InitializeDB(GoogleAppDir);
 
                 // If we are running on a Windows XP with a non-default language, we need to adapt the 
                 // path where the Picasa database is stored...
@@ -131,23 +131,23 @@ namespace PicasaStarter
                             || localAppDataXPLocalPart2 != localAppDataXPEngPart2)
                     {
                         isLocalizedXP = true;
-                        CustomDBFullPath = CustomDBBasePath + localAppDataXPLocalPart1 + localAppDataXPLocalPart2;
+                        CustomDBFullPath = PicasaDBBasePath + localAppDataXPLocalPart1 + localAppDataXPLocalPart2;
 
                         // If we are working on a localized XP, check if an "english" directory exists...
                         // and rename it to the localized dir if so...
                         try
                         {
-                            if (Directory.Exists(CustomDBBasePath + localAppDataXPEngPart1 + localAppDataXPEngPart2))
+                            if (Directory.Exists(PicasaDBBasePath + localAppDataXPEngPart1 + localAppDataXPEngPart2))
                             {
-                                Directory.CreateDirectory(CustomDBBasePath + localAppDataXPLocalPart1);
-                                Directory.Move(CustomDBBasePath + localAppDataXPEngPart1 + localAppDataXPEngPart2,
-                                        CustomDBBasePath + localAppDataXPLocalPart1 + localAppDataXPLocalPart2);
+                                Directory.CreateDirectory(PicasaDBBasePath + localAppDataXPLocalPart1);
+                                Directory.Move(PicasaDBBasePath + localAppDataXPEngPart1 + localAppDataXPEngPart2,
+                                        PicasaDBBasePath + localAppDataXPLocalPart1 + localAppDataXPLocalPart2);
                             }
                         }
                         catch (Exception ex)
                         {
                             MessageBox.Show("Error: " + ex.Message + ", Path: " + CustomDBFullPath);
-                            File.Delete(lockFilePath);
+                            lockFile.Delete();
                             return;
                         }
                     }
@@ -158,19 +158,19 @@ namespace PicasaStarter
                 {
                     Directory.CreateDirectory(CustomDBFullPath);
                     // Otherwise Export functionality gives error
-                    Directory.CreateDirectory(CustomDBBasePath + "\\Desktop");
+                    Directory.CreateDirectory(PicasaDBBasePath + "\\Desktop");
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("Error: " + ex.Message + ", Path: " + CustomDBFullPath);
-                    File.Delete(lockFilePath);
+                    lockFile.Delete();
                     return;
                 }
 
                 // If we are running on Windows XP, we let Picasa use DBPath as userprofile
                 if (Environment.OSVersion.Version.Major <= 5)
                 {
-                    tmpUserProfile = CustomDBBasePath;
+                    tmpUserProfile = PicasaDBBasePath;
                 }
 
                 // Starting from Vista or higher, create temporary symbolic links to point to the DBPath, and the 
@@ -180,7 +180,7 @@ namespace PicasaStarter
                 else
                 {
                     // Create the directory to put the symlink, if he doesn't exist
-                    string symLinkBaseDir = _symlinkBaseDir + "\\" + CustomDBFullPath.Replace('\\', '_').Replace(':', '_');
+                    string symLinkBaseDir = SymlinkBaseDir + "\\" + CustomDBFullPath.Replace('\\', '_').Replace(':', '_');
                     string symLinkDir = symLinkBaseDir + "\\Appdata";
 
                     try
@@ -192,7 +192,7 @@ namespace PicasaStarter
                     catch (Exception ex)
                     {
                         MessageBox.Show("Error: " + ex.Message + ", Path: " + symLinkDir);
-                        File.Delete(lockFilePath);
+                        lockFile.Delete();
                         return;
                     }
 
@@ -229,11 +229,9 @@ namespace PicasaStarter
                             {
 
                                 MessageBox.Show("The first time you use a custom database, PicasaStarter needs more privileges to initialise some things. "
-                                    + "In the next popup you will be asked if you want to allow this...", "Ask For Admin Privileges",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Exclamation,
-                                MessageBoxDefaultButton.Button1,  // specify "Yes" as the default 
-                                (MessageBoxOptions)0x40000);      // specify MB_TOPMOST 
+                                        + "In the next popup you will be asked if you want to allow this...", "Ask For Admin Privileges",
+                                        MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1,
+                                        (MessageBoxOptions)0x40000);      // specify MB_TOPMOST 
                                 try
                                 {
                                     // Create a process to launch Picasa in...
@@ -252,10 +250,8 @@ namespace PicasaStarter
                                 catch
                                 {
                                     MessageBox.Show("Administrative Privileges Not Allowed By Operator", "Symlink Not Created",
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Exclamation,
-                                    MessageBoxDefaultButton.Button1,  // specify "Yes" as the default 
-                                    (MessageBoxOptions)0x40000);      // specify MB_TOPMOST 
+                                            MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1,
+                                            (MessageBoxOptions)0x40000);      // specify MB_TOPMOST 
                                     return;
                                 }
 
@@ -263,10 +259,8 @@ namespace PicasaStarter
                             else
                             {
                                 MessageBox.Show("There was an error creating the necessary symbolic link. Try this procedure please:\n1) Close PicasaStarter\n2) Run PicasaStarter once as administrator and click \"Run Picasa\" with this database", "Symlink Not Created",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Exclamation,
-                                MessageBoxDefaultButton.Button1,  // specify "Yes" as the default 
-                                (MessageBoxOptions)0x40000);      // specify MB_TOPMOST 
+                                        MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1,
+                                        (MessageBoxOptions)0x40000);      // specify MB_TOPMOST 
                                 return;
                             }
                         }
@@ -276,10 +270,8 @@ namespace PicasaStarter
                     if (!Directory.Exists(symLinkPath))
                     {
                         MessageBox.Show("There was an error creating the necessary symbolic link. Try this procedure please:\n1) Close PicasaStarter\n2) Run PicasaStarter once as administrator and click \"Run Picasa\" with this database", "Symlink Not Created",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Exclamation,
-                        MessageBoxDefaultButton.Button1,  // specify "Yes" as the default 
-                        (MessageBoxOptions)0x40000);      // specify MB_TOPMOST 
+                                MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, 
+                                (MessageBoxOptions)0x40000);      // specify MB_TOPMOST 
                         return;
                     }
                     // To finish, the userprofile will be put to the picasaRunTempPath. 
@@ -297,26 +289,15 @@ namespace PicasaStarter
                 // Backup userprofile environment variable and overwrite with DB path...
                 originalUserProfile = Environment.GetEnvironmentVariable("userprofile");
                 Environment.SetEnvironmentVariable("userprofile", tmpUserProfile);
-            }        
+            
+            }
 
-            // Run the Pre_RunPicasa.bat script if it exists, for users that want to do some preprocessing before starting Picasa.
-            try
-            {
-                FileInfo picasaStarterExeFile = new FileInfo(Application.ExecutablePath);
-                string batFilePreRunPicasa = picasaStarterExeFile.DirectoryName + "Pre_RunPicasa.bat";
-                if (File.Exists(batFilePreRunPicasa))
-                    System.Diagnostics.Process.Start(batFilePreRunPicasa);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex);
-                MessageBox.Show("Error running Pre_RunPicasa.bat: " + ex.Message);
-            }
- 
+            StartBatFile("Pre_RunPicasa.bat");
+
             // Create a process to launch Picasa in...
             Process picasa = new Process();
-            picasa.StartInfo.FileName = _picasaExePath;
-            picasa.StartInfo.WorkingDirectory = CustomDBBasePath;
+            picasa.StartInfo.FileName = PicasaExePath;
+            picasa.StartInfo.WorkingDirectory = PicasaDBBasePath;
 
             try
             {
@@ -330,27 +311,16 @@ namespace PicasaStarter
                 picasa.Close();
 
                 // Run the Post_RunPicasa.bat script if it exists, for users that want to do some preprocessing before starting Picasa.
-                try
-                {
-                    FileInfo picasaStarterExeFile = new FileInfo(Application.ExecutablePath);
-                    string batFilePostRunPicasa = picasaStarterExeFile.DirectoryName + "Post_RunPicasa.bat";
-                    if (File.Exists(batFilePostRunPicasa))
-                        System.Diagnostics.Process.Start(batFilePostRunPicasa);
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex);
-                    MessageBox.Show("Error running Post_RunPicasa.bat: " + ex.Message);
-                }
+                StartBatFile("Post_Runpicasa.bat");
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + ": <" + _picasaExePath + ">");
+                MessageBox.Show(ex.Message + ": <" + PicasaExePath + ">");
             }
             finally
             {
                 // Cleanup userprofile environment variable...
-                if (CustomDBBasePath != null)
+                if (PicasaDBBasePath != null)
                 {
                     Environment.SetEnvironmentVariable("userprofile", originalUserProfile);
                 }
@@ -371,12 +341,12 @@ namespace PicasaStarter
                         {
                             // Be sure that the english version exists...
                             caption = "Create English Dir failed";
-                            Directory.CreateDirectory(CustomDBBasePath + localAppDataXPEngPart1);
+                            Directory.CreateDirectory(PicasaDBBasePath + localAppDataXPEngPart1);
 
                             // Move and rename the localized directory...
                             caption = "Localized Database Move Failure";
-                            Directory.Move(CustomDBBasePath + localAppDataXPLocalPart1 + localAppDataXPLocalPart2,
-                                    CustomDBBasePath + localAppDataXPEngPart1 + localAppDataXPEngPart2);
+                            Directory.Move(PicasaDBBasePath + localAppDataXPLocalPart1 + localAppDataXPLocalPart2,
+                                    PicasaDBBasePath + localAppDataXPEngPart1 + localAppDataXPEngPart2);
                             result = DialogResult.Cancel;
                         }
                         catch (Exception ex)
@@ -386,8 +356,8 @@ namespace PicasaStarter
                             {
                                 // Ask operator to retry if there was an error
                                 string message = "In XP, the localized database path could not be renamed to English. \n The error was: " + ex.Message +
-                                    "\nLocalized Path: " + CustomDBBasePath + localAppDataXPLocalPart1 + localAppDataXPLocalPart2 +
-                                    "\nEnglish Path:   " + CustomDBBasePath + localAppDataXPEngPart1 + localAppDataXPEngPart2 +
+                                    "\nLocalized Path: " + PicasaDBBasePath + localAppDataXPLocalPart1 + localAppDataXPLocalPart2 +
+                                    "\nEnglish Path:   " + PicasaDBBasePath + localAppDataXPEngPart1 + localAppDataXPEngPart2 +
                                     "\n\nPush RETRY to try again, or push CANCEL to exit";
 
                                 result = MessageBox.Show(message, caption, MessageBoxButtons.RetryCancel,
@@ -400,24 +370,64 @@ namespace PicasaStarter
                     }
                 }
                 
-                File.Delete(lockFilePath);
+                lockFile.Delete();
             }
         }
 
-        private void InitializeDB(string googleDir)
+        #region private helper functions...
+
+        private void StartBatFile(string fileName)
+        {
+            // Run the Pre_RunPicasa.bat script if it exists, for users that want to do some preprocessing before starting Picasa.
+            try
+            {
+                // Set some environment variables for Pre_RunPicasa.bat and Post_RunPicasa.bat
+                Environment.SetEnvironmentVariable("PS_PicasaDBGoogleDir", GoogleAppDir + "\\Google");
+                Environment.SetEnvironmentVariable("PS_SettingsDir", AppSettingsDir);
+            
+                FileInfo picasaStarterExeFile = new FileInfo(Application.ExecutablePath);
+                string batFilePreRunPicasa = picasaStarterExeFile.DirectoryName + fileName;
+                if (File.Exists(batFilePreRunPicasa))
+                    System.Diagnostics.Process.Start(batFilePreRunPicasa);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex);
+                MessageBox.Show("Error running " + fileName + ": " + ex.Message);
+            }
+        }
+
+        private FileInfo GetLockFile()
+        {
+            // Check if a picasa is running already on this database...
+            string lockFileDir = PicasaDBBasePath;
+            string lockFilePath = lockFileDir + "\\PicasaRunning.txt";
+
+            // If no custom path was provided... search the lock file in userprofile...
+            if (PicasaDBBasePath == null)
+            {
+                lockFileDir = Environment.GetEnvironmentVariable("userprofile");
+                lockFilePath = lockFileDir + "\\PicasaRunning.txt";
+            }
+
+            return new FileInfo(lockFilePath);
+        }
+
+        private void InitializeDB(string googleAppDir)
         {
             // If the DB existst already... don't do anything...
-            string PicasaAlbumsDir = googleDir + "\\Picasa2Albums";
-            string PicasaDBDir = googleDir + "\\Picasa2";
+            string PicasaAlbumsDir = googleAppDir + "\\Picasa2Albums";
+            string PicasaDBDir = googleAppDir + "\\Picasa2";
             if (Directory.Exists(PicasaAlbumsDir))
                 return;
             
             // Ask if the user want the popup to let Picasa scan the computer...
             DialogResult result = MessageBox.Show(
-            "Do you want to let Picasa search for all your images on your computer?" +
-            "\n\nIf not, you need to add the folders you want to be scanned by Picasa using " +
-            "\"File\"/\"Add folder to Picasa\".", "Do you want to let Picasa search your images?",
-            MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, (MessageBoxOptions)0x40000);
+                    "Do you want to let Picasa search for all your images on your computer?" +
+                    "\n\nIf not, you need to add the folders you want to be scanned by Picasa using " +
+                    "\"File\"/\"Add folder to Picasa\".", "Do you want to let Picasa search your images?",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, 
+                    (MessageBoxOptions)0x40000);
 
             // If yes, nothing more to do...
             if (result == DialogResult.Yes)
@@ -431,5 +441,7 @@ namespace PicasaStarter
                 Directory.CreateDirectory(PicasaDBDir + "\\db3");
             File.WriteAllBytes(PicasaDBDir + "\\db3\\thumbs_index.db", Properties.Resources.thumbs_index);
         }
+        #endregion
+
     }
 }

@@ -11,6 +11,18 @@ namespace HelperClasses
 {
     class IOHelper
     {
+        public static void GetMappedDriveNames()
+        {
+            // Make a WMI objectsearcher to find the info
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("select * from Win32_MappedLogicalDisk");
+
+            foreach (ManagementObject drive in searcher.Get())
+            {
+                //Console.WriteLine(Regex.Match(drive["ProviderName"].ToString(), @"\\\\([^\\]+)").Groups[1]);
+                Log.Debug("Hello");
+            }
+        }
+
         public static void CreateSymbolicLink(string SymLinkFileName, string SymLinkDestination, bool CreateDirectorySymLink)
         {
             int dwFlags = 0;    // Default, create a file symbolic link;

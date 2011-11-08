@@ -459,7 +459,7 @@ namespace BackupNS
                 curDirToBackup = dirsAndFiles[i].Dir.FullName;
 
                 // Prepare the dir where to put the file inside the backup directory
-                string curDirTmp = '\\' + System.Environment.MachineName + "_Drive-" + curDirToBackup.Replace(":", "");
+                string curDirTmp = GetDirToBackupToRelativePart(curDirToBackup);
                 string curDirToBackupTo = _dirToBackupTo + curDirTmp;
                 string prevDirBackedupTo = _dirPrevBackup + curDirTmp;
 
@@ -544,6 +544,14 @@ namespace BackupNS
                     Log.Error(ex.Message);
                 }
             }       
+        }
+
+        private string GetDirToBackupToRelativePart(string curDirToBackup)
+        {
+            DirectoryInfo info = new DirectoryInfo(curDirToBackup);
+
+//            info.Root
+            return '\\' + System.Environment.MachineName + "_Drive-" + curDirToBackup.Replace(":", "");
         }
 
         /// <summary>

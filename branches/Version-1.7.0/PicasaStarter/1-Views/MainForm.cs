@@ -315,7 +315,7 @@ namespace PicasaStarter
             _settings.picasaButtons.Registerbuttons();
             
             // Go!
-            runner.RunPicasa(dbBaseDir);
+            runner.RunPicasa(dbBaseDir, _appSettingsDir);
             
             // Restore the MainForm...
             WindowState = FormWindowState.Normal;
