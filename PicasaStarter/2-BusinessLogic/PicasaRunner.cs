@@ -382,11 +382,11 @@ namespace PicasaStarter
             try
             {
                 // Set some environment variables for Pre_RunPicasa.bat and Post_RunPicasa.bat
-                Environment.SetEnvironmentVariable("PS_PicasaDBGoogleDir", GoogleAppDir + "\\Google");
+                Environment.SetEnvironmentVariable("PS_PicasaDBGoogleDir", GoogleAppDir);
                 Environment.SetEnvironmentVariable("PS_SettingsDir", AppSettingsDir);
             
-                FileInfo picasaStarterExeFile = new FileInfo(Application.ExecutablePath);
-                string batFilePreRunPicasa = picasaStarterExeFile.DirectoryName + "\\" + fileName;
+                string batFilePreRunPicasa = AppSettingsDir + "\\" + fileName;
+
                 if (File.Exists(batFilePreRunPicasa))
                 {
                     Process batFile = System.Diagnostics.Process.Start(batFilePreRunPicasa);

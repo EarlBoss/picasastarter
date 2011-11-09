@@ -101,6 +101,17 @@ namespace PicasaStarter
             }
             if (!firstRun)
             {
+                // Save settings
+                //---------------------------------------------------------------------------
+                try
+                {
+                    SettingsHelper.SerializeSettings(settings,
+                            appSettingsDir + "\\" + SettingsHelper.SettingsFileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error saving settings: " + ex.Message);
+                }
 
                 // Process command line arguments...
                 //---------------------------------------------------------------------------
@@ -225,20 +236,6 @@ namespace PicasaStarter
             if (showGUI == true) 
             {
                 Application.Run(new MainForm(settings, appDataDir, appSettingsDir, firstRun));
-            }
-            else 
-            {
-                // Save settings
-                //---------------------------------------------------------------------------
-                try
-                {
-                    SettingsHelper.SerializeSettings(settings,
-                            appSettingsDir + "\\" + SettingsHelper.SettingsFileName);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error saving settings: " + ex.Message);
-                }
             }
         }
     }
