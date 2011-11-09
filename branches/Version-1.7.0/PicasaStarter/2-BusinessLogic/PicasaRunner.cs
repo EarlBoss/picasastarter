@@ -386,9 +386,16 @@ namespace PicasaStarter
                 Environment.SetEnvironmentVariable("PS_SettingsDir", AppSettingsDir);
             
                 FileInfo picasaStarterExeFile = new FileInfo(Application.ExecutablePath);
-                string batFilePreRunPicasa = picasaStarterExeFile.DirectoryName + fileName;
+                string batFilePreRunPicasa = picasaStarterExeFile.DirectoryName + "\\" + fileName;
                 if (File.Exists(batFilePreRunPicasa))
-                    System.Diagnostics.Process.Start(batFilePreRunPicasa);
+                {
+                    Process batFile = System.Diagnostics.Process.Start(batFilePreRunPicasa);
+                    // Wait until the process started is finished
+                    batFile.WaitForExit();
+
+                    // Release the resources        
+                    batFile.Close();
+                }
             }
             catch (Exception ex)
             {
