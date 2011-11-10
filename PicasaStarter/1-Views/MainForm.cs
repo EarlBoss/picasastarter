@@ -321,7 +321,7 @@ namespace PicasaStarter
             WindowState = FormWindowState.Normal;
 
             // Does the user want a backup?
-            DialogResult result = MessageBox.Show("Do you wan't to take a backup of the latest version of your images and database?",
+            DialogResult result = MessageBox.Show("Do you want to take a backup of the latest version of your images and database?",
                     "Backup?", MessageBoxButtons.YesNo);
             if(result == DialogResult.Yes)
                 StartBackup();

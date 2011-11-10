@@ -217,8 +217,9 @@ namespace PicasaStarter
                         //Create Symlink
                         try
                         {
-                            IOHelper.CreateSymbolicLink(symLinkPath, symLinkDest, true);
-                        }
+                            if (Directory.Exists(symLinkDest))
+                                IOHelper.CreateSymbolicLink(symLinkPath, symLinkDest, true);
+                         }
                         catch (Win32Exception ex)
                         {
                             // If the code says the user doesn't have enough privileges, or in Windows 7 he gives another stupid fault, 
@@ -249,7 +250,7 @@ namespace PicasaStarter
                                 }
                                 catch
                                 {
-                                    MessageBox.Show("Administrative Privileges Not Allowed By Operator", "Symlink Not Created",
+                                    MessageBox.Show("Administrative Privileges Not Allowed or Target Not Found,Try this procedure please:\n1) Close PicasaStarter\n2) Run PicasaStarter once as administrator and click \"Run Picasa\" with this database", "Symlink Not Created",
                                             MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1,
                                             (MessageBoxOptions)0x40000);      // specify MB_TOPMOST 
                                     return;
