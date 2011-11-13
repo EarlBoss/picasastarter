@@ -5,22 +5,37 @@ using System.IO;
 using System.Management;               // To be able to use ManagementObject
 using System.Runtime.InteropServices;
 using System.ComponentModel;           // Added to use kernel32.dll for creating symbolic links
-using HelperClasses.Logger;             // Static logging class
+using HelperClasses.Logger;            // Static logging class
 
 namespace HelperClasses
 {
     class IOHelper
     {
-        public static void GetMappedDriveNames()
+        /// <summary>
+        /// Return the share name of the mapped drive if it is a mapped drive, otherwise returns "".
+        /// </summary>
+        /// <param name="driveLetter">The drive letter, including ':'</param>
+        /// <returns></returns>
+        public static string GetMappedDriveName(string driveLetter)
         {
             // Make a WMI objectsearcher to find the info
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("select * from Win32_MappedLogicalDisk");
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("select * from Win32_LogicalDisk");
 
-            foreach (ManagementObject drive in searcher.Get())
+            foreach (ManagementObject queryObj in searcher.Get())
             {
-                //Console.WriteLine(Regex.Match(drive["ProviderName"].ToString(), @"\\\\([^\\]+)").Groups[1]);
-                Log.Debug("Hello");
+                string curDriveLetter = (string)queryObj["Name"];
+                if (curDriveLetter == driveLetter)
+                {
+                    string providerName = (string)queryObj["ProviderName"];
+
+                    if (providerName != null)
+                        return providerName;
+                    else
+                        return "";
+                }
             }
+
+            return "";
         }
 
         public static void CreateSymbolicLink(string SymLinkFileName, string SymLinkDestination, bool CreateDirectorySymLink)

@@ -12,50 +12,43 @@ namespace PicasaStarter
 {
     public partial class GeneralSettingsDialog : Form
     {
-        private string _appSettingsDir = "";
-        private string _picasaExePath;
-        private string _returnPicasaExePath;
-        private string _returnAppSettingsDir;
+        private string _appSettingsDir;
         private Settings _localSettings = null;
-        private Settings _returnSettings = null;
-        private bool _setDefaultIniPath = false;
-        private bool _iniPathChanged = false;
+        private bool _setDefaultIniPath;
+        private bool _iniPathChanged;
 
-        public string PicasaExePath { get { return _picasaExePath; } set { _picasaExePath = value; } }
-
-        public string ReturnPicasaExePath { get { return _returnPicasaExePath; } private set { _returnPicasaExePath = value; } }
-        public Settings ReturnPicasaSettings { get { return _returnSettings; } private set { _returnSettings = value; } }
-        public string ReturnAppSettingsDir { get { return _returnAppSettingsDir; } private set { _returnAppSettingsDir = value; } }
+        public string PicasaExePath { get; set; }
+        public string ReturnPicasaExePath { get; private set; }
+        public Settings ReturnPicasaSettings { get; private set; }
+        public string ReturnAppSettingsDir { get ; private set; }
 
         public GeneralSettingsDialog(string appSettingsDir, string picasaExePath)
         {
             InitializeComponent();
 
-            _returnAppSettingsDir = _appSettingsDir = appSettingsDir;
-            _returnPicasaExePath = _picasaExePath = picasaExePath;
-            
+            ReturnAppSettingsDir = _appSettingsDir = appSettingsDir;
+            ReturnPicasaExePath = PicasaExePath = picasaExePath;
         }
 
         private void GeneralSettingsForm_Load(object sender, EventArgs e)
         {
-            textBoxPicasaExePath.Text = _picasaExePath;
+            textBoxPicasaExePath.Text = PicasaExePath;
             if (_appSettingsDir == SettingsHelper.ConfigurationDir)
                 textBoxSettingsXMLPath.Text = SettingsHelper.ConfigurationDir;
             else 
                 textBoxSettingsXMLPath.Text = _appSettingsDir;
-
         }
 
         private void textBoxPicasaExePath_TextChanged(object sender, EventArgs e)
         {
-            _picasaExePath = textBoxPicasaExePath.Text;
+            PicasaExePath = textBoxPicasaExePath.Text;
         }
 
         private void buttonBrowsePicasaExePath_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
 
-            openFileDialog1.InitialDirectory = Path.GetDirectoryName(_picasaExePath);
+            openFileDialog1.InitialDirectory = Path.GetDirectoryName(PicasaExePath);
             openFileDialog1.Filter = "exe files (*.exe)|*.exe|All files (*.*)|*.*";
             openFileDialog1.FilterIndex = 1;
             openFileDialog1.RestoreDirectory = true;
@@ -82,14 +75,14 @@ namespace PicasaStarter
                         if (_setDefaultIniPath)
                         {
                             config.picasaStarterSettingsXMLPath = "";
-                            _returnAppSettingsDir = SettingsHelper.ConfigurationDir;
+                            ReturnAppSettingsDir = SettingsHelper.ConfigurationDir;
                         }
                         else
                         {
                             config.picasaStarterSettingsXMLPath = textBoxSettingsXMLPath.Text;
-                            _returnAppSettingsDir = config.picasaStarterSettingsXMLPath;
+                            ReturnAppSettingsDir = config.picasaStarterSettingsXMLPath;
                         }
-                        config.configPicasaExePath = _picasaExePath;
+                        config.configPicasaExePath = PicasaExePath;
                         try
                         {
                             SettingsHelper.SerializeConfig(config,
@@ -103,7 +96,7 @@ namespace PicasaStarter
                     ReturnPicasaSettings = _localSettings;
                 }
             }
-            ReturnPicasaExePath = _picasaExePath;
+            ReturnPicasaExePath = PicasaExePath;
 
             this.DialogResult = DialogResult.OK;
             Close();

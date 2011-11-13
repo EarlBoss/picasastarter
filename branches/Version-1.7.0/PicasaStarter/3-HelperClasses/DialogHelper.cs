@@ -7,11 +7,13 @@ namespace PicasaStarter
 {
     static class DialogHelper
     {
-        public static string AskDirectoryPath(string InitialDirectory)
+        public static string AskDirectoryPath(string InitialDirectory = "")
         {
             FolderBrowserDialog fd = new FolderBrowserDialog();
             fd.ShowNewFolderButton = true;
-            fd.SelectedPath = InitialDirectory;
+
+            if (InitialDirectory != "")
+                fd.SelectedPath = InitialDirectory;
 
             if (fd.ShowDialog() == DialogResult.OK)
                 return fd.SelectedPath;

@@ -116,17 +116,17 @@ namespace BackupNS
         #region Private Members
 
         private BackupStrategy _strategy = BackupStrategy.SISRotating;
-        private string _destinationDir = "";
+        private string _destinationDir;
         private List<string> _dirsToBackup = new List<string>();
         private List<string> _dirsToExclude = new List<string>();
 
         private Boolean _onlySimulate = false;      // If true, the backup isn't actualy created, only the logging is written...
-        private string _dirPrevBackup = "";
-        private string _dirToBackupTo = "";
+        private string _dirPrevBackup;
+        private string _dirToBackupTo;
         private int _maxNbBackups = 100;
 
         private BackgroundWorker _bw = null;
-        private bool _backupCancelled = false;
+        private bool _backupCancelled;
         
 
         #endregion
@@ -549,9 +549,18 @@ namespace BackupNS
         private string GetDirToBackupToRelativePart(string curDirToBackup)
         {
             DirectoryInfo info = new DirectoryInfo(curDirToBackup);
+            string storageDevice;
 
-//            info.Root
-            return '\\' + System.Environment.MachineName + "_Drive-" + curDirToBackup.Replace(":", "");
+            // Get the mapped drive name (if it is one...)
+            storageDevice = IOHelper.GetMappedDriveName(curDirToBackup.Substring(0, 2));
+
+            // If it was a mapped drive
+            if (storageDevice != "")
+                storageDevice += curDirToBackup.Substring(2);
+            else
+                storageDevice = '\\' + System.Environment.MachineName + "_Drive-" + curDirToBackup.Replace(":", "");
+
+            return storageDevice;
         }
 
         /// <summary>
