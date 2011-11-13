@@ -195,6 +195,11 @@ namespace PicasaStarter
             toolTip.SetToolTip(listBoxPicasaDBs, toolTipText);
         }
 
+        private void listBoxPicasaDBs_DoubleClick(object sender, EventArgs e)
+        {
+            buttonEditDB_Click(sender, e);
+        }
+
         private void buttonAddDB_Click(object sender, EventArgs e)
         {
             CreatePicasaDBForm createPicasaDB = new CreatePicasaDBForm();
@@ -306,12 +311,16 @@ namespace PicasaStarter
             IOHelper.TryDeleteFiles(destButtonDir, "PS_Button*");
             foreach (PicasaButton button in _settings.picasaButtons.ButtonList)
             {
-                button.CreateButtonFile(destButtonDir);
+                try
+                {
+                    button.CreateButtonFile(destButtonDir);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
-            string path = Environment.GetEnvironmentVariable("PATH");
-            path = destButtonDir + "\\;" + path;
-            Environment.SetEnvironmentVariable("PATH", path);
-            
+
             _settings.picasaButtons.Registerbuttons();
             
             // Go!
@@ -515,6 +524,11 @@ namespace PicasaStarter
             textBoxPicasaButtonDesc.Text = _settings.picasaButtons.ButtonList[listBoxPicasaButtons.SelectedIndex].Description;
         }
 
+        private void listBoxPicasaButtons_DoubleClick(object sender, EventArgs e)
+        {
+            buttonEditPicasaButton_Click(sender, e);
+        }
+
         private void ReFillPicasaButtonList()
         {
             listBoxPicasaButtons.BeginUpdate();
@@ -533,5 +547,6 @@ namespace PicasaStarter
         }
 
        #endregion
+
     }
 }

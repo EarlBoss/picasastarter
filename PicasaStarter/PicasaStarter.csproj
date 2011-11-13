@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PicasaStarter</RootNamespace>
     <AssemblyName>PicasaStarter</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <ManifestCertificateThumbprint>124CEB363D65F730CBE2773093FB8791EABC59A4</ManifestCertificateThumbprint>
@@ -127,12 +127,6 @@
     <Compile Include="1-Views\HelpDialog.Designer.cs">
       <DependentUpon>HelpDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="1-Views\ListPicasaButtonForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="1-Views\ListPicasaButtonForm.Designer.cs">
-      <DependentUpon>ListPicasaButtonForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="1-Views\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -182,9 +176,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="1-Views\HelpDialog.resx">
       <DependentUpon>HelpDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="1-Views\ListPicasaButtonForm.resx">
-      <DependentUpon>ListPicasaButtonForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="1-Views\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

@@ -41,6 +41,9 @@ namespace PicasaStarter
             // Default enable exe
             radioButtonScript.Checked = true;  // First set this one, otherwise the CheckedChanged of this icon isn't executed :-(.
             radioButtonExe.Checked = true;
+
+            // Default execute for every selected file...
+            checkBoxExecuteForeach.Checked = true;
         }
 
         public CreatePicasaButtonForm(PicasaButton button, string appSettingsDir)
@@ -56,8 +59,9 @@ namespace PicasaStarter
             _icon = button.Icon;
             textBoxIconLayer.Text = button.IconLayer;
 
-            textBoxExePath.Text = button.ExeFilePath;
-            textBoxExeArguments.Text = button.ExeArguments;
+            textBoxExeDirRegKey.Text = button.ExeDirRegKey;
+            textBoxExeDir.Text = button.ExeDir;
+            textBoxExeFileName.Text = button.ExeFileName;
             _script = button.Script;
 
             checkBoxExecuteForeach.Checked = button.ExecuteForeach;
@@ -87,49 +91,12 @@ namespace PicasaStarter
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
-            // Check some fields...
-            if(textBoxLabel.Text == "")
+            // Check and get the data filled out in the form... if OK, close the form
+            if (GetDataFromForm() == true)
             {
-                MessageBox.Show("You need to specify a label for the button!");
-                return;
+                this.DialogResult = DialogResult.OK;
+                this.Close();
             }
-
-            if (_icon != null && _icon.Length > 0)
-            {
-                if (textBoxIconLayer.Text == "")
-                {
-                    MessageBox.Show("If you select an icon it is mandatory to specify the layer of the icon.");
-                    return;
-                }
-            }
-
-            _picasaButton = new PicasaButton();
-
-            _picasaButton.ButtonID = _buttonID;
-            _picasaButton.Version = 1;
-            _picasaButton.Label = textBoxLabel.Text;
-            _picasaButton.Description = textBoxDescription.Text;
-            _picasaButton.ToolTipText = textBoxTooltip.Text;
-            _picasaButton.Icon = _icon;
-            _picasaButton.IconLayer = textBoxIconLayer.Text;
-
-            if (radioButtonExe.Checked == true)
-            {
-                _picasaButton.ExecutionType = PicasaButton.ExecType.Executable;
-                _picasaButton.ExeFilePath = textBoxExePath.Text;
-                _picasaButton.ExeArguments = textBoxExeArguments.Text;
-            }
-            else
-            {
-                _picasaButton.ExecutionType = PicasaButton.ExecType.Script;
-                _picasaButton.Script = _script;
-            }
-
-            _picasaButton.ExecuteForeach = checkBoxExecuteForeach.Checked;
-            _picasaButton.ExportFirst = checkBoxExportFirst.Checked;
-
-            this.DialogResult = DialogResult.OK;
-            this.Close();
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
@@ -148,7 +115,9 @@ namespace PicasaStarter
 
             if(openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                textBoxExePath.Text = openFileDialog.FileName;
+                FileInfo file = new FileInfo(openFileDialog.FileName);
+                textBoxExeDir.Text = file.DirectoryName;
+                textBoxExeFileName.Text = file.Name;
             } 
         }
 
@@ -187,29 +156,17 @@ namespace PicasaStarter
 
         private void radioButtonExe_CheckedChanged(object sender, EventArgs e)
         {
-            if (radioButtonExe.Checked == true)
-            {
-                buttonBrowseExe.Enabled = true;
-                textBoxExeArguments.Enabled = true;
-            }
-            else
-            {
-                buttonBrowseExe.Enabled = false;
-                textBoxExeArguments.Enabled = false;
-            }
+            // Make sure the right buttons, textfield are enabled/disabled...
+            buttonBrowseExe.Enabled = radioButtonExe.Checked;
+            textBoxExeDir.Enabled = radioButtonExe.Checked;
+            textBoxExeDirRegKey.Enabled = radioButtonExe.Checked;
+            textBoxExeFileName.Enabled = radioButtonExe.Checked;
         }
 
         private void radioButtonScript_CheckedChanged(object sender, EventArgs e)
         {
             // Make sure the right buttons, textfield are enabled/disabled...
-            if (radioButtonScript.Checked == true)
-            {
-                buttonEditScript.Enabled = true;
-            }
-            else
-            {
-                buttonEditScript.Enabled = false;
-            }
+            buttonEditScript.Enabled = radioButtonScript.Checked;
         }
 
         private void buttonEditScript_Click(object sender, EventArgs e)
@@ -222,6 +179,75 @@ namespace PicasaStarter
             {
                 _script = scriptForm.Script;
             }
+        }
+
+        private void buttonExport_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (GetDataFromForm() == true)
+                {
+                    // Set the directory to put the PicasaButtons in the PicasaDB...
+                    string destButtonDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
+                            "\\Google\\Picasa2\\buttons";
+
+                    _picasaButton.CreateButtonFile(destButtonDir, true);
+
+                    System.Diagnostics.Process.Start(destButtonDir);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error opening log dir: " + ex.Message);
+            }
+        }
+
+        private bool GetDataFromForm()
+        {
+            // Check some fields...
+            if (textBoxLabel.Text == "")
+            {
+                MessageBox.Show("You need to specify a label for the button!");
+                return false;
+            }
+
+            if (_icon != null && _icon.Length > 0)
+            {
+                if (textBoxIconLayer.Text == "")
+                {
+                    MessageBox.Show("If you select an icon it is mandatory to specify the layer of the icon.");
+                    return false;
+                }
+            }
+
+            PicasaButton button = new PicasaButton();
+
+            button.ButtonID = _buttonID;
+            button.Version = 1;
+            button.Label = textBoxLabel.Text;
+            button.Description = textBoxDescription.Text;
+            button.ToolTipText = textBoxTooltip.Text;
+            button.Icon = _icon;
+            button.IconLayer = textBoxIconLayer.Text;
+
+            if (radioButtonExe.Checked == true)
+            {
+                button.ExecutionType = PicasaButton.ExecType.Executable;
+                button.ExeDirRegKey = textBoxExeDirRegKey.Text;
+                button.ExeDir = textBoxExeDir.Text;
+                button.ExeFileName = textBoxExeFileName.Text;
+            }
+            else
+            {
+                button.ExecutionType = PicasaButton.ExecType.Script;
+                button.Script = _script;
+            }
+
+            button.ExecuteForeach = checkBoxExecuteForeach.Checked;
+            button.ExportFirst = checkBoxExportFirst.Checked;
+
+            _picasaButton = button;
+            return true;
         }
     }
 }

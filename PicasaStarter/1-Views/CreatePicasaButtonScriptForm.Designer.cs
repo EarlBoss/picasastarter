@@ -36,11 +36,12 @@
             // textBoxScript
             // 
             this.textBoxScript.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBoxScript.Font = new System.Drawing.Font("Courier New", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxScript.Location = new System.Drawing.Point(0, 0);
             this.textBoxScript.Multiline = true;
             this.textBoxScript.Name = "textBoxScript";
             this.textBoxScript.Size = new System.Drawing.Size(584, 321);
-            this.textBoxScript.TabIndex = 0;
+            this.textBoxScript.TabIndex = 2;
             // 
             // buttonCancel
             // 
@@ -57,7 +58,7 @@
             this.buttonOK.Location = new System.Drawing.Point(416, 328);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
-            this.buttonOK.TabIndex = 2;
+            this.buttonOK.TabIndex = 0;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
