@@ -59,6 +59,7 @@ namespace PicasaStarter
             _icon = button.Icon;
             textBoxIconLayer.Text = button.IconLayer;
 
+            textBoxExeFileRegKey.Text = button.ExeFileRegKey;
             textBoxExeDirRegKey.Text = button.ExeDirRegKey;
             textBoxExeDir.Text = button.ExeDir;
             textBoxExeFileName.Text = button.ExeFileName;
@@ -158,6 +159,7 @@ namespace PicasaStarter
         {
             // Make sure the right buttons, textfield are enabled/disabled...
             buttonBrowseExe.Enabled = radioButtonExe.Checked;
+            textBoxExeFileRegKey.Enabled = radioButtonExe.Checked;
             textBoxExeDir.Enabled = radioButtonExe.Checked;
             textBoxExeDirRegKey.Enabled = radioButtonExe.Checked;
             textBoxExeFileName.Enabled = radioButtonExe.Checked;
@@ -233,6 +235,7 @@ namespace PicasaStarter
             if (radioButtonExe.Checked == true)
             {
                 button.ExecutionType = PicasaButton.ExecType.Executable;
+                button.ExeFileRegKey = textBoxExeFileRegKey.Text;
                 button.ExeDirRegKey = textBoxExeDirRegKey.Text;
                 button.ExeDir = textBoxExeDir.Text;
                 button.ExeFileName = textBoxExeFileName.Text;
@@ -248,6 +251,17 @@ namespace PicasaStarter
 
             _picasaButton = button;
             return true;
+        }
+
+        private void textBoxExeFileRegKey_TextChanged(object sender, EventArgs e)
+        {
+            bool isExeFileRegKeySpecified = false;
+            if (textBoxExeFileRegKey.Text.Trim() != "")
+                isExeFileRegKeySpecified = true;
+
+            textBoxExeDir.Enabled = !isExeFileRegKeySpecified;
+            textBoxExeDirRegKey.Enabled = !isExeFileRegKeySpecified;
+            textBoxExeFileName.Enabled = !isExeFileRegKeySpecified;
         }
     }
 }
