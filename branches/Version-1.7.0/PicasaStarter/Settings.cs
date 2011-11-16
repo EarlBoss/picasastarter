@@ -16,6 +16,8 @@ namespace PicasaStarter
         public string BaseDir { get; set; }
         public string BackupDir { get; set; }
         public bool IsStandardDB { get; set; }
+        public string PictureVirtualDrive { get; set; }
+        public bool EnableVirtualDrive { get; set; }
 
         public PicasaDB()
         {
@@ -33,6 +35,8 @@ namespace PicasaStarter
             BaseDir = picasaDB.BaseDir;
             BackupDir = picasaDB.BackupDir;
             IsStandardDB = picasaDB.IsStandardDB;
+            PictureVirtualDrive = picasaDB.PictureVirtualDrive;
+            EnableVirtualDrive = picasaDB.EnableVirtualDrive;
         }
     }
 
@@ -291,6 +295,8 @@ namespace PicasaStarter
                     + "technical reasons in some situations it is not recommended to share this database. You cannot change any settings "
                     + "for this database either. Create a new one if you want to share a database... and if you want, copy your default "
                     + "one into it.";
+            picasaDB.PictureVirtualDrive = "C:";
+            picasaDB.EnableVirtualDrive = false;
 
             return picasaDB;
         }

@@ -17,6 +17,8 @@ namespace PicasaStarter
         public string PicasaDBBasePath { get; private set; }
         public string GoogleAppDir { get; private set; }
         public string AppSettingsDir { get; private set; }
+        public string AppSettingsBaseDir { get; private set; }
+        public string MappedPicDrive { get; private set; }
 
         public PicasaRunner(string symlinkBaseDir, string picasaExePath)
         {
@@ -24,10 +26,12 @@ namespace PicasaStarter
             PicasaExePath = picasaExePath;     //Path from the settings File
         }
 
-        public void RunPicasa(string customDBBasePath, string appSettingsDir)
+        public void RunPicasa(string customDBBasePath, string appSettingsDir, string mappedPicDrive)
         {
             PicasaDBBasePath = customDBBasePath;
             AppSettingsDir = appSettingsDir;
+            MappedPicDrive = mappedPicDrive;
+            AppSettingsBaseDir = Path.GetDirectoryName(AppSettingsDir);
 
             // Check if the executable from settings exists...
             if (!File.Exists(PicasaExePath))
@@ -239,7 +243,7 @@ namespace PicasaStarter
                                     Process createSymLink = new Process();
                                     createSymLink.StartInfo.FileName = Application.ExecutablePath;
                                     createSymLink.StartInfo.Verb = "runas";
-                                    createSymLink.StartInfo.Arguments = "/CreateSymbolicLink \"" + symLinkPath + "\" \"" + symLinkDest + "\"";
+                                    createSymLink.StartInfo.Arguments = "/CreateSymbolicLink \"" + symLinkPath + "\" \"" + symLinkDest + "\" \"" + AppSettingsBaseDir + "\" \"" + MappedPicDrive + "\"";
                                     createSymLink.Start();
 
                                     // Wait until the process started is finished

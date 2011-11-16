@@ -267,11 +267,21 @@ namespace PicasaStarter
 
         private void buttonRunPicasa_Click(object sender, EventArgs e)
         {
+            string appSettingsBaseDir = _appSettingsDir;
+            string driveToUnmap = "";
             if (listBoxPicasaDBs.SelectedIndex == -1)
             {
                 MessageBox.Show("Please choose a picasa database from the list first");
                 return;
             }
+            //Map the directory below the PicasaStarter Directory to the Virtual drive
+            if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].EnableVirtualDrive)
+            {
+                //Map folder or Path to drive letter if not already mapped
+                appSettingsBaseDir = Path.GetDirectoryName(appSettingsBaseDir);
+                driveToUnmap = IOHelper.MapFolderToDrive(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].PictureVirtualDrive, appSettingsBaseDir);
+            }
+
             if (!Directory.Exists(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir))
             {
                 MessageBox.Show("The base directory of this database doesn't exist or you didn't choose one yet.");
@@ -326,7 +336,7 @@ namespace PicasaStarter
             _settings.picasaButtons.Registerbuttons();
             
             // Go!
-            runner.RunPicasa(dbBaseDir, _appSettingsDir);
+            runner.RunPicasa(dbBaseDir, _appSettingsDir, driveToUnmap);
             
             // Restore the MainForm...
             WindowState = FormWindowState.Normal;
@@ -336,6 +346,12 @@ namespace PicasaStarter
                     "Backup?", MessageBoxButtons.YesNo);
             if(result == DialogResult.Yes)
                 StartBackup();
+            // UnMap Picture folder if it was mapped.
+            if (driveToUnmap != "")
+            {
+                string xyz;
+                xyz = IOHelper.UnmapFolderFromDrive(driveToUnmap, appSettingsBaseDir);
+            }
         }
 
         private void buttonBackupPics_Click(object sender, EventArgs e)
