@@ -20,11 +20,12 @@ namespace PicasaStarter
 
             string appDataDir = Environment.GetEnvironmentVariable("appdata") + "\\PicasaStarter";
             string appSettingsDir = "";
+            string appSettingsBaseDir = "";
             string configurationDir = "";
 
             Configuration config;
             Settings settings;
-            bool firstRun = false;
+            bool notConfigured = false;
             bool settingsfound = false;
 
             bool symlinkCreated = false;
@@ -38,7 +39,7 @@ namespace PicasaStarter
                 if (arg.Equals("/CreateSymbolicLink", StringComparison.CurrentCultureIgnoreCase))
                 {
                     // The next argument should be the symbolic link file name...
-                    string symLinkPath = "", symLinkDest = "";
+                    string symLinkPath = "", symLinkDest = "", settingsBaseDir = "", mappeddrive = "";
                     if (i < Environment.GetCommandLineArgs().Length)
                     {
                         i++;
@@ -50,7 +51,23 @@ namespace PicasaStarter
                         i++;
                         symLinkDest = Environment.GetCommandLineArgs()[i];
                     }
+                    if (i < Environment.GetCommandLineArgs().Length)
+                    {
+                        i++;
+                        settingsBaseDir = Environment.GetCommandLineArgs()[i];
+                    }
+                    if (i < Environment.GetCommandLineArgs().Length)
+                    {
+                        i++;
+                        mappeddrive = Environment.GetCommandLineArgs()[i];
+                    }
 
+                    if (mappeddrive != "")
+                    {
+                        string xyz = "";
+                        xyz = IOHelper.MapFolderToDrive(mappeddrive, settingsBaseDir);
+                    }
+ 
                     if (symLinkPath == "" || symLinkDest == "")
                     {
                         MessageBox.Show("The /CreateSymbolicLink directive should be followed by a valid path name and the destination path", "Symlink Not Created");
@@ -58,6 +75,11 @@ namespace PicasaStarter
                     if (Directory.Exists(symLinkDest))
                     {
                         IOHelper.CreateSymbolicLink(symLinkPath, symLinkDest, true);
+                    }
+                    if (mappeddrive != "")
+                    {
+                        string xyz;
+                        xyz = IOHelper.UnmapFolderFromDrive(mappeddrive, settingsBaseDir);
                     }
                     symlinkCreated = true;
                 }
@@ -72,6 +94,7 @@ namespace PicasaStarter
                 settings = new Settings();
                 config = new Configuration();
                 bool showGUI = true;
+                string MappedDrive = "";
 
                 try
                 {
@@ -81,39 +104,50 @@ namespace PicasaStarter
                 catch (Exception)
                 {
                     //No config file, set config & settings defaults and signal first time run
-                    firstRun = true;
+                    notConfigured = true;
                     config.picasaStarterSettingsXMLPath = "";
                     config.configPicasaExePath = SettingsHelper.ProgramFilesx86();
                     settings.picasaDBs.Add(SettingsHelper.GetDefaultPicasaDB());
                 }
                 // load settings...
-                if (!firstRun)
+                if (!notConfigured)
                 {
-                    bool cancelSearching = false;
+                    bool cancelSettingsFileSearch = false;
+                    string currentDir = appSettingsDir;
+                    currentDir = Path.GetDirectoryName(currentDir);
+                    appSettingsBaseDir = currentDir;
 
-                    while (!settingsfound && cancelSearching == false)
+                    while (!settingsfound && cancelSettingsFileSearch == false)
                     {
                         if (!File.Exists(appSettingsDir + "\\" + SettingsHelper.SettingsFileName))
                         {
                             // Take care of case where the settings file is not available but it is referenced in the config file (The settings drive/dir is missing).
                             // Initializes the variables to pass to the MessageBox.Show method.
-                            string message = "The Picasa Starter settings file was not found in:   " + appSettingsDir + "\n\n If it is on a NAS or Portable Drive, " +
-                                "Please Connect the drive as the correct drive letter and push Retry.\n\n" +
+                            string message = "The Picasa Starter settings file was not found in:\n" + appSettingsDir + "\n\n If it is on a NAS or Portable Drive, " +
+                                "\nPlease Connect the drive as the correct drive letter.\n" +
+                                "When the Drive is connected, Push YES to Try Again.\n\n" +
+                                "To Exit PicasaStarter Without Trying Again, Push NO. \n\n" +
                                 "To define a new Settings File location, Cancel this Message,\n" +
-                                "Then set the Settings File location in the First Run dialog";
+                                "Then Correct the Settings File location in the First Run dialog";
                             string caption = "Missing Settings File";
 
                             // Displays the MessageBox.
-                            DialogResult result = MessageBox.Show(message, caption, MessageBoxButtons.RetryCancel);
+                            DialogResult result = MessageBox.Show(message, caption, MessageBoxButtons.YesNoCancel);
 
-                            if (result == DialogResult.Retry)
+                            if (result == DialogResult.Yes)
                             {
                                 settingsfound = false;
                             }
+                            if (result == DialogResult.No)
+                            {
+                                cancelSettingsFileSearch = true;
+                                notConfigured = true;
+                                showGUI = false;
+                            }
                             else if (result == DialogResult.Cancel)
                             {
-                                firstRun = true;
-                                cancelSearching = true;
+                                notConfigured = true;
+                                cancelSettingsFileSearch = true;
                                 settings.picasaDBs.Add(SettingsHelper.GetDefaultPicasaDB());
                             }
                         }
@@ -137,7 +171,7 @@ namespace PicasaStarter
                         }
                     }
                 }
-                if (!firstRun)
+                if (!notConfigured)
                 {
                     // Save settings
                     //---------------------------------------------------------------------------
@@ -160,7 +194,7 @@ namespace PicasaStarter
                         string arg = Environment.GetCommandLineArgs()[i];
 
                         // Check if Picasastarter should autorun Picasa with a specified database name...
-                        if ((arg.Equals("/autorun", StringComparison.CurrentCultureIgnoreCase)) && !firstRun)
+                        if ((arg.Equals("/autorun", StringComparison.CurrentCultureIgnoreCase)) && !notConfigured)
                         {
                             showGUI = false;
 
@@ -204,7 +238,7 @@ namespace PicasaStarter
                         {
                             // If the user wants to run his personal default database... (cmd line arg was "personal") 
                             PicasaRunner runner = new PicasaRunner(appDataDir, settings.PicasaExePath);
-                            runner.RunPicasa(null, appSettingsDir);
+                            runner.RunPicasa(null, appSettingsDir, null);
                         }
                         else
                         {
@@ -223,19 +257,29 @@ namespace PicasaStarter
 
                             if (foundDB != null)
                             {
+                                if (foundDB.EnableVirtualDrive)
+                                {
+                                    MappedDrive = IOHelper.MapFolderToDrive(foundDB.PictureVirtualDrive, appSettingsBaseDir);
+                                }
                                 PicasaRunner runner = new PicasaRunner(appDataDir, settings.PicasaExePath);
 
                                 // If the user wants to run his personal default database... 
                                 if (foundDB.IsStandardDB == true)
-                                    runner.RunPicasa(null, appSettingsDir);
+                                    runner.RunPicasa(null, appSettingsDir, null);
                                 // If the user wants to run a custom database...
                                 else
                                 {
                                     if (Directory.Exists(foundDB.BaseDir))
-                                        runner.RunPicasa(foundDB.BaseDir, appSettingsDir);
+                                        runner.RunPicasa(foundDB.BaseDir, appSettingsDir, MappedDrive);
                                     else
                                         MessageBox.Show("The base directory of this database doesn't exist or you didn't choose one yet.");
                                 }
+                                if (MappedDrive != "")
+                                {
+                                    string xyz;
+                                    xyz = IOHelper.UnmapFolderFromDrive(MappedDrive, appSettingsBaseDir);
+                                }
+                                
                             }
                             else
                             {
@@ -248,7 +292,7 @@ namespace PicasaStarter
 
                 if (showGUI == true)
                 {
-                    Application.Run(new MainForm(settings, appDataDir, appSettingsDir, firstRun));
+                    Application.Run(new MainForm(settings, appDataDir, appSettingsDir, notConfigured));
                 }
 
             }

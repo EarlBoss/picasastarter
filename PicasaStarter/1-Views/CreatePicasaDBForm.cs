@@ -31,12 +31,17 @@ namespace PicasaStarter
             textBoxDBBaseDir.Text = PicasaDB.BaseDir;
             textBoxDBDescription.Text = PicasaDB.Description;
             textBoxDBName.Text = PicasaDB.Name;
-
+            PicDrivecomboBox.Text = PicasaDB.PictureVirtualDrive;
+            EnablecheckBox.Checked = PicasaDB.EnableVirtualDrive;
             if (standardDatabase == true)
             {
                 textBoxDBName.Enabled = false;
                 textBoxDBDescription.Enabled = false;
                 buttonBrowseDBBaseDir.Enabled = false;
+                PicDrivecomboBox.Text = "C:";
+                PicDrivecomboBox.Enabled = false;
+                EnablecheckBox.Checked = false;
+                EnablecheckBox.Enabled = false;
             }
         }
 
@@ -77,6 +82,8 @@ namespace PicasaStarter
             PicasaDB.BaseDir = textBoxDBBaseDir.Text;
             PicasaDB.Description = textBoxDBDescription.Text;
             PicasaDB.Name = textBoxDBName.Text;
+            PicasaDB.PictureVirtualDrive = PicDrivecomboBox.Text;
+            PicasaDB.EnableVirtualDrive = EnablecheckBox.Checked;
 
             this.DialogResult = DialogResult.OK;
             this.Close();
@@ -92,6 +99,17 @@ namespace PicasaStarter
         {
             CreateShortcutDialog createShortcutDialog = new CreateShortcutDialog(PicasaDB.Name);
             DialogResult result = createShortcutDialog.ShowDialog();
+        }
+
+
+        private void PicDrivecomboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void EnablecheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
