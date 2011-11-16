@@ -26,7 +26,13 @@ namespace HelperClasses
 
         const string MAPPED_FOLDER_INDICATOR = @"\??\";
 
+        /// <summary>
+        /// Return the share name of the mapped drive if it is a mapped drive, otherwise returns "".
+        /// </summary>
+        /// <param name="driveLetter">The drive letter, including ':'</param>
+        /// <returns></returns>
         public static string GetMappedDriveName(string driveLetter)
+        //public static void GetMappedDriveNames()
         {
             // Make a WMI objectsearcher to find the info
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("select * from Win32_LogicalDisk");
