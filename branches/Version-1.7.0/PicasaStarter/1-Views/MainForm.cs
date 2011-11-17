@@ -336,7 +336,7 @@ namespace PicasaStarter
             _settings.picasaButtons.Registerbuttons();
             
             // Go!
-            runner.RunPicasa(dbBaseDir, _appSettingsDir, driveToUnmap);
+            runner.RunPicasa(dbBaseDir, _appSettingsDir, _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].PictureVirtualDrive);
             
             // Restore the MainForm...
             WindowState = FormWindowState.Normal;
