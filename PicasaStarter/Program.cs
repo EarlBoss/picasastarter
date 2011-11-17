@@ -28,7 +28,14 @@ namespace PicasaStarter
             bool notConfigured = false;
             bool settingsfound = false;
 
-            bool symlinkCreated = false;
+            configurationDir = SettingsHelper.DetermineConfigDir();
+            appSettingsDir = SettingsHelper.DetermineSettingsDir(configurationDir);
+            settings = new Settings();
+            config = new Configuration();
+            bool showGUI = true;
+            string MappedDrive = "";
+
+            bool symlinkFound = false;
 
             //See if we just need to create a symlink
             for (int i = 1; i < Environment.GetCommandLineArgs().Length; i++)
@@ -38,63 +45,62 @@ namespace PicasaStarter
                 // Check if Picasastarter should create a symlink...
                 if (arg.Equals("/CreateSymbolicLink", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    // The next argument should be the symbolic link file name...
-                    string symLinkPath = "", symLinkDest = "", settingsBaseDir = "", mappeddrive = "";
-                    if (i < Environment.GetCommandLineArgs().Length)
+                    try
                     {
-                        i++;
-                        symLinkPath = Environment.GetCommandLineArgs()[i];
-                    }
+                        symlinkFound = true;
+                        // The next argument should be the symbolic link file name...
+                        string symLinkPath = "", symLinkDest = "", settingsBaseDir = "", mappeddrive = "";
+                        if (i < Environment.GetCommandLineArgs().Length)
+                        {
+                            i++;
+                            symLinkPath = Environment.GetCommandLineArgs()[i];
+                        }
 
-                    if (i < Environment.GetCommandLineArgs().Length)
-                    {
-                        i++;
-                        symLinkDest = Environment.GetCommandLineArgs()[i];
-                    }
-                    if (i < Environment.GetCommandLineArgs().Length)
-                    {
-                        i++;
-                        settingsBaseDir = Environment.GetCommandLineArgs()[i];
-                    }
-                    if (i < Environment.GetCommandLineArgs().Length)
-                    {
-                        i++;
-                        mappeddrive = Environment.GetCommandLineArgs()[i];
-                    }
+                        if (i < Environment.GetCommandLineArgs().Length)
+                        {
+                            i++;
+                            symLinkDest = Environment.GetCommandLineArgs()[i];
+                        }
+                        if (i < Environment.GetCommandLineArgs().Length)
+                        {
+                            i++;
+                            settingsBaseDir = Environment.GetCommandLineArgs()[i];
+                        }
+                        if (i < Environment.GetCommandLineArgs().Length)
+                        {
+                            i++;
+                            mappeddrive = Environment.GetCommandLineArgs()[i];
+                        }
 
-                    if (mappeddrive != "")
-                    {
-                        string xyz = "";
-                        xyz = IOHelper.MapFolderToDrive(mappeddrive, settingsBaseDir);
+                        if (mappeddrive != "")
+                        {
+                            string xyz = "";
+                            xyz = IOHelper.MapFolderToDrive(mappeddrive, settingsBaseDir);
+                        }
+
+                        if (symLinkPath == "" || symLinkDest == "")
+                        {
+                            //MessageBox.Show("The /CreateSymbolicLink directive should be followed by a valid path name and the destination path", "Symlink Not Created");
+                        }
+                        if (Directory.Exists(symLinkDest))
+                        {
+                            IOHelper.CreateSymbolicLink(symLinkPath, symLinkDest, true);
+                        }
+                        if (mappeddrive != "")
+                        {
+                            string xyz;
+                            xyz = IOHelper.UnmapFolderFromDrive(mappeddrive, settingsBaseDir);
+                        }
                     }
- 
-                    if (symLinkPath == "" || symLinkDest == "")
-                    {
-                        MessageBox.Show("The /CreateSymbolicLink directive should be followed by a valid path name and the destination path", "Symlink Not Created");
-                    }
-                    if (Directory.Exists(symLinkDest))
-                    {
-                        IOHelper.CreateSymbolicLink(symLinkPath, symLinkDest, true);
-                    }
-                    if (mappeddrive != "")
-                    {
-                        string xyz;
-                        xyz = IOHelper.UnmapFolderFromDrive(mappeddrive, settingsBaseDir);
-                    }
-                    symlinkCreated = true;
+                    catch 
+                    { }
                 }
             }
-            if (!symlinkCreated)
+            if (!symlinkFound)
             {
 
                 // Initialisations: create temp dir, load settings,...
                 //---------------------------------------------------------------------------
-                configurationDir = SettingsHelper.DetermineConfigDir();
-                appSettingsDir = SettingsHelper.DetermineSettingsDir(configurationDir);
-                settings = new Settings();
-                config = new Configuration();
-                bool showGUI = true;
-                string MappedDrive = "";
 
                 try
                 {

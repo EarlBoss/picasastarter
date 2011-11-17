@@ -11,42 +11,6 @@ namespace HelperClasses
 {
     class IOHelper
     {
-        [DllImport("kernel32.dll")]
-        internal static extern bool DefineDosDevice(uint dwFlags, string lpDeviceName,
-           string lpTargetPath);
-
-        [DllImport("Kernel32.dll")]
-        internal static extern uint QueryDosDevice(string lpDeviceName,
-            StringBuilder lpTargetPath, uint ucchMax);
-
-        internal const uint DDD_RAW_TARGET_PATH = 0x00000001;
-        internal const uint DDD_REMOVE_DEFINITION = 0x00000002;
-        internal const uint DDD_EXACT_MATCH_ON_REMOVE = 0x00000004;
-        internal const uint DDD_NO_BROADCAST_SYSTEM = 0x00000008;
-
-        const string MAPPED_FOLDER_INDICATOR = @"\??\";
-
-        public static string GetMappedDriveName(string driveLetter)
-        {
-            // Make a WMI objectsearcher to find the info
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("select * from Win32_LogicalDisk");
-
-            foreach (ManagementObject queryObj in searcher.Get())
-            {
-                string curDriveLetter = (string)queryObj["Name"];
-                if (curDriveLetter == driveLetter)
-                {
-                    string providerName = (string)queryObj["ProviderName"];
-
-                    if (providerName != null)
-                        return providerName;
-                    else
-                        return "";
-                }
-            }
-
-            return "";
-        }
 
         public static void CreateSymbolicLink(string SymLinkFileName, string SymLinkDestination, bool CreateDirectorySymLink)
         {
@@ -333,6 +297,45 @@ namespace HelperClasses
             return true;
         }
 
+
+        [DllImport("kernel32.dll")]
+        internal static extern bool DefineDosDevice(uint dwFlags, string lpDeviceName,
+           string lpTargetPath);
+
+        [DllImport("Kernel32.dll")]
+        internal static extern uint QueryDosDevice(string lpDeviceName,
+            StringBuilder lpTargetPath, uint ucchMax);
+
+        internal const uint DDD_RAW_TARGET_PATH = 0x00000001;
+        internal const uint DDD_REMOVE_DEFINITION = 0x00000002;
+        internal const uint DDD_EXACT_MATCH_ON_REMOVE = 0x00000004;
+        internal const uint DDD_NO_BROADCAST_SYSTEM = 0x00000008;
+
+        const string MAPPED_FOLDER_INDICATOR = @"\??\";
+
+        public static string GetMappedDriveName(string driveLetter)
+        {
+            // Make a WMI objectsearcher to find the info
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("select * from Win32_LogicalDisk");
+
+            foreach (ManagementObject queryObj in searcher.Get())
+            {
+                string curDriveLetter = (string)queryObj["Name"];
+                if (curDriveLetter == driveLetter)
+                {
+                    string providerName = (string)queryObj["ProviderName"];
+
+                    if (providerName != null)
+                        return providerName;
+                    else
+                        return "";
+                }
+            }
+
+            return "";
+        }
+
+
         // ----------------------------------------------------------------------------------------
         // Class Name:		IOHelper
         // Procedure Name:	MapFolderToDrive
@@ -356,9 +359,11 @@ namespace HelperClasses
             {
                 // Local Drive mapping
                 //This works only for local drives
-               if( DefineDosDevice(0, driveLetter, folderName))
-                   return "";
-               return driveLetter;
+                bool xyz = false;
+                xyz = DefineDosDevice(0, driveLetter, folderName);
+                if (xyz)
+                    return driveLetter;
+                return "";
             }
             else
             {
@@ -389,12 +394,15 @@ namespace HelperClasses
 
             //Get UNC Path if the source is a network drive
             UNCPath = IOHelper.GetUNCPath(driveLetter + "\\");
-            if ((UNCPath == folderName) && (!folderName.StartsWith("\\\\")))
+            if ((UNCPath == driveLetter + "\\") && (!folderName.StartsWith("\\\\")))
             {
                 // UnMap Local Drive
                 //This works only for local drives
-                 DefineDosDevice(DDD_REMOVE_DEFINITION, driveLetter, folderName);
-                    return "";
+                bool xyz = false;
+                xyz = DefineDosDevice(DDD_REMOVE_DEFINITION, driveLetter, folderName);
+                if (xyz)
+                    return driveLetter;
+                return "";
             }
             else
             {
