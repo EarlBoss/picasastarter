@@ -10,14 +10,14 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PicasaStarter</RootNamespace>
     <AssemblyName>PicasaStarter</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <ManifestCertificateThumbprint>124CEB363D65F730CBE2773093FB8791EABC59A4</ManifestCertificateThumbprint>
     <ManifestKeyFile>PicasaStarter_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <SignManifests>true</SignManifests>
-    <ApplicationIcon>Picasa3_105.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\PicasaStarter_320.ico</ApplicationIcon>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -61,6 +61,15 @@
     <StartupObject>PicasaStarter.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Interop.IWshRuntimeLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>Resources\Interop.IWshRuntimeLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\Ionic.Zip.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Management" />
     <Reference Include="System.Data" />
@@ -70,63 +79,110 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CreateShortcutDialog.cs">
+    <Compile Include="1-Views\BackupProgressForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CreateShortcutDialog.Designer.cs">
+    <Compile Include="1-Views\BackupProgressForm.Designer.cs">
+      <DependentUpon>BackupProgressForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="1-Views\CreatePicasaButtonForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="1-Views\CreatePicasaButtonForm.Designer.cs">
+      <DependentUpon>CreatePicasaButtonForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="1-Views\CreatePicasaButtonScriptForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="1-Views\CreatePicasaButtonScriptForm.Designer.cs">
+      <DependentUpon>CreatePicasaButtonScriptForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="1-Views\CreatePicasaDBForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="1-Views\CreatePicasaDBForm.Designer.cs">
+      <DependentUpon>CreatePicasaDBForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="1-Views\CreateShortcutDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="1-Views\CreateShortcutDialog.Designer.cs">
       <DependentUpon>CreateShortcutDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="FirstRunWizard.cs">
+    <Compile Include="1-Views\FirstRunWizard.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FirstRunWizard.Designer.cs">
+    <Compile Include="1-Views\FirstRunWizard.Designer.cs">
       <DependentUpon>FirstRunWizard.cs</DependentUpon>
     </Compile>
-    <Compile Include="SelectDBForm.cs">
+    <Compile Include="1-Views\GeneralSettingsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SelectDBForm.Designer.cs">
-      <DependentUpon>SelectDBForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Helper.cs" />
-    <Compile Include="GeneralSettingsDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GeneralSettingsDialog.Designer.cs">
+    <Compile Include="1-Views\GeneralSettingsDialog.Designer.cs">
       <DependentUpon>GeneralSettingsDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="HelpDialog.cs">
+    <Compile Include="1-Views\HelpDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="HelpDialog.Designer.cs">
+    <Compile Include="1-Views\HelpDialog.Designer.cs">
       <DependentUpon>HelpDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="PicasaRunner.cs" />
-    <Compile Include="MainForm.cs">
+    <Compile Include="1-Views\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="1-Views\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="1-Views\SelectDBForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="1-Views\SelectDBForm.Designer.cs">
+      <DependentUpon>SelectDBForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="2-BusinessLogic\Backup.cs" />
+    <Compile Include="2-BusinessLogic\PicasaButton.cs" />
+    <Compile Include="2-BusinessLogic\PicasaButtonList.cs" />
+    <Compile Include="2-BusinessLogic\PicasaRunner.cs" />
+    <Compile Include="3-HelperClasses\DateTimeHelper.cs" />
+    <Compile Include="3-HelperClasses\DialogHelper.cs" />
+    <Compile Include="3-HelperClasses\IOHelper.cs" />
+    <Compile Include="3-HelperClasses\Logger\FileLogger.cs" />
+    <Compile Include="3-HelperClasses\Logger\Log.cs" />
+    <Compile Include="3-HelperClasses\StringHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="CreateShortcutDialog.resx">
+    <Compile Include="Settings.cs" />
+    <Compile Include="Settings.partial.cs" />
+    <EmbeddedResource Include="1-Views\BackupProgressForm.resx">
+      <DependentUpon>BackupProgressForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="1-Views\CreatePicasaButtonForm.resx">
+      <DependentUpon>CreatePicasaButtonForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="1-Views\CreatePicasaButtonScriptForm.resx">
+      <DependentUpon>CreatePicasaButtonScriptForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="1-Views\CreatePicasaDBForm.resx">
+      <DependentUpon>CreatePicasaDBForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="1-Views\CreateShortcutDialog.resx">
       <DependentUpon>CreateShortcutDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FirstRunWizard.resx">
+    <EmbeddedResource Include="1-Views\FirstRunWizard.resx">
       <DependentUpon>FirstRunWizard.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SelectDBForm.resx">
-      <DependentUpon>SelectDBForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GeneralSettingsDialog.resx">
+    <EmbeddedResource Include="1-Views\GeneralSettingsDialog.resx">
       <DependentUpon>GeneralSettingsDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="HelpDialog.resx">
+    <EmbeddedResource Include="1-Views\HelpDialog.resx">
       <DependentUpon>HelpDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="1-Views\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="1-Views\SelectDBForm.resx">
+      <DependentUpon>SelectDBForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -150,8 +206,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Settings.cs" />
-    <Compile Include="Settings.partial.cs" />
+    <None Include="Resources\ButtonStitch\{71E08F18-FA51-11E0-BC03-FA184824019B}_reg.pbf" />
+    <None Include="Resources\ButtonStitch\{71E08F18-FA51-11E0-BC03-FA184824019B}.psd" />
+    <None Include="Resources\ButtonStitch\{71E08F18-FA51-11E0-BC03-FA184824019B}.pbf" />
+    <None Include="Resources\thumbs_index.db" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -186,21 +244,14 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="picasa.ico" />
-    <Content Include="Picasa3_105.ico" />
-    <Content Include="picasastarter_logo.ico" />
+    <Content Include="Resources\PicasaStarter_320.ico" />
+    <Content Include="Resources\ButtonStitch\StitchInstall.html" />
+    <None Include="Resources\Interop.IWshRuntimeLibrary.dll" />
+    <None Include="Resources\Ionic.Zip.dll" />
+    <Content Include="Resources\Picasa3_105.ico" />
+    <Content Include="Resources\picasastarter_logo.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="IWshRuntimeLibrary">
-      <Guid>{F935DC20-1CF0-11D0-ADB9-00C04FD58A0B}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

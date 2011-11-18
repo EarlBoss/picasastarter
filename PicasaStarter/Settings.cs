@@ -10,65 +10,62 @@ namespace PicasaStarter
     public class PicasaDB
     {
         private string _name;
-        private string _description;
-        private string _baseDir;
-        private bool _isDefaultDB;
 
         public string Name { get { return _name; } set { _name = value.Trim(new char[] { ' ', '"' }); } }
-        public string Description { get { return _description; } set { _description = value; } }
-        public string BaseDir { get { return _baseDir; } set { _baseDir = value; } }
-        public bool IsStandardDB { get { return _isDefaultDB; } set { _isDefaultDB = value; } }
+        public string Description { get; set; }
+        public string BaseDir { get; set; }
+        public string BackupDir { get; set; }
+        public bool IsStandardDB { get; set; }
 
         public PicasaDB()
         {
-            _name = "";
-            _description = "";
-            _baseDir = "";
-            _isDefaultDB = false;
         }
 
         public PicasaDB(string name)
         {
-            _name = name;
-            _description = "";
-            _baseDir = "";
-            _isDefaultDB = false;
+            Name = name;
+        }
+
+        public PicasaDB(PicasaDB picasaDB)
+        {
+            Name = picasaDB.Name;
+            Description = picasaDB.Description;
+            BaseDir = picasaDB.BaseDir;
+            BackupDir = picasaDB.BackupDir;
+            IsStandardDB = picasaDB.IsStandardDB;
         }
     }
 
-
     public class PathOnComputer
-    {
-        private string _computerName;
-        private string _path;
-    
-        public string ComputerName { get { return _computerName; } set { _computerName = value; } }
-        public string Path { get { return _path; } set { _path = value; } }
+    {    
+        public string ComputerName { get; set; }
+        public string Path { get; set; }
 
         public PathOnComputer()
         {
-            _computerName = "";
-            _path = "";
         }
 
         public PathOnComputer(string computerName, string exePath)
         {
-            _computerName = computerName;
-            _path = exePath;
+            ComputerName = computerName;
+            Path = exePath;
         }
     }
 
     public class PathOnComputerCollection
     {
-        private List<PathOnComputer> _paths = new List<PathOnComputer>();
+        public List<PathOnComputer> Paths { get; set; }
 
-        public List<PathOnComputer> Paths { get { return _paths; } }
+        public PathOnComputerCollection()
+        {
+            Paths = new List<PathOnComputer>();
+        }
 
         public void SetPath(PathOnComputer path)
         {
             bool found = false;
 
-            foreach (PathOnComputer curPath in _paths)
+            foreach (PathOnComputer curPath in Paths)
             {
                 if (curPath.ComputerName == path.ComputerName)
                 {
@@ -79,12 +76,12 @@ namespace PicasaStarter
             }
 
             if (found != true)
-                _paths.Add(path);
+                Paths.Add(path);
         }
 
         public string GetPath(string computerName)
         {
-            foreach (PathOnComputer curPath in _paths)
+            foreach (PathOnComputer curPath in Paths)
             {
                 if (curPath.ComputerName == computerName)
                 {
@@ -118,6 +115,11 @@ namespace PicasaStarter
         /// The list of databases defined in PicasaStarter.
         /// </summary>
         [NonSerialized] public List<PicasaDB> picasaDBs = new List<PicasaDB> ();
+
+        /// <summary>
+        /// The list of databases defined in PicasaStarter.
+        /// </summary>        
+        public PicasaButtons picasaButtons = new PicasaButtons();
 
         /// <summary>
         /// Contstructor of the settings class.
@@ -160,6 +162,7 @@ namespace PicasaStarter
         public const string ConfigFileName = "PicasaStarterConfiguration.xml";
         public static string ConfigurationDir = "";
         public static string ConfigPicasaExePath = "";
+        public static string PicasaButtons = "PicasaButtons";
 
         public static string DetermineConfigDir()
         {
@@ -210,8 +213,6 @@ namespace PicasaStarter
             ConfigurationDir = configurationDir;
             return configurationDir;
         }
-
-
 
         public static string DetermineSettingsDir(string ConfigurationDir)
         {
@@ -280,7 +281,6 @@ namespace PicasaStarter
             return settingsDir;
         }
 
-
         public static PicasaDB GetDefaultPicasaDB()
         {
             PicasaDB picasaDB = new PicasaDB();
@@ -346,20 +346,31 @@ namespace PicasaStarter
             Settings settings = (Settings)serializer.Deserialize(tr);
             tr.Close();
 
-            // Loop through the PicasaDB object to set some things right after deserialising...
+            // Loop through the PicasaDB objects to set some things right after deserialising...
             bool defaultDBFound = false;
             for (int i = 0; i < settings.picasaDBs.Count; i++)
             {
                 // Overwrite the default DB with the just added version...
                 if (settings.picasaDBs[i].IsStandardDB == true)
                 {
+                    string backupDir = settings.picasaDBs[i].BackupDir;
                     settings.picasaDBs[i] = GetDefaultPicasaDB();
+                    settings.picasaDBs[i].BackupDir = backupDir;
                     defaultDBFound = true;
                 }
 
                 // NewLine's in an XML file are stored as \n while Windows wants \r\n in it's textboxes,...
                 // Because the description can contain newlines... replace them.
                 settings.picasaDBs[i].Description = settings.picasaDBs[i].Description.Replace("\n", Environment.NewLine);
+            }
+
+            // Loop through the PicasaButton objects to set some things right after deserialising...
+            for (int i = 0; i < settings.picasaButtons.ButtonList.Count; i++)
+            {
+                // NewLine's in an XML file are stored as \n while Windows wants \r\n in it's textboxes,...
+                // For all field that can contain newlines... replace them.
+                settings.picasaButtons.ButtonList[i].Description = settings.picasaButtons.ButtonList[i].Description.Replace("\n", Environment.NewLine);
+                settings.picasaButtons.ButtonList[i].Script = settings.picasaButtons.ButtonList[i].Script.Replace("\n", Environment.NewLine);
             }
 
             // Check if the settings contained a PicasaExePath. It will be null if the settings don't contain
