@@ -406,58 +406,16 @@ namespace HelperClasses
             }
             else
             {
-                //Map the network drive
+                string drvpath = "";
+                drvpath = IOHelper.GetUNCPath(driveLetter + "\\");
+                if ((UNCPath != drvpath) || (!drvpath.StartsWith("\\\\")))
+                    return "";
+                //UnMap the network drive
                 string xyz = "";
-                xyz = UnmapUNCFromDrive(driveLetter, UNCPath);
+                xyz = UnmapUNCFromDrive(driveLetter);
                 return xyz;
             }
 
-        }
-
-
-        // ----------------------------------------------------------------------------------------
-        // Class Name:		VolumeFunctions
-        // Procedure Name:	DriveIsMappedTo
-        // Purpose:			Returns the folder that a drive is mapped to. If not mapped, we return a blank.
-        // Parameters:
-        //		- driveLetter (string)  : Drive letter in the format "C:"
-        // ----------------------------------------------------------------------------------------
-        internal static string DriveIsMappedTo(string driveLetter)
-        {
-            StringBuilder volumeMap = new StringBuilder(512);
-            string mappedVolumeName = "";
-
-            // If it's not a mapped drive, just remove it from the list
-            uint mapped = QueryDosDevice(driveLetter, volumeMap, (uint)512);
-            if (mapped != 0)
-                if (volumeMap.ToString().StartsWith(MAPPED_FOLDER_INDICATOR) == true)
-                {
-                    // It's a mapped drive, so return the mapped folder name
-                    mappedVolumeName = volumeMap.ToString().Substring(4);
-                }
-
-            return mappedVolumeName;
-        }
-
-        // ----------------------------------------------------------------------------------------
-        // Class Name:		VolumeFunctions
-        // Procedure Name:	DriveIsMapped
-        // Purpose:			Returns true if a drive is mapped. If not mapped, we return false.
-        // Parameters:
-        //		- driveLetter (string)  : Drive letter in the format "C:"
-        // ----------------------------------------------------------------------------------------
-
-        internal static bool DriveIsMapped(string driveLetter)
-        {
-            StringBuilder volumeMap = new StringBuilder(512);
-            //string mappedVolumeName = "";
-
-            // If it's not a mapped drive, mapped will be 0
-            uint mapped = QueryDosDevice(driveLetter, volumeMap, (uint)512);
-            if (mapped != 0)
-                return true;
-            else
-                return false;
         }
 
         /// <summary>
@@ -526,8 +484,6 @@ namespace HelperClasses
         //Resource types
         const uint RESOURCETYPE_DISK = 1;
 
-        [DllImport("mpr.dll")]
-        static extern UInt32 WNetAddConnection2(ref NETRESOURCE lpNetResource, string lpPassword, string lpUsername, uint dwFlags);
 
        // ----------------------------------------------------------------------------------------
         // Class Name:		IOHelper
@@ -536,10 +492,23 @@ namespace HelperClasses
         // Parameters:
         //		- driveLetter (string)  : Drive letter in the format "C:" without a back slash
         //		- folderName (string)  : Folder to map without a back slash
+        //
+        //Returns drive letter on success, null string on failure
         // ----------------------------------------------------------------------------------------
+
+        [DllImport("mpr.dll")]
+        static extern UInt32 WNetAddConnection2(ref NETRESOURCE lpNetResource, string lpPassword, string lpUsername, uint dwFlags);
+
+        [DllImport("mpr.dll")]
+        static extern uint WNetCancelConnection2(string lpName, uint dwFlags, bool bForce);
+        
+        // Map UNC to drive Letter if drive wasn't mapped previously
         internal static string MapUNCToDrive(string driveLetter, string UNCPath)
         {
-            // This drive was not already mapped
+            // This drive was not already mapped?
+            bool mapped = DriveIsMapped(driveLetter);
+            if (mapped)
+                return ("");
 
             NETRESOURCE networkResource = new NETRESOURCE();
             networkResource.dwType = RESOURCETYPE_DISK;
@@ -553,16 +522,60 @@ namespace HelperClasses
             return driveLetter;
         }
 
-        [DllImport("mpr.dll")]
-        static extern uint WNetCancelConnection2(string lpName, uint dwFlags, bool bForce);
-        
-        internal static string UnmapUNCFromDrive(string driveLetter, string UNCPath)
+        //Unmap drive: driveletter if it was mapped to UNCPath
+        internal static string UnmapUNCFromDrive(string driveLetter)
         {
-            // Unmap this drive. Already tested to make sure it was mapped by us
             uint result = WNetCancelConnection2(driveLetter, 0, true);
             if (result != 0)
                 return ("");
             return driveLetter;
         }
+
+
+        // ----------------------------------------------------------------------------------------
+        // Class Name:		IOHelper
+        // Procedure Name:	DriveIsMappedTo
+        // Purpose:			Returns the folder that a drive is mapped to. If not mapped, we return a blank.
+        // Parameters:
+        //		- driveLetter (string)  : Drive letter in the format "C:"
+        // ----------------------------------------------------------------------------------------
+        internal static string DriveIsMappedTo(string driveLetter)
+        {
+            StringBuilder volumeMap = new StringBuilder(512);
+            string mappedVolumeName = "";
+
+            // If it's not a mapped drive, just remove it from the list
+            uint mapped = QueryDosDevice(driveLetter, volumeMap, (uint)512);
+            if (mapped != 0)
+                if (volumeMap.ToString().StartsWith(MAPPED_FOLDER_INDICATOR) == true)
+                {
+                    // It's a mapped drive, so return the mapped folder name
+                    mappedVolumeName = volumeMap.ToString().Substring(4);
+                }
+
+            return mappedVolumeName;
+        }
+
+        // ----------------------------------------------------------------------------------------
+        // Class Name:		IOHelper
+        // Procedure Name:	DriveIsMapped
+        // Purpose:			Returns true if a drive is mapped. If not mapped, we return false.
+        // Parameters:
+        //		- driveLetter (string)  : Drive letter in the format "C:"
+        // ----------------------------------------------------------------------------------------
+
+        internal static bool DriveIsMapped(string driveLetter)
+        {
+            StringBuilder volumeMap = new StringBuilder(512);
+            //string mappedVolumeName = "";
+
+            // If it's not a mapped drive, mapped will be 0
+            uint mapped = QueryDosDevice(driveLetter, volumeMap, (uint)512);
+            if (mapped != 0)
+                return true;
+            else
+                return false;
+        }
+
     }
 }

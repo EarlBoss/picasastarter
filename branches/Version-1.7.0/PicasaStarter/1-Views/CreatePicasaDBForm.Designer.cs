@@ -29,13 +29,6 @@
         private void InitializeComponent()
         {
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.EnablecheckBox = new System.Windows.Forms.CheckBox();
-            this.PicDrivecomboBox = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.buttonCreateShortcut = new System.Windows.Forms.Button();
-            this.buttonBackupDir = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textBoxBackupDir = new System.Windows.Forms.TextBox();
             this.textBoxDBName = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.textBoxDBBaseDir = new System.Windows.Forms.TextBox();
@@ -46,10 +39,18 @@
             this.textBoxDBFullDir = new System.Windows.Forms.TextBox();
             this.textBoxDBDescription = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.EnablecheckBox = new System.Windows.Forms.CheckBox();
+            this.PicDrivecomboBox = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.buttonCreateShortcut = new System.Windows.Forms.Button();
+            this.buttonBackupDir = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textBoxBackupDir = new System.Windows.Forms.TextBox();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.backupgroupBox = new System.Windows.Forms.GroupBox();
             this.VDgroupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonDoVDNow = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             this.backupgroupBox.SuspendLayout();
             this.VDgroupBox1.SuspendLayout();
@@ -61,9 +62,9 @@
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.textBoxDBBaseDir);
             this.groupBox2.Controls.Add(this.buttonDBOpenFullDir);
+            this.groupBox2.Controls.Add(this.buttonBrowseDBBaseDir);
             this.groupBox2.Controls.Add(this.label8);
             this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Controls.Add(this.buttonBrowseDBBaseDir);
             this.groupBox2.Controls.Add(this.textBoxDBFullDir);
             this.groupBox2.Controls.Add(this.textBoxDBDescription);
             this.groupBox2.Controls.Add(this.label2);
@@ -73,99 +74,6 @@
             this.groupBox2.TabIndex = 45;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Database details";
-            // 
-            // EnablecheckBox
-            // 
-            this.EnablecheckBox.AutoSize = true;
-            this.EnablecheckBox.Location = new System.Drawing.Point(205, 23);
-            this.EnablecheckBox.Name = "EnablecheckBox";
-            this.EnablecheckBox.Size = new System.Drawing.Size(319, 30);
-            this.EnablecheckBox.TabIndex = 47;
-            this.EnablecheckBox.Text = "If This Drive Is Missing, Allow PicasaStarter to Map the Picture\r\nFolder Storage " +
-                "Path to This Drive as a Virtual Drive.\r\n";
-            this.EnablecheckBox.UseVisualStyleBackColor = true;
-            this.EnablecheckBox.CheckedChanged += new System.EventHandler(this.EnablecheckBox_CheckedChanged);
-            // 
-            // PicDrivecomboBox
-            // 
-            this.PicDrivecomboBox.FormattingEnabled = true;
-            this.PicDrivecomboBox.Items.AddRange(new object[] {
-            "D:",
-            "E:",
-            "F:",
-            "G:",
-            "H:",
-            "I:",
-            "J:",
-            "K:",
-            "L:",
-            "M:",
-            "N:",
-            "O:",
-            "P:",
-            "Q:",
-            "R:",
-            "S:",
-            "T:",
-            "U:",
-            "V:",
-            "W:",
-            "X:",
-            "Y:",
-            "Z:"});
-            this.PicDrivecomboBox.Location = new System.Drawing.Point(137, 28);
-            this.PicDrivecomboBox.Name = "PicDrivecomboBox";
-            this.PicDrivecomboBox.Size = new System.Drawing.Size(50, 21);
-            this.PicDrivecomboBox.TabIndex = 46;
-            this.PicDrivecomboBox.SelectedIndexChanged += new System.EventHandler(this.PicDrivecomboBox1_SelectedIndexChanged);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 24);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(116, 26);
-            this.label4.TabIndex = 45;
-            this.label4.Text = "Database Will Expect\r\nPictures On This Drive:";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // buttonCreateShortcut
-            // 
-            this.buttonCreateShortcut.Location = new System.Drawing.Point(21, 415);
-            this.buttonCreateShortcut.Name = "buttonCreateShortcut";
-            this.buttonCreateShortcut.Size = new System.Drawing.Size(133, 23);
-            this.buttonCreateShortcut.TabIndex = 43;
-            this.buttonCreateShortcut.Text = "Create shortcut";
-            this.buttonCreateShortcut.UseVisualStyleBackColor = true;
-            this.buttonCreateShortcut.Click += new System.EventHandler(this.buttonCreateShortcut_Click);
-            // 
-            // buttonBackupDir
-            // 
-            this.buttonBackupDir.Location = new System.Drawing.Point(493, 28);
-            this.buttonBackupDir.Name = "buttonBackupDir";
-            this.buttonBackupDir.Size = new System.Drawing.Size(61, 23);
-            this.buttonBackupDir.TabIndex = 42;
-            this.buttonBackupDir.Text = "Browse...";
-            this.buttonBackupDir.UseVisualStyleBackColor = true;
-            this.buttonBackupDir.Click += new System.EventHandler(this.buttonBackupDir_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(14, 32);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(90, 13);
-            this.label1.TabIndex = 41;
-            this.label1.Text = "Backup directory:";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // textBoxBackupDir
-            // 
-            this.textBoxBackupDir.Location = new System.Drawing.Point(116, 29);
-            this.textBoxBackupDir.Name = "textBoxBackupDir";
-            this.textBoxBackupDir.ReadOnly = true;
-            this.textBoxBackupDir.Size = new System.Drawing.Size(371, 20);
-            this.textBoxBackupDir.TabIndex = 40;
             // 
             // textBoxDBName
             // 
@@ -225,7 +133,7 @@
             // 
             // buttonBrowseDBBaseDir
             // 
-            this.buttonBrowseDBBaseDir.Location = new System.Drawing.Point(493, 137);
+            this.buttonBrowseDBBaseDir.Location = new System.Drawing.Point(493, 140);
             this.buttonBrowseDBBaseDir.Name = "buttonBrowseDBBaseDir";
             this.buttonBrowseDBBaseDir.Size = new System.Drawing.Size(61, 23);
             this.buttonBrowseDBBaseDir.TabIndex = 5;
@@ -260,9 +168,102 @@
             this.label2.Text = "Description:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
+            // EnablecheckBox
+            // 
+            this.EnablecheckBox.AutoSize = true;
+            this.EnablecheckBox.Location = new System.Drawing.Point(187, 23);
+            this.EnablecheckBox.Name = "EnablecheckBox";
+            this.EnablecheckBox.Size = new System.Drawing.Size(275, 30);
+            this.EnablecheckBox.TabIndex = 47;
+            this.EnablecheckBox.Text = "If This Drive Is Missing, Allow PicasaStarter to Map\r\nthe Virtual Drive Source Di" +
+                "rectory to this Drive Letter.\r\n";
+            this.EnablecheckBox.UseVisualStyleBackColor = true;
+            this.EnablecheckBox.CheckedChanged += new System.EventHandler(this.EnablecheckBox_CheckedChanged);
+            // 
+            // PicDrivecomboBox
+            // 
+            this.PicDrivecomboBox.FormattingEnabled = true;
+            this.PicDrivecomboBox.Items.AddRange(new object[] {
+            "D:",
+            "E:",
+            "F:",
+            "G:",
+            "H:",
+            "I:",
+            "J:",
+            "K:",
+            "L:",
+            "M:",
+            "N:",
+            "O:",
+            "P:",
+            "Q:",
+            "R:",
+            "S:",
+            "T:",
+            "U:",
+            "V:",
+            "W:",
+            "X:",
+            "Y:",
+            "Z:"});
+            this.PicDrivecomboBox.Location = new System.Drawing.Point(128, 28);
+            this.PicDrivecomboBox.Name = "PicDrivecomboBox";
+            this.PicDrivecomboBox.Size = new System.Drawing.Size(39, 21);
+            this.PicDrivecomboBox.TabIndex = 46;
+            this.PicDrivecomboBox.SelectedIndexChanged += new System.EventHandler(this.PicDrivecomboBox1_SelectedIndexChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 24);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(116, 26);
+            this.label4.TabIndex = 45;
+            this.label4.Text = "Database Will Expect\r\nPictures On This Drive:";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // buttonCreateShortcut
+            // 
+            this.buttonCreateShortcut.Location = new System.Drawing.Point(21, 436);
+            this.buttonCreateShortcut.Name = "buttonCreateShortcut";
+            this.buttonCreateShortcut.Size = new System.Drawing.Size(133, 23);
+            this.buttonCreateShortcut.TabIndex = 43;
+            this.buttonCreateShortcut.Text = "Create shortcut";
+            this.buttonCreateShortcut.UseVisualStyleBackColor = true;
+            this.buttonCreateShortcut.Click += new System.EventHandler(this.buttonCreateShortcut_Click);
+            // 
+            // buttonBackupDir
+            // 
+            this.buttonBackupDir.Location = new System.Drawing.Point(493, 28);
+            this.buttonBackupDir.Name = "buttonBackupDir";
+            this.buttonBackupDir.Size = new System.Drawing.Size(61, 23);
+            this.buttonBackupDir.TabIndex = 42;
+            this.buttonBackupDir.Text = "Browse...";
+            this.buttonBackupDir.UseVisualStyleBackColor = true;
+            this.buttonBackupDir.Click += new System.EventHandler(this.buttonBackupDir_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(14, 32);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(90, 13);
+            this.label1.TabIndex = 41;
+            this.label1.Text = "Backup directory:";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // textBoxBackupDir
+            // 
+            this.textBoxBackupDir.Location = new System.Drawing.Point(116, 29);
+            this.textBoxBackupDir.Name = "textBoxBackupDir";
+            this.textBoxBackupDir.ReadOnly = true;
+            this.textBoxBackupDir.Size = new System.Drawing.Size(371, 20);
+            this.textBoxBackupDir.TabIndex = 40;
+            // 
             // buttonCancel
             // 
-            this.buttonCancel.Location = new System.Drawing.Point(491, 429);
+            this.buttonCancel.Location = new System.Drawing.Point(491, 450);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 46;
@@ -272,7 +273,7 @@
             // 
             // buttonOK
             // 
-            this.buttonOK.Location = new System.Drawing.Point(410, 429);
+            this.buttonOK.Location = new System.Drawing.Point(410, 450);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
             this.buttonOK.TabIndex = 47;
@@ -294,21 +295,32 @@
             // 
             // VDgroupBox1
             // 
+            this.VDgroupBox1.Controls.Add(this.buttonDoVDNow);
             this.VDgroupBox1.Controls.Add(this.label4);
             this.VDgroupBox1.Controls.Add(this.PicDrivecomboBox);
             this.VDgroupBox1.Controls.Add(this.EnablecheckBox);
             this.VDgroupBox1.Location = new System.Drawing.Point(12, 336);
             this.VDgroupBox1.Name = "VDgroupBox1";
-            this.VDgroupBox1.Size = new System.Drawing.Size(554, 64);
+            this.VDgroupBox1.Size = new System.Drawing.Size(560, 68);
             this.VDgroupBox1.TabIndex = 49;
             this.VDgroupBox1.TabStop = false;
             this.VDgroupBox1.Text = "Map Virtual Picture Drive";
+            // 
+            // buttonDoVDNow
+            // 
+            this.buttonDoVDNow.Location = new System.Drawing.Point(479, 19);
+            this.buttonDoVDNow.Name = "buttonDoVDNow";
+            this.buttonDoVDNow.Size = new System.Drawing.Size(75, 36);
+            this.buttonDoVDNow.TabIndex = 48;
+            this.buttonDoVDNow.Text = "Try Drive Now!";
+            this.buttonDoVDNow.UseVisualStyleBackColor = true;
+            this.buttonDoVDNow.Click += new System.EventHandler(this.buttonDoVDNow_Click);
             // 
             // CreatePicasaDBForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 459);
+            this.ClientSize = new System.Drawing.Size(584, 508);
             this.Controls.Add(this.VDgroupBox1);
             this.Controls.Add(this.backupgroupBox);
             this.Controls.Add(this.buttonCreateShortcut);
@@ -351,5 +363,6 @@
         private System.Windows.Forms.CheckBox EnablecheckBox;
         private System.Windows.Forms.GroupBox backupgroupBox;
         private System.Windows.Forms.GroupBox VDgroupBox1;
+        private System.Windows.Forms.Button buttonDoVDNow;
     }
 }
