@@ -25,7 +25,9 @@ namespace PicasaStarter
         private int lastSelectedIndexListBoxPicasaDBs = -1;
         private string driveToUnmap = "";
         private string appSettingsBaseDir = "";
-                #endregion
+        private int saveListIndex = 0;
+        private bool AllowmappingVD = false;
+        #endregion
 
         #region Public or internal methods
 
@@ -69,6 +71,7 @@ namespace PicasaStarter
                     {
                         _settings = firstRunWizard.ReturnPicasaSettings;
                         _appSettingsDir = firstRunWizard.ReturnAppSettingsDir;
+                        appSettingsBaseDir = Path.GetDirectoryName(_appSettingsDir);
                     }
                     _settings.PicasaExePath = firstRunWizard.ReturnPicasaExePath;
 
@@ -82,14 +85,14 @@ namespace PicasaStarter
             int defaultSelectedDBIndex = listBoxPicasaDBs.FindStringExact(_settings.picasaDefaultSelectedDB);
             if (defaultSelectedDBIndex != ListBox.NoMatches)
                 listBoxPicasaDBs.SelectedIndex = defaultSelectedDBIndex;
-            saveListIndex = listBoxPicasaDBs.SelectedIndex;
-
+            saveListIndex = defaultSelectedDBIndex;
+            AllowmappingVD = true;
             //Map the directory below the PicasaStarter Directory to the Virtual drive
             // if the drive is not mapped and virtual drive is enabled
-            if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].EnableVirtualDrive)
+            if (_settings.picasaDBs[defaultSelectedDBIndex].EnableVirtualDrive)
             {
                 //Map folder or Path to drive letter if not already mapped
-                driveToUnmap = IOHelper.MapFolderToDrive(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].PictureVirtualDrive, appSettingsBaseDir);
+                driveToUnmap = IOHelper.MapFolderToDrive(_settings.picasaDBs[defaultSelectedDBIndex].PictureVirtualDrive, appSettingsBaseDir);
             }
         }
 
@@ -140,6 +143,7 @@ namespace PicasaStarter
 
             if (result == DialogResult.OK)
             {
+                AllowmappingVD = false;
                 if (generalSettingsDialog.ReturnPicasaSettings != null)
                 {
                     _settings = generalSettingsDialog.ReturnPicasaSettings;
@@ -147,12 +151,15 @@ namespace PicasaStarter
                 }
                 _settings.PicasaExePath = generalSettingsDialog.ReturnPicasaExePath;
                 _appSettingsDir = generalSettingsDialog.ReturnAppSettingsDir;
+                appSettingsBaseDir = Path.GetDirectoryName(_appSettingsDir);
                 // Initialise all controls on the screen with the proper data
                 ReFillPicasaDBList(false);
                 // If the saved defaultselectedDB is valid, select it in the list...
                 int defaultSelectedDBIndex = listBoxPicasaDBs.FindStringExact(_settings.picasaDefaultSelectedDB);
                 if (defaultSelectedDBIndex != ListBox.NoMatches)
                     listBoxPicasaDBs.SelectedIndex = defaultSelectedDBIndex;
+                saveListIndex = defaultSelectedDBIndex;
+                AllowmappingVD = true;
 
                 if (_firstRun == true)
                 {
@@ -182,7 +189,6 @@ namespace PicasaStarter
 
         #region Tab PicasaDatabases
 
-        static int saveListIndex = -1;
 
         private void listBoxPicasaDBs_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -194,7 +200,7 @@ namespace PicasaStarter
                 MessageBox.Show("Invalid item choosen from the database list");
                 return;
             }
-            if (listBoxPicasaDBs.SelectedIndex != saveListIndex)
+            if (listBoxPicasaDBs.SelectedIndex != saveListIndex && AllowmappingVD)
             {
                 //Map folder or Path to drive letter if not already mapped
                 if (driveToUnmap != "")
