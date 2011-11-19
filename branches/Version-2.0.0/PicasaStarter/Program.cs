@@ -27,44 +27,6 @@ namespace PicasaStarter
             bool firstRun = false;
             bool settingsfound = false;
 
-            bool symlinkCreated = false;
-
-            //See if we just need to create a symlink
-            for (int i = 1; i < Environment.GetCommandLineArgs().Length; i++)
-            {
-                string arg = Environment.GetCommandLineArgs()[i];
-
-                // Check if Picasastarter should create a symlink...
-                if (arg.Equals("/CreateSymbolicLink", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    // The next argument should be the symbolic link file name...
-                    string symLinkPath = "", symLinkDest = "";
-                    if (i < Environment.GetCommandLineArgs().Length)
-                    {
-                        i++;
-                        symLinkPath = Environment.GetCommandLineArgs()[i];
-                    }
-
-                    if (i < Environment.GetCommandLineArgs().Length)
-                    {
-                        i++;
-                        symLinkDest = Environment.GetCommandLineArgs()[i];
-                    }
-
-                    if (symLinkPath == "" || symLinkDest == "")
-                    {
-                        MessageBox.Show("The /CreateSymbolicLink directive should be followed by a valid path name and the destination path", "Symlink Not Created");
-                    }
-                    if (Directory.Exists(symLinkDest))
-                    {
-                        IOHelper.CreateSymbolicLink(symLinkPath, symLinkDest, true);
-                    }
-                    symlinkCreated = true;
-                }
-            }
-            if (!symlinkCreated)
-            {
-
                 // Initialisations: create temp dir, load settings,...
                 //---------------------------------------------------------------------------
                 configurationDir = SettingsHelper.DetermineConfigDir();
@@ -176,6 +138,31 @@ namespace PicasaStarter
                                 MessageBox.Show("The /autorun directive should be followed by an existing Picasa database name, or \"Personal\" or \"AskUser\"", "No Database Name");
                             }
                         }
+                    else if (arg.Equals("/CreateSymbolicLink", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        showGUI = false;
+
+                        // The next argument should be the symbolic link file name...
+                        string symLinkPath = "", symLinkDest = "";
+                        if (i < Environment.GetCommandLineArgs().Length)
+                        {
+                            i++;
+                            symLinkPath = Environment.GetCommandLineArgs()[i];
+                        }
+
+                        if (i < Environment.GetCommandLineArgs().Length)
+                        {
+                            i++;
+                            symLinkDest = Environment.GetCommandLineArgs()[i];
+                        }
+
+                        if (symLinkPath == "" || symLinkDest == "")
+                        {
+                            MessageBox.Show("The /CreateSymbolicLink directive should be followed by a valid path name and the destination path", "Symlink Not Created");
+                        }
+
+                        IOHelper.CreateSymbolicLink(symLinkPath, symLinkDest, true);
+                    }
                         else
                         {
                             MessageBox.Show("Invalid or no command line parameter: " + arg);
@@ -251,8 +238,6 @@ namespace PicasaStarter
                     Application.Run(new MainForm(settings, appDataDir, appSettingsDir, firstRun));
                 }
 
-            }
         }
-
     }
 }
