@@ -33,9 +33,9 @@
             this.label7 = new System.Windows.Forms.Label();
             this.textBoxDBBaseDir = new System.Windows.Forms.TextBox();
             this.buttonDBOpenFullDir = new System.Windows.Forms.Button();
+            this.buttonBrowseDBBaseDir = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.buttonBrowseDBBaseDir = new System.Windows.Forms.Button();
             this.textBoxDBFullDir = new System.Windows.Forms.TextBox();
             this.textBoxDBDescription = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -111,6 +111,16 @@
             this.buttonDBOpenFullDir.UseVisualStyleBackColor = true;
             this.buttonDBOpenFullDir.Click += new System.EventHandler(this.buttonDBOpenFullDir_Click);
             // 
+            // buttonBrowseDBBaseDir
+            // 
+            this.buttonBrowseDBBaseDir.Location = new System.Drawing.Point(493, 140);
+            this.buttonBrowseDBBaseDir.Name = "buttonBrowseDBBaseDir";
+            this.buttonBrowseDBBaseDir.Size = new System.Drawing.Size(61, 23);
+            this.buttonBrowseDBBaseDir.TabIndex = 5;
+            this.buttonBrowseDBBaseDir.Text = "Browse...";
+            this.buttonBrowseDBBaseDir.UseVisualStyleBackColor = true;
+            this.buttonBrowseDBBaseDir.Click += new System.EventHandler(this.buttonBrowseDBBaseDir_Click);
+            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -130,16 +140,6 @@
             this.label3.TabIndex = 38;
             this.label3.Text = "Full directory:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // buttonBrowseDBBaseDir
-            // 
-            this.buttonBrowseDBBaseDir.Location = new System.Drawing.Point(493, 140);
-            this.buttonBrowseDBBaseDir.Name = "buttonBrowseDBBaseDir";
-            this.buttonBrowseDBBaseDir.Size = new System.Drawing.Size(61, 23);
-            this.buttonBrowseDBBaseDir.TabIndex = 5;
-            this.buttonBrowseDBBaseDir.Text = "Browse...";
-            this.buttonBrowseDBBaseDir.UseVisualStyleBackColor = true;
-            this.buttonBrowseDBBaseDir.Click += new System.EventHandler(this.buttonBrowseDBBaseDir_Click);
             // 
             // textBoxDBFullDir
             // 
@@ -312,7 +312,7 @@
             this.buttonDoVDNow.Name = "buttonDoVDNow";
             this.buttonDoVDNow.Size = new System.Drawing.Size(75, 36);
             this.buttonDoVDNow.TabIndex = 48;
-            this.buttonDoVDNow.Text = "Try Drive Now!";
+            this.buttonDoVDNow.Text = "Map Drive Now!";
             this.buttonDoVDNow.UseVisualStyleBackColor = true;
             this.buttonDoVDNow.Click += new System.EventHandler(this.buttonDoVDNow_Click);
             // 
@@ -329,6 +329,7 @@
             this.Controls.Add(this.groupBox2);
             this.Name = "CreatePicasaDBForm";
             this.Text = "CreatePicasaDatabase";
+            this.Load += new System.EventHandler(this.CreatePicasaDBForm_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.backupgroupBox.ResumeLayout(false);

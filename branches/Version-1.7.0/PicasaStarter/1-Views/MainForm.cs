@@ -23,11 +23,14 @@ namespace PicasaStarter
         private Backup _backup = null;
         private BackupProgressForm _progressForm = null;
         private int lastSelectedIndexListBoxPicasaDBs = -1;
-        private string driveToUnmap = "";
         private string appSettingsBaseDir = "";
-                #endregion
+        private int saveListIndex = 0;
+        private bool AllowmappingVD = false;
+        #endregion
 
         #region Public or internal methods
+        internal string VirtualDrive { get; private set; }
+
 
         public MainForm(Settings settings, string appDataDir, string appSettingsDir, bool firstRun)
         {
@@ -37,6 +40,7 @@ namespace PicasaStarter
             _appSettingsDir = appSettingsDir;
             _firstRun = firstRun;
             appSettingsBaseDir = Path.GetDirectoryName(_appSettingsDir);
+            VirtualDrive = "";
 
             ReFillPicasaButtonList();
         }
@@ -69,6 +73,7 @@ namespace PicasaStarter
                     {
                         _settings = firstRunWizard.ReturnPicasaSettings;
                         _appSettingsDir = firstRunWizard.ReturnAppSettingsDir;
+                        appSettingsBaseDir = Path.GetDirectoryName(_appSettingsDir);
                     }
                     _settings.PicasaExePath = firstRunWizard.ReturnPicasaExePath;
 
@@ -82,14 +87,14 @@ namespace PicasaStarter
             int defaultSelectedDBIndex = listBoxPicasaDBs.FindStringExact(_settings.picasaDefaultSelectedDB);
             if (defaultSelectedDBIndex != ListBox.NoMatches)
                 listBoxPicasaDBs.SelectedIndex = defaultSelectedDBIndex;
-            saveListIndex = listBoxPicasaDBs.SelectedIndex;
-
+            saveListIndex = defaultSelectedDBIndex;
+            AllowmappingVD = true;
             //Map the directory below the PicasaStarter Directory to the Virtual drive
             // if the drive is not mapped and virtual drive is enabled
-            if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].EnableVirtualDrive)
+            if (_settings.picasaDBs[defaultSelectedDBIndex].EnableVirtualDrive)
             {
                 //Map folder or Path to drive letter if not already mapped
-                driveToUnmap = IOHelper.MapFolderToDrive(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].PictureVirtualDrive, appSettingsBaseDir);
+                VirtualDrive = IOHelper.MapFolderToDrive(_settings.picasaDBs[defaultSelectedDBIndex].PictureVirtualDrive, appSettingsBaseDir);
             }
         }
 
@@ -121,10 +126,10 @@ namespace PicasaStarter
                 MessageBox.Show(message, caption);
             }
             // UnMap Picture folder if it was mapped.
-            if (driveToUnmap != "")
+            if (VirtualDrive != "")
             {
                 string xyz;
-                xyz = IOHelper.UnmapFolderFromDrive(driveToUnmap, appSettingsBaseDir);
+                xyz = IOHelper.UnmapFolderFromDrive(VirtualDrive, appSettingsBaseDir);
             }
         }
 
@@ -140,6 +145,7 @@ namespace PicasaStarter
 
             if (result == DialogResult.OK)
             {
+                AllowmappingVD = false;
                 if (generalSettingsDialog.ReturnPicasaSettings != null)
                 {
                     _settings = generalSettingsDialog.ReturnPicasaSettings;
@@ -147,12 +153,15 @@ namespace PicasaStarter
                 }
                 _settings.PicasaExePath = generalSettingsDialog.ReturnPicasaExePath;
                 _appSettingsDir = generalSettingsDialog.ReturnAppSettingsDir;
+                appSettingsBaseDir = Path.GetDirectoryName(_appSettingsDir);
                 // Initialise all controls on the screen with the proper data
                 ReFillPicasaDBList(false);
                 // If the saved defaultselectedDB is valid, select it in the list...
                 int defaultSelectedDBIndex = listBoxPicasaDBs.FindStringExact(_settings.picasaDefaultSelectedDB);
                 if (defaultSelectedDBIndex != ListBox.NoMatches)
                     listBoxPicasaDBs.SelectedIndex = defaultSelectedDBIndex;
+                saveListIndex = defaultSelectedDBIndex;
+                AllowmappingVD = true;
 
                 if (_firstRun == true)
                 {
@@ -182,7 +191,6 @@ namespace PicasaStarter
 
         #region Tab PicasaDatabases
 
-        static int saveListIndex = -1;
 
         private void listBoxPicasaDBs_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -194,19 +202,19 @@ namespace PicasaStarter
                 MessageBox.Show("Invalid item choosen from the database list");
                 return;
             }
-            if (listBoxPicasaDBs.SelectedIndex != saveListIndex)
+            if (listBoxPicasaDBs.SelectedIndex != saveListIndex && AllowmappingVD)
             {
                 //Map folder or Path to drive letter if not already mapped
-                if (driveToUnmap != "")
+                if (VirtualDrive != "")
                 {
                     string xyz;
-                    xyz = IOHelper.UnmapFolderFromDrive(driveToUnmap, appSettingsBaseDir);
-                    driveToUnmap = "";
+                    xyz = IOHelper.UnmapFolderFromDrive(VirtualDrive, appSettingsBaseDir);
+                    VirtualDrive = "";
                 }
 
                 if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].EnableVirtualDrive == true)
                 {
-                    driveToUnmap = IOHelper.MapFolderToDrive(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].PictureVirtualDrive, appSettingsBaseDir);
+                    VirtualDrive = IOHelper.MapFolderToDrive(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].PictureVirtualDrive, appSettingsBaseDir);
                 }
             }
         }
@@ -267,7 +275,7 @@ namespace PicasaStarter
             PicasaDB picasaDB = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex];
             saveIndex = listBoxPicasaDBs.SelectedIndex;
 
-            CreatePicasaDBForm createPicasaDB = new CreatePicasaDBForm(picasaDB, _appSettingsDir, isStandardDatabase);
+            CreatePicasaDBForm createPicasaDB = new CreatePicasaDBForm(picasaDB, _appSettingsDir, VirtualDrive, isStandardDatabase);
 
             DialogResult result = createPicasaDB.ShowDialog();
 
@@ -277,16 +285,16 @@ namespace PicasaStarter
                 _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex] = createPicasaDB.PicasaDB;
                 ReFillPicasaDBList(true);
                 //Map folder or Path to drive letter if not already mapped
-                if (driveToUnmap != "" ) 
+                if (VirtualDrive != "" ) 
                 {
                     string xyz;
-                    xyz = IOHelper.UnmapFolderFromDrive(driveToUnmap, appSettingsBaseDir);
-                    driveToUnmap = "";
+                    xyz = IOHelper.UnmapFolderFromDrive(VirtualDrive, appSettingsBaseDir);
+                    VirtualDrive = "";
                 }
 
                 if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].EnableVirtualDrive == true)
                 {
-                    driveToUnmap = IOHelper.MapFolderToDrive(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].PictureVirtualDrive, appSettingsBaseDir);
+                    VirtualDrive = IOHelper.MapFolderToDrive(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].PictureVirtualDrive, appSettingsBaseDir);
                 }
                 
                 listBoxPicasaDBs.SelectedIndex = saveIndex;
@@ -387,16 +395,19 @@ namespace PicasaStarter
             _settings.picasaButtons.Registerbuttons();
             
             // Go!
-            runner.RunPicasa(dbBaseDir, _appSettingsDir, _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].PictureVirtualDrive);
+            runner.RunPicasa(dbBaseDir, _appSettingsDir);
             
             // Restore the MainForm...
             WindowState = FormWindowState.Normal;
 
-            // Does the user want a backup?
-            DialogResult result = MessageBox.Show("Do you want to take a backup of the latest version of your images and database?",
-                    "Backup?", MessageBoxButtons.YesNo);
-            if(result == DialogResult.Yes)
-                StartBackup();
+            // Does the user want a backup? Only ask if directory exists
+            if ( _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir != "")
+            {
+                DialogResult result = MessageBox.Show("Do you want to make a backup of the latest version of your images and database?",
+                        "Backup?", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                    StartBackup();
+            }
 /*            // UnMap Picture folder if it was mapped.
             if (driveToUnmap != "")
             {
