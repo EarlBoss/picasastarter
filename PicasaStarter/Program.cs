@@ -35,73 +35,6 @@ namespace PicasaStarter
             bool showGUI = true;
             string MappedDrive = "";
 
-            bool symlinkFound = false;
-
-            //See if we just need to create a symlink
-            for (int i = 1; i < Environment.GetCommandLineArgs().Length; i++)
-            {
-                string arg = Environment.GetCommandLineArgs()[i];
-
-                // Check if Picasastarter should create a symlink...
-                if (arg.Equals("/CreateSymbolicLink", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    try
-                    {
-                        symlinkFound = true;
-                        // The next argument should be the symbolic link file name...
-                        string symLinkPath = "", symLinkDest = "", settingsBaseDir = "", mappeddrive = "";
-                        if (i < Environment.GetCommandLineArgs().Length)
-                        {
-                            i++;
-                            symLinkPath = Environment.GetCommandLineArgs()[i];
-                        }
-
-                        if (i < Environment.GetCommandLineArgs().Length)
-                        {
-                            i++;
-                            symLinkDest = Environment.GetCommandLineArgs()[i];
-                        }
-                        if (i < Environment.GetCommandLineArgs().Length)
-                        {
-                            i++;
-                            settingsBaseDir = Environment.GetCommandLineArgs()[i];
-                        }
-                        if (i < Environment.GetCommandLineArgs().Length)
-                        {
-                            i++;
-                            mappeddrive = Environment.GetCommandLineArgs()[i];
-                        }
-
-                        if (mappeddrive != "")
-                        {
-                            string xyz = "";
-                            xyz = IOHelper.MapFolderToDrive(mappeddrive, settingsBaseDir);
-                        }
-
-                        if (symLinkPath == "" || symLinkDest == "")
-                        {
-                            //MessageBox.Show("The /CreateSymbolicLink directive should be followed by a valid path name and the destination path", "Symlink Not Created");
-                        }
-                        if (Directory.Exists(symLinkDest))
-                        {
-                            IOHelper.CreateSymbolicLink(symLinkPath, symLinkDest, true);
-                        }
-                        if (mappeddrive != "")
-                        {
-                            string xyz;
-                            xyz = IOHelper.UnmapFolderFromDrive(mappeddrive, settingsBaseDir);
-                        }
-                    }
-                    catch 
-                    { }
-                }
-            }
-            if (!symlinkFound)
-            {
-
-                // Initialisations: create temp dir, load settings,...
-                //---------------------------------------------------------------------------
-
                 try
                 {
                     config = SettingsHelper.DeSerializeConfig(
@@ -216,6 +149,31 @@ namespace PicasaStarter
                                 MessageBox.Show("The /autorun directive should be followed by an existing Picasa database name, or \"Personal\" or \"AskUser\"", "No Database Name");
                             }
                         }
+                    else if (arg.Equals("/CreateSymbolicLink", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        showGUI = false;
+
+                        // The next argument should be the symbolic link file name...
+                        string symLinkPath = "", symLinkDest = "";
+                        if (i < Environment.GetCommandLineArgs().Length)
+                        {
+                            i++;
+                            symLinkPath = Environment.GetCommandLineArgs()[i];
+                        }
+
+                        if (i < Environment.GetCommandLineArgs().Length)
+                        {
+                            i++;
+                            symLinkDest = Environment.GetCommandLineArgs()[i];
+                        }
+
+                        if (symLinkPath == "" || symLinkDest == "")
+                        {
+                            MessageBox.Show("The /CreateSymbolicLink directive should be followed by a valid path name and the destination path", "Symlink Not Created");
+                        }
+
+                        IOHelper.CreateSymbolicLink(symLinkPath, symLinkDest, true);
+                    }
                         else
                         {
                             MessageBox.Show("Invalid or no command line parameter: " + arg);
@@ -244,7 +202,7 @@ namespace PicasaStarter
                         {
                             // If the user wants to run his personal default database... (cmd line arg was "personal") 
                             PicasaRunner runner = new PicasaRunner(appDataDir, settings.PicasaExePath);
-                            runner.RunPicasa(null, appSettingsDir, null);
+                            runner.RunPicasa(null, appSettingsDir);
                         }
                         else
                         {
@@ -271,12 +229,12 @@ namespace PicasaStarter
 
                                 // If the user wants to run his personal default database... 
                                 if (foundDB.IsStandardDB == true)
-                                    runner.RunPicasa(null, appSettingsDir, null);
+                                    runner.RunPicasa(null, appSettingsDir);
                                 // If the user wants to run a custom database...
                                 else
                                 {
                                     if (Directory.Exists(foundDB.BaseDir))
-                                        runner.RunPicasa(foundDB.BaseDir, appSettingsDir, MappedDrive);
+                                        runner.RunPicasa(foundDB.BaseDir, appSettingsDir);
                                     else
                                         MessageBox.Show("The base directory of this database doesn't exist or you didn't choose one yet.");
                                 }
@@ -302,7 +260,5 @@ namespace PicasaStarter
                 }
 
             }
-        }
-
     }
 }
