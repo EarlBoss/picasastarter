@@ -26,11 +26,13 @@ namespace PicasaStarter
             PicasaDB = new PicasaDB();
         }
         
-        public CreatePicasaDBForm(PicasaDB picasaDB, string appSettingsDir, bool standardDatabase = false)
+        public CreatePicasaDBForm(PicasaDB picasaDB, string appSettingsDir, string virtualDrive, bool standardDatabase = false)
         {
             InitializeComponent();
 
             AppSettingsDir = appSettingsDir;
+            appSettingsBaseDir = Path.GetDirectoryName(AppSettingsDir);
+            driveToUnmap = virtualDrive;
             PicasaDB = new PicasaDB(picasaDB);
 
             textBoxBackupDir.Text = PicasaDB.BackupDir;
@@ -133,7 +135,7 @@ namespace PicasaStarter
         private void buttonDoVDNow_Click(object sender, EventArgs e)
         {
             //Map folder or Path to drive letter if not already mapped
-
+            //Map folder or Path to drive letter if not already mapped
             if (driveToUnmap != "")
             {
                 string xyz;
@@ -141,8 +143,16 @@ namespace PicasaStarter
                 driveToUnmap = "";
             }
 
-            appSettingsBaseDir = Path.GetDirectoryName(AppSettingsDir);
-            driveToUnmap = IOHelper.MapFolderToDrive(PicDrivecomboBox.Text, appSettingsBaseDir);
+            if (EnablecheckBox.Checked == true)
+            {
+                driveToUnmap = IOHelper.MapFolderToDrive(PicDrivecomboBox.Text, appSettingsBaseDir);
+            }
+                
+
+        }
+
+        private void CreatePicasaDBForm_Load(object sender, EventArgs e)
+        {
 
         }
     }
