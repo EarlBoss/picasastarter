@@ -217,8 +217,9 @@
             this.listBoxPicasaDBs.Name = "listBoxPicasaDBs";
             this.listBoxPicasaDBs.Size = new System.Drawing.Size(200, 147);
             this.listBoxPicasaDBs.TabIndex = 43;
-             this.listBoxPicasaDBs.SelectedIndexChanged += new System.EventHandler(this.listBoxPicasaDBs_SelectedIndexChanged);
+            this.listBoxPicasaDBs.SelectedIndexChanged += new System.EventHandler(this.listBoxPicasaDBs_SelectedIndexChanged);
             this.listBoxPicasaDBs.DoubleClick += new System.EventHandler(this.listBoxPicasaDBs_DoubleClick);
+            this.listBoxPicasaDBs.MouseLeave += new System.EventHandler(this.listBoxPicasaDBs_MouseLeave);
             this.listBoxPicasaDBs.MouseMove += new System.Windows.Forms.MouseEventHandler(this.OnListBoxMouseMove);
             // 
             // tabPage2

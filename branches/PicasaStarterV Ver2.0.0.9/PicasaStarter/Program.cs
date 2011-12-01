@@ -221,7 +221,7 @@ namespace PicasaStarter
 
                             if (foundDB != null)
                             {
-                                if (foundDB.EnableVirtualDrive)
+                                if (foundDB.EnableVirtualDrive == true)
                                 {
                                     MappedDrive = IOHelper.MapFolderToDrive(foundDB.PictureVirtualDrive, appSettingsBaseDir);
                                 }
@@ -238,11 +238,8 @@ namespace PicasaStarter
                                     else
                                         MessageBox.Show("The base directory of this database doesn't exist or you didn't choose one yet.");
                                 }
-                                if (MappedDrive != "")
-                                {
-                                    string xyz;
-                                    xyz = IOHelper.UnmapFolderFromDrive(MappedDrive, appSettingsBaseDir);
-                                }
+                                    bool xyz;
+                                    xyz = IOHelper.UnmapDrive();
                                 
                             }
                             else
