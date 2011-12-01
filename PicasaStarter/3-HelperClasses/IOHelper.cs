@@ -12,6 +12,11 @@ namespace HelperClasses
     class IOHelper
     {
 
+        internal static string VirtualDrive = "";
+        internal static string VirtualDriveSource = "";
+        internal static bool VirtualDriveMapped = false;
+
+  
         public static void CreateSymbolicLink(string SymLinkFileName, string SymLinkDestination, bool CreateDirectorySymLink)
         {
             int dwFlags = 0;    // Default, create a file symbolic link;
@@ -310,6 +315,8 @@ namespace HelperClasses
         internal const uint DDD_REMOVE_DEFINITION = 0x00000002;
         internal const uint DDD_EXACT_MATCH_ON_REMOVE = 0x00000004;
         internal const uint DDD_NO_BROADCAST_SYSTEM = 0x00000008;
+        internal const uint NO_ERROR = 0;
+
 
         const string MAPPED_FOLDER_INDICATOR = @"\??\";
 
@@ -335,7 +342,6 @@ namespace HelperClasses
             return "";
         }
 
-
         // ----------------------------------------------------------------------------------------
         // Class Name:		IOHelper
         // Procedure Name:	MapFolderToDrive
@@ -348,10 +354,22 @@ namespace HelperClasses
         {
             // Is this drive already mapped? If so, we don't remap it!
 
+            //Leave it mapped if it is the same as before
+            if (VirtualDrive == driveLetter &&
+                VirtualDriveSource == folderName &&
+                VirtualDriveMapped == true)
+                return driveLetter;
+            //Unmap previous driveLetter if different before remapping new
+            if (VirtualDriveMapped == true)
+            {
+                bool xyz = false;
+                xyz = UnmapDrive();
+            }
+
             if (Directory.Exists(driveLetter + "\\"))
                 return "";
             string UNCPath = "";
- 
+
             // Map the folder to the drive
             //Get UNC Path if the source is a network drive
             UNCPath = IOHelper.GetUNCPath(folderName);
@@ -362,7 +380,13 @@ namespace HelperClasses
                 bool xyz = false;
                 xyz = DefineDosDevice(0, driveLetter, folderName);
                 if (xyz)
+                {
+                    VirtualDrive = driveLetter;
+                    VirtualDriveSource = folderName;
+                    VirtualDriveMapped = true;
                     return driveLetter;
+                }
+                VirtualDriveMapped = false;
                 return "";
             }
             else
@@ -370,7 +394,15 @@ namespace HelperClasses
                 //Map the network drive
                 string xyz = "";
                 xyz = MapUNCToDrive(driveLetter, UNCPath);
-                return xyz;
+                if (xyz != "")
+                {
+                    VirtualDrive = driveLetter;
+                    VirtualDriveSource = folderName;
+                    VirtualDriveMapped = true;
+                    return driveLetter;
+                }
+                VirtualDriveMapped = false;
+                return "";
             }
 
         }
@@ -378,8 +410,8 @@ namespace HelperClasses
         // ----------------------------------------------------------------------------------------
         // Class Name:		IOHelper
         // Procedure Name:	UnmapFolderFromDrive
-        // Purpose:			Unmap a drive letter. We always unmp the drive, without checking the
-        //                  folder name.
+        // Purpose:			Unmap a drive letter. We only unmp the drive, if the
+        //                  folder name matches.
         // Parameters:
         //		- driveLetter (string)  :   Drive letter to be released, the format "C:"
         //		- folderName (string)  :    Folder name that the drive is mapped to.
@@ -390,32 +422,67 @@ namespace HelperClasses
 
             if ((driveLetter == "") || (!Directory.Exists(driveLetter + "\\")))
                 return "";
-            string UNCPath = "";
-
-            //Get UNC Path if the source is a network drive
-            UNCPath = IOHelper.GetUNCPath(driveLetter + "\\");
-            if ((UNCPath == driveLetter + "\\") && (!folderName.StartsWith("\\\\")))
-            {
-                // UnMap Local Drive
-                //This works only for local drives
-                bool xyz = false;
-                xyz = DefineDosDevice(DDD_REMOVE_DEFINITION, driveLetter, folderName);
-                if (xyz)
-                    return driveLetter;
+            if (VirtualDrive != driveLetter || 
+                VirtualDriveSource != folderName ||
+                VirtualDriveMapped != true)
                 return "";
-            }
-            else
-            {
-                string drvpath = "";
-                drvpath = IOHelper.GetUNCPath(driveLetter + "\\");
-                if ((UNCPath != drvpath) || (!drvpath.StartsWith("\\\\")))
-                    return "";
-                //UnMap the network drive
-                string xyz = "";
-                xyz = UnmapUNCFromDrive(driveLetter);
-                return xyz;
-            }
+            bool xyz = false;
+            xyz = UnmapDrive();
+            if (xyz == true)
+                return driveLetter;
+            return "";
   
+        }
+
+        // ----------------------------------------------------------------------------------------
+        // Class Name:		IOHelper
+        // Procedure Name:	bool UnmapDrive
+        // Purpose:			Unmap a drive letter if it was previously mapped
+        // Parameters:
+        //		- driveLetter (string)  :   Drive letter to be released, the format "C:"
+        //		- folderName (string)  :    Folder name that the drive is mapped to.
+        // Returns true if drive was successfully unmapped
+        // ----------------------------------------------------------------------------------------
+        internal static bool UnmapDrive()
+        {
+            // Don't unmap if we didn't map it!
+            bool result = false;
+
+            if (VirtualDriveMapped == true)
+            {
+
+                string UNCPath = "";
+
+                //Get UNC Path if the source is a network drive
+                UNCPath = IOHelper.GetUNCPath(VirtualDrive + "\\");
+                if ((UNCPath == VirtualDrive + "\\") && (!VirtualDriveSource.StartsWith("\\\\")))
+                {
+                    // UnMap Local Drive
+                    //This works only for local drives
+                    bool xyz = false;
+                    xyz = DefineDosDevice(DDD_REMOVE_DEFINITION, VirtualDrive, VirtualDriveSource);
+                    if (xyz == false)
+                        result = true;
+                }
+                else
+                {
+                    string drvpath = "";
+                    drvpath = IOHelper.GetUNCPath(VirtualDrive + "\\");
+                    if ((UNCPath == drvpath) && (drvpath.StartsWith("\\\\")))
+                    {
+                        //UnMap the network drive
+                        string xyz = "";
+                        xyz = UnmapUNCFromDrive(VirtualDrive);
+                        result = true;
+                    }
+                }
+
+                VirtualDrive = "";
+                VirtualDriveSource = "";
+                VirtualDriveMapped = false;
+
+            }
+            return result;
         }
 
         /// <summary>
@@ -526,7 +593,7 @@ namespace HelperClasses
         internal static string UnmapUNCFromDrive(string driveLetter)
         {
             uint result = WNetCancelConnection2(driveLetter, 0, true);
-            if (result != 0)
+            if (result != NO_ERROR)
                 return ("");
             return driveLetter;
         }

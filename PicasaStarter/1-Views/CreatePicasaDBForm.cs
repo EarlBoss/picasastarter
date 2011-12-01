@@ -15,7 +15,8 @@ namespace PicasaStarter
         public PicasaDB PicasaDB { get; private set; }
         private string AppSettingsDir = "";
         private string appSettingsBaseDir = "";
-        private string driveToUnmap = "";
+        public string VirtualDrive = "";
+        public bool VirtualDriveRemapped = false;
 
 
         public CreatePicasaDBForm()
@@ -32,7 +33,7 @@ namespace PicasaStarter
 
             AppSettingsDir = appSettingsDir;
             appSettingsBaseDir = Path.GetDirectoryName(AppSettingsDir);
-            driveToUnmap = virtualDrive;
+            VirtualDrive = virtualDrive;
             PicasaDB = new PicasaDB(picasaDB);
 
             textBoxBackupDir.Text = PicasaDB.BackupDir;
@@ -92,11 +93,11 @@ namespace PicasaStarter
             PicasaDB.Name = textBoxDBName.Text;
             PicasaDB.PictureVirtualDrive = PicDrivecomboBox.Text;
             PicasaDB.EnableVirtualDrive = EnablecheckBox.Checked;
-            if (driveToUnmap != "")
+            if (VirtualDrive != "")
             {
-                string xyz;
-                xyz = IOHelper.UnmapFolderFromDrive(driveToUnmap, appSettingsBaseDir);
-                driveToUnmap = "";
+                bool xyz;
+                xyz = IOHelper.UnmapDrive();
+                VirtualDrive = "";
             }
 
             this.DialogResult = DialogResult.OK;
@@ -105,11 +106,11 @@ namespace PicasaStarter
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            if (driveToUnmap != "")
+            if (VirtualDrive != "")
             {
-                string xyz;
-                xyz = IOHelper.UnmapFolderFromDrive(driveToUnmap, appSettingsBaseDir);
-                driveToUnmap = "";
+                bool xyz;
+                xyz = IOHelper.UnmapDrive();
+                VirtualDrive = "";
             }
             this.DialogResult = DialogResult.Cancel;
             this.Close();
@@ -135,17 +136,10 @@ namespace PicasaStarter
         private void buttonDoVDNow_Click(object sender, EventArgs e)
         {
             //Map folder or Path to drive letter if not already mapped
-            //Map folder or Path to drive letter if not already mapped
-            if (driveToUnmap != "")
+            if (EnablecheckBox.Checked == true && PicDrivecomboBox.Text != "")
             {
-                string xyz;
-                xyz = IOHelper.UnmapFolderFromDrive(driveToUnmap, appSettingsBaseDir);
-                driveToUnmap = "";
-            }
-
-            if (EnablecheckBox.Checked == true)
-            {
-                driveToUnmap = IOHelper.MapFolderToDrive(PicDrivecomboBox.Text, appSettingsBaseDir);
+                VirtualDrive = IOHelper.MapFolderToDrive(PicDrivecomboBox.Text, appSettingsBaseDir);
+                VirtualDriveRemapped = true;
             }
                 
 
