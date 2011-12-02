@@ -345,7 +345,7 @@ namespace HelperClasses
         // ----------------------------------------------------------------------------------------
         // Class Name:		IOHelper
         // Procedure Name:	MapFolderToDrive
-        // Purpose:			Map the folder to a drive letter
+        // Purpose:			Map the folder to a drive letter unless it already exists
         // Parameters:
         //		- driveLetter (string)  : Drive letter in the format "C:" without a back slash
         //		- folderName (string)  : Folder to map without a back slash
@@ -363,7 +363,7 @@ namespace HelperClasses
             if (VirtualDriveMapped == true)
             {
                 bool xyz = false;
-                xyz = UnmapDrive();
+                xyz = UnmapVDrive();
             }
 
             if (Directory.Exists(driveLetter + "\\"))
@@ -427,7 +427,7 @@ namespace HelperClasses
                 VirtualDriveMapped != true)
                 return "";
             bool xyz = false;
-            xyz = UnmapDrive();
+            xyz = UnmapVDrive();
             if (xyz == true)
                 return driveLetter;
             return "";
@@ -436,14 +436,14 @@ namespace HelperClasses
 
         // ----------------------------------------------------------------------------------------
         // Class Name:		IOHelper
-        // Procedure Name:	bool UnmapDrive
-        // Purpose:			Unmap a drive letter if it was previously mapped
+        // Procedure Name:	bool UnmapVDrive
+        // Purpose:			Unmap a virtual drive letter if we previously mapped it
         // Parameters:
         //		- driveLetter (string)  :   Drive letter to be released, the format "C:"
         //		- folderName (string)  :    Folder name that the drive is mapped to.
         // Returns true if drive was successfully unmapped
         // ----------------------------------------------------------------------------------------
-        internal static bool UnmapDrive()
+        internal static bool UnmapVDrive()
         {
             // Don't unmap if we didn't map it!
             bool result = false;
@@ -466,9 +466,7 @@ namespace HelperClasses
                 }
                 else
                 {
-                    string drvpath = "";
-                    drvpath = IOHelper.GetUNCPath(VirtualDrive + "\\");
-                    if ((UNCPath == drvpath) && (drvpath.StartsWith("\\\\")))
+                    if ((UNCPath.StartsWith("\\\\")))
                     {
                         //UnMap the network drive
                         string xyz = "";
@@ -477,11 +475,11 @@ namespace HelperClasses
                     }
                 }
 
-                VirtualDrive = "";
-                VirtualDriveSource = "";
                 VirtualDriveMapped = false;
 
             }
+            VirtualDrive = "";
+            VirtualDriveSource = "";
             return result;
         }
 
@@ -522,6 +520,7 @@ namespace HelperClasses
 
             return originalPath;
         }
+
         [DllImport("mpr.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern int WNetGetConnection(
             [MarshalAs(UnmanagedType.LPTStr)] string localName,
@@ -529,6 +528,7 @@ namespace HelperClasses
             ref int length);
 
         [StructLayout(LayoutKind.Sequential)]
+
         public struct NETRESOURCE
         {
             public uint dwScope;
@@ -540,6 +540,7 @@ namespace HelperClasses
             public string lpComment;
             public string lpProvider;
         }
+
         //Connection Flags
         const uint CONNECT_UPDATE_PROFILE = 0x1;
         const uint CONNECT_INTERACTIVE = 0x8;

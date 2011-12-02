@@ -15,25 +15,27 @@ namespace PicasaStarter
         public PicasaDB PicasaDB { get; private set; }
         private string AppSettingsDir = "";
         private string appSettingsBaseDir = "";
-        public string VirtualDrive = "";
-        public bool VirtualDriveRemapped = false;
+        //public string VirtualDrive = "";
+        //public bool VirtualDriveRemapped = false;
 
 
-        public CreatePicasaDBForm()
+        public CreatePicasaDBForm(string appSettingsDir)
         {
             InitializeComponent();
 
 
+            AppSettingsDir = appSettingsDir;
+            appSettingsBaseDir = Path.GetDirectoryName(AppSettingsDir);
             PicasaDB = new PicasaDB();
+            PicDrivecomboBox.Text = "";
         }
         
-        public CreatePicasaDBForm(PicasaDB picasaDB, string appSettingsDir, string virtualDrive, bool standardDatabase = false)
+        public CreatePicasaDBForm(PicasaDB picasaDB, string appSettingsDir, bool standardDatabase = false)
         {
             InitializeComponent();
 
             AppSettingsDir = appSettingsDir;
             appSettingsBaseDir = Path.GetDirectoryName(AppSettingsDir);
-            VirtualDrive = virtualDrive;
             PicasaDB = new PicasaDB(picasaDB);
 
             textBoxBackupDir.Text = PicasaDB.BackupDir;
@@ -56,6 +58,15 @@ namespace PicasaStarter
 
         private void buttonBrowseDBBaseDir_Click(object sender, EventArgs e)
         {
+            if (EnablecheckBox.Checked == true && PicDrivecomboBox.Text != "")
+            {
+                string xyz = "";
+                xyz = IOHelper.MapFolderToDrive(PicDrivecomboBox.Text, appSettingsBaseDir);
+                if (xyz != PicDrivecomboBox.Text)
+                {
+                    MessageBox.Show("Virtual Drive not mapped Successfully \nDrive letter " + PicDrivecomboBox.Text + " Not Available");
+                }
+            }
             textBoxDBBaseDir.Text = DialogHelper.AskDirectoryPath(PicasaDB.BaseDir);
         }
 
@@ -93,12 +104,6 @@ namespace PicasaStarter
             PicasaDB.Name = textBoxDBName.Text;
             PicasaDB.PictureVirtualDrive = PicDrivecomboBox.Text;
             PicasaDB.EnableVirtualDrive = EnablecheckBox.Checked;
-            if (VirtualDrive != "")
-            {
-                bool xyz;
-                xyz = IOHelper.UnmapDrive();
-                VirtualDrive = "";
-            }
 
             this.DialogResult = DialogResult.OK;
             this.Close();
@@ -106,12 +111,6 @@ namespace PicasaStarter
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            if (VirtualDrive != "")
-            {
-                bool xyz;
-                xyz = IOHelper.UnmapDrive();
-                VirtualDrive = "";
-            }
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
@@ -138,8 +137,12 @@ namespace PicasaStarter
             //Map folder or Path to drive letter if not already mapped
             if (EnablecheckBox.Checked == true && PicDrivecomboBox.Text != "")
             {
-                VirtualDrive = IOHelper.MapFolderToDrive(PicDrivecomboBox.Text, appSettingsBaseDir);
-                VirtualDriveRemapped = true;
+                string xyz = "";
+                xyz = IOHelper.MapFolderToDrive(PicDrivecomboBox.Text, appSettingsBaseDir);
+                if (xyz != PicDrivecomboBox.Text)
+                {
+                    MessageBox.Show ("Virtual Drive not mapped Successfully \nDrive letter "+ PicDrivecomboBox.Text + " Not Available");
+                }
             }
                 
 

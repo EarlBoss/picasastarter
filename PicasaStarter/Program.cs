@@ -65,10 +65,10 @@ namespace PicasaStarter
                             string message = "The Picasa Starter settings file was not found in:\n" + appSettingsDir + "\n\n If it is on a NAS or Portable Drive, " +
                                 "\nPlease Connect the drive as the correct drive letter.\n" +
                                 "When the Drive is connected, Push YES to Try Again.\n\n" +
-                                "To Exit PicasaStarter Without Trying Again, Push NO. \n\n" +
-                                "To define a new Settings File location, Cancel this Message,\n" +
-                                "Then Correct the Settings File location in the First Run dialog";
-                            string caption = "Missing Settings File";
+                                "To define a new Settings File location, Push NO,\n" +
+                                "Then Correct the Settings File location in the First Run dialog \n\n" +
+                                 "To Exit PicasaStarter Without Trying Again, Push CANCEL.";
+                           string caption = "Missing Settings File";
 
                             // Displays the MessageBox.
                             DialogResult result = MessageBox.Show(message, caption, MessageBoxButtons.YesNoCancel);
@@ -77,13 +77,13 @@ namespace PicasaStarter
                             {
                                 settingsfound = false;
                             }
-                            if (result == DialogResult.No)
+                            if (result == DialogResult.Cancel)
                             {
                                 cancelSettingsFileSearch = true;
                                 notConfigured = true;
                                 showGUI = false;
                             }
-                            else if (result == DialogResult.Cancel)
+                            else if (result == DialogResult.No)
                             {
                                 notConfigured = true;
                                 cancelSettingsFileSearch = true;
@@ -239,7 +239,7 @@ namespace PicasaStarter
                                         MessageBox.Show("The base directory of this database doesn't exist or you didn't choose one yet.");
                                 }
                                     bool xyz;
-                                    xyz = IOHelper.UnmapDrive();
+                                    xyz = IOHelper.UnmapVDrive();
                                 
                             }
                             else

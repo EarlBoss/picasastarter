@@ -235,9 +235,16 @@ namespace PicasaStarter
                                         (MessageBoxOptions)0x40000);      // specify MB_TOPMOST 
                                 try
                                 {
+                                    //On network drives, the elevated PicasaStarter.exe file must be run from the settings dir for this to work
+                                    //otherwise drive is not available to administrator
+                                    string exelocation = Application.ExecutablePath;
+                                    if (exelocation != AppSettingsDir + "\\PicasaStarter.exe")
+                                    {
+                                        exelocation = AppSettingsDir + "\\PicasaStarter.exe";
+                                    }
                                     // Create a process to launch Picasa in...
                                     Process createSymLink = new Process();
-                                    createSymLink.StartInfo.FileName = Application.ExecutablePath;
+                                    createSymLink.StartInfo.FileName = exelocation;
                                     createSymLink.StartInfo.Verb = "runas";
                                     createSymLink.StartInfo.Arguments = "/CreateSymbolicLink \"" + symLinkPath + "\" \"" + symLinkDest + "\"";
                                     createSymLink.Start();

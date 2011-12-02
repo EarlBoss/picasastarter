@@ -91,8 +91,8 @@ namespace PicasaStarter
                 //Map the directory below the PicasaStarter Directory to the Virtual drive
                 // if the drive is not mapped and virtual drive is enabled
                 bool xyz = false;
-                xyz = IOHelper.UnmapDrive();
-                if ((_settings.picasaDBs[defaultSelectedDBIndex].EnableVirtualDrive) && (!Directory.Exists(_settings.picasaDBs[defaultSelectedDBIndex].PictureVirtualDrive + "\\")))
+                xyz = IOHelper.UnmapVDrive();
+                if (_settings.picasaDBs[defaultSelectedDBIndex].EnableVirtualDrive)
                 {
                     //Map folder or Path to drive letter if not already mapped
                     VirtualDrive = IOHelper.MapFolderToDrive(_settings.picasaDBs[defaultSelectedDBIndex].PictureVirtualDrive, appSettingsBaseDir);
@@ -130,7 +130,7 @@ namespace PicasaStarter
             }
             // UnMap Picture folder if it was mapped.
             bool xyz = false;
-            xyz = IOHelper.UnmapDrive();
+            xyz = IOHelper.UnmapVDrive();
         }
 
         #endregion
@@ -160,17 +160,19 @@ namespace PicasaStarter
                 if (defaultSelectedDBIndex != ListBox.NoMatches)
                     listBoxPicasaDBs.SelectedIndex = defaultSelectedDBIndex;
                 saveListIndex = defaultSelectedDBIndex;
-                //Unmap old Virtual Drive if it was mapped, then
-                bool xyz = false;
-                xyz = IOHelper.UnmapDrive();
-                //Map the directory below the PicasaStarter Directory to the Virtual drive
-                // if the drive is not mapped and virtual drive is enabled
-                if (_settings.picasaDBs[defaultSelectedDBIndex].EnableVirtualDrive)
+                if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].EnableVirtualDrive)
                 {
 
                     //Map folder or Path to drive letter if not already mapped
-                    VirtualDrive = IOHelper.MapFolderToDrive(_settings.picasaDBs[defaultSelectedDBIndex].PictureVirtualDrive, appSettingsBaseDir);
-               }
+                    VirtualDrive = IOHelper.MapFolderToDrive(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].PictureVirtualDrive, appSettingsBaseDir);
+                }
+                else
+                {
+                    //Unmap old Virtual Drive if it was mapped
+                    bool xyz = false;
+                    xyz = IOHelper.UnmapVDrive();
+
+                }
 
                 if (_firstRun == true)
                 {
@@ -215,20 +217,20 @@ namespace PicasaStarter
 
         private void listBoxPicasaDBs_MouseLeave(object sender, EventArgs e)
         {
-            if (listBoxPicasaDBs.SelectedIndex != saveListIndex)
+            //Map the directory below the PicasaStarter Directory to the Virtual drive
+            // if the drive is not mapped and virtual drive is enabled
+            if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].EnableVirtualDrive)
+            {
+
+                //Map folder or Path to drive letter if not already mapped
+                VirtualDrive = IOHelper.MapFolderToDrive(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].PictureVirtualDrive, appSettingsBaseDir);
+            }
+            else
             {
                 //Unmap old Virtual Drive if it was mapped
                 bool xyz = false;
-                xyz = IOHelper.UnmapDrive();
-                //Map the directory below the PicasaStarter Directory to the Virtual drive
-                // if the drive is not mapped and virtual drive is enabled
-                if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].EnableVirtualDrive)
-                {
+                xyz = IOHelper.UnmapVDrive();
 
-                    //Map folder or Path to drive letter if not already mapped
-                    VirtualDrive = IOHelper.MapFolderToDrive(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].PictureVirtualDrive, appSettingsBaseDir);
-                }
-                saveListIndex = listBoxPicasaDBs.SelectedIndex;
             }
 
         }
@@ -260,7 +262,10 @@ namespace PicasaStarter
 
         private void buttonAddDB_Click(object sender, EventArgs e)
         {
-            CreatePicasaDBForm createPicasaDB = new CreatePicasaDBForm();
+            //Unmap old Virtual Drive if it was mapped
+            bool xyz = false;
+            xyz = IOHelper.UnmapVDrive();
+            CreatePicasaDBForm createPicasaDB = new CreatePicasaDBForm(_appSettingsDir);
 
             DialogResult result = createPicasaDB.ShowDialog();
 
@@ -269,6 +274,18 @@ namespace PicasaStarter
             {
                 _settings.picasaDBs.Add(createPicasaDB.PicasaDB);
                 ReFillPicasaDBList(true);
+                if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].EnableVirtualDrive)
+                {
+
+                    //Map folder or Path to drive letter if not already mapped
+                    VirtualDrive = IOHelper.MapFolderToDrive(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].PictureVirtualDrive, appSettingsBaseDir);
+                }
+                else
+                {
+                    //Unmap old Virtual Drive if it was mapped
+                    xyz = IOHelper.UnmapVDrive();
+
+                }
             }
         }
 
@@ -289,7 +306,7 @@ namespace PicasaStarter
             PicasaDB picasaDB = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex];
             saveIndex = listBoxPicasaDBs.SelectedIndex;
 
-            CreatePicasaDBForm createPicasaDB = new CreatePicasaDBForm(picasaDB, _appSettingsDir, VirtualDrive, isStandardDatabase);
+            CreatePicasaDBForm createPicasaDB = new CreatePicasaDBForm(picasaDB, _appSettingsDir, isStandardDatabase);
 
             DialogResult result = createPicasaDB.ShowDialog();
 
@@ -300,11 +317,10 @@ namespace PicasaStarter
                 ReFillPicasaDBList(true);
                 //Unmap old Virtual Drive if it was mapped
                 bool xyz = false;
-                xyz = IOHelper.UnmapDrive();
+                xyz = IOHelper.UnmapVDrive();
                 //Map the directory below the PicasaStarter Directory to the Virtual drive
                 // if the drive is not mapped and virtual drive is enabled
-                if ((_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].EnableVirtualDrive) &&
-                    (!Directory.Exists(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].PictureVirtualDrive + "\\")))
+                if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].EnableVirtualDrive)
                 {
 
                     //Map folder or Path to drive letter if not already mapped
@@ -337,6 +353,19 @@ namespace PicasaStarter
             {
                 _settings.picasaDBs.RemoveAt(listBoxPicasaDBs.SelectedIndex);
                 ReFillPicasaDBList(false);
+                if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].EnableVirtualDrive)
+                {
+
+                    //Map folder or Path to drive letter if not already mapped
+                    VirtualDrive = IOHelper.MapFolderToDrive(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].PictureVirtualDrive, appSettingsBaseDir);
+                }
+                else
+                {
+                    //Unmap old Virtual Drive if it was mapped
+                    bool xyz = false;
+                    xyz = IOHelper.UnmapVDrive();
+
+                }
             }
         }
 
@@ -351,6 +380,19 @@ namespace PicasaStarter
             {
                 MessageBox.Show("The base directory of this database doesn't exist or you didn't choose one yet.");
                 return;
+            }
+            if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].EnableVirtualDrive)
+            {
+
+                //Map folder or Path to drive letter if not already mapped
+                VirtualDrive = IOHelper.MapFolderToDrive(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].PictureVirtualDrive, appSettingsBaseDir);
+            }
+            else
+            {
+                //Unmap old Virtual Drive if it was mapped
+                bool xyz = false;
+                xyz = IOHelper.UnmapVDrive();
+
             }
             WindowState = FormWindowState.Minimized; //Remove PicasaStarter window from desktop while Picasa is running
             
@@ -414,13 +456,6 @@ namespace PicasaStarter
                 if (result == DialogResult.Yes)
                     StartBackup();
             }
-/*            // UnMap Picture folder if it was mapped.
-            if (driveToUnmap != "")
-            {
-                string xyz;
-                xyz = IOHelper.UnmapFolderFromDrive(driveToUnmap, appSettingsBaseDir);
-            }
-*/
         }
 
         private void buttonBackupPics_Click(object sender, EventArgs e)
