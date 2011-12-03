@@ -170,7 +170,9 @@ namespace PicasaStarter
             if (fd.ShowDialog() == DialogResult.OK)
             {
                 textBoxSettingsXMLPath.Text = fd.SelectedPath;
-                _appSettingsDir = textBoxSettingsXMLPath.Text.Trim(new char[] { '"', ' ', '\\' });
+                _appSettingsDir = textBoxSettingsXMLPath.Text.Trim(new char[] { '"', ' ' });
+                _appSettingsDir = _appSettingsDir.TrimEnd(new char[] { '\\' });
+
                 try
                 {
                     _localSettings = SettingsHelper.DeSerializeSettings(
