@@ -65,8 +65,8 @@ namespace PicasaStarter
             if ((_localSettings != null) || _iniPathChanged)
             {
                 DialogResult result = MessageBox.Show(
-                        "If you proceed, the imported or shared settings will overwrite your current settings. Are you sure you want to do this?",
-                        "Overwrite current settings?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                        "If you proceed, the selected settings file\nwill become your current settings.\n    Are you sure you want to do this?",
+                        "Change current settings?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
                 if (result == DialogResult.Yes)
                 {
@@ -149,17 +149,34 @@ namespace PicasaStarter
             {
                 _localSettings = SettingsHelper.DeSerializeSettings(
                     _appSettingsDir + "\\" + SettingsHelper.SettingsFileName);
+                _setDefaultIniPath = true;
+                _iniPathChanged = true;
             }
             catch (Exception)
             {
-                // If the settings couldn't be loaded, create new empty settings object, but add default picasa database...
-                _localSettings = new Settings();
-                _localSettings.picasaDBs.Add(SettingsHelper.GetDefaultPicasaDB());
+                _setDefaultIniPath = false;
+                _iniPathChanged = false;
+
+                DialogResult result = MessageBox.Show(
+                        "Settings file not found in: " + _appSettingsDir +
+                        "\nClick YES to Create a New Settings File in that Location" +
+                        "\nClick NO to Try Again",
+                        "No Settings File Found", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                if (result == DialogResult.Yes)
+                {
+                    // If the settings couldn't be loaded, create new empty settings object, but add default picasa database...
+                    _localSettings = new Settings();
+                    _localSettings.picasaDBs.Add(SettingsHelper.GetDefaultPicasaDB());
+                    _setDefaultIniPath = true;
+                    _iniPathChanged = true;
+                }
             }
-            PicasaExePath = _localSettings.PicasaExePath;
-            _setDefaultIniPath = true;
-            _iniPathChanged = true;
+            //PicasaExePath = _localSettings.PicasaExePath;
+            //_setDefaultIniPath = true;
+            //_iniPathChanged = true;
         }
+
 
         private void SelXMLPath_Click(object sender, EventArgs e)
         {
@@ -176,16 +193,29 @@ namespace PicasaStarter
                 try
                 {
                     _localSettings = SettingsHelper.DeSerializeSettings(
-                        _appSettingsDir + "\\" + SettingsHelper.SettingsFileName);
+                    _appSettingsDir + "\\" + SettingsHelper.SettingsFileName);
+                    _setDefaultIniPath = false;
+                    _iniPathChanged = true;
                 }
                 catch (Exception)
                 {
-                    // If the settings couldn't be loaded, create new empty settings object, but add default picasa database...
-                    _localSettings = new Settings();
-                    _localSettings.picasaDBs.Add(SettingsHelper.GetDefaultPicasaDB());
+                    _iniPathChanged = false;
+
+                    DialogResult result = MessageBox.Show(
+                            "Settings file not found in: " + _appSettingsDir +
+                            "\nClick YES to Create a New Settings File in that Location" +
+                            "\nClick NO to Try Again",
+                            "No Settings File Found", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        // If the settings couldn't be loaded, create new empty settings object, but add default picasa database...
+                        _localSettings = new Settings();
+                        _localSettings.picasaDBs.Add(SettingsHelper.GetDefaultPicasaDB());
+                        _setDefaultIniPath = false;
+                        _iniPathChanged = true;
+                    }
                 }
-                _setDefaultIniPath = false;
-                _iniPathChanged = true;
             }
         }
 

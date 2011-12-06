@@ -24,7 +24,7 @@ namespace BackupNS
 
         // Delegate declarations.
         public delegate void BackupCompletedEventHandler(object sender, CompletedEventParams e);
-        
+
         /// <summary>
         ///  ProgressEventParams:   Defines a  progress event. Used for displaying file backup progress.
         /// </summary>
@@ -37,12 +37,12 @@ namespace BackupNS
             public readonly int NbFilesDoneUnchanged;   // The nb of files done, that didn't change since the last backup 
             public readonly long NbMBDoneChanged;       // The nb of MegaBytes done, that didn't change since the last backup 
             public readonly long NbMBDoneUnchanged;     // The nb of MegaBytes done, that didn't change since the last backup 
-            
+
             public ProgressEventParams(string curDirToBackup, string curFileNameToBackup,
-                    int nbFiles, 
-                    int nbFilesDoneChanged, int nbFilesDoneUnchanged, 
+                    int nbFiles,
+                    int nbFilesDoneChanged, int nbFilesDoneUnchanged,
                     long nbMBDoneChanged, long nbMBDoneUnchanged)
-            {    
+            {
                 this.CurDirToBackup = curDirToBackup;
                 this.CurFileNameToBackup = curFileNameToBackup;
                 this.NbFiles = nbFiles;
@@ -127,7 +127,7 @@ namespace BackupNS
 
         private BackgroundWorker _bw = null;
         private bool _backupCancelled;
-        
+
 
         #endregion
 
@@ -175,9 +175,9 @@ namespace BackupNS
         #region Public Properties
 
         public BackupStrategy Strategy
-        { 
-            get { return _strategy; } 
-            set { _strategy = value; } 
+        {
+            get { return _strategy; }
+            set { _strategy = value; }
         }
         public List<string> DirsToBackup
         {
@@ -199,7 +199,7 @@ namespace BackupNS
             get { return _maxNbBackups; }
             set { _maxNbBackups = value; }
         }
-        
+
         public Boolean OnlySimulate
         {
             get { return _onlySimulate; }
@@ -211,7 +211,7 @@ namespace BackupNS
 
         public event BackupProgressEventHandler ProgressEvent;
         public event BackupCompletedEventHandler CompletedEvent;
-        
+
         #endregion
 
         #region Public Methods
@@ -227,7 +227,7 @@ namespace BackupNS
         {
             string fileNameTest = DirToBackupTo.FullName + '\\' + "testFile.txt";
             string fileNameTestHardLink = DirToBackupTo.FullName + '\\' + "testFileHardLink.txt";
-            
+
             try
             {
                 FileInfo fileTest = new FileInfo(fileNameTest);
@@ -236,7 +236,7 @@ namespace BackupNS
                 // Delete them first to be sure...
                 if (fileTestHardLink.Exists)
                     fileTestHardLink.Delete();
-                if(fileTest.Exists)
+                if (fileTest.Exists)
                     fileTest.Delete();
 
                 File.WriteAllText(fileNameTest, "Test");
@@ -338,7 +338,7 @@ namespace BackupNS
             }
         }
 
-        #endregion 
+        #endregion
 
         #region Private event handlers for backgroundworker
 
@@ -404,7 +404,7 @@ namespace BackupNS
 
             BackupDirs(dirs.ToArray(), dirsExcl.ToArray());
         }
-        
+
         /// <summary>
         /// Backup a directory recursively.
         /// </summary>
@@ -418,7 +418,7 @@ namespace BackupNS
             // Get list of all files...
             DirectoryWithFiles[] dirsAndFiles = null;
             Log.Info("Start getting dirs and files");
-           
+
             try
             {
                 dirsAndFiles = GetDirectoriesWithFiles(dirsToBackup, dirsToExclude);
@@ -430,7 +430,7 @@ namespace BackupNS
             }
 
             Log.Info("Stop getting dirs and files");
-           
+
             FileInfo curFileToBackup = null;
             string curDirToBackup = null;
 
@@ -470,8 +470,8 @@ namespace BackupNS
                 // Take the necessary actions file per file...           
                 for (int j = 0; j <= (nbFiles - 1); j++)
                 {
-                    if (_bw != null && _bw.CancellationPending) 
-                    { 
+                    if (_bw != null && _bw.CancellationPending)
+                    {
                         Log.Info("Backup cancelled... delete partial backup...");
                         try
                         {
@@ -482,10 +482,10 @@ namespace BackupNS
                         {
                             Log.Error(ex.Message);
                         }
-                        
-                        return; 
+
+                        return;
                     }
-                    
+
                     // The file to be backed up...
                     string curFileNameToBackup = dirsAndFiles[i].Files[j].Name;
                     curFileToBackup = new FileInfo(curDirToBackup + '\\' + curFileNameToBackup);
@@ -508,11 +508,11 @@ namespace BackupNS
                         nbMBDoneUnchanged += curFileToBackup.Length;
                     }
 
-                    pE = new ProgressEventParams(curDirToBackup, curFileNameToBackup, totalNbFiles, nbFilesDoneChanged, 
+                    pE = new ProgressEventParams(curDirToBackup, curFileNameToBackup, totalNbFiles, nbFilesDoneChanged,
                             nbFilesDoneUnchanged, nbMBDoneChanged, nbMBDoneUnchanged);
-                    
+
                     // If running assynchronously, report via backgroundworker object...
-                    if(_bw != null)
+                    if (_bw != null)
                         _bw.ReportProgress(0, pE);
                     else
                         OnProgressEvent(pE);
@@ -524,7 +524,7 @@ namespace BackupNS
             {
                 Log.Info("There were no files changed in backup... so better to delete it again...");
 
-                pE = new ProgressEventParams("- Cancelling backup as there were no changed files...", 
+                pE = new ProgressEventParams("- Cancelling backup as there were no changed files...",
                         "", totalNbFiles, nbFilesDoneChanged,
                         nbFilesDoneUnchanged, nbMBDoneChanged, nbMBDoneUnchanged);
 
@@ -543,7 +543,7 @@ namespace BackupNS
                 {
                     Log.Error(ex.Message);
                 }
-            }       
+            }
         }
 
         private string GetDirToBackupToRelativePart(string curDirToBackup)
@@ -599,13 +599,13 @@ namespace BackupNS
         private Boolean BackupFile(FileInfo fileToBackup, FileInfo fileToBackupTo, FileInfo prevBackupFile)
         {
             Boolean fileChanged = false;
-            
+
             try
             {
                 // Check if the file was backed up in the previous backup and wasn't changed afterwards, 
                 // to create a hardlink rather then copying the file again.
                 if (prevBackupFile.Exists && IOHelper.Compare(prevBackupFile, fileToBackup, false))
-                {                    
+                {
                     fileChanged = false;
 
                     if (OnlySimulate != true)
@@ -641,7 +641,7 @@ namespace BackupNS
 
             foreach (DirectoryInfo dir in baseDirs)
             {
-                bool exclude = false; 
+                bool exclude = false;
                 foreach (DirectoryInfo dirToExclude in dirsToExclude)
                 {
                     if (dir == dirToExclude)
@@ -653,7 +653,7 @@ namespace BackupNS
                 try
                 {
                     FileInfo[] files = dir.GetFiles();
-                    
+
                     if (files.Length > 0)
                         dirList.Add(new DirectoryWithFiles(dir, files));
 
@@ -760,6 +760,6 @@ namespace BackupNS
             }
         }
 
-        #endregion 
+        #endregion
     }
 }
