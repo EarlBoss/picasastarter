@@ -361,8 +361,8 @@ namespace PicasaStarter
                 MessageBox.Show("There is a backup still running... please wait until it is finished before starting one again.");
                 return;
             }
-
-/*            try
+ 
+            try
             {
                 // Initialise the paths where the database and the albums can be found
                 String picasaDBPath = SettingsHelper.GetFullDBDirectory(_db) + "\\Picasa2";
@@ -376,6 +376,10 @@ namespace PicasaStarter
                 string[] excludedDirs = excluded.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                 //MessageBox.Show("watch: " + watched + "\nexcluded: " + excluded);
 
+                MessageBox.Show("Command line backup function not working yet.... \nPlease try again when it is fixed" + 
+                "\n\nwatched Picture Dirs: \n" + watched + "\n\nexcluded Picture Dirs: \n" + excluded);
+
+/*
                 _backup = new Backup();
                 _backup.DestinationDir = _db.BackupDir;
                 _backup.DirsToBackup.AddRange(watchedDirs);     // Backup watched dirs
@@ -393,12 +397,13 @@ namespace PicasaStarter
 
                 // Start the asynchronous operation.
                 _backup.StartBackupAssync();
+*/
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
- */
+
         }
 /*
         private static void BackupCompleted(object sender, EventArgs e)
@@ -408,8 +413,9 @@ namespace PicasaStarter
             _progressForm = null;
             _backup = null;
         }
+ 
  */
-         #endregion
+       #endregion
 
     }
 
