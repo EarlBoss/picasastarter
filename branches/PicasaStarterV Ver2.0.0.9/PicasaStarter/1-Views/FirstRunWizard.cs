@@ -84,10 +84,12 @@ namespace PicasaStarter
                 catch (Exception)
                 {
                     DialogResult result = MessageBox.Show(
-                            "Settings file not found in: " + _appSettingsDir +
-                            "\nClick YES to Create a New Settings File in that Location" +
-                            "\nClick NO to Try Again",
-                            "No Settings File Found", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                            "Settings file not found in this location:\n" + _appSettingsDir +
+                            "\n\nSince this is not the default location for the settings file, " +
+                            "you are probably trying to select a shared settings file that doesn't exist in this location." +
+                            "\n\nClick YES to Create a New Settings File in this Location" +
+                            "\n\nClick NO to try a different location",
+                            "No Settings File Found in This Location", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
                     if (result == DialogResult.Yes)
                     {
@@ -115,10 +117,10 @@ namespace PicasaStarter
                 _setDefaultIniPath = false;
 
                 DialogResult result = MessageBox.Show(
-                        "Settings file not found in: " + _appSettingsDir +
-                        "\nClick YES to Create a New Settings File in that Location" +
-                        "\nClick NO to Try Again",
-                        "No Settings File Found", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                        "Settings file not found in the default location:\n" + _appSettingsDir +
+                        "\n\nClick YES to Create a New Settings File in the default Location" +
+                        "\n\nClick NO then Cancel to select a different location.",
+                        "No Settings File Found in the Default Location", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
                 if (result == DialogResult.Yes)
                 {

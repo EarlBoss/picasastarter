@@ -198,6 +198,7 @@
             this.Name = "BackupProgressForm";
             this.ShowInTaskbar = false;
             this.Text = "BackupProgressForm";
+            this.Load += new System.EventHandler(this.BackupProgressForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
