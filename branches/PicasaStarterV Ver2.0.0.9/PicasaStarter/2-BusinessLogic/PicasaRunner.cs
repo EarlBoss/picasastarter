@@ -115,9 +115,22 @@ namespace PicasaStarter
 
                     // Save Original Picasa Data Path (debugging help)
                     originalUserProfile = ReadKey("AppLocalDataPath");
+                    if(originalUserProfile != null && originalUserProfile != "")
+                    {
+                        MessageBox.Show("Picasa Database Directory was not at it's default location when PicasaStarter was started, " +
+                                        "It may have been moved by the Experimental Move Database Location command in Picasa or PicasaStarter " +
+                                        "may have exited unexpectedly. When Picasa exits this time the default location will be restored, but " + 
+                                        "if database was moved with the Experimental command, the database may need to be restored manually from:\n " +
+                                        originalUserProfile + "  to the default User's  \\Application Data\\Google\\  directory",
+                                        "Picasa Database Not at Default Location",
+                                MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1,
+                                (MessageBoxOptions)0x40000);      // specify MB_TOPMOST 
+                    }
 
                     // Remove any registry key left in error
                     xyz = DeleteKey("AppLocalDataPath");
+                    // Remove any move database registry key
+                    xyz = DeleteKey("AppLocalDataPathCopy");
 
                  }
                 // This is the path where the Picasa database will be put...
@@ -206,8 +219,22 @@ namespace PicasaStarter
                     // Save Original Picasa Data Path (debugging help)
                     originalUserProfile = ReadKey("AppLocalDataPath");
 
+                    if (originalUserProfile != null && originalUserProfile != "")
+                    {
+                        MessageBox.Show("Picasa Database Directory was not at it's default location when PicasaStarter was started,\n" +
+                                        "It may have been moved by the Experimental Move Database Location command in Picasa or PicasaStarter\n" +
+                                        "may have exited unexpectedly. When Picasa exits this time the default location will be restored, but\n" +
+                                        "if database was moved with the Experimental command, the database may need to be restored manually from\n" +
+                                        originalUserProfile + "  to the default User's  \\Application Data\\Google\\  directory",
+                                        "Picasa Database Not at Default Location",
+                                MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1,
+                                (MessageBoxOptions)0x40000);      // specify MB_TOPMOST 
+                    }
+
                     // Remove any registry key left in error
                     xyz = DeleteKey("AppLocalDataPath");
+                    // Remove any move database registry key
+                    xyz = DeleteKey("AppLocalDataPathCopy");
 
                     // Add custom DB path to Picasa Registry unless it is default path
                     if (PicasaDBBasePath != null)
@@ -386,6 +413,8 @@ namespace PicasaStarter
 
                     // Remove any registry key for custom Database
                     xyz = DeleteKey("AppLocalDataPath");
+                    // Remove any move database registry key
+                    xyz = DeleteKey("AppLocalDataPathCopy");
 
                 }
                 else
