@@ -168,31 +168,6 @@ namespace PicasaStarter
                                 MessageBox.Show("The /backup directive should be followed by an existing Picasa database name, or \"Personal\" or \"AskUser\"", "No Database Name");
                             }
                         }
-                        else if (arg.Equals("/CreateSymbolicLink", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            showGUI = false;
-
-                            // The next argument should be the symbolic link file name...
-                            string symLinkPath = "", symLinkDest = "";
-                            if (i < Environment.GetCommandLineArgs().Length)
-                            {
-                                i++;
-                                symLinkPath = Environment.GetCommandLineArgs()[i];
-                            }
-
-                            if (i < Environment.GetCommandLineArgs().Length)
-                            {
-                                i++;
-                                symLinkDest = Environment.GetCommandLineArgs()[i];
-                            }
-
-                            if (symLinkPath == "" || symLinkDest == "")
-                            {
-                                MessageBox.Show("The /CreateSymbolicLink directive should be followed by a valid path name and the destination path", "Symlink Not Created");
-                            }
-
-                            IOHelper.CreateSymbolicLink(symLinkPath, symLinkDest, true);
-                        }
                         else
                         {
                             MessageBox.Show("Invalid or no command line parameter: " + arg);
@@ -335,9 +310,10 @@ namespace PicasaStarter
                 }
 
             }
-       #region private helper functions...
+
+        #region private helper functions...
          private static Backup _backup = null;
-         private static BackupProgressForm _progressForm = null;
+         //private static BackupProgressForm _progressForm = null;
          private static PicasaDB _db = null;
 
         //Function will back up pictures and database when cmd line arg is /backup "database name"

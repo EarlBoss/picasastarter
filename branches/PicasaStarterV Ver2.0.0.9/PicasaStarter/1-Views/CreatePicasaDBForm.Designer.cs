@@ -29,14 +29,16 @@
         private void InitializeComponent()
         {
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.messageBoxDB = new System.Windows.Forms.TextBox();
+            this.buttonConvert38 = new System.Windows.Forms.Button();
+            this.buttonCreateNewDB = new System.Windows.Forms.Button();
+            this.buttonCopyDB = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
             this.textBoxDBName = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.textBoxDBBaseDir = new System.Windows.Forms.TextBox();
-            this.buttonDBOpenFullDir = new System.Windows.Forms.Button();
             this.buttonBrowseDBBaseDir = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.textBoxDBFullDir = new System.Windows.Forms.TextBox();
             this.textBoxDBDescription = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.EnablecheckBox = new System.Windows.Forms.CheckBox();
@@ -58,22 +60,76 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.messageBoxDB);
+            this.groupBox2.Controls.Add(this.buttonConvert38);
+            this.groupBox2.Controls.Add(this.buttonCreateNewDB);
+            this.groupBox2.Controls.Add(this.buttonCopyDB);
+            this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.textBoxDBName);
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.textBoxDBBaseDir);
-            this.groupBox2.Controls.Add(this.buttonDBOpenFullDir);
             this.groupBox2.Controls.Add(this.buttonBrowseDBBaseDir);
             this.groupBox2.Controls.Add(this.label8);
-            this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Controls.Add(this.textBoxDBFullDir);
             this.groupBox2.Controls.Add(this.textBoxDBDescription);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Location = new System.Drawing.Point(12, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(560, 205);
+            this.groupBox2.Size = new System.Drawing.Size(560, 227);
             this.groupBox2.TabIndex = 45;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Database details";
+            // 
+            // messageBoxDB
+            // 
+            this.messageBoxDB.BackColor = System.Drawing.SystemColors.Control;
+            this.messageBoxDB.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.messageBoxDB.ForeColor = System.Drawing.Color.Blue;
+            this.messageBoxDB.Location = new System.Drawing.Point(17, 167);
+            this.messageBoxDB.Multiline = true;
+            this.messageBoxDB.Name = "messageBoxDB";
+            this.messageBoxDB.Size = new System.Drawing.Size(78, 35);
+            this.messageBoxDB.TabIndex = 46;
+            this.messageBoxDB.Text = "Message Box";
+            this.messageBoxDB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.messageBoxDB.Visible = false;
+            // 
+            // buttonConvert38
+            // 
+            this.buttonConvert38.Location = new System.Drawing.Point(426, 172);
+            this.buttonConvert38.Name = "buttonConvert38";
+            this.buttonConvert38.Size = new System.Drawing.Size(61, 34);
+            this.buttonConvert38.TabIndex = 44;
+            this.buttonConvert38.Text = "Convert From 3.8";
+            this.buttonConvert38.UseVisualStyleBackColor = true;
+            this.buttonConvert38.Click += new System.EventHandler(this.buttonConvert38_Click);
+            // 
+            // buttonCreateNewDB
+            // 
+            this.buttonCreateNewDB.Location = new System.Drawing.Point(160, 172);
+            this.buttonCreateNewDB.Name = "buttonCreateNewDB";
+            this.buttonCreateNewDB.Size = new System.Drawing.Size(127, 34);
+            this.buttonCreateNewDB.TabIndex = 43;
+            this.buttonCreateNewDB.Text = "Create New Empty Database";
+            this.buttonCreateNewDB.UseVisualStyleBackColor = true;
+            // 
+            // buttonCopyDB
+            // 
+            this.buttonCopyDB.Location = new System.Drawing.Point(293, 172);
+            this.buttonCopyDB.Name = "buttonCopyDB";
+            this.buttonCopyDB.Size = new System.Drawing.Size(127, 34);
+            this.buttonCopyDB.TabIndex = 42;
+            this.buttonCopyDB.Text = "Create New Copy of Existing Database";
+            this.buttonCopyDB.UseVisualStyleBackColor = true;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(101, 176);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(53, 26);
+            this.label5.TabIndex = 40;
+            this.label5.Text = "Database\r\nTask:";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // textBoxDBName
             // 
@@ -87,9 +143,9 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(14, 142);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(77, 13);
+            this.label7.Size = new System.Drawing.Size(81, 13);
             this.label7.TabIndex = 24;
-            this.label7.Text = "Base directory:";
+            this.label7.Text = "Database Path:";
             this.label7.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // textBoxDBBaseDir
@@ -100,16 +156,6 @@
             this.textBoxDBBaseDir.Size = new System.Drawing.Size(371, 20);
             this.textBoxDBBaseDir.TabIndex = 23;
             this.textBoxDBBaseDir.TextChanged += new System.EventHandler(this.textBoxDBBaseDir_TextChanged);
-            // 
-            // buttonDBOpenFullDir
-            // 
-            this.buttonDBOpenFullDir.Location = new System.Drawing.Point(493, 165);
-            this.buttonDBOpenFullDir.Name = "buttonDBOpenFullDir";
-            this.buttonDBOpenFullDir.Size = new System.Drawing.Size(61, 23);
-            this.buttonDBOpenFullDir.TabIndex = 39;
-            this.buttonDBOpenFullDir.Text = "Explore...";
-            this.buttonDBOpenFullDir.UseVisualStyleBackColor = true;
-            this.buttonDBOpenFullDir.Click += new System.EventHandler(this.buttonDBOpenFullDir_Click);
             // 
             // buttonBrowseDBBaseDir
             // 
@@ -131,31 +177,13 @@
             this.label8.Text = "Name:";
             this.label8.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(14, 169);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(69, 13);
-            this.label3.TabIndex = 38;
-            this.label3.Text = "Full directory:";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // textBoxDBFullDir
-            // 
-            this.textBoxDBFullDir.Location = new System.Drawing.Point(116, 166);
-            this.textBoxDBFullDir.Name = "textBoxDBFullDir";
-            this.textBoxDBFullDir.ReadOnly = true;
-            this.textBoxDBFullDir.Size = new System.Drawing.Size(371, 20);
-            this.textBoxDBFullDir.TabIndex = 37;
-            // 
             // textBoxDBDescription
             // 
             this.textBoxDBDescription.Location = new System.Drawing.Point(116, 52);
             this.textBoxDBDescription.Multiline = true;
             this.textBoxDBDescription.Name = "textBoxDBDescription";
             this.textBoxDBDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxDBDescription.Size = new System.Drawing.Size(438, 82);
+            this.textBoxDBDescription.Size = new System.Drawing.Size(438, 72);
             this.textBoxDBDescription.TabIndex = 35;
             // 
             // label2
@@ -225,7 +253,7 @@
             // 
             // buttonCreateShortcut
             // 
-            this.buttonCreateShortcut.Location = new System.Drawing.Point(21, 436);
+            this.buttonCreateShortcut.Location = new System.Drawing.Point(21, 433);
             this.buttonCreateShortcut.Name = "buttonCreateShortcut";
             this.buttonCreateShortcut.Size = new System.Drawing.Size(133, 23);
             this.buttonCreateShortcut.TabIndex = 43;
@@ -263,7 +291,7 @@
             // 
             // buttonCancel
             // 
-            this.buttonCancel.Location = new System.Drawing.Point(491, 450);
+            this.buttonCancel.Location = new System.Drawing.Point(491, 447);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 46;
@@ -273,7 +301,7 @@
             // 
             // buttonOK
             // 
-            this.buttonOK.Location = new System.Drawing.Point(410, 450);
+            this.buttonOK.Location = new System.Drawing.Point(410, 447);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
             this.buttonOK.TabIndex = 47;
@@ -286,7 +314,7 @@
             this.backupgroupBox.Controls.Add(this.textBoxBackupDir);
             this.backupgroupBox.Controls.Add(this.buttonBackupDir);
             this.backupgroupBox.Controls.Add(this.label1);
-            this.backupgroupBox.Location = new System.Drawing.Point(12, 226);
+            this.backupgroupBox.Location = new System.Drawing.Point(13, 245);
             this.backupgroupBox.Name = "backupgroupBox";
             this.backupgroupBox.Size = new System.Drawing.Size(559, 104);
             this.backupgroupBox.TabIndex = 48;
@@ -299,7 +327,7 @@
             this.VDgroupBox1.Controls.Add(this.label4);
             this.VDgroupBox1.Controls.Add(this.PicDrivecomboBox);
             this.VDgroupBox1.Controls.Add(this.EnablecheckBox);
-            this.VDgroupBox1.Location = new System.Drawing.Point(12, 336);
+            this.VDgroupBox1.Location = new System.Drawing.Point(13, 355);
             this.VDgroupBox1.Name = "VDgroupBox1";
             this.VDgroupBox1.Size = new System.Drawing.Size(560, 68);
             this.VDgroupBox1.TabIndex = 49;
@@ -320,7 +348,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 508);
+            this.ClientSize = new System.Drawing.Size(584, 477);
             this.Controls.Add(this.VDgroupBox1);
             this.Controls.Add(this.backupgroupBox);
             this.Controls.Add(this.buttonCreateShortcut);
@@ -349,11 +377,8 @@
         private System.Windows.Forms.TextBox textBoxDBName;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox textBoxDBBaseDir;
-        private System.Windows.Forms.Button buttonDBOpenFullDir;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button buttonBrowseDBBaseDir;
-        private System.Windows.Forms.TextBox textBoxDBFullDir;
         private System.Windows.Forms.TextBox textBoxDBDescription;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button buttonCancel;
@@ -365,5 +390,10 @@
         private System.Windows.Forms.GroupBox backupgroupBox;
         private System.Windows.Forms.GroupBox VDgroupBox1;
         private System.Windows.Forms.Button buttonDoVDNow;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox messageBoxDB;
+        private System.Windows.Forms.Button buttonConvert38;
+        private System.Windows.Forms.Button buttonCreateNewDB;
+        private System.Windows.Forms.Button buttonCopyDB;
     }
 }

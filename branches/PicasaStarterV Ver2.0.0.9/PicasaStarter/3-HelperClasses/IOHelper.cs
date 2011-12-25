@@ -17,34 +17,6 @@ namespace HelperClasses
         internal static bool VirtualDriveMapped = false;
 
   
-        public static void CreateSymbolicLink(string SymLinkFileName, string SymLinkDestination, bool CreateDirectorySymLink)
-        {
-            int dwFlags = 0;    // Default, create a file symbolic link;
-
-            if (CreateDirectorySymLink == true)
-                dwFlags = 1;
-
-            // Create the symbolic link
-            Boolean created;
-            created = CreateSymbolicLink(SymLinkFileName, SymLinkDestination, dwFlags);
-
-            if (created == true)
-            {
-                // In Windows 7, CreateSymbolicLink doesn't return false if a directory symlink couldn't be created...
-                // so I just check if the symbolic link actually exists to be sure...
-                if (CreateDirectorySymLink == true && Directory.Exists(SymLinkFileName) == false)
-                    created = false;
-            }
-
-            if (created == false)
-            {
-                throw new Win32Exception(Marshal.GetLastWin32Error());
-            }
-        }
-
-        [DllImport("kernel32.dll", EntryPoint = "CreateSymbolicLinkW", CharSet = CharSet.Unicode, SetLastError = true)]
-        private static extern Boolean CreateSymbolicLink([In] string lpFileName, [In] string lpExistingFileName, int dwFlags);
-
         public static void ClearAttributes(string currentDir)
         {
             if (Directory.Exists(currentDir))
