@@ -178,6 +178,7 @@ namespace PicasaStarter
                     //---------------------------------------------------------------------------
                     if (autoRunDatabaseName != null)
                     {
+                        PicasaDB foundDB = null;
                         // First check if he wants to be asked which database to run
                         if (autoRunDatabaseName.Equals("AskUser", StringComparison.CurrentCultureIgnoreCase))
                         {
@@ -189,6 +190,8 @@ namespace PicasaStarter
                             {
                                 autoRunDatabaseName = selectDBForm.ReturnDBName;
                             }
+                            else
+                                return;
 
                         }
                         // Next check if he wants to run with the standard personal database...
@@ -200,13 +203,6 @@ namespace PicasaStarter
                         }
                         else
                         {
-                            // Exit if the Ask menu was cancelled
-                            if (autoRunDatabaseName.Equals("AskUser", StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                return;
-                            }
-
-                            PicasaDB foundDB = null;
                             foreach (PicasaDB db in settings.picasaDBs)
                             {
                                 if (db.Name.Equals(autoRunDatabaseName, StringComparison.CurrentCultureIgnoreCase))
@@ -227,7 +223,21 @@ namespace PicasaStarter
                                 // If the user wants to run a custom database...
                                 else
                                 {
-                                    if (Directory.Exists(foundDB.BaseDir))
+                                    // Set the choosen BaseDir
+                                    if (!Directory.Exists(foundDB.BaseDir + "\\Google\\Picasa2"))
+                                    {
+
+                                        DialogResult result = MessageBox.Show("Do you want to temporarily use the Picasa version 3.8 database?\n" +
+                                            "This Picasa 3.8 Database path is:\n " + foundDB.BaseDir + "\\Local Settings\\Application Data" +
+                                           "\n\n Please edit the database settings, and convert the database to version 3.9 to stop receiving this warning message",
+                                               "Database Not Converted for Picasa Version 3.9+", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1,
+                                               (MessageBoxOptions)0x40000);
+                                        if (result == DialogResult.Yes)
+                                        {
+                                            foundDB.BaseDir = foundDB.BaseDir + "\\Local Settings\\Application Data";
+                                        }
+                                    } 
+                                    if (Directory.Exists(foundDB.BaseDir + "\\Google\\Picasa2"))
                                         runner.RunPicasa(foundDB.BaseDir, appSettingsDir);
                                     else
                                         MessageBox.Show("The base directory of this database doesn't exist or you didn't choose one yet.");

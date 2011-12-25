@@ -236,5 +236,18 @@ namespace PicasaStarter
  
         }
 
+        private void buttonCreateNewDB_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //Create database directory structure so Picasa can fill it in on next run
+                Directory.CreateDirectory(PicasaDB.BaseDir + "\\Google\\Picasa2");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error creating new Picasa Database directory: " + ex.Message);
+            }
+        }
+
     }
 }

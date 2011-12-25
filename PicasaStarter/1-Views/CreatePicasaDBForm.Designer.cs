@@ -111,6 +111,7 @@
             this.buttonCreateNewDB.TabIndex = 43;
             this.buttonCreateNewDB.Text = "Create New Empty Database";
             this.buttonCreateNewDB.UseVisualStyleBackColor = true;
+            this.buttonCreateNewDB.Click += new System.EventHandler(this.buttonCreateNewDB_Click);
             // 
             // buttonCopyDB
             // 
