@@ -107,8 +107,6 @@ namespace PicasaStarter
             // If no custom path was provided... only init DB so popup doesn't show to scan entire PC...
             if (PicasaDBBasePath == null)
             {
-                /*                if (PicasaVersion39) // Make sure the Database path in the registry is erased
-                                { */
                 BaseRegistryKey = Registry.CurrentUser;
                 SubKey = "SOFTWARE\\Google\\Picasa\\Picasa2\\Preferences";
                 bool xyz = false;
@@ -136,8 +134,7 @@ namespace PicasaStarter
                 // This is the path where the Picasa database will be put...
                 GoogleAppDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\Google";
 
-                this.InitializeDB(GoogleAppDir);
-                this.StartBatFile("Pre_RunPicasa.bat");
+                InitializeDB(GoogleAppDir);
             }
             else
             {
@@ -147,7 +144,7 @@ namespace PicasaStarter
                 string CustomDBFullPath = PicasaDBBasePath;
                 GoogleAppDir = CustomDBFullPath + "\\Google";
 
-                this.InitializeDB(GoogleAppDir);
+                InitializeDB(GoogleAppDir);
 
                 // Check if the custom database directory is available, otherwise try to create it...
                 try
@@ -161,8 +158,6 @@ namespace PicasaStarter
                     return;
                 }
 
-                /*                if (PicasaVersion39)
-                                { */
                 BaseRegistryKey = Registry.CurrentUser;
                 SubKey = "SOFTWARE\\Google\\Picasa\\Picasa2\\Preferences";
                 bool xyz = false;
@@ -193,9 +188,11 @@ namespace PicasaStarter
                     xyz = WriteKey("AppLocalDataPath", CustomDBFullPath + "\\");
                 }
 
-                StartBatFile("Pre_RunPicasa.bat");
 
-                // Create a process to launch Picasa in...
+                //StartBatFile("Pre_RunPicasa.bat");
+            }
+            StartBatFile("Pre_RunPicasa.bat");
+            // Create a process to launch Picasa in...
                 Process picasa = new Process();
                 picasa.StartInfo.FileName = PicasaExePath;
                 picasa.StartInfo.WorkingDirectory = PicasaDBBasePath;
@@ -224,7 +221,7 @@ namespace PicasaStarter
                                     { */
                     BaseRegistryKey = Registry.CurrentUser;
                     SubKey = "SOFTWARE\\Google\\Picasa\\Picasa2\\Preferences";
-                    xyz = false;
+                    bool xyz = false;
 
                     // Remove any registry key for custom Database
                     xyz = DeleteKey("AppLocalDataPath");
@@ -233,7 +230,7 @@ namespace PicasaStarter
 
                     lockFile.Delete();
                 }
-            }
+            //}
         }
 
         #region private helper functions...
