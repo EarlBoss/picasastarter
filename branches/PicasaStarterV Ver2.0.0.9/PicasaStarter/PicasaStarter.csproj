@@ -15,7 +15,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <ManifestCertificateThumbprint>124CEB363D65F730CBE2773093FB8791EABC59A4</ManifestCertificateThumbprint>
     <ManifestKeyFile>PicasaStarter_TemporaryKey.pfx</ManifestKeyFile>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
     <SignManifests>true</SignManifests>
     <ApplicationIcon>Resources\PicasaStarter_320.ico</ApplicationIcon>
     <FileUpgradeFlags>
