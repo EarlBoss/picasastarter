@@ -438,10 +438,28 @@ namespace PicasaStarter
             {
                 // Set the choosen BaseDir
                 dbBaseDir = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir;
+                if (!Directory.Exists(dbBaseDir + "\\Google\\Picasa2"))
+                {
 
-                // Set the directory to put the PicasaButtons in the PicasaDB...
-                destButtonDir = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir +
-                        "\\Local Settings\\Application Data\\Google\\Picasa2\\buttons";
+                     DialogResult result = MessageBox.Show("Do you want to temporarily use the Picasa version 3.8 database?\n" +
+                         "This Picasa 3.8 Database path is:\n " + dbBaseDir + "\\Local Settings\\Application Data" +
+                        "\n\n Please edit the database settings, and convert the database to version 3.9 to stop receiving this warning message",
+                            "Database Not Converted for Picasa Version 3.9+", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1,
+                            (MessageBoxOptions)0x40000);
+                     if (result == DialogResult.Yes)
+                     {
+                         dbBaseDir = dbBaseDir + "\\Local Settings\\Application Data";
+                     }
+                     else
+                     {
+                         // Restore the MainForm...
+                         WindowState = FormWindowState.Normal;
+                         return;
+                     }
+
+                }
+                    // Set the directory to put the PicasaButtons in the PicasaDB...
+                destButtonDir = dbBaseDir + "\\Google\\Picasa2\\buttons";
             }
 
             string sourceButtonDir = _appSettingsDir + '\\' + SettingsHelper.PicasaButtons;

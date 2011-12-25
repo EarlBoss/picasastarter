@@ -317,7 +317,7 @@ namespace PicasaStarter
             }
             else
             {
-                fullDBDirectory = picasaDB.BaseDir + "\\Local Settings\\Application Data\\Google";
+                fullDBDirectory = picasaDB.BaseDir + "\\Google";
             }
             return fullDBDirectory;
         }

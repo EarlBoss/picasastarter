@@ -108,38 +108,6 @@ namespace PicasaStarter
             Close();
         }
 
-        private void buttonExportSettings_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog dialog = new SaveFileDialog();
-
-            dialog.FileName = SettingsHelper.SettingsFileName;
-            dialog.Filter = "xml files (*.xml)|*.xml|All files (*.*)|*.*";
-            dialog.FilterIndex = 1;
-            dialog.RestoreDirectory = true;
-
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                File.Copy(_appSettingsDir + "\\" + SettingsHelper.SettingsFileName,
-                        dialog.FileName, true);
-            }
-        }
-
-        private void buttonImportSettings_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog dialog = new OpenFileDialog();
-
-            dialog.FileName = SettingsHelper.SettingsFileName;
-            dialog.Filter = "xml files (*.xml)|*.xml|All files (*.*)|*.*";
-            dialog.FilterIndex = 1;
-            dialog.RestoreDirectory = true;
-
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                _localSettings = SettingsHelper.DeSerializeSettings(dialog.FileName);
-                PicasaExePath = _localSettings.PicasaExePath;
-                textBoxPicasaExePath.Text = PicasaExePath;
-            }
-        }
 
         private void SetXMLToDef_Click(object sender, EventArgs e)
         {

@@ -68,12 +68,12 @@ namespace PicasaStarter
                 {
                     string messageRead = File.ReadAllText(lockFile.FullName);
 
-                    string message = "Running Picasa two times on the same database leads to a corrupted database, so you shouldn't do this! "
+                    string message = "Running Picasa two times on the same database leads to a corrupted database, so you shouldn't do this! " 
                             + "PicasaStarter detected that another Picasa is probably running using this same database:"
                             + Environment.NewLine + Environment.NewLine + messageRead + Environment.NewLine + Environment.NewLine
                             + "If you are really sure this is not the case, you can override this check. So are you sure you want to start Picasa?";
                     res = MessageBox.Show(message, "Are you sure there is no other Picasa running using the same database?",
-                            MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2,
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2, 
                             (MessageBoxOptions)0x40000);
 
                     // If the user isn't sure that there is no other Picasa is running... stop!
@@ -88,7 +88,7 @@ namespace PicasaStarter
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error creating lock file in database path <" + PicasaDBBasePath + ">: "
+                MessageBox.Show("Error creating lock file in database path <" + PicasaDBBasePath + ">: " 
                         + Environment.NewLine + Environment.NewLine + ex.Message);
                 return;
             }
@@ -98,28 +98,26 @@ namespace PicasaStarter
             originalUserProfile = "";
 
             // This information is needed if running from a localized (non-english) XP.
-            //string localAppDataXPEngPart1 = "\\Local Settings";
-            //string localAppDataXPEngPart2 = "\\Application Data";
-            //string localAppDataXPLocalPart1 = "";
-            //string localAppDataXPLocalPart2 = "";
-            //bool isLocalizedXP = false;
-
+            string localAppDataXPEngPart1 = "\\Local Settings";
+            string localAppDataXPEngPart2 = "\\Application Data";
+            string localAppDataXPLocalPart1 = "";
+            string localAppDataXPLocalPart2 = "";
+            bool isLocalizedXP = false;
+            
             // If no custom path was provided... only init DB so popup doesn't show to scan entire PC...
             if (PicasaDBBasePath == null)
             {
-                /*                if (PicasaVersion39) // Make sure the Database path in the registry is erased
-                                { */
                 BaseRegistryKey = Registry.CurrentUser;
                 SubKey = "SOFTWARE\\Google\\Picasa\\Picasa2\\Preferences";
                 bool xyz = false;
 
                 // Save Original Picasa Data Path (debugging help)
                 originalUserProfile = ReadKey("AppLocalDataPath");
-                if (originalUserProfile != null && originalUserProfile != "")
+                if(originalUserProfile != null && originalUserProfile != "")
                 {
                     MessageBox.Show("Picasa Database Directory was not at it's default location when PicasaStarter was started, " +
                                     "It may have been moved by the Experimental Move Database Location command in Picasa or PicasaStarter " +
-                                    "may have exited unexpectedly. When Picasa exits this time the default location will be restored, but " +
+                                    "may have exited unexpectedly. When Picasa exits this time the default location will be restored, but " + 
                                     "if database was moved with the Experimental command, the database may need to be restored manually from:\n " +
                                     originalUserProfile + "  to the default User's  \\Application Data\\Google\\  directory",
                                     "Picasa Database Not at Default Location",
@@ -132,7 +130,7 @@ namespace PicasaStarter
                 // Remove any move database registry key
                 xyz = DeleteKey("AppLocalDataPathCopy");
 
-                /*                 } */
+
                 // This is the path where the Picasa database will be put...
                 GoogleAppDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\Google";
 
@@ -141,18 +139,22 @@ namespace PicasaStarter
             }
             else
             {
-                //string tmpUserProfile;
+                string tmpUserProfile;
 
                 // Default database path is the path for Windows XP. Needed for mixed systems.
-                string CustomDBFullPath = PicasaDBBasePath;
+                string CustomDBFullPath = PicasaDBBasePath + localAppDataXPEngPart1 + localAppDataXPEngPart2;
                 GoogleAppDir = CustomDBFullPath + "\\Google";
 
                 this.InitializeDB(GoogleAppDir);
+
+                // Picasa 3.8 and below - set up paths for non-english versions of Windows XP
 
                 // Check if the custom database directory is available, otherwise try to create it...
                 try
                 {
                     Directory.CreateDirectory(CustomDBFullPath);
+                    // Otherwise Export functionality gives error
+                    Directory.CreateDirectory(PicasaDBBasePath + "\\Desktop");
                 }
                 catch (Exception ex)
                 {
@@ -161,8 +163,6 @@ namespace PicasaStarter
                     return;
                 }
 
-                /*                if (PicasaVersion39)
-                                { */
                 BaseRegistryKey = Registry.CurrentUser;
                 SubKey = "SOFTWARE\\Google\\Picasa\\Picasa2\\Preferences";
                 bool xyz = false;
@@ -192,47 +192,46 @@ namespace PicasaStarter
                 {
                     xyz = WriteKey("AppLocalDataPath", CustomDBFullPath + "\\");
                 }
+                
+            }
 
-                StartBatFile("Pre_RunPicasa.bat");
+            StartBatFile("Pre_RunPicasa.bat");
 
-                // Create a process to launch Picasa in...
-                Process picasa = new Process();
-                picasa.StartInfo.FileName = PicasaExePath;
-                picasa.StartInfo.WorkingDirectory = PicasaDBBasePath;
+            // Create a process to launch Picasa in...
+            Process picasa = new Process();
+            picasa.StartInfo.FileName = PicasaExePath;
+            picasa.StartInfo.WorkingDirectory = PicasaDBBasePath;
 
-                try
-                {
-                    // Start picasa...
-                    picasa.Start();
+            try
+            {
+                // Start picasa...
+                picasa.Start();
 
-                    // Wait until the process started is finished
-                    picasa.WaitForExit();
+                // Wait until the process started is finished
+                picasa.WaitForExit();
 
-                    // Release the resources        
-                    picasa.Close();
+                // Release the resources        
+                picasa.Close();
 
-                    // Run the Post_RunPicasa.bat script if it exists, for users that want to do some preprocessing before starting Picasa.
-                    StartBatFile("Post_Runpicasa.bat");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message + ": <" + PicasaExePath + ">");
-                }
-                finally
-                {
-                    /*                if (PicasaVersion39)
-                                    { */
-                    BaseRegistryKey = Registry.CurrentUser;
-                    SubKey = "SOFTWARE\\Google\\Picasa\\Picasa2\\Preferences";
-                    xyz = false;
+                // Run the Post_RunPicasa.bat script if it exists, for users that want to do some preprocessing before starting Picasa.
+                StartBatFile("Post_Runpicasa.bat");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + ": <" + PicasaExePath + ">");
+            }
+            finally
+            {
+                BaseRegistryKey = Registry.CurrentUser;
+                SubKey = "SOFTWARE\\Google\\Picasa\\Picasa2\\Preferences";
+                bool xyz = false;
 
-                    // Remove any registry key for custom Database
-                    xyz = DeleteKey("AppLocalDataPath");
-                    // Remove any move database registry key
-                    xyz = DeleteKey("AppLocalDataPathCopy");
+                // Remove any registry key for custom Database
+                xyz = DeleteKey("AppLocalDataPath");
+                // Remove any move database registry key
+                xyz = DeleteKey("AppLocalDataPathCopy");
 
-                    lockFile.Delete();
-                }
+                lockFile.Delete();
             }
         }
 
