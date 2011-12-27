@@ -12,6 +12,7 @@ namespace PicasaStarter
 {
     public partial class CreatePicasaDBForm : Form
     {
+        public Settings _settings;
         public PicasaDB PicasaDB { get; private set; }
         private string AppSettingsDir = "";
         private string appSettingsBaseDir = "";
@@ -20,24 +21,25 @@ namespace PicasaStarter
         //public bool VirtualDriveRemapped = false;
 
 
-        public CreatePicasaDBForm(string appSettingsDir)
+        public CreatePicasaDBForm(string appSettingsDir, Settings settings)
         {
             InitializeComponent();
 
-
+            _settings = settings;
             AppSettingsDir = appSettingsDir;
             appSettingsBaseDir = Path.GetDirectoryName(AppSettingsDir);
             PicasaDB = new PicasaDB();
             PicDrivecomboBox.Text = "";
         }
-        
-        public CreatePicasaDBForm(PicasaDB picasaDB, string appSettingsDir, bool standardDatabase = false)
+
+        public CreatePicasaDBForm(PicasaDB picasaDB, string appSettingsDir, Settings settings, bool standardDatabase = false)
         {
             InitializeComponent();
 
             AppSettingsDir = appSettingsDir;
             appSettingsBaseDir = Path.GetDirectoryName(AppSettingsDir);
             PicasaDB = new PicasaDB(picasaDB);
+            _settings = settings;
 
             textBoxBackupDir.Text = PicasaDB.BackupDir;
             textBoxDBBaseDir.Text = PicasaDB.BaseDir;
@@ -76,6 +78,10 @@ namespace PicasaStarter
         private void buttonBackupDir_Click(object sender, EventArgs e)
         {
             textBoxBackupDir.Text = DialogHelper.AskDirectoryPath(PicasaDB.BackupDir);
+        }
+        private void buttonNoBackupDir_Click(object sender, EventArgs e)
+        {
+            textBoxBackupDir.Text = null;
         }
 
         private void textBoxDBBaseDir_TextChanged(object sender, EventArgs e)
@@ -182,7 +188,7 @@ namespace PicasaStarter
                                 Directory.Move(full38DBDirectory + "\\Google\\Picasa2", PicasaDB.BaseDir + "\\Google\\Picasa2");
                                 Directory.Move(full38DBDirectory + "\\Google\\Picasa2Albums", PicasaDB.BaseDir + "\\Google\\Picasa2Albums");
                                 //Erase renamed directory
-                                Directory.Delete(PicasaDB.BaseDir + "\\Google", true);
+                                Directory.Delete(PicasaDB.BaseDir + "\\GoogleOld", true);
                             }
                             catch (Exception ex)
                             {
@@ -249,5 +255,19 @@ namespace PicasaStarter
             }
         }
 
+        private void buttonCopyDB_Click(object sender, EventArgs e)
+        {
+            string xyz = "";
+            // Show Database selection menu 
+            // Show Database selection menu 
+            CopyExistingDBForm copyDBForm = new CopyExistingDBForm(PicasaDB, _settings);
+            copyDBForm.ShowDialog();
+
+            if (copyDBForm.ReturnDBName != null)
+            {
+                xyz = copyDBForm.ReturnDBName;
+            }
+
+        }
     }
 }

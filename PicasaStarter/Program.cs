@@ -224,7 +224,8 @@ namespace PicasaStarter
                                 else
                                 {
                                     // Set the choosen BaseDir
-                                    if (!Directory.Exists(foundDB.BaseDir + "\\Google\\Picasa2"))
+                                    if (!Directory.Exists(foundDB.BaseDir + "\\Google\\Picasa2") &&
+                                       Directory.Exists(foundDB.BaseDir + "\\Local Settings\\Application Data\\Google\\Picasa2"))
                                     {
 
                                         DialogResult result = MessageBox.Show("Do you want to temporarily use the Picasa version 3.8 database?\n" +
@@ -236,11 +237,16 @@ namespace PicasaStarter
                                         {
                                             foundDB.BaseDir = foundDB.BaseDir + "\\Local Settings\\Application Data";
                                         }
-                                    } 
-                                    if (Directory.Exists(foundDB.BaseDir + "\\Google\\Picasa2"))
-                                        runner.RunPicasa(foundDB.BaseDir, appSettingsDir);
-                                    else
-                                        MessageBox.Show("The base directory of this database doesn't exist or you didn't choose one yet.");
+                                    }
+                                    //Get out without creating a database if the database directory doesn't exist
+                                    if (!Directory.Exists(foundDB.BaseDir + "\\Google\\Picasa2"))
+                                    {
+                                        MessageBox.Show("The database doesn't exist at this location, please choose an existing database or create one.",
+                                                    "Database doesn't exist or not created", MessageBoxButtons.OK, MessageBoxIcon.None, MessageBoxDefaultButton.Button1,
+                                                    (MessageBoxOptions)0x40000);
+                                        return;
+                                    }
+                                    runner.RunPicasa(foundDB.BaseDir, appSettingsDir);
                                 }
                                 bool xyz;
                                 xyz = IOHelper.UnmapVDrive();

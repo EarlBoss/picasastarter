@@ -33,7 +33,6 @@
             this.buttonConvert38 = new System.Windows.Forms.Button();
             this.buttonCreateNewDB = new System.Windows.Forms.Button();
             this.buttonCopyDB = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
             this.textBoxDBName = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.textBoxDBBaseDir = new System.Windows.Forms.TextBox();
@@ -51,6 +50,7 @@
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.backupgroupBox = new System.Windows.Forms.GroupBox();
+            this.buttonNoBackupDir = new System.Windows.Forms.Button();
             this.VDgroupBox1 = new System.Windows.Forms.GroupBox();
             this.buttonDoVDNow = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
@@ -64,7 +64,6 @@
             this.groupBox2.Controls.Add(this.buttonConvert38);
             this.groupBox2.Controls.Add(this.buttonCreateNewDB);
             this.groupBox2.Controls.Add(this.buttonCopyDB);
-            this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.textBoxDBName);
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.textBoxDBBaseDir);
@@ -84,10 +83,10 @@
             this.messageBoxDB.BackColor = System.Drawing.SystemColors.Control;
             this.messageBoxDB.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.messageBoxDB.ForeColor = System.Drawing.Color.Blue;
-            this.messageBoxDB.Location = new System.Drawing.Point(17, 167);
+            this.messageBoxDB.Location = new System.Drawing.Point(10, 167);
             this.messageBoxDB.Multiline = true;
             this.messageBoxDB.Name = "messageBoxDB";
-            this.messageBoxDB.Size = new System.Drawing.Size(78, 35);
+            this.messageBoxDB.Size = new System.Drawing.Size(103, 54);
             this.messageBoxDB.TabIndex = 46;
             this.messageBoxDB.Text = "Message Box";
             this.messageBoxDB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -109,7 +108,7 @@
             this.buttonCreateNewDB.Name = "buttonCreateNewDB";
             this.buttonCreateNewDB.Size = new System.Drawing.Size(127, 34);
             this.buttonCreateNewDB.TabIndex = 43;
-            this.buttonCreateNewDB.Text = "Create New Empty Database";
+            this.buttonCreateNewDB.Text = "Initialize this as an Empty Database";
             this.buttonCreateNewDB.UseVisualStyleBackColor = true;
             this.buttonCreateNewDB.Click += new System.EventHandler(this.buttonCreateNewDB_Click);
             // 
@@ -119,18 +118,9 @@
             this.buttonCopyDB.Name = "buttonCopyDB";
             this.buttonCopyDB.Size = new System.Drawing.Size(127, 34);
             this.buttonCopyDB.TabIndex = 42;
-            this.buttonCopyDB.Text = "Create New Copy of Existing Database";
+            this.buttonCopyDB.Text = "Make this a Copy of an Existing Database";
             this.buttonCopyDB.UseVisualStyleBackColor = true;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(101, 176);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(53, 26);
-            this.label5.TabIndex = 40;
-            this.label5.Text = "Database\r\nTask:";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.buttonCopyDB.Click += new System.EventHandler(this.buttonCopyDB_Click);
             // 
             // textBoxDBName
             // 
@@ -312,6 +302,7 @@
             // 
             // backupgroupBox
             // 
+            this.backupgroupBox.Controls.Add(this.buttonNoBackupDir);
             this.backupgroupBox.Controls.Add(this.textBoxBackupDir);
             this.backupgroupBox.Controls.Add(this.buttonBackupDir);
             this.backupgroupBox.Controls.Add(this.label1);
@@ -321,6 +312,16 @@
             this.backupgroupBox.TabIndex = 48;
             this.backupgroupBox.TabStop = false;
             this.backupgroupBox.Text = "Backup && Restore";
+            // 
+            // buttonNoBackupDir
+            // 
+            this.buttonNoBackupDir.Location = new System.Drawing.Point(493, 57);
+            this.buttonNoBackupDir.Name = "buttonNoBackupDir";
+            this.buttonNoBackupDir.Size = new System.Drawing.Size(61, 23);
+            this.buttonNoBackupDir.TabIndex = 43;
+            this.buttonNoBackupDir.Text = "None";
+            this.buttonNoBackupDir.UseVisualStyleBackColor = true;
+            this.buttonNoBackupDir.Click += new System.EventHandler(this.buttonNoBackupDir_Click);
             // 
             // VDgroupBox1
             // 
@@ -391,10 +392,10 @@
         private System.Windows.Forms.GroupBox backupgroupBox;
         private System.Windows.Forms.GroupBox VDgroupBox1;
         private System.Windows.Forms.Button buttonDoVDNow;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox messageBoxDB;
         private System.Windows.Forms.Button buttonConvert38;
         private System.Windows.Forms.Button buttonCreateNewDB;
         private System.Windows.Forms.Button buttonCopyDB;
+        private System.Windows.Forms.Button buttonNoBackupDir;
     }
 }
