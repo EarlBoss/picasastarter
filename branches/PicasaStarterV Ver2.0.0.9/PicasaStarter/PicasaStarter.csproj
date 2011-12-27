@@ -91,6 +91,12 @@
     <Compile Include="1-Views\BackupProgressForm.Designer.cs">
       <DependentUpon>BackupProgressForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="1-Views\CopyExistingDBForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="1-Views\CopyExistingDBForm.Designer.cs">
+      <DependentUpon>CopyExistingDBForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="1-Views\CreatePicasaButtonForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -161,6 +167,9 @@
     <Compile Include="Settings.partial.cs" />
     <EmbeddedResource Include="1-Views\BackupProgressForm.resx">
       <DependentUpon>BackupProgressForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="1-Views\CopyExistingDBForm.resx">
+      <DependentUpon>CopyExistingDBForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="1-Views\CreatePicasaButtonForm.resx">
       <DependentUpon>CreatePicasaButtonForm.cs</DependentUpon>

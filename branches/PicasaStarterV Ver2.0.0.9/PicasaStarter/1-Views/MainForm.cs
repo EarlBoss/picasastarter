@@ -16,8 +16,7 @@ namespace PicasaStarter
     {
         #region Private members
 
-        private Settings _settings;
-        private string _appDataDir = "";
+         private string _appDataDir = "";
         private string _appSettingsDir = "";
         private bool _firstRun = false;
         private Backup _backup = null;
@@ -30,6 +29,7 @@ namespace PicasaStarter
 
         #region Public or internal methods
         internal string VirtualDrive { get; private set; }
+        internal Settings _settings { get; private set; }
 
 
         public MainForm(Settings settings, string appDataDir, string appSettingsDir, bool firstRun)
@@ -285,7 +285,7 @@ namespace PicasaStarter
             //Unmap old Virtual Drive if it was mapped
             bool xyz = false;
             xyz = IOHelper.UnmapVDrive();
-            CreatePicasaDBForm createPicasaDB = new CreatePicasaDBForm(_appSettingsDir);
+            CreatePicasaDBForm createPicasaDB = new CreatePicasaDBForm(_appSettingsDir, _settings);
 
             DialogResult result = createPicasaDB.ShowDialog();
 
@@ -326,7 +326,7 @@ namespace PicasaStarter
             PicasaDB picasaDB = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex];
             saveIndex = listBoxPicasaDBs.SelectedIndex;
 
-            CreatePicasaDBForm createPicasaDB = new CreatePicasaDBForm(picasaDB, _appSettingsDir, isStandardDatabase);
+            CreatePicasaDBForm createPicasaDB = new CreatePicasaDBForm(picasaDB, _appSettingsDir, _settings, isStandardDatabase);
 
             DialogResult result = createPicasaDB.ShowDialog();
 
@@ -438,7 +438,8 @@ namespace PicasaStarter
             {
                 // Set the choosen BaseDir
                 dbBaseDir = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir;
-                if (!Directory.Exists(dbBaseDir + "\\Google\\Picasa2"))
+                if (!Directory.Exists(dbBaseDir + "\\Google\\Picasa2") &&
+                   Directory.Exists(dbBaseDir + "\\Local Settings\\Application Data\\Google\\Picasa2" ))
                 {
 
                      DialogResult result = MessageBox.Show("Do you want to temporarily use the Picasa version 3.8 database?\n" +
@@ -460,6 +461,16 @@ namespace PicasaStarter
                 }
                     // Set the directory to put the PicasaButtons in the PicasaDB...
                 destButtonDir = dbBaseDir + "\\Google\\Picasa2\\buttons";
+            }
+
+            //Get out without creating a database if the database directory doesn't exist
+            if (dbBaseDir != null &&  !Directory.Exists(dbBaseDir + "\\Google\\Picasa2"))
+            {
+                MessageBox.Show("The database doesn't exist at this location, please choose an existing database or create one.",
+                            "Database doesn't exist or not created", MessageBoxButtons.OK, MessageBoxIcon.None, MessageBoxDefaultButton.Button1,
+                            (MessageBoxOptions)0x40000);
+                WindowState = FormWindowState.Normal;
+                return;
             }
 
             string sourceButtonDir = _appSettingsDir + '\\' + SettingsHelper.PicasaButtons;
@@ -487,7 +498,8 @@ namespace PicasaStarter
             WindowState = FormWindowState.Normal;
 
             // Does the user want a backup? Only ask if directory exists
-            if ( _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir != "")
+            if ( _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir != "" &&
+                 _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir != null)
             {
                 DialogResult result = MessageBox.Show("Do you want to make a backup of the latest version of your images and database?",
                         "Backup?", MessageBoxButtons.YesNo);
