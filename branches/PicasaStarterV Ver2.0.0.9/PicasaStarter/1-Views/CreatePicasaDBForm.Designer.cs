@@ -88,9 +88,7 @@
             this.messageBoxDB.Name = "messageBoxDB";
             this.messageBoxDB.Size = new System.Drawing.Size(103, 54);
             this.messageBoxDB.TabIndex = 46;
-            this.messageBoxDB.Text = "Message Box";
             this.messageBoxDB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.messageBoxDB.Visible = false;
             // 
             // buttonConvert38
             // 
@@ -104,21 +102,21 @@
             // 
             // buttonCreateNewDB
             // 
-            this.buttonCreateNewDB.Location = new System.Drawing.Point(160, 172);
+            this.buttonCreateNewDB.Location = new System.Drawing.Point(138, 172);
             this.buttonCreateNewDB.Name = "buttonCreateNewDB";
             this.buttonCreateNewDB.Size = new System.Drawing.Size(127, 34);
             this.buttonCreateNewDB.TabIndex = 43;
-            this.buttonCreateNewDB.Text = "Initialize this as an Empty Database";
+            this.buttonCreateNewDB.Text = "Create\r\nEmpty Database";
             this.buttonCreateNewDB.UseVisualStyleBackColor = true;
             this.buttonCreateNewDB.Click += new System.EventHandler(this.buttonCreateNewDB_Click);
             // 
             // buttonCopyDB
             // 
-            this.buttonCopyDB.Location = new System.Drawing.Point(293, 172);
+            this.buttonCopyDB.Location = new System.Drawing.Point(271, 172);
             this.buttonCopyDB.Name = "buttonCopyDB";
             this.buttonCopyDB.Size = new System.Drawing.Size(127, 34);
             this.buttonCopyDB.TabIndex = 42;
-            this.buttonCopyDB.Text = "Make this a Copy of an Existing Database";
+            this.buttonCopyDB.Text = "Copy an Existing Database";
             this.buttonCopyDB.UseVisualStyleBackColor = true;
             this.buttonCopyDB.Click += new System.EventHandler(this.buttonCopyDB_Click);
             // 
@@ -358,6 +356,7 @@
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.groupBox2);
             this.Name = "CreatePicasaDBForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "CreatePicasaDatabase";
             this.Load += new System.EventHandler(this.CreatePicasaDBForm_Load);
             this.groupBox2.ResumeLayout(false);
