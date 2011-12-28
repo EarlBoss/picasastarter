@@ -34,10 +34,16 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxDBBaseDir = new System.Windows.Forms.TextBox();
-            this.buttonCopyDB = new System.Windows.Forms.Button();
             this.buttonClose = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.buttonDBExplore = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.textBoxDestDir = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.buttonDestExplore = new System.Windows.Forms.Button();
+            this.groupBoxInstructions = new System.Windows.Forms.GroupBox();
+            this.groupBoxInstructions.SuspendLayout();
             this.SuspendLayout();
             // 
             // listBoxPicasaDBs
@@ -51,6 +57,7 @@
             // 
             // textBoxDBDescription
             // 
+            this.textBoxDBDescription.Enabled = false;
             this.textBoxDBDescription.Location = new System.Drawing.Point(274, 27);
             this.textBoxDBDescription.Multiline = true;
             this.textBoxDBDescription.Name = "textBoxDBDescription";
@@ -82,75 +89,133 @@
             // 
             // textBoxDBBaseDir
             // 
-            this.textBoxDBBaseDir.BackColor = System.Drawing.SystemColors.Window;
-            this.textBoxDBBaseDir.Location = new System.Drawing.Point(12, 195);
+            this.textBoxDBBaseDir.BackColor = System.Drawing.SystemColors.Control;
+            this.textBoxDBBaseDir.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBoxDBBaseDir.Location = new System.Drawing.Point(80, 332);
             this.textBoxDBBaseDir.Name = "textBoxDBBaseDir";
             this.textBoxDBBaseDir.ReadOnly = true;
-            this.textBoxDBBaseDir.Size = new System.Drawing.Size(480, 20);
+            this.textBoxDBBaseDir.Size = new System.Drawing.Size(418, 20);
             this.textBoxDBBaseDir.TabIndex = 42;
-            // 
-            // buttonCopyDB
-            // 
-            this.buttonCopyDB.Location = new System.Drawing.Point(392, 233);
-            this.buttonCopyDB.Name = "buttonCopyDB";
-            this.buttonCopyDB.Size = new System.Drawing.Size(100, 23);
-            this.buttonCopyDB.TabIndex = 43;
-            this.buttonCopyDB.Text = "Copy Database";
-            this.buttonCopyDB.UseVisualStyleBackColor = true;
-            this.buttonCopyDB.Click += new System.EventHandler(this.buttonCopyDB_Click);
             // 
             // buttonClose
             // 
-            this.buttonClose.Location = new System.Drawing.Point(498, 233);
+            this.buttonClose.Location = new System.Drawing.Point(498, 397);
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(80, 23);
             this.buttonClose.TabIndex = 44;
-            this.buttonClose.Text = "Quit";
+            this.buttonClose.Text = "Done";
             this.buttonClose.UseVisualStyleBackColor = true;
             this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 179);
+            this.label4.Location = new System.Drawing.Point(-3, 16);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(386, 13);
+            this.label4.Size = new System.Drawing.Size(575, 104);
             this.label4.TabIndex = 45;
-            this.label4.Text = "If Database is not listed above, Explore to Google directory of Database to Copy:" +
-                "";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.label4.Text = resources.GetString("label4.Text");
             // 
             // buttonDBExplore
             // 
-            this.buttonDBExplore.Location = new System.Drawing.Point(508, 193);
+            this.buttonDBExplore.Location = new System.Drawing.Point(504, 332);
             this.buttonDBExplore.Name = "buttonDBExplore";
-            this.buttonDBExplore.Size = new System.Drawing.Size(58, 21);
+            this.buttonDBExplore.Size = new System.Drawing.Size(74, 21);
             this.buttonDBExplore.TabIndex = 46;
             this.buttonDBExplore.Text = "Explore";
             this.buttonDBExplore.UseVisualStyleBackColor = true;
+            this.buttonDBExplore.Click += new System.EventHandler(this.buttonDBExplore_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(77, 384);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(337, 39);
+            this.label2.TabIndex = 47;
+            this.label2.Text = "The Destination directory can be on a Virtual Drive, but the\r\n            selecte" +
+                "d source database must be a physical or mapped drive,\r\n            or the same V" +
+                "irtual Drive.";
+            // 
+            // textBoxDestDir
+            // 
+            this.textBoxDestDir.BackColor = System.Drawing.SystemColors.Control;
+            this.textBoxDestDir.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBoxDestDir.Location = new System.Drawing.Point(80, 358);
+            this.textBoxDestDir.Name = "textBoxDestDir";
+            this.textBoxDestDir.ReadOnly = true;
+            this.textBoxDestDir.Size = new System.Drawing.Size(418, 20);
+            this.textBoxDestDir.TabIndex = 48;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(26, 327);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(49, 26);
+            this.label5.TabIndex = 49;
+            this.label5.Text = "Selected\r\nSource:";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(12, 361);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(63, 13);
+            this.label6.TabIndex = 50;
+            this.label6.Text = "Destination:";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // buttonDestExplore
+            // 
+            this.buttonDestExplore.Location = new System.Drawing.Point(504, 358);
+            this.buttonDestExplore.Name = "buttonDestExplore";
+            this.buttonDestExplore.Size = new System.Drawing.Size(74, 21);
+            this.buttonDestExplore.TabIndex = 51;
+            this.buttonDestExplore.Text = "Explore";
+            this.buttonDestExplore.UseVisualStyleBackColor = true;
+            this.buttonDestExplore.Click += new System.EventHandler(this.buttonDestExplore_Click);
+            // 
+            // groupBoxInstructions
+            // 
+            this.groupBoxInstructions.Controls.Add(this.label4);
+            this.groupBoxInstructions.Location = new System.Drawing.Point(12, 180);
+            this.groupBoxInstructions.Name = "groupBoxInstructions";
+            this.groupBoxInstructions.Size = new System.Drawing.Size(581, 133);
+            this.groupBoxInstructions.TabIndex = 52;
+            this.groupBoxInstructions.TabStop = false;
+            this.groupBoxInstructions.Text = "INSTRUCTIONS";
             // 
             // CopyExistingDBForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(590, 268);
+            this.ClientSize = new System.Drawing.Size(590, 434);
+            this.Controls.Add(this.buttonDestExplore);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.textBoxDestDir);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.buttonDBExplore);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.buttonClose);
-            this.Controls.Add(this.buttonCopyDB);
             this.Controls.Add(this.textBoxDBBaseDir);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBoxDBDescription);
             this.Controls.Add(this.listBoxPicasaDBs);
+            this.Controls.Add(this.groupBoxInstructions);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "CopyExistingDBForm";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Copy Picasa Database To: ";
             this.Load += new System.EventHandler(this.CopyExistingDBForm_Load);
+            this.groupBoxInstructions.ResumeLayout(false);
+            this.groupBoxInstructions.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -163,9 +228,14 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxDBBaseDir;
-        private System.Windows.Forms.Button buttonCopyDB;
         private System.Windows.Forms.Button buttonClose;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button buttonDBExplore;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox textBoxDestDir;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button buttonDestExplore;
+        private System.Windows.Forms.GroupBox groupBoxInstructions;
     }
 }

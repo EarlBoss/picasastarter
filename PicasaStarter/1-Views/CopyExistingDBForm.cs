@@ -5,12 +5,14 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.IO;
+
 
 namespace PicasaStarter
 {
     public partial class CopyExistingDBForm : Form
     {
-        public string ReturnDBName = null;
+        public string ReturnMessage = "Copy Existing Database Task: Nothing Done" ;
         public uint ReturnDBIndex = 0;
         private string returnDBName = null;
         public Settings _settings;
@@ -28,12 +30,12 @@ namespace PicasaStarter
             // Initialise all controls on the screen with the proper data
             ReFillPicasaDBList(false);
             this.Text = "Copy Picasa Database to: " + Db.Name;
-
+            textBoxDestDir.Text = Db.BaseDir + "\\Google"; 
             // If the saved defaultselectedDB is valid, select it in the list...
             int defaultSelectedDBIndex = listBoxPicasaDBs.FindStringExact(_settings.picasaDefaultSelectedDB);
             if (defaultSelectedDBIndex != ListBox.NoMatches)
                 listBoxPicasaDBs.SelectedIndex = defaultSelectedDBIndex;
- 
+            ReturnMessage = "Copy Existing Database Task: Nothing Done"; 
         }
 
 
@@ -93,15 +95,50 @@ namespace PicasaStarter
 
         private void buttonClose_Click(object sender, EventArgs e)
         {
-            ReturnDBName = null;
+            //ReturnMessage = null;
+            //ReturnMessage = "Copy Database Complete";
             Close();
 
         }
 
-        private void buttonCopyDB_Click(object sender, EventArgs e)
+ 
+
+        private void buttonDBExplore_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Copy the database in this");
-            return;
+            //textBoxDBBaseDir.Text = SettingsHelper.GetFullDBDirectory(Db);
+
+            try
+            {
+                Directory.CreateDirectory(textBoxDBBaseDir.Text);
+                System.Diagnostics.Process.Start(textBoxDBBaseDir.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message + ", when trying to open directory: " + textBoxDBBaseDir.Text);
+            }
+            //textBoxDBBaseDir.Text = DialogHelper.AskDirectoryPath(Db.BaseDir);
+            //Db.BaseDir = textBoxDBBaseDir.Text;
+
+        }
+
+        private void buttonDestExplore_Click(object sender, EventArgs e)
+        {
+            //textBoxDestDir.Text = SettingsHelper.GetFullDBDirectory(Db);
+
+            try
+            {
+                Directory.CreateDirectory(textBoxDestDir.Text);
+                System.Diagnostics.Process.Start(textBoxDestDir.Text);
+                ReturnMessage = "Copy Existing Database Task Complete";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message + ", when trying to open directory: " + textBoxDestDir.Text);
+            }
+            //textBoxDBBaseDir.Text = DialogHelper.AskDirectoryPath(Db.BaseDir);
+            //Db.BaseDir = textBoxDBBaseDir.Text;
+
+
         }
     }
 }
