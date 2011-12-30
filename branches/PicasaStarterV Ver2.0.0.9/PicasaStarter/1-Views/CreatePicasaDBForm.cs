@@ -103,12 +103,17 @@ namespace PicasaStarter
                 PicasaDB.Name = textBoxDBName.Text;
                 PicasaDB.PictureVirtualDrive = PicDrivecomboBox.Text;
                 PicasaDB.EnableVirtualDrive = EnablecheckBox.Checked;
-                //this.DialogResult = DialogResult.OK;
-                //this.Close();
                 if (!Directory.Exists(PicasaDB.BaseDir + "\\Google\\Picasa2"))
                 {
-                    DialogResult result = MessageBox.Show("Database hasn't been created, do you still wish to leave this dialog? (YES/NO)",
-                            "Database named but not created", MessageBoxButtons.YesNo);
+                    string msg = "";
+                    if (Directory.Exists(PicasaDB.BaseDir + "\\Local Settings\\Application Data\\Google\\Picasa2"))
+                    {
+                       msg = "Database selected is in Picasa 3.8 format.\n\nDo you still wish to continue? (YES/NO)";
+                    }
+                    else
+                        msg = "Database directory doesn't exist,\nor doesn't contain a Picasa database.\n\n Do you still wish to continue? (YES/NO)";
+
+                    DialogResult result = MessageBox.Show(msg, "Exiting Database Creation", MessageBoxButtons.YesNo);
                     if (result == DialogResult.Yes)
                     {
                         this.DialogResult = DialogResult.OK;
@@ -183,19 +188,18 @@ namespace PicasaStarter
             {
                 if (Directory.Exists(full38DBDirectory + "\\Google\\Picasa2"))
                 {
-                    if (Directory.Exists(PicasaDB.BaseDir + "\\Google\\Picasa2"))
+                    if (Directory.Exists(PicasaDB.BaseDir + "\\Google\\Picasa2") || Directory.Exists(PicasaDB.BaseDir + "\\Google\\Picasa2Albums"))
                     {
                         // Ask user if he wants to overwrite the existing DB
-                        string message = "There is already a Picasa database in:\n" + PicasaDB.BaseDir +
+                        string message = "There may already be a Picasa database in:\n" + PicasaDB.BaseDir +
                             "\nIf you convert the version 3.8 database, it will overwrite this database,\n" +
                             " Click YES to continue the conversion\n\n" +
-                            "To rename the existing database directory to:\n" +
+                            "To back up the existing database directory to:\n" +
                             PicasaDB.BaseDir + "\\GoogleOld\\,\n" +
                             "and then convert the version 3.8 Database, Click NO\n\n" +
-                            "To Cancel conversion of the Picasa version 3.8 database, Click CANCEL." +
-                            "\n\nNOTE:  To use the existing version 3.8 database path without conversion," +
-                            "\n         set the Database Path to:\n" + full38DBDirectory;
-                        string caption = "Convert Picasa Version 3.8 database to 3.9+";
+                            "NOTE: If there is an existing \\GoogleOld\\ backup, it will be deleted\n\n" +
+                            "To Cancel conversion of the Picasa version 3.8 database, Click CANCEL.";
+                         string caption = "Convert Picasa Version 3.8 database to 3.9+";
 
                         // Displays the MessageBox.
                         DialogResult result = MessageBox.Show(message, caption, MessageBoxButtons.YesNoCancel);
@@ -204,21 +208,27 @@ namespace PicasaStarter
                         {
                             try
                             {
-                                if (Directory.Exists(PicasaDB.BaseDir + "\\GoogleOld"))
+                                //Delete backup before making another if answer is No
+                                if (Directory.Exists(PicasaDB.BaseDir + "\\GoogleOld") && result == DialogResult.No)
                                 {
                                     Directory.Delete(PicasaDB.BaseDir + "\\GoogleOld", true);
                                 }
                                 //If destination directory exists, rename it
-                                Directory.Move(PicasaDB.BaseDir + "\\Google", PicasaDB.BaseDir + "\\GoogleOld");
+                                if (result == DialogResult.No)
+                                {
+                                    //Save old database if answer is no
+                                    Directory.CreateDirectory(PicasaDB.BaseDir + "\\GoogleOld");
+                                    Directory.Move(PicasaDB.BaseDir + "\\Google\\Picasa2", PicasaDB.BaseDir + "\\GoogleOld\\Picasa2");
+                                    Directory.Move(PicasaDB.BaseDir + "\\Google\\Picasa2Albums", PicasaDB.BaseDir + "\\GoogleOld\\Picasa2Albums");
+                                }
+                                else
+                                    Directory.Delete(PicasaDB.BaseDir + "\\Google", true); //answer YES, Delete old db
+
                                 //Move Database directories to new location
                                 Directory.CreateDirectory(PicasaDB.BaseDir + "\\Google");
                                 Directory.Move(full38DBDirectory + "\\Google\\Picasa2", PicasaDB.BaseDir + "\\Google\\Picasa2");
                                 Directory.Move(full38DBDirectory + "\\Google\\Picasa2Albums", PicasaDB.BaseDir + "\\Google\\Picasa2Albums");
-                                //Erase renamed directory
-                                if (result == DialogResult.Yes)
-                                {
-                                    Directory.Delete(PicasaDB.BaseDir + "\\GoogleOld", true);
-                                }
+ 
                             }
                             catch (Exception )
                             {
@@ -238,7 +248,7 @@ namespace PicasaStarter
                         try
                         {
                             //Move the directories to the base dir
-                            MessageBox.Show("Move Picasa database files in:\n" + full38DBDirectory + "\nto:\n" + PicasaDB.BaseDir);
+                            //MessageBox.Show("Move Picasa database files in:\n" + full38DBDirectory + "\nto:\n" + PicasaDB.BaseDir);
                             //Move Database directories to new location
                             Directory.CreateDirectory(PicasaDB.BaseDir + "\\Google");
                             Directory.Move(full38DBDirectory + "\\Google\\Picasa2", PicasaDB.BaseDir + "\\Google\\Picasa2");
@@ -285,21 +295,25 @@ namespace PicasaStarter
                 {
                     try
                     {
-                        if (Directory.Exists(PicasaDB.BaseDir + "\\GoogleOld"))
+                        //Delete backup before making another if answer is No
+                        if (Directory.Exists(PicasaDB.BaseDir + "\\GoogleOld") && result == DialogResult.No)
                         {
                             Directory.Delete(PicasaDB.BaseDir + "\\GoogleOld", true);
                         }
                         //If destination directory exists, rename it
-                        Directory.Move(PicasaDB.BaseDir + "\\Google", PicasaDB.BaseDir + "\\GoogleOld");
-                        Directory.CreateDirectory(PicasaDB.BaseDir + "\\Google\\Picasa2");
-                        //Erase renamed directory if yes
-                        if (result == DialogResult.Yes)
+                        if (result == DialogResult.No)
                         {
-                            Directory.Delete(PicasaDB.BaseDir + "\\GoogleOld", true);
+                            //Save old database if answer is no
+                            Directory.CreateDirectory(PicasaDB.BaseDir + "\\GoogleOld");
+                            Directory.Move(PicasaDB.BaseDir + "\\Google\\Picasa2", PicasaDB.BaseDir + "\\GoogleOld\\Picasa2");
+                            Directory.Move(PicasaDB.BaseDir + "\\Google\\Picasa2Albums", PicasaDB.BaseDir + "\\GoogleOld\\Picasa2Albums");
                         }
+                        else
+                            Directory.Delete(PicasaDB.BaseDir + "\\Google", true); //answer YES, Delete old db
 
-                        //messageBoxDB.Text = "Empty Database Directory successfully created ";
- 
+                        //Create empty directory
+                        Directory.CreateDirectory(PicasaDB.BaseDir + "\\Google\\Picasa2");
+
                     }
                     catch (Exception )
                     {
