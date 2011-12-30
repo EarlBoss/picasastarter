@@ -129,13 +129,11 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(77, 384);
+            this.label2.Location = new System.Drawing.Point(150, 402);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(337, 39);
+            this.label2.Size = new System.Drawing.Size(342, 13);
             this.label2.TabIndex = 47;
-            this.label2.Text = "The Destination directory can be on a Virtual Drive, but the\r\n            selecte" +
-                "d source database must be a physical or mapped drive,\r\n            or the same V" +
-                "irtual Drive.";
+            this.label2.Text = "Note: Please close the Explorer windows above before Clicking DONE!";
             // 
             // textBoxDestDir
             // 
