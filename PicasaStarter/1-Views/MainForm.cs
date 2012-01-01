@@ -391,6 +391,7 @@ namespace PicasaStarter
 
         private void buttonRunPicasa_Click(object sender, EventArgs e)
         {
+            string MainFormCaption = this.Text;
             if (listBoxPicasaDBs.SelectedIndex == -1)
             {
                 MessageBox.Show("Please choose a picasa database from the list first");
@@ -415,6 +416,7 @@ namespace PicasaStarter
 
             }
             WindowState = FormWindowState.Minimized; //Remove PicasaStarter window from desktop while Picasa is running
+            this.Text = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].Name + " <--PicasaStarter Database";
             
             PicasaRunner runner = new PicasaRunner(_appDataDir, _settings.PicasaExePath);
 
@@ -495,6 +497,7 @@ namespace PicasaStarter
             runner.RunPicasa(dbBaseDir, _appSettingsDir);
             
             // Restore the MainForm...
+            this.Text = MainFormCaption;
             WindowState = FormWindowState.Normal;
 
             // Does the user want a backup? Only ask if directory exists
