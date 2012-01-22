@@ -6,23 +6,20 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using HelperClasses.Logger;             // Static logging class
 
 namespace PicasaStarter
 {
     public partial class CreatePicasaButtonForm : Form
     {
-        private PicasaButton _picasaButton;
+        public PicasaButton PicasaButton { get; private set; }
+        
         private string _appSettingsDir;
 
         // Some PicasaButton properties needn't be shown, so just put them in member variables to pass the over if needed...
         private string _buttonID = "";
         private byte[] _icon = null;
         private string _script = "";
-
-        public PicasaButton PicasaButton
-        {
-            get { return _picasaButton; }
-        }
 
         public CreatePicasaButtonForm(string appSettingsDir)
         {
@@ -56,17 +53,31 @@ namespace PicasaStarter
             textBoxLabel.Text = button.Label;
             textBoxDescription.Text = button.Description;
             textBoxTooltip.Text = button.ToolTipText;
-            _icon = button.Icon;
-            textBoxIconLayer.Text = button.IconLayer;
+            _icon = button.Icon.PsdData;
+            textBoxIconLayer.Text = button.Icon.PsdLayer;
 
-            textBoxExeFileRegKey.Text = button.ExeFileRegKey;
-            textBoxExeDirRegKey.Text = button.ExeDirRegKey;
-            textBoxExeDir.Text = button.ExeDir;
-            textBoxExeFileName.Text = button.ExeFileName;
-            _script = button.Script;
+            if(button.Action != null
+                && button.Action.Verb == "TrayExec")
+            {
+                ActionTrayExec action = (ActionTrayExec)button.Action;
+                textBoxExeFileRegKey.Text = action.ExeFileRegKey;
+                textBoxExeDirRegKey.Text = action.ExeDirRegKey;
+                textBoxExeDir.Text = action.ExeDir;
+                textBoxExeFileName.Text = action.ExeFileName;
+                _script = action.Script;
+                checkBoxExecuteForeach.Checked = action.ExecuteForeach;
+                checkBoxExportFirst.Checked = action.ExportFirst;
 
-            checkBoxExecuteForeach.Checked = button.ExecuteForeach;
-            checkBoxExportFirst.Checked = button.ExportFirst;
+                // Check exe radiobutton if there is an exe
+                // Set them both first to true, otherwise the checkedChanged event handler doesn't do its job :-(.
+                radioButtonExe.Checked = true;
+                radioButtonScript.Checked = true;
+
+                if (action.ExecutionType == ActionTrayExec.ExecType.Executable)
+                    radioButtonExe.Checked = true;
+                else
+                    radioButtonScript.Checked = true;
+            }
 
             // Enable layer field if there is a button...
             if (_icon != null && _icon.Length > 0)
@@ -79,15 +90,6 @@ namespace PicasaStarter
                 textBoxIconLayer.Enabled = false;
                 buttonRemoveIcon.Enabled = false;
             }
-
-            // Check exe radiobutton if there is an exe
-            // Set them both first to true, otherwise the checkedChanged event handler doesn't do its job :-(.
-            radioButtonExe.Checked = true;      
-            radioButtonScript.Checked = true;
-            if (button.ExecutionType == PicasaButton.ExecType.Executable)
-                radioButtonExe.Checked = true;
-            else
-                radioButtonScript.Checked = true;
         }
 
         private void buttonOK_Click(object sender, EventArgs e)
@@ -193,14 +195,15 @@ namespace PicasaStarter
                     string destButtonDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
                             "\\Google\\Picasa2\\buttons";
 
-                    _picasaButton.CreateButtonFile(destButtonDir, true);
+                    PicasaButton.CreateButtonFile(destButtonDir, true);
 
                     System.Diagnostics.Process.Start(destButtonDir);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error opening log dir: " + ex.Message);
+                Log.Error(ex.ToString());
+                MessageBox.Show("Error creating Picasa button: " + ex.Message);
             }
         }
 
@@ -229,27 +232,40 @@ namespace PicasaStarter
             button.Label = textBoxLabel.Text;
             button.Description = textBoxDescription.Text;
             button.ToolTipText = textBoxTooltip.Text;
-            button.Icon = _icon;
-            button.IconLayer = textBoxIconLayer.Text;
+            button.Icon.PsdData = _icon;
+            button.Icon.PsdLayer = textBoxIconLayer.Text;
+
+            ActionTrayExec action = new ActionTrayExec();
 
             if (radioButtonExe.Checked == true)
             {
-                button.ExecutionType = PicasaButton.ExecType.Executable;
-                button.ExeFileRegKey = textBoxExeFileRegKey.Text;
-                button.ExeDirRegKey = textBoxExeDirRegKey.Text;
-                button.ExeDir = textBoxExeDir.Text;
-                button.ExeFileName = textBoxExeFileName.Text;
+                action.ExecutionType = ActionTrayExec.ExecType.Executable;
+
+                action.ExeFileRegKey = textBoxExeFileRegKey.Text;
+
+                // If no exeFileRegKey given...
+                if (action.ExeFileRegKey == "")
+                {
+                    action.ExeDirRegKey = textBoxExeDirRegKey.Text;
+                    action.ExeDir = textBoxExeDir.Text;
+                    action.ExeFileName = textBoxExeFileName.Text;
+                }
             }
             else
             {
-                button.ExecutionType = PicasaButton.ExecType.Script;
-                button.Script = _script;
+                action.ExecutionType = ActionTrayExec.ExecType.Script;
+                action.ExeDirRegKey = "HKEY_CURRENT_USER\\Volatile Environment\\LOCALAPPDATA";
+                action.ExeFileName = "\\Google\\Picasa2\\buttons\\PS_Button" + textBoxLabel.Text + ".bat";
+            
+                action.Script = _script;
             }
 
-            button.ExecuteForeach = checkBoxExecuteForeach.Checked;
-            button.ExportFirst = checkBoxExportFirst.Checked;
+            action.ExecuteForeach = checkBoxExecuteForeach.Checked;
+            action.ExportFirst = checkBoxExportFirst.Checked;
 
-            _picasaButton = button;
+            button.Action = action;
+
+            PicasaButton = button;
             return true;
         }
 
