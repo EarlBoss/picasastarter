@@ -142,6 +142,7 @@
     <Compile Include="2-BusinessLogic\Backup.cs" />
     <Compile Include="2-BusinessLogic\PicasaButton.cs" />
     <Compile Include="2-BusinessLogic\PicasaButtonList.cs" />
+    <Compile Include="2-BusinessLogic\PicasaButtonPBF.cs" />
     <Compile Include="2-BusinessLogic\PicasaRunner.cs" />
     <Compile Include="3-HelperClasses\DateTimeHelper.cs" />
     <Compile Include="3-HelperClasses\DialogHelper.cs" />
