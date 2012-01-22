@@ -39,10 +39,10 @@ namespace BackupNS
             public readonly long NbMBDoneUnchanged;     // The nb of MegaBytes done, that didn't change since the last backup 
             
             public ProgressEventParams(string curDirToBackup, string curFileNameToBackup,
-                    int nbFiles, 
-                    int nbFilesDoneChanged, int nbFilesDoneUnchanged, 
+                    int nbFiles,
+                    int nbFilesDoneChanged, int nbFilesDoneUnchanged,
                     long nbMBDoneChanged, long nbMBDoneUnchanged)
-            {    
+            {
                 this.CurDirToBackup = curDirToBackup;
                 this.CurFileNameToBackup = curFileNameToBackup;
                 this.NbFiles = nbFiles;
@@ -127,7 +127,6 @@ namespace BackupNS
 
         private BackgroundWorker _bw = null;
         private bool _backupCancelled;
-        
 
         #endregion
 
@@ -175,9 +174,9 @@ namespace BackupNS
         #region Public Properties
 
         public BackupStrategy Strategy
-        { 
-            get { return _strategy; } 
-            set { _strategy = value; } 
+        {
+            get { return _strategy; }
+            set { _strategy = value; }
         }
         public List<string> DirsToBackup
         {
@@ -199,7 +198,7 @@ namespace BackupNS
             get { return _maxNbBackups; }
             set { _maxNbBackups = value; }
         }
-        
+       
         public Boolean OnlySimulate
         {
             get { return _onlySimulate; }
@@ -236,7 +235,7 @@ namespace BackupNS
                 // Delete them first to be sure...
                 if (fileTestHardLink.Exists)
                     fileTestHardLink.Delete();
-                if(fileTest.Exists)
+                if (fileTest.Exists)
                     fileTest.Delete();
 
                 File.WriteAllText(fileNameTest, "Test");
@@ -512,7 +511,7 @@ namespace BackupNS
                             nbFilesDoneUnchanged, nbMBDoneChanged, nbMBDoneUnchanged);
                     
                     // If running assynchronously, report via backgroundworker object...
-                    if(_bw != null)
+                    if (_bw != null)
                         _bw.ReportProgress(0, pE);
                     else
                         OnProgressEvent(pE);
