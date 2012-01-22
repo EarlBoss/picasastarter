@@ -11,7 +11,7 @@ namespace PicasaStarter
     public partial class SelectDBForm : Form
     {
         public string ReturnDBName = null;
-        public integer ReturnDBIndex = 0;
+        public int ReturnDBIndex = 0;
         private string returnDBName = null;
         private Settings _settings;
         public SelectDBForm(Settings settings)

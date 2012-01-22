@@ -22,17 +22,15 @@ namespace PicasaStarter
         {
             InitializeComponent();
 
-
             PicasaDB = new PicasaDB();
         }
         
-        public CreatePicasaDBForm(PicasaDB picasaDB, string appSettingsDir, string virtualDrive, bool standardDatabase = false)
+        public CreatePicasaDBForm(PicasaDB picasaDB, string appSettingsDir, bool standardDatabase = false)
         {
             InitializeComponent();
 
             AppSettingsDir = appSettingsDir;
             appSettingsBaseDir = Path.GetDirectoryName(AppSettingsDir);
-            driveToUnmap = virtualDrive;
             PicasaDB = new PicasaDB(picasaDB);
 
             textBoxBackupDir.Text = PicasaDB.BackupDir;
