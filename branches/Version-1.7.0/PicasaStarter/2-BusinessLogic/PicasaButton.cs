@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using Ionic.Zip;
+using System.Xml.Serialization;     // Added to use serialisation
 
 namespace PicasaStarter
 {
@@ -10,73 +11,63 @@ namespace PicasaStarter
     {
 #region Properties
 
-        public string ButtonID { get; set; }
-        public int Version { get; set; }
-        public string Label { get; set; }
-        public string Description { get; set; }
-        public string ToolTipText { get; set; }
-
-        /// <summary>
-        /// Bytestream of the .psd file containing the icon.
-        /// </summary>
-        public byte[] Icon { get; set; }
-
-        /// <summary>
-        /// Layer containing the icon in the .psd file in "Icon" property. If you specify an icon, this property is mandatory.
-        /// </summary>
-        public string IconLayer { get; set; }
-
-        /// <summary>
-        /// Is the button executing an executable directly or is it starting a script
-        /// </summary>
-        public ExecType ExecutionType = ExecType.Executable;
-        
-        /// <summary>
-        /// Registry key that contains the entire path to the executable. If this is specified, 
-        /// all other "exe..." properties are ignored.
-        /// </summary>
-        public string ExeFileRegKey { get; set; }
-        
-        /// <summary>
-        /// Registry key that contains the directory to the executable. If you specify ExeDir as well, the content in ExeDir 
-        /// will be interpreted as a relative path starting from the directory in the registry key.
-        /// </summary>        
-        public string ExeDirRegKey { get; set; }
-        
-        public string ExeDir { get; set; }
-        /// <summary>
-        /// The file name of the executable.
-        /// </summary>
-        public string ExeFileName { get; set; }
-
-        /// <summary>
-        /// The script to be executed when pushing the button. Must be written as a windows batch file.
-        /// </summary>
-        public string Script { get; set; }
-
-        /// <summary>
-        /// If true, Picasa will run the exe/script for every selected file seperatly when pushing the button.
-        /// If false, Picasa will turn the exe/script once and pass all filenames as command line parameters.
-        /// </summary>
-        public bool ExecuteForeach { get; set; }
-
-        /// <summary>
-        /// If true, Picasa wil export the selected images first to a temporary location before starting the exe/script.
-        /// If false, the current files will be passed to the exe/script.
-        /// </summary>
-        public bool ExportFirst { get; set; }
-
-        public enum ExecType
+        public class PsdIcon
         {
             /// <summary>
-            /// If the button starts an executable, you need to specify one or more of the "Exe..." properties.
+            /// Bytestream of the .psd file containing the icon.
             /// </summary>
-            Executable = 1,
+            public byte[] PsdData { get; set; }
+
             /// <summary>
-            /// If the button starts a script, the "Exe..." properties are not used, but you need to put the batch script in the "Script" property.
+            /// Layer containing the icon in the .psd file in "Icon" property. If you specify an icon, this property is mandatory.
             /// </summary>
-            Script = 2
+            public string PsdLayer { get; set; }
+
+            public PsdIcon()
+            {
+            } 
         }
+
+        private Buttons _pbfButton = new Buttons();
+        private PsdIcon _icon = new PsdIcon();
+
+        public Action Action
+        {
+            get { return _pbfButton.Button.Action; }
+            set { _pbfButton.Button.Action = value; }
+        }
+
+        public PsdIcon Icon
+        {
+            get { return _icon; }
+            set { _icon = value; }
+        }
+
+        public string ButtonID 
+        {
+            get { return _pbfButton.Button.Id; }
+            set { _pbfButton.Button.Id = value; }
+        }
+
+        public int Version
+        { 
+            get { return _pbfButton.Version; }
+            set { _pbfButton.Version = value; }
+        }
+
+        public string Label 
+        {
+            get { return _pbfButton.Button.Label; }
+            set { _pbfButton.Button.Label = value; }
+        }
+
+        public string ToolTipText 
+        {
+            get { return _pbfButton.Button.Tooltip; }
+            set { _pbfButton.Button.Tooltip = value; }
+        }
+
+        public string Description { get; set; }
 
 #endregion
 
@@ -106,20 +97,26 @@ namespace PicasaStarter
             this.WritePBF(pbfFilePath, destDirectory, isButtonForDefaultDB);
 
             // If an Icon was specified... copy and rename it to the right name...
-            if (Icon != null && Icon.Length > 0)
-                File.WriteAllBytes(psdFilePath, Icon);
+            if (Icon != null && Icon.PsdData != null && Icon.PsdData.Length > 0)
+                File.WriteAllBytes(psdFilePath, Icon.PsdData);
 
             using (ZipFile zip = new ZipFile())
             {
                 zip.AddFile(pbfFilePath, "");
-                if (Icon != null && Icon.Length > 0)
+                if (Icon != null && Icon.PsdData != null && Icon.PsdData.Length > 0)
                     zip.AddFile(psdFilePath, "");
                 zip.Save(pbzFile.FullName);
                 zip.Dispose();
             }
 
-            if (ExecutionType == ExecType.Script)
-                File.WriteAllText(scriptFilePath, Script);
+            // If trayexec and script -> write the script...
+            if (Action.Verb == "TrayExec")
+            {
+                ActionTrayExec action = (ActionTrayExec)Action;
+
+                if (action.ExecutionType == ActionTrayExec.ExecType.Script)
+                    File.WriteAllText(scriptFilePath, action.Script);
+            }
 
             // Cleanup temp files...
             File.Delete(pbfFilePath);
@@ -130,7 +127,19 @@ namespace PicasaStarter
 
         private void WritePBF(string pbfFilePath, string pbzDir, bool isButtonForDefaultDB)
         {
-            // Some variables need some preprocessing before using them in the xml field...
+            // Another way to write the pbf:
+            //Buttons buttons = new Buttons();
+            //buttons.Button = new Button();
+            //buttons.Button.Id = "123ABC";
+            //buttons.Button.Label = "ButtonLabel";
+            //buttons.Button.Tooltip = "ButtonTooltip";
+            //buttons.Button.Icon.Name = "IconName";
+            //buttons.Button.Action.Verb = "trayexec";
+            //buttons.Button.Action.ParamList.Add(new Param("testParam", "testParamValue"));
+
+            PicasaButtonPBF.Serialize(_pbfButton, pbfFilePath);
+
+/*            // Some variables need some preprocessing before using them in the xml field...
             int foreach_field = (ExecuteForeach == true) ? 1 : 0;  // If true: 1, else: 0
             int export_field = (ExportFirst == true) ? 1 : 0;   // If true: 1, else: 0
 
@@ -161,7 +170,7 @@ namespace PicasaStarter
             xml += "<buttons format='1' version='" + Version + "'>" + Environment.NewLine;
             xml += "  <button id='" + ButtonID + "' type='dynamic'>" + Environment.NewLine;
             xml += "    <label>" + Label + "</label>" + Environment.NewLine;
-            xml += "    <icon name='" + ButtonID + "/" + IconLayer + "' src='pbz'/>" + Environment.NewLine;
+            xml += "    <icon name='" + ButtonID + "/" + Icon.PsdLayer + "' src='pbz'/>" + Environment.NewLine;
             xml += "    <tooltip>" + ToolTipText + "</tooltip>" + Environment.NewLine;
             xml += "    <action verb='trayexec'>" + Environment.NewLine;
 
@@ -182,7 +191,11 @@ namespace PicasaStarter
             xml += "  </button>" + Environment.NewLine;
             xml += "</buttons>";
 
+            FileInfo file = new FileInfo(pbfFilePath);
+            file.Directory.Create();
+
             File.WriteAllText(pbfFilePath, xml);
+*/
         }
 
 #endregion
