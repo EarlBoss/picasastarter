@@ -44,9 +44,9 @@
             // 
             // richTextBoxHelp
             // 
-            this.richTextBoxHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.richTextBoxHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.richTextBoxHelp.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTextBoxHelp.Location = new System.Drawing.Point(12, 12);
             this.richTextBoxHelp.Name = "richTextBoxHelp";
@@ -64,6 +64,7 @@
             this.Controls.Add(this.buttonClose);
             this.Name = "HelpDialog";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Help";
             this.Load += new System.EventHandler(this.HelpDialog_Load);
             this.ResumeLayout(false);

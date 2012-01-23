@@ -16,7 +16,7 @@ namespace PicasaStarter
     {
         #region Private members
 
-         private string _appDataDir = "";
+        private string _appDataDir = "";
         private string _appSettingsDir = "";
         private bool _firstRun = false;
         private Backup _backup = null;
@@ -61,22 +61,44 @@ namespace PicasaStarter
             this.Text = this.Text + " " + System.Diagnostics.FileVersionInfo.GetVersionInfo(Application.ExecutablePath).FileVersion
                 + "   (Build of " + File.GetLastWriteTimeUtc(Application.ExecutablePath).ToString("u", System.Globalization.DateTimeFormatInfo.InvariantInfo) + ")";
 
-            //Ask for apps dir and exe path if new instance
-            if (_firstRun == true)
+            // If Picasa exe isn't found... ask path...
+            if (!File.Exists(_settings.PicasaExePath))
             {
-                FirstRunWizard firstRunWizard = new FirstRunWizard(_appSettingsDir, _settings);
-                DialogResult result = firstRunWizard.ShowDialog();
+                FirstRunWizardStep1 firstRunWizardStep1 = new FirstRunWizardStep1(_settings.PicasaExePath);
+                DialogResult result = firstRunWizardStep1.ShowDialog();
 
                 if (result == DialogResult.OK)
                 {
-                    if (firstRunWizard.ReturnPicasaSettings != null)
-                    {
-                        _settings = firstRunWizard.ReturnPicasaSettings;
-                        _appSettingsDir = firstRunWizard.ReturnAppSettingsDir;
-                        appSettingsBaseDir = Path.GetDirectoryName(_appSettingsDir);
-                    }
-                    _settings.PicasaExePath = firstRunWizard.ReturnPicasaExePath;
+                    _settings.PicasaExePath = firstRunWizardStep1.PicasaExePath;
+                }
+                else
+                {
+                    this.Close();
+                }
+            }
 
+            // If new instance... ask for spot to put configuration file...
+            if (_firstRun == true)
+            {
+                FirstRunWizardStep2 firstRunWizardStep2 = new FirstRunWizardStep2(SettingsHelper.ConfigurationDir);
+                DialogResult result = firstRunWizardStep2.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    _appSettingsDir = firstRunWizardStep2.AppSettingsDir;
+                    appSettingsBaseDir = Path.GetDirectoryName(_appSettingsDir);
+                }
+
+                Configuration config = new Configuration();
+                config.picasaStarterSettingsXMLPath = _appSettingsDir;
+
+                try
+                {
+                    SettingsHelper.SerializeConfig(config,
+                            SettingsHelper.ConfigurationDir + "\\" + SettingsHelper.ConfigFileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error saving config file: " + ex.Message);
                 }
             }
 
@@ -221,7 +243,6 @@ namespace PicasaStarter
         #endregion
 
         #region Tab PicasaDatabases
-
 
         private void listBoxPicasaDBs_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -494,8 +515,15 @@ namespace PicasaStarter
             _settings.picasaButtons.Registerbuttons();
             
             // Go!
-            runner.RunPicasa(dbBaseDir, _appSettingsDir);
-            
+            try
+            {
+                runner.RunPicasa(dbBaseDir, _appSettingsDir);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
             // Restore the MainForm...
             this.Text = MainFormCaption;
             WindowState = FormWindowState.Normal;

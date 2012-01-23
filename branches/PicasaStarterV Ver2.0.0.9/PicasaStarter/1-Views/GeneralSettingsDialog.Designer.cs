@@ -133,7 +133,7 @@
             this.SetXMLToDef.TabIndex = 15;
             this.SetXMLToDef.Text = "Default";
             this.toolTip1.SetToolTip(this.SetXMLToDef, "Revert the place to store the PicasaStarter database settings to the default plac" +
-                    "e");
+        "e");
             this.SetXMLToDef.UseVisualStyleBackColor = true;
             this.SetXMLToDef.Click += new System.EventHandler(this.SetXMLToDef_Click);
             // 
@@ -145,7 +145,7 @@
             this.SelXMLPath.TabIndex = 16;
             this.SelXMLPath.Text = "Browse...";
             this.toolTip1.SetToolTip(this.SelXMLPath, "Choose the location where the Picasastarter settings  (the databases) will be sto" +
-                    "red");
+        "red");
             this.SelXMLPath.UseVisualStyleBackColor = true;
             this.SelXMLPath.Click += new System.EventHandler(this.SelXMLPath_Click);
             // 
@@ -192,6 +192,7 @@
             this.MinimizeBox = false;
             this.Name = "GeneralSettingsDialog";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "General settings";
             this.Load += new System.EventHandler(this.GeneralSettingsForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.generalSettingsDialogBindingSource)).EndInit();

@@ -49,19 +49,19 @@
             this.buttonRemoveIcon = new System.Windows.Forms.Button();
             this.buttonEditScript = new System.Windows.Forms.Button();
             this.buttonExport = new System.Windows.Forms.Button();
+            this.textBoxExeDir = new System.Windows.Forms.TextBox();
+            this.textBoxExeFileName = new System.Windows.Forms.TextBox();
+            this.textBoxExeFileRegKey = new System.Windows.Forms.TextBox();
             this.radioButtonExe = new System.Windows.Forms.RadioButton();
             this.radioButtonScript = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBoxExeDir = new System.Windows.Forms.TextBox();
-            this.textBoxExeFileName = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.checkBoxExportFirst = new System.Windows.Forms.CheckBox();
             this.checkBoxExecuteForeach = new System.Windows.Forms.CheckBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.textBoxExeFileRegKey = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -237,6 +237,34 @@
             this.buttonExport.UseVisualStyleBackColor = true;
             this.buttonExport.Click += new System.EventHandler(this.buttonExport_Click);
             // 
+            // textBoxExeDir
+            // 
+            this.textBoxExeDir.Location = new System.Drawing.Point(100, 97);
+            this.textBoxExeDir.Name = "textBoxExeDir";
+            this.textBoxExeDir.Size = new System.Drawing.Size(383, 20);
+            this.textBoxExeDir.TabIndex = 14;
+            this.toolTip.SetToolTip(this.textBoxExeDir, "Directory where the executable can be found. If a registry key is specified for t" +
+        "he directory as well, this should be a relative path.");
+            // 
+            // textBoxExeFileName
+            // 
+            this.textBoxExeFileName.Location = new System.Drawing.Point(100, 123);
+            this.textBoxExeFileName.Name = "textBoxExeFileName";
+            this.textBoxExeFileName.Size = new System.Drawing.Size(383, 20);
+            this.textBoxExeFileName.TabIndex = 12;
+            this.toolTip.SetToolTip(this.textBoxExeFileName, "Filename of the executable (without directory!). If only this field is filled out" +
+        ", and no directory field(s), the executable must be fount in the directories in " +
+        "the PATH environment variable.");
+            // 
+            // textBoxExeFileRegKey
+            // 
+            this.textBoxExeFileRegKey.Location = new System.Drawing.Point(167, 45);
+            this.textBoxExeFileRegKey.Name = "textBoxExeFileRegKey";
+            this.textBoxExeFileRegKey.Size = new System.Drawing.Size(391, 20);
+            this.textBoxExeFileRegKey.TabIndex = 17;
+            this.toolTip.SetToolTip(this.textBoxExeFileRegKey, "Registry key containing the entire path + filename of the exe.");
+            this.textBoxExeFileRegKey.TextChanged += new System.EventHandler(this.textBoxExeFileRegKey_TextChanged);
+            // 
             // radioButtonExe
             // 
             this.radioButtonExe.AutoSize = true;
@@ -283,6 +311,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Action of the button";
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(34, 48);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(126, 13);
+            this.label7.TabIndex = 16;
+            this.label7.Text = "Registry key with exe file:";
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -300,25 +337,6 @@
             this.label1.Size = new System.Drawing.Size(55, 13);
             this.label1.TabIndex = 13;
             this.label1.Text = "File name:";
-            // 
-            // textBoxExeDir
-            // 
-            this.textBoxExeDir.Location = new System.Drawing.Point(100, 97);
-            this.textBoxExeDir.Name = "textBoxExeDir";
-            this.textBoxExeDir.Size = new System.Drawing.Size(383, 20);
-            this.textBoxExeDir.TabIndex = 14;
-            this.toolTip.SetToolTip(this.textBoxExeDir, "Directory where the executable can be found. If a registry key is specified for t" +
-        "he directory as well, this should be a relative path.");
-            // 
-            // textBoxExeFileName
-            // 
-            this.textBoxExeFileName.Location = new System.Drawing.Point(100, 123);
-            this.textBoxExeFileName.Name = "textBoxExeFileName";
-            this.textBoxExeFileName.Size = new System.Drawing.Size(383, 20);
-            this.textBoxExeFileName.TabIndex = 12;
-            this.toolTip.SetToolTip(this.textBoxExeFileName, "Filename of the executable (without directory!). If only this field is filled out" +
-        ", and no directory field(s), the executable must be fount in the directories in " +
-        "the PATH environment variable.");
             // 
             // groupBox2
             // 
@@ -373,24 +391,6 @@
     " one time to the command)";
             this.checkBoxExecuteForeach.UseVisualStyleBackColor = true;
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(34, 48);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(126, 13);
-            this.label7.TabIndex = 16;
-            this.label7.Text = "Registry key with exe file:";
-            // 
-            // textBoxExeFileRegKey
-            // 
-            this.textBoxExeFileRegKey.Location = new System.Drawing.Point(167, 45);
-            this.textBoxExeFileRegKey.Name = "textBoxExeFileRegKey";
-            this.textBoxExeFileRegKey.Size = new System.Drawing.Size(391, 20);
-            this.textBoxExeFileRegKey.TabIndex = 17;
-            this.toolTip.SetToolTip(this.textBoxExeFileRegKey, "Registry key containing the entire path + filename of the exe.");
-            this.textBoxExeFileRegKey.TextChanged += new System.EventHandler(this.textBoxExeFileRegKey_TextChanged);
-            // 
             // CreatePicasaButtonForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -405,6 +405,7 @@
             this.MaximizeBox = false;
             this.Name = "CreatePicasaButtonForm";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Create/edit Picasa Button";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

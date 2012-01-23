@@ -122,11 +122,17 @@
     <Compile Include="1-Views\CreateShortcutDialog.Designer.cs">
       <DependentUpon>CreateShortcutDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="1-Views\FirstRunWizard.cs">
+    <Compile Include="1-Views\FirstRunWizardStep1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="1-Views\FirstRunWizard.Designer.cs">
-      <DependentUpon>FirstRunWizard.cs</DependentUpon>
+    <Compile Include="1-Views\FirstRunWizardStep1.Designer.cs">
+      <DependentUpon>FirstRunWizardStep1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="1-Views\FirstRunWizardStep2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="1-Views\FirstRunWizardStep2.Designer.cs">
+      <DependentUpon>FirstRunWizardStep2.cs</DependentUpon>
     </Compile>
     <Compile Include="1-Views\GeneralSettingsDialog.cs">
       <SubType>Form</SubType>
@@ -184,8 +190,11 @@
     <EmbeddedResource Include="1-Views\CreateShortcutDialog.resx">
       <DependentUpon>CreateShortcutDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="1-Views\FirstRunWizard.resx">
-      <DependentUpon>FirstRunWizard.cs</DependentUpon>
+    <EmbeddedResource Include="1-Views\FirstRunWizardStep1.resx">
+      <DependentUpon>FirstRunWizardStep1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="1-Views\FirstRunWizardStep2.resx">
+      <DependentUpon>FirstRunWizardStep2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="1-Views\GeneralSettingsDialog.resx">
       <DependentUpon>GeneralSettingsDialog.cs</DependentUpon>

@@ -118,7 +118,8 @@ namespace PicasaStarter
         /// <summary>
         /// The list of databases defined in PicasaStarter.
         /// </summary>
-        [NonSerialized] public List<PicasaDB> picasaDBs = new List<PicasaDB> ();
+        [NonSerialized] 
+        public List<PicasaDB> picasaDBs = new List<PicasaDB> ();
 
         /// <summary>
         /// The list of databases defined in PicasaStarter.
@@ -140,7 +141,8 @@ namespace PicasaStarter
         /// that the feature to have a path per computer didn't work: this "last used path" always overruled 
         /// the previously saved path because it was deserialised later than the saved paths.
         /// </summary>
-        [XmlIgnore] public string PicasaExePath
+        [XmlIgnore] 
+        public string PicasaExePath
         {
             get { return PicasaExePaths.GetPath(Environment.MachineName); }
             set { PicasaExePaths.SetPath(new PathOnComputer(Environment.MachineName, value)); }
@@ -339,18 +341,21 @@ namespace PicasaStarter
             
             // Serialize settings to file
             XmlSerializer serializer = new XmlSerializer(typeof(Settings));
-            TextWriter tw = new StreamWriter(settingsFilePath);
+            using (TextWriter tw = new StreamWriter(settingsFilePath))
+            {
             serializer.Serialize(tw, settings);
-            tw.Close();
+            }
        }
 
         public static Settings DeSerializeSettings(string settingsFilePath)
         {
             // Deserialize settings
             XmlSerializer serializer = new XmlSerializer(typeof(Settings));
-            TextReader tr = new StreamReader(settingsFilePath);
-            Settings settings = (Settings)serializer.Deserialize(tr);
-            tr.Close();
+            Settings settings;
+            using (StreamReader tr = new StreamReader(settingsFilePath))
+            {
+                settings = (Settings)serializer.Deserialize(tr);
+            }
 
             // Loop through the PicasaDB objects to set some things right after deserialising...
             bool defaultDBFound = false;
@@ -398,19 +403,22 @@ namespace PicasaStarter
 
             // Serialize configuration to file
             XmlSerializer serializer = new XmlSerializer(typeof(Configuration));
-            TextWriter tw = new StreamWriter(configFilePath);
+            using (TextWriter tw = new StreamWriter(configFilePath))
+            {
             serializer.Serialize(tw, config);
-            tw.Close();
+            }
         }
 
         public static Configuration DeSerializeConfig(string configFilePath)
         {
             Configuration config;
+            
             // Deserialize Configuration
                 XmlSerializer serializer = new XmlSerializer(typeof(Configuration));
-                TextReader tr = new StreamReader(configFilePath);
+            using (TextReader tr = new StreamReader(configFilePath))
+            {
                 config = (Configuration)serializer.Deserialize(tr);
-                tr.Close();
+            }
 
             return config;
         }

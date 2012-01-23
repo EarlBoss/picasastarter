@@ -132,6 +132,7 @@
             this.MaximizeBox = false;
             this.Name = "CreateShortcutDialog";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Create Shortcut";
             this.Load += new System.EventHandler(this.CreateShortcutDialog_Load);
             this.ResumeLayout(false);
