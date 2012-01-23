@@ -117,28 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="label6.Text" xml:space="preserve">
-    <value>    The Picasa Starter settings file contains the definitions and locations of all custom
-databases defined by Picasa Starter. Each copy of Picasa Starter can have it's own settings
-file or it can share a settings file with other copies of Picasa Starter.
-This allows flexibility in installing Picasa Starter.
-
-     In a networked environment where the Pictures and Picasa database are on a network drive,
-the Picasa Starter settings file should also be on the network drive so it is available to all users.
-If Picasa Starter is installed on the network drive however, it will generate a UAC message requiring the 
-user to allow it to run, so Picasa Starter can be installed on each PC and share the common 
-settings file on the network drive.
-
-     On a portable USB drive, Picasa Starter and the settings file should both be on the portable
-drive so it can be connected to and used on any computer that has Picasa installed.</value>
-  </data>
-  <data name="label4.Text" xml:space="preserve">
-    <value>Normally Picasa is installed in the Program Files directory in 32 bit versions of Windows, 
-or in the Program Files (X86) directory in 64 bit versions of Windows by default and
-the Path to picasa executable box below should show that path.
-
-</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
