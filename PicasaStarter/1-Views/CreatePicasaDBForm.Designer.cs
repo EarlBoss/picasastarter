@@ -193,7 +193,7 @@
             this.EnablecheckBox.Size = new System.Drawing.Size(275, 30);
             this.EnablecheckBox.TabIndex = 47;
             this.EnablecheckBox.Text = "If This Drive Is Missing, Allow PicasaStarter to Map\r\nthe Virtual Drive Source Di" +
-                "rectory to this Drive Letter.\r\n";
+    "rectory to this Drive Letter.\r\n";
             this.EnablecheckBox.UseVisualStyleBackColor = true;
             this.EnablecheckBox.CheckedChanged += new System.EventHandler(this.EnablecheckBox_CheckedChanged);
             // 
@@ -356,6 +356,7 @@
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.groupBox2);
             this.Name = "CreatePicasaDBForm";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "CreatePicasaDatabase";
             this.Load += new System.EventHandler(this.CreatePicasaDBForm_Load);

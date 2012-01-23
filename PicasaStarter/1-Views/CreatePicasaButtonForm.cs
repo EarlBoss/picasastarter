@@ -6,23 +6,20 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using HelperClasses.Logger;             // Static logging class
 
 namespace PicasaStarter
 {
     public partial class CreatePicasaButtonForm : Form
     {
-        private PicasaButton _picasaButton;
+		public PicasaButton PicasaButton { get; private set; }
+        
         private string _appSettingsDir;
 
         // Some PicasaButton properties needn't be shown, so just put them in member variables to pass the over if needed...
         private string _buttonID = "";
         private byte[] _icon = null;
         private string _script = "";
-
-        public PicasaButton PicasaButton
-        {
-            get { return _picasaButton; }
-        }
 
         public CreatePicasaButtonForm(string appSettingsDir)
         {
@@ -56,8 +53,8 @@ namespace PicasaStarter
             textBoxLabel.Text = button.Label;
             textBoxDescription.Text = button.Description;
             textBoxTooltip.Text = button.ToolTipText;
-            _icon = button.Icon;
-            textBoxIconLayer.Text = button.IconLayer;
+//            _icon = button.Icon.PsdData;
+//            textBoxIconLayer.Text = button.Icon.PsdLayer;
 
             textBoxExeFileRegKey.Text = button.ExeFileRegKey;
             textBoxExeDirRegKey.Text = button.ExeDirRegKey;
@@ -193,14 +190,15 @@ namespace PicasaStarter
                     string destButtonDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
                             "\\Google\\Picasa2\\buttons";
 
-                    _picasaButton.CreateButtonFile(destButtonDir, true);
+                    PicasaButton.CreateButtonFile(destButtonDir, true);
 
                     System.Diagnostics.Process.Start(destButtonDir);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error opening log dir: " + ex.Message);
+                Log.Error(ex.ToString());
+                MessageBox.Show("Error creating Picasa button: " + ex.Message);
             }
         }
 
@@ -249,7 +247,7 @@ namespace PicasaStarter
             button.ExecuteForeach = checkBoxExecuteForeach.Checked;
             button.ExportFirst = checkBoxExportFirst.Checked;
 
-            _picasaButton = button;
+            PicasaButton = button;
             return true;
         }
 

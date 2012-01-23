@@ -24,7 +24,7 @@ namespace BackupNS
 
         // Delegate declarations.
         public delegate void BackupCompletedEventHandler(object sender, CompletedEventParams e);
-
+        
         /// <summary>
         ///  ProgressEventParams:   Defines a  progress event. Used for displaying file backup progress.
         /// </summary>
@@ -37,7 +37,7 @@ namespace BackupNS
             public readonly int NbFilesDoneUnchanged;   // The nb of files done, that didn't change since the last backup 
             public readonly long NbMBDoneChanged;       // The nb of MegaBytes done, that didn't change since the last backup 
             public readonly long NbMBDoneUnchanged;     // The nb of MegaBytes done, that didn't change since the last backup 
-
+            
             public ProgressEventParams(string curDirToBackup, string curFileNameToBackup,
                     int nbFiles,
                     int nbFilesDoneChanged, int nbFilesDoneUnchanged,
@@ -127,7 +127,6 @@ namespace BackupNS
 
         private BackgroundWorker _bw = null;
         private bool _backupCancelled;
-
 
         #endregion
 

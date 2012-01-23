@@ -179,6 +179,7 @@ namespace PicasaStarter
                     if (autoRunDatabaseName != null)
                     {
                         PicasaDB foundDB = null;
+                        
                         // First check if he wants to be asked which database to run
                         if (autoRunDatabaseName.Equals("AskUser", StringComparison.CurrentCultureIgnoreCase))
                         {
@@ -194,12 +195,21 @@ namespace PicasaStarter
                                 return;
 
                         }
+
                         // Next check if he wants to run with the standard personal database...
                         if (autoRunDatabaseName.Equals("personal", StringComparison.CurrentCultureIgnoreCase))
                         {
                             // If the user wants to run his personal default database... (cmd line arg was "personal") 
                             PicasaRunner runner = new PicasaRunner(appDataDir, settings.PicasaExePath);
-                            runner.RunPicasa(null, appSettingsDir);
+
+                            try
+                            {
+                                runner.RunPicasa(null, appSettingsDir);
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(ex.Message);
+                            }
                         }
                         else
                         {
@@ -215,11 +225,16 @@ namespace PicasaStarter
                                 {
                                     MappedDrive = IOHelper.MapFolderToDrive(foundDB.PictureVirtualDrive, appSettingsBaseDir);
                                 }
+                                
                                 PicasaRunner runner = new PicasaRunner(appDataDir, settings.PicasaExePath);
+                                String dbPath;
 
                                 // If the user wants to run his personal default database... 
                                 if (foundDB.IsStandardDB == true)
-                                    runner.RunPicasa(null, appSettingsDir);
+                                {
+                                    dbPath = null;
+                                }
+
                                 // If the user wants to run a custom database...
                                 else
                                 {
@@ -238,7 +253,7 @@ namespace PicasaStarter
                                             foundDB.BaseDir = foundDB.BaseDir + "\\Local Settings\\Application Data";
                                         }
                                     }
-                                    //Get out without creating a database if the database directory doesn't exist
+                                    // Get out without creating a database if the database directory doesn't exist
                                     if (!Directory.Exists(foundDB.BaseDir + "\\Google\\Picasa2"))
                                     {
                                         MessageBox.Show("The database doesn't exist at this location, please choose an existing database or create one.",
@@ -246,8 +261,18 @@ namespace PicasaStarter
                                                     (MessageBoxOptions)0x40000);
                                         return;
                                     }
-                                    runner.RunPicasa(foundDB.BaseDir, appSettingsDir);
+                                    dbPath = foundDB.BaseDir;
                                 }
+
+                                try
+                                {
+                                    runner.RunPicasa(dbPath, appSettingsDir);
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+
                                 bool xyz;
                                 xyz = IOHelper.UnmapVDrive();
 
@@ -259,6 +284,7 @@ namespace PicasaStarter
                             }
                         }
                     }
+
                     // If /backup argument was passed...
                     //---------------------------------------------------------------------------
                     if (backupDatabaseName != null)
