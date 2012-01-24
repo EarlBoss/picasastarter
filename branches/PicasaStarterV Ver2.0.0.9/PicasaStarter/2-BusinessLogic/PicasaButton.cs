@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using Ionic.Zip;
+using HelperClasses;
 
 namespace PicasaStarter
 {
@@ -89,21 +90,23 @@ namespace PicasaStarter
         /// <summary>
         /// Can throw exceptions
         /// </summary>
-        /// <param name="destDirectory"></param>
-        /// <param name="isButtonForDefaultDB">If true, a script button will always point to the script in the default Picasa database.</param>
+        /// <param name="destDirectory">Directory where the button file should be placed.</param>
+        /// <param name="scriptDir">Directory where the script should be placed.</param>
         /// <returns></returns>
-        public bool CreateButtonFile(string destDirectory, bool isButtonForDefaultDB = false)
+        public bool CreateButtonFile(string destDirectory, string scriptDir = "C:\\Tools\\PicasaScripts")
         {
             // Init correct paths
             string pbfFilePath = System.IO.Path.GetTempPath() + "PicasaStarter\\" + ButtonID + ".pbf";
             string psdFilePath = System.IO.Path.GetTempPath() + "PicasaStarter\\" + ButtonID + ".psd";
-            string scriptFilePath = destDirectory + '\\' + "PS_Button" + Label + ".bat";
+            string scriptFileName = "PS_Button" + Label + ".bat";
+            string scriptFilePath = scriptDir + "\\" + scriptFileName;
+            
             FileInfo pbzFile = new FileInfo(destDirectory + '\\' + "PS_Button" + Label + ".pbz");
             if (!pbzFile.Directory.Exists)
                 pbzFile.Directory.Create();
-            
+
             // Prepare source files
-            this.WritePBF(pbfFilePath, destDirectory, isButtonForDefaultDB);
+            this.WritePBF(pbfFilePath, destDirectory, scriptFilePath);
 
             // If an Icon was specified... copy and rename it to the right name...
             if (Icon != null && Icon.Length > 0)
@@ -118,8 +121,30 @@ namespace PicasaStarter
                 zip.Dispose();
             }
 
+            // If it is a script button... write the script if necessary...
             if (ExecutionType == ExecType.Script)
-                File.WriteAllText(scriptFilePath, Script);
+            {
+                if (!Directory.Exists(scriptDir))
+                    Directory.CreateDirectory(scriptDir);
+
+                // If script exists already, check if it was changed in any way...
+                if (File.Exists(scriptFilePath))
+                {
+                    string existingScript = File.ReadAllText(scriptFilePath);
+
+                    if (existingScript != Script)
+                    {
+                        string scriptBackupDir = scriptDir + "\\Backup";
+                        if (!Directory.Exists(scriptBackupDir))
+                            Directory.CreateDirectory(scriptBackupDir);
+
+                        File.Move(scriptFilePath, IOHelper.MakeFilenameUnique(scriptBackupDir + "\\" + scriptFileName));
+                        File.WriteAllText(scriptFilePath, Script);
+                    }
+                }
+                else
+                    File.WriteAllText(scriptFilePath, Script);
+            }
 
             // Cleanup temp files...
             File.Delete(pbfFilePath);
@@ -128,7 +153,7 @@ namespace PicasaStarter
             return true;
         }
 
-        private void WritePBF(string pbfFilePath, string pbzDir, bool isButtonForDefaultDB)
+        private void WritePBF(string pbfFilePath, string pbzDir, string scriptPath)
         {
             // Some variables need some preprocessing before using them in the xml field...
             int foreach_field = (ExecuteForeach == true) ? 1 : 0;  // If true: 1, else: 0
@@ -145,15 +170,10 @@ namespace PicasaStarter
             else
             {
                 // If the button is for a default DB, create it so it always searches its script in %LOCALAPPDATA%\...
-                if (isButtonForDefaultDB == true)
-                {
-                    exe_name_field = "\\Google\\Picasa2\\buttons\\PS_Button" + Label + ".bat";
-                    exe_path_regkey = "HKEY_CURRENT_USER\\Volatile Environment\\LOCALAPPDATA";
-                }
+                if (string.IsNullOrEmpty(scriptPath) == false)
+                    exe_name_field = scriptPath;
                 else
-                {
-                    exe_name_field = pbzDir + "\\PS_Button" + Label + ".bat";
-                }
+                    throw new Exception("No script path passed for a script button...");
             }
 
             string xml = "";

@@ -11,12 +11,31 @@ namespace HelperClasses
 {
     class IOHelper
     {
-
         internal static string VirtualDrive = "";
         internal static string VirtualDriveSource = "";
         internal static bool VirtualDriveMapped = false;
 
-  
+        public static string MakeFilenameUnique(string fileName, int paddingLength = 3)
+        {
+            FileInfo file = new FileInfo(fileName);
+
+            string filenameNoExt = file.Name.Substring(0, file.Name.LastIndexOf('.'));
+            
+            string fullFilename = file.DirectoryName + "\\" + filenameNoExt + file.Extension;
+            int counter = 1;
+            while (File.Exists(fullFilename))
+            {
+                fullFilename = file.DirectoryName + "\\" + filenameNoExt + "_" + counter.ToString().PadLeft(paddingLength, '0') + file.Extension;
+                counter++;
+            }
+
+            return fullFilename;
+        }
+
+        /// <summary>
+        /// Clear attributes for all files and directories in the directory passed.
+        /// </summary>
+        /// <param name="currentDir">The directory</param>
         public static void ClearAttributes(string currentDir)
         {
             if (Directory.Exists(currentDir))
@@ -29,6 +48,11 @@ namespace HelperClasses
                     File.SetAttributes(file, FileAttributes.Normal);
             }
         }
+
+        /// <summary>
+        /// Delete the directory recursive...
+        /// </summary>
+        /// <param name="currentDir">The directory to delete.</param>
         public static void DeleteRecursive(string currentDir)
         {
             string dirName = @currentDir;
@@ -227,7 +251,7 @@ namespace HelperClasses
         /// </summary>
         /// <param name="directorySource"></param>
         /// <param name="directoryDest"></param>
-        /// <returns></returns>
+        /// <returns>True if the copy was succesful, otherwise false</returns>
         public static bool TryCopyDirectory(string directorySource, string directoryDest)
         {
             // Copy PicasaButtons if there are that need to be visible in Picasa...
@@ -253,6 +277,12 @@ namespace HelperClasses
             return true;
         }
 
+        /// <summary>
+        /// Deletes all files in a directory. This function never throws exceptions...
+        /// </summary>
+        /// <param name="directory">Directory to delete the files in.</param>
+        /// <param name="pattern">The pattern to use for deleting the files.</param>
+        /// <returns>True if the delete was succesful, otherwise false</returns>
         public static bool TryDeleteFiles(string directory, string pattern)
         {
             try
@@ -289,7 +319,6 @@ namespace HelperClasses
         internal const uint DDD_NO_BROADCAST_SYSTEM = 0x00000008;
         internal const uint NO_ERROR = 0;
 
-
         const string MAPPED_FOLDER_INDICATOR = @"\??\";
 
         public static string GetMappedDriveName(string driveLetter)
@@ -314,14 +343,12 @@ namespace HelperClasses
             return "";
         }
 
-        // ----------------------------------------------------------------------------------------
-        // Class Name:		IOHelper
-        // Procedure Name:	MapFolderToDrive
-        // Purpose:			Map the folder to a drive letter unless it already exists
-        // Parameters:
-        //		- driveLetter (string)  : Drive letter in the format "C:" without a back slash
-        //		- folderName (string)  : Folder to map without a back slash
-        // ----------------------------------------------------------------------------------------
+        /// <summary>
+        /// Map the folder to a drive letter unless it already exists.
+        /// </summary>
+        /// <param name="driveLetter">Drive letter in the format "C:" without a back slash</param>
+        /// <param name="folderName">Folder to map without a back slash</param>
+        /// <returns></returns>
         internal static string MapFolderToDrive(string driveLetter, string folderName)
         {
             // Is this drive already mapped? If so, we don't remap it!
@@ -379,15 +406,12 @@ namespace HelperClasses
 
         }
 
-        // ----------------------------------------------------------------------------------------
-        // Class Name:		IOHelper
-        // Procedure Name:	UnmapFolderFromDrive
-        // Purpose:			Unmap a drive letter. We only unmp the drive, if the
-        //                  folder name matches.
-        // Parameters:
-        //		- driveLetter (string)  :   Drive letter to be released, the format "C:"
-        //		- folderName (string)  :    Folder name that the drive is mapped to.
-        // ----------------------------------------------------------------------------------------
+        /// <summary>
+        /// Unmap a drive letter. We only unmp the drive, if the folder name matches.
+        /// </summary>
+        /// <param name="driveLetter">Drive letter to be released, the format "C:"</param>
+        /// <param name="folderName">Folder name that the drive is mapped to.</param>
+        /// <returns></returns>
         internal static string UnmapFolderFromDrive(string driveLetter, string folderName)
         {
             // Don't unmap if we didn't map it!
@@ -406,15 +430,10 @@ namespace HelperClasses
   
         }
 
-        // ----------------------------------------------------------------------------------------
-        // Class Name:		IOHelper
-        // Procedure Name:	bool UnmapVDrive
-        // Purpose:			Unmap a virtual drive letter if we previously mapped it
-        // Parameters:
-        //		- driveLetter (string)  :   Drive letter to be released, the format "C:"
-        //		- folderName (string)  :    Folder name that the drive is mapped to.
-        // Returns true if drive was successfully unmapped
-        // ----------------------------------------------------------------------------------------
+        /// <summary>
+        /// Unmap a virtual drive letter if we previously mapped it.
+        /// </summary>
+        /// <returns>Returns true if drive was successfully unmapped</returns>
         internal static bool UnmapVDrive()
         {
             // Don't unmap if we didn't map it!
@@ -461,9 +480,11 @@ namespace HelperClasses
         /// might return: "\\networkserver\Shares\Photos\2008-02-09"
         /// </summary>
         /// <param name="originalPath">The path to convert to a UNC Path</param>
-        /// <returns>A UNC path. If a network drive letter is specified, the
+        /// <returns>
+        /// A UNC path. If a network drive letter is specified, the
         /// drive letter is converted to a UNC or network path. If the
-        /// originalPath cannot be converted, it is returned unchanged.</returns>
+        /// originalPath cannot be converted, it is returned unchanged.
+        /// </returns>
         public static string GetUNCPath(string originalPath)
         {
             StringBuilder sb = new StringBuilder(512);
@@ -524,25 +545,18 @@ namespace HelperClasses
         //Resource types
         const uint RESOURCETYPE_DISK = 1;
 
-
-       // ----------------------------------------------------------------------------------------
-        // Class Name:		IOHelper
-        // Procedure Name:	MapUNCToDrive, UnmapUNCFromDrive
-        // Purpose:			Map the folder to a drive letter
-        // Parameters:
-        //		- driveLetter (string)  : Drive letter in the format "C:" without a back slash
-        //		- folderName (string)  : Folder to map without a back slash
-        //
-        //Returns drive letter on success, null string on failure
-        // ----------------------------------------------------------------------------------------
-
         [DllImport("mpr.dll")]
         static extern UInt32 WNetAddConnection2(ref NETRESOURCE lpNetResource, string lpPassword, string lpUsername, uint dwFlags);
 
         [DllImport("mpr.dll")]
         static extern uint WNetCancelConnection2(string lpName, uint dwFlags, bool bForce);
         
-        // Map UNC to drive Letter if drive wasn't mapped previously
+        /// <summary>
+        /// Map UNC to drive Letter if drive wasn't mapped previously
+        /// </summary>
+        /// <param name="driveLetter">Drive letter in the format "C:" without a back slash</param>
+        /// <param name="UNCPath">Folder to map without a back slash</param>
+        /// <returns>Returns drive letter on success, null string on failure</returns>
         internal static string MapUNCToDrive(string driveLetter, string UNCPath)
         {
             // This drive was not already mapped?
@@ -562,7 +576,11 @@ namespace HelperClasses
             return driveLetter;
         }
 
-        //Unmap drive: driveletter if it was mapped to UNCPath
+        /// <summary>
+        /// Unmap drive: driveletter if it was mapped to UNCPath
+        /// </summary>
+        /// <param name="driveLetter">Drive letter in the format "C:" without a back slash</param>
+        /// <returns></returns>
         internal static string UnmapUNCFromDrive(string driveLetter)
         {
             uint result = WNetCancelConnection2(driveLetter, 0, true);
@@ -571,14 +589,11 @@ namespace HelperClasses
             return driveLetter;
         }
 
-
-        // ----------------------------------------------------------------------------------------
-        // Class Name:		IOHelper
-        // Procedure Name:	DriveIsMappedTo
-        // Purpose:			Returns the folder that a drive is mapped to. If not mapped, we return a blank.
-        // Parameters:
-        //		- driveLetter (string)  : Drive letter in the format "C:"
-        // ----------------------------------------------------------------------------------------
+        /// <summary>
+        /// Returns the folder that a drive is mapped to. If not mapped, we return a blank.
+        /// </summary>
+        /// <param name="driveLetter">Drive letter in the format "C:"</param>
+        /// <returns></returns>
         internal static string DriveIsMappedTo(string driveLetter)
         {
             StringBuilder volumeMap = new StringBuilder(512);
@@ -596,14 +611,11 @@ namespace HelperClasses
             return mappedVolumeName;
         }
 
-        // ----------------------------------------------------------------------------------------
-        // Class Name:		IOHelper
-        // Procedure Name:	DriveIsMapped
-        // Purpose:			Returns true if a drive is mapped. If not mapped, we return false.
-        // Parameters:
-        //		- driveLetter (string)  : Drive letter in the format "C:"
-        // ----------------------------------------------------------------------------------------
-
+        /// <summary>
+        /// Returns true if a drive is mapped. If not mapped, we return false.
+        /// </summary>
+        /// <param name="driveLetter">Drive letter in the format "C:"</param>
+        /// <returns></returns>
         internal static bool DriveIsMapped(string driveLetter)
         {
             StringBuilder volumeMap = new StringBuilder(512);

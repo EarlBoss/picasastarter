@@ -28,8 +28,8 @@ namespace PicasaStarter
                 "echo %SelectedFile2%" + Environment.NewLine +
                 "echo." + Environment.NewLine +
                 ""  + Environment.NewLine +
-                ":: For debugging purposes pause is very handy, comment it if you are ready"  + Environment.NewLine +
-                "pause";
+                ":: Pause if error..."  + Environment.NewLine +
+                "if %errorlevel% neq 0 pause";
 
         public string Script
         { 
