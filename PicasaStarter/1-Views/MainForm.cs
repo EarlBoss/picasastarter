@@ -444,11 +444,9 @@ namespace PicasaStarter
             // If the user wants to run his personal default database... 
             string dbBaseDir;
             string destButtonDir;
-            bool isStandardDB = false;
 
             if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].IsStandardDB == true)
             {
-                isStandardDB = true;
                 // For using the standard database, the BaseDir to pass needs to be null...
                 dbBaseDir = null;
 
@@ -504,7 +502,7 @@ namespace PicasaStarter
             {
                 try
                 {
-                    button.CreateButtonFile(destButtonDir, isStandardDB);
+                    button.CreateButtonFile(destButtonDir);
                 }
                 catch (Exception ex)
                 {

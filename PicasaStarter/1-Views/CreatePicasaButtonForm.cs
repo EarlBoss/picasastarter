@@ -190,7 +190,7 @@ namespace PicasaStarter
                     string destButtonDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
                             "\\Google\\Picasa2\\buttons";
 
-                    PicasaButton.CreateButtonFile(destButtonDir, true);
+                    PicasaButton.CreateButtonFile(destButtonDir);
 
                     System.Diagnostics.Process.Start(destButtonDir);
                 }

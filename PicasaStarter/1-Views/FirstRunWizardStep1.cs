@@ -46,7 +46,7 @@ namespace PicasaStarter
 
             if (!File.Exists(PicasaExePath))
             {
-                MessageBox.Show("Please choose a path where Picasa.exe can be found, or cancel and install Picasa first from picasa.google.com");
+                MessageBox.Show("Please choose a path where Picasa.exe can be found or install Picasa first from picasa.google.com");
                 return;
             }
             
