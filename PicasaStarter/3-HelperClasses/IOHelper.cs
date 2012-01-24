@@ -15,15 +15,24 @@ namespace HelperClasses
         internal static string VirtualDriveSource = "";
         internal static bool VirtualDriveMapped = false;
 
-        public static string MakeFilenameUnique(string fileName, int paddingLength = 3)
+        /// <summary>
+        /// This method add a sequence number to the filename to make the filename unique in the directory.
+        /// </summary>
+        /// <param name="originalFileName">The original file name.</param>
+        /// <param name="originalNameAllowed">Should the function return the original file name if it doesn't exist yet 
+        /// or should it add a sequence in any case?</param>
+        /// <param name="paddingLength">Specifies how many digits the sequence number should be.</param>
+        /// <returns>The file unique file name created.</returns>
+        public static string MakeFilenameUnique(string originalFileName, Boolean originalNameAllowed, int paddingLength = 3)
         {
-            FileInfo file = new FileInfo(fileName);
+            FileInfo file = new FileInfo(originalFileName);
 
             string filenameNoExt = file.Name.Substring(0, file.Name.LastIndexOf('.'));
-            
             string fullFilename = file.DirectoryName + "\\" + filenameNoExt + file.Extension;
+
             int counter = 1;
-            while (File.Exists(fullFilename))
+            // If the file exists (or if it's the first try and the original name isn't allowed), try again... 
+            while ((counter == 1 && originalNameAllowed == false) || File.Exists(fullFilename))
             {
                 fullFilename = file.DirectoryName + "\\" + filenameNoExt + "_" + counter.ToString().PadLeft(paddingLength, '0') + file.Extension;
                 counter++;

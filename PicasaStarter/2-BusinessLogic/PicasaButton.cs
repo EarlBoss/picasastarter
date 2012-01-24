@@ -138,7 +138,7 @@ namespace PicasaStarter
                         if (!Directory.Exists(scriptBackupDir))
                             Directory.CreateDirectory(scriptBackupDir);
 
-                        File.Move(scriptFilePath, IOHelper.MakeFilenameUnique(scriptBackupDir + "\\" + scriptFileName));
+                        File.Move(scriptFilePath, IOHelper.MakeFilenameUnique(scriptBackupDir + "\\" + scriptFileName, false));
                         File.WriteAllText(scriptFilePath, Script);
                     }
                 }
