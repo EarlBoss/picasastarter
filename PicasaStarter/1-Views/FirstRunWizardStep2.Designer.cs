@@ -36,8 +36,8 @@
             this.ButtonSetXMLToDef = new System.Windows.Forms.Button();
             this.textBoxSettingsXMLPath = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.label8 = new System.Windows.Forms.Label();
+            this.buttonOK = new System.Windows.Forms.Button();
+            this.buttonCancel = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -121,42 +121,42 @@
             this.label3.Text = "Path to picasa starter database settings (.xml):";
             this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // button1
+            // buttonOK
             // 
-            this.button1.Location = new System.Drawing.Point(497, 330);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 30;
-            this.button1.Text = "Finish";
-            this.button1.UseVisualStyleBackColor = true;
+            this.buttonOK.Location = new System.Drawing.Point(416, 327);
+            this.buttonOK.Name = "buttonOK";
+            this.buttonOK.Size = new System.Drawing.Size(75, 23);
+            this.buttonOK.TabIndex = 30;
+            this.buttonOK.Text = "Finish";
+            this.buttonOK.UseVisualStyleBackColor = true;
+            this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 
-            // label8
+            // buttonCancel
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(12, 340);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(422, 13);
-            this.label8.TabIndex = 31;
-            this.label8.Text = "Note: These settings can be changed later by clicking on the \"General Settings\" b" +
-    "utton.";
+            this.buttonCancel.Location = new System.Drawing.Point(497, 327);
+            this.buttonCancel.Name = "buttonCancel";
+            this.buttonCancel.Size = new System.Drawing.Size(75, 23);
+            this.buttonCancel.TabIndex = 31;
+            this.buttonCancel.Text = "Cancel";
+            this.buttonCancel.UseVisualStyleBackColor = true;
+            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
             // FirstRunWizardStep2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 362);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.buttonCancel);
+            this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.groupBox2);
             this.Name = "FirstRunWizardStep2";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "FirstRunWizardStep2";
+            this.Text = "First Run Settings";
             this.Load += new System.EventHandler(this.FirstRunWizardStep2_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -169,7 +169,7 @@
         private System.Windows.Forms.Button ButtonSetXMLToDef;
         private System.Windows.Forms.TextBox textBoxSettingsXMLPath;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button buttonOK;
+        private System.Windows.Forms.Button buttonCancel;
     }
 }
