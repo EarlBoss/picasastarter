@@ -74,6 +74,7 @@ namespace PicasaStarter
                 else
                 {
                     this.Close();
+                    return;
                 }
             }
 
@@ -82,10 +83,17 @@ namespace PicasaStarter
             {
                 FirstRunWizardStep2 firstRunWizardStep2 = new FirstRunWizardStep2(SettingsHelper.ConfigurationDir);
                 DialogResult result = firstRunWizardStep2.ShowDialog();
+
                 if (result == DialogResult.OK)
                 {
                     _appSettingsDir = firstRunWizardStep2.AppSettingsDir;
                     appSettingsBaseDir = Path.GetDirectoryName(_appSettingsDir);
+                    _settings = firstRunWizardStep2.Settings;
+                }
+                else
+                {
+                    this.Close();
+                    return;
                 }
 
                 Configuration config = new Configuration();

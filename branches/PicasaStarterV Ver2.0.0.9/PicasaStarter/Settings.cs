@@ -4,6 +4,7 @@ using System.Text;
 using System.Xml.Serialization;     // Added to use serialisation
 using System.IO;                    // Added to use serialisation to file
 using System.Collections;           // Test for serialisation
+using Microsoft.Win32;              // For manipulating the registry...
 
 namespace PicasaStarter
 {
@@ -131,7 +132,13 @@ namespace PicasaStarter
         /// </summary>
         public Settings()
         {
-            PicasaExePaths.SetPath(new PathOnComputer(Environment.MachineName, SettingsHelper.ProgramFilesx86() + "\\google\\Picasa3\\picasa3.exe"));
+            RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Google\\Picasa\\Picasa2\\Runtime\\");
+            string value = (string)key.GetValue("appPath");
+
+            if (string.IsNullOrEmpty(value) == false)
+                PicasaExePaths.SetPath(new PathOnComputer(Environment.MachineName, value));
+            else
+                PicasaExePaths.SetPath(new PathOnComputer(Environment.MachineName, SettingsHelper.ProgramFilesx86() + "\\google\\Picasa3\\picasa3.exe"));
         }
 
         /// <summary>
