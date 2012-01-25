@@ -83,28 +83,19 @@ namespace PicasaStarter
             RegistryKey preferencesKey = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Google\\Picasa\\Picasa2\\Preferences\\", true);
             originalUserProfile = (string)preferencesKey.GetValue("AppLocalDataPath");
 
-            if (string.IsNullOrEmpty(originalUserProfile) == false)
-            {
-                MessageBox.Show("Picasa Database Directory was not at it's default location when PicasaStarter was started, " +
-                                "It may have been moved by the Experimental Move Database Location command in Picasa or PicasaStarter " +
-                                "may have exited unexpectedly. When Picasa exits this time the default location will be restored, but " +
-                                "if database was moved with the Experimental command, the database may need to be restored manually from:\n " +
-                                originalUserProfile + "  to the default User's  \\Application Data\\Google\\  directory",
-                                "Picasa Database Not at Default Location",
-                        MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1,
-                        (MessageBoxOptions)0x40000);      // specify MB_TOPMOST 
-            }
-
-            // Remove any registry key left in error
-            preferencesKey.DeleteValue("AppLocalDataPath", false);
-            // Remove any move database registry key
-            preferencesKey.DeleteValue("AppLocalDataPathCopy", false);
+            // If last character is a \, remove it as directories never end on \ in PS.
+            if (originalUserProfile.EndsWith("\\") == true)
+                originalUserProfile = originalUserProfile.Remove(originalUserProfile.Length - 1);
 
             // If no custom path was provided... only init DB so popup doesn't show to scan entire PC...
             if (picasaDBPath == null)
             {
                 // This is the path where the Picasa database will be put...
-                GoogleAppDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\Google";
+                if (string.IsNullOrEmpty(originalUserProfile) == false)
+                    GoogleAppDir = originalUserProfile;
+                else
+                    GoogleAppDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\Google";
+                
                 InitializeDB(GoogleAppDir);
             }
             else
@@ -126,6 +117,7 @@ namespace PicasaStarter
 
                 // Add custom DB path to Picasa Registry unless it is default path
                 preferencesKey.SetValue("AppLocalDataPath", picasaDBPath + "\\");
+                preferencesKey.DeleteValue("AppLocalDataPathCopy", false);
             }
 
             StartBatFile("Pre_RunPicasa.bat");
@@ -157,8 +149,13 @@ namespace PicasaStarter
             {
                 // Remove registry keys for changing database spot...
                 preferencesKey.DeleteValue("AppLocalDataPath", false);
-                preferencesKey.DeleteValue("AppLocalDataPathCopy", false);
 
+                // If the user used move database in picasa before starting to use picasastarter, 
+                // Put the key back...
+                if (string.IsNullOrEmpty(originalUserProfile) == false)
+                    preferencesKey.SetValue("AppLocalDataPath", originalUserProfile + "\\");
+
+                // Delete lock file...
                 lockFile.Delete();
             }
         }
@@ -212,7 +209,7 @@ namespace PicasaStarter
         private void InitializeDB(string googleAppDir)
         {
             // If the DB existst already... don't do anything...
-            string PicasaAlbumsDir = googleAppDir + "\\Picasa2Albums";
+            string PicasaAlbumsDir = googleAppDir + "\\Google\\Picasa2Albums";
             string PicasaDBDir = googleAppDir + "\\Picasa2";
             if (Directory.Exists(PicasaAlbumsDir))
                 return;
@@ -238,119 +235,6 @@ namespace PicasaStarter
             File.WriteAllBytes(PicasaDBDir + "\\db3\\thumbs_index.db", Properties.Resources.thumbs_index);
         }
 
-/* Pieter: I don't think they are necessary, as they don't decrease the number of lines in code and makes the 
- * code slightly more difficult to read I think... Also swallows all exceptions, which is a risk...
-
-        //Registry Key Functions
-        
-		private string subKey = "SOFTWARE\\Google\\Picasa\\Picasa2\\Preferences";
-		/// <summary>
-		/// A property to set the SubKey value
-		/// (default = "SOFTWARE\\" + Application.ProductName.ToUpper())
-		/// </summary>
-		public string SubKey
-		{
-			get { return subKey; }
-			set	{ subKey = value; }
-		}
-
-		private RegistryKey baseRegistryKey = Registry.CurrentUser;
-		/// <summary>
-		/// A property to set the BaseRegistryKey value.
-		/// (default = Registry.LocalMachine)
-		/// </summary>
-		public RegistryKey BaseRegistryKey
-		{
-			get { return baseRegistryKey; }
-			set	{ baseRegistryKey = value; }
-		}
-
-		/// <summary>
-		/// To read a registry key.
-		/// input: KeyName (string)
-		/// output: value (string) 
-		/// </summary>
-		public string ReadKey(string KeyName)
-		{
-			// Opening the registry key
-			RegistryKey rk = baseRegistryKey ;
-			// Open a subKey as read-only
-			RegistryKey sk1 = rk.OpenSubKey(subKey);
-			// If the RegistrySubKey doesn't exist -> (null)
-			if ( sk1 == null )
-			{
-				return null;
-			}
-			else
-			{
-				try 
-				{
-					// If the RegistryKey exists I get its value
-					// or null is returned.
-					return (string)sk1.GetValue(KeyName.ToUpper());
-				}
-				catch (Exception)
-				{
-					// AAAAAAAAAAARGH, an error!
-					return null;
-				}
-			}
-		}	
-
-		/// <summary>
-		/// To write into a registry key.
-		/// input: KeyName (string) , Value (object)
-		/// output: true or false 
-		/// </summary>
-		public bool WriteKey(string KeyName, object Value)
-		{
-			try
-			{
-				// Setting
-				RegistryKey rk = baseRegistryKey ;
-				// I have to use CreateSubKey 
-				// (create or open it if already exits), 
-				// 'cause OpenSubKey open a subKey as read-only
-				RegistryKey sk1 = rk.CreateSubKey(subKey);
-				// Save the value
-				sk1.SetValue(KeyName.ToUpper(), Value);
-
-				return true;
-			}
-			catch (Exception)
-			{
-				// AAAAAAAAAAARGH, an error!
-				return false;
-			}
-		}
-
-		/// <summary>
-		/// To delete a registry key.
-		/// input: KeyName (string)
-		/// output: true or false 
-		/// </summary>
-		public bool DeleteKey(string KeyName)
-		{
-			try
-			{
-				// Setting
-				RegistryKey rk = baseRegistryKey ;
-				RegistryKey sk1 = rk.CreateSubKey(subKey);
-				// If the RegistrySubKey doesn't exists -> (true)
-				if ( sk1 == null )
-					return true;
-				else
-					sk1.DeleteValue(KeyName);
-
-				return true;
-			}
-			catch (Exception)
-			{
-				// AAAAAAAAAAARGH, an error!
-				return false;
-			}
-		}
-*/
         #endregion
 
     }
