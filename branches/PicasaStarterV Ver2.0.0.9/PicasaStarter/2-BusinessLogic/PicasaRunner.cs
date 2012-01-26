@@ -78,14 +78,59 @@ namespace PicasaStarter
 
             // Prepare the environment to start Picasa, if a custom db path was provided...
             string originalUserProfile = "";
+            string savedUserProfile = "";
 
             // Check if the user moved the database already using the default functionality of Picasa...
             RegistryKey preferencesKey = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Google\\Picasa\\Picasa2\\Preferences\\", true);
             originalUserProfile = (string)preferencesKey.GetValue("AppLocalDataPath");
+            savedUserProfile = (string)preferencesKey.GetValue("AppLocalDataPathSaved");
+            if (savedUserProfile != null) //PS didn't end correctly last time
+            {
+                // Ask if the user want to restore original database dir
+                string userprofilemsg = "Default";
+                string originalprofilemsg = "Default";
+                if (savedUserProfile != "")
+                    userprofilemsg = savedUserProfile;
+                if (string.IsNullOrEmpty(originalUserProfile) == false)
+                    originalprofilemsg = originalUserProfile;
 
-            // If last character is a \, remove it as directories never end on \ in PS.
-            if (originalUserProfile.EndsWith("\\") == true)
-                originalUserProfile = originalUserProfile.Remove(originalUserProfile.Length - 1);
+                DialogResult result = MessageBox.Show(
+                        "PicasaStarter may have ended unexpectedly and changed the Picasa database location" +
+                        "\nDo you want to restore the original default of: " + userprofilemsg+ " Directory" +
+                        "\n\nIf not, the Picasa default directory will remain: " + originalprofilemsg +" Directory" +
+                        "\n\nDo you want to restore the original default directory? (YES/NO ", 
+                        "Picasa Database Location Problem",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1,
+                        (MessageBoxOptions)0x40000);
+
+                // If yes, restore the user profile
+                if (result == DialogResult.Yes)
+                {
+                    //handle a app crash that left a value in the saved key
+                    if (savedUserProfile != "")
+                    {
+                        originalUserProfile = savedUserProfile;
+                    }
+                    else
+                    {
+                        originalUserProfile = null;
+                    }
+                }
+                else
+                {
+
+                }
+            }
+
+            if (string.IsNullOrEmpty(originalUserProfile) == false)
+            {
+                preferencesKey.SetValue("AppLocalDataPathSaved", originalUserProfile);
+               // If last character is a \, remove it as directories never end on \ in PS.
+               if (originalUserProfile.EndsWith("\\") == true)
+                    originalUserProfile = originalUserProfile.Remove(originalUserProfile.Length - 1);
+            }
+            else
+                preferencesKey.SetValue("AppLocalDataPathSaved", "");
 
             // If no custom path was provided... only init DB so popup doesn't show to scan entire PC...
             if (picasaDBPath == null)
@@ -117,7 +162,6 @@ namespace PicasaStarter
 
                 // Add custom DB path to Picasa Registry unless it is default path
                 preferencesKey.SetValue("AppLocalDataPath", picasaDBPath + "\\");
-                preferencesKey.DeleteValue("AppLocalDataPathCopy", false);
             }
 
             StartBatFile("Pre_RunPicasa.bat");
@@ -155,8 +199,10 @@ namespace PicasaStarter
                 if (string.IsNullOrEmpty(originalUserProfile) == false)
                     preferencesKey.SetValue("AppLocalDataPath", originalUserProfile + "\\");
 
-                // Delete lock file...
-                lockFile.Delete();
+               // Get rid of the saved value once PS exits
+               preferencesKey.DeleteValue("AppLocalDataPathSaved", false);
+               // Delete lock file...
+               lockFile.Delete();
             }
         }
 
