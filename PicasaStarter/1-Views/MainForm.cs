@@ -364,9 +364,7 @@ namespace PicasaStarter
             {
                 _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex] = createPicasaDB.PicasaDB;
                 ReFillPicasaDBList(true);
-                //Unmap old Virtual Drive if it was mapped
-                bool xyz = false;
-                xyz = IOHelper.UnmapVDrive();
+                listBoxPicasaDBs.SelectedIndex = saveIndex;
                 //Map the directory below the PicasaStarter Directory to the Virtual drive
                 // if the drive is not mapped and virtual drive is enabled
                 if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].EnableVirtualDrive)
@@ -375,8 +373,13 @@ namespace PicasaStarter
                     //Map folder or Path to drive letter if not already mapped
                     VirtualDrive = IOHelper.MapFolderToDrive(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].PictureVirtualDrive, appSettingsBaseDir);
                 }
-                
-                listBoxPicasaDBs.SelectedIndex = saveIndex;
+                else
+                {
+                    //Unmap old Virtual Drive if it was mapped
+                    bool xyz = false;
+                    xyz = IOHelper.UnmapVDrive();
+
+                }
             }
         }
 
