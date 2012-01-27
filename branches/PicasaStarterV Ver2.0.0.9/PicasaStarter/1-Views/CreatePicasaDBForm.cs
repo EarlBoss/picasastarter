@@ -46,6 +46,8 @@ namespace PicasaStarter
             textBoxDBDescription.Text = PicasaDB.Description;
             textBoxDBName.Text = PicasaDB.Name;
             messageBoxDB.Text = "";
+            textBoxVDSource.Text = appSettingsBaseDir;
+
             PicDrivecomboBox.Text = PicasaDB.PictureVirtualDrive;
             EnablecheckBox.Checked = PicasaDB.EnableVirtualDrive;
             full38DBDirectory = PicasaDB.BaseDir + "\\Local Settings\\Application Data";

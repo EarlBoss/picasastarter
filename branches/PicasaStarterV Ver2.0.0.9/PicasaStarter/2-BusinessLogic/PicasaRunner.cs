@@ -107,14 +107,15 @@ namespace PicasaStarter
                 if (result == DialogResult.Yes)
                 {
                     //handle a app crash that left a value in the saved key
-                    if (savedUserProfile != "")
+                    if (savedUserProfile == "")
                     {
-                        originalUserProfile = savedUserProfile;
+                        //originalUserProfile = savedUserProfile;
+                        originalUserProfile = null;
                     }
                     else
                     {
-                        originalUserProfile = null;
-                    }
+                        originalUserProfile = savedUserProfile;
+                     }
                 }
                 else
                 {
@@ -139,13 +140,13 @@ namespace PicasaStarter
                 if (string.IsNullOrEmpty(originalUserProfile) == false)
                     GoogleAppDir = originalUserProfile;
                 else
-                    GoogleAppDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\Google";
+                    GoogleAppDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
                 
                 InitializeDB(GoogleAppDir);
             }
             else
             {
-                GoogleAppDir = picasaDBPath + "\\Google";
+                GoogleAppDir = picasaDBPath;
                 InitializeDB(GoogleAppDir);
 
                 // Check if the custom database directory is available, otherwise try to create it...
@@ -256,7 +257,7 @@ namespace PicasaStarter
         {
             // If the DB existst already... don't do anything...
             string PicasaAlbumsDir = googleAppDir + "\\Google\\Picasa2Albums";
-            string PicasaDBDir = googleAppDir + "\\Picasa2";
+            string PicasaDBDir = googleAppDir + "\\Google\\Picasa2";
             if (Directory.Exists(PicasaAlbumsDir))
                 return;
             

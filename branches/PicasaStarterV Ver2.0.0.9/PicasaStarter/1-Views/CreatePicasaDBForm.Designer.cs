@@ -53,6 +53,8 @@
             this.buttonNoBackupDir = new System.Windows.Forms.Button();
             this.VDgroupBox1 = new System.Windows.Forms.GroupBox();
             this.buttonDoVDNow = new System.Windows.Forms.Button();
+            this.textBoxVDSource = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.groupBox2.SuspendLayout();
             this.backupgroupBox.SuspendLayout();
             this.VDgroupBox1.SuspendLayout();
@@ -252,7 +254,7 @@
             // 
             // buttonBackupDir
             // 
-            this.buttonBackupDir.Location = new System.Drawing.Point(493, 28);
+            this.buttonBackupDir.Location = new System.Drawing.Point(493, 19);
             this.buttonBackupDir.Name = "buttonBackupDir";
             this.buttonBackupDir.Size = new System.Drawing.Size(61, 23);
             this.buttonBackupDir.TabIndex = 42;
@@ -263,7 +265,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(14, 32);
+            this.label1.Location = new System.Drawing.Point(14, 23);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(90, 13);
             this.label1.TabIndex = 41;
@@ -272,7 +274,7 @@
             // 
             // textBoxBackupDir
             // 
-            this.textBoxBackupDir.Location = new System.Drawing.Point(116, 29);
+            this.textBoxBackupDir.Location = new System.Drawing.Point(116, 20);
             this.textBoxBackupDir.Name = "textBoxBackupDir";
             this.textBoxBackupDir.ReadOnly = true;
             this.textBoxBackupDir.Size = new System.Drawing.Size(371, 20);
@@ -306,14 +308,14 @@
             this.backupgroupBox.Controls.Add(this.label1);
             this.backupgroupBox.Location = new System.Drawing.Point(13, 245);
             this.backupgroupBox.Name = "backupgroupBox";
-            this.backupgroupBox.Size = new System.Drawing.Size(559, 104);
+            this.backupgroupBox.Size = new System.Drawing.Size(559, 81);
             this.backupgroupBox.TabIndex = 48;
             this.backupgroupBox.TabStop = false;
             this.backupgroupBox.Text = "Backup && Restore";
             // 
             // buttonNoBackupDir
             // 
-            this.buttonNoBackupDir.Location = new System.Drawing.Point(493, 57);
+            this.buttonNoBackupDir.Location = new System.Drawing.Point(493, 48);
             this.buttonNoBackupDir.Name = "buttonNoBackupDir";
             this.buttonNoBackupDir.Size = new System.Drawing.Size(61, 23);
             this.buttonNoBackupDir.TabIndex = 43;
@@ -323,13 +325,15 @@
             // 
             // VDgroupBox1
             // 
+            this.VDgroupBox1.Controls.Add(this.label3);
+            this.VDgroupBox1.Controls.Add(this.textBoxVDSource);
             this.VDgroupBox1.Controls.Add(this.buttonDoVDNow);
             this.VDgroupBox1.Controls.Add(this.label4);
             this.VDgroupBox1.Controls.Add(this.PicDrivecomboBox);
             this.VDgroupBox1.Controls.Add(this.EnablecheckBox);
-            this.VDgroupBox1.Location = new System.Drawing.Point(13, 355);
+            this.VDgroupBox1.Location = new System.Drawing.Point(13, 332);
             this.VDgroupBox1.Name = "VDgroupBox1";
-            this.VDgroupBox1.Size = new System.Drawing.Size(560, 68);
+            this.VDgroupBox1.Size = new System.Drawing.Size(560, 95);
             this.VDgroupBox1.TabIndex = 49;
             this.VDgroupBox1.TabStop = false;
             this.VDgroupBox1.Text = "Map Virtual Picture Drive";
@@ -343,6 +347,24 @@
             this.buttonDoVDNow.Text = "Map Drive Now!";
             this.buttonDoVDNow.UseVisualStyleBackColor = true;
             this.buttonDoVDNow.Click += new System.EventHandler(this.buttonDoVDNow_Click);
+            // 
+            // textBoxVDSource
+            // 
+            this.textBoxVDSource.Location = new System.Drawing.Point(118, 65);
+            this.textBoxVDSource.Name = "textBoxVDSource";
+            this.textBoxVDSource.ReadOnly = true;
+            this.textBoxVDSource.Size = new System.Drawing.Size(435, 20);
+            this.textBoxVDSource.TabIndex = 49;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(8, 68);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(104, 13);
+            this.label3.TabIndex = 50;
+            this.label3.Text = "Virtual Drive Source:";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // CreatePicasaDBForm
             // 
@@ -397,5 +419,7 @@
         private System.Windows.Forms.Button buttonCreateNewDB;
         private System.Windows.Forms.Button buttonCopyDB;
         private System.Windows.Forms.Button buttonNoBackupDir;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textBoxVDSource;
     }
 }
