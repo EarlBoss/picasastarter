@@ -12,7 +12,8 @@ namespace PicasaStarter
 {
     public partial class CopyExistingDBForm : Form
     {
-        public string ReturnMessage = "Copy Existing Database Task: Nothing Done" ;
+        public string ReturnMessage = "Copy Existing Database Task: Nothing Done";
+        public Color ReturnColor = Color.Red;
         public uint ReturnDBIndex = 0;
         private string returnDBName = null;
         public Settings _settings;
@@ -129,6 +130,7 @@ namespace PicasaStarter
             {
                 Directory.CreateDirectory(textBoxDestDir.Text);
                 System.Diagnostics.Process.Start(textBoxDestDir.Text);
+                ReturnColor = Color.Blue;
                 ReturnMessage = "Copy Existing Database Task Complete";
             }
             catch (Exception ex)

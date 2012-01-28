@@ -45,6 +45,7 @@ namespace PicasaStarter
             textBoxDBBaseDir.Text = PicasaDB.BaseDir;
             textBoxDBDescription.Text = PicasaDB.Description;
             textBoxDBName.Text = PicasaDB.Name;
+            messageBoxDB.ForeColor = Color.Blue;
             messageBoxDB.Text = "";
             textBoxVDSource.Text = appSettingsBaseDir;
 
@@ -53,12 +54,6 @@ namespace PicasaStarter
             full38DBDirectory = PicasaDB.BaseDir + "\\Local Settings\\Application Data";
             if (standardDatabase == true)
             {
-                //string versionSpecificDir;
-                //if (Environment.OSVersion.Version.Major <= 5)
-                //    versionSpecificDir = "\\Local Settings\\Application Data";
-               // else
-               //     versionSpecificDir = "\\Appdata\\Local";
-                textBoxDBBaseDir.Text = picasaDB.BaseDir; // +versionSpecificDir;
                 textBoxDBName.Enabled = false;
                 textBoxDBDescription.Enabled = false;
                 buttonBrowseDBBaseDir.Enabled = false;
@@ -83,6 +78,7 @@ namespace PicasaStarter
             }
             textBoxDBBaseDir.Text = DialogHelper.AskDirectoryPath(PicasaDB.BaseDir);
             PicasaDB.BaseDir = textBoxDBBaseDir.Text;
+            messageBoxDB.ForeColor = Color.Blue;
             messageBoxDB.Text = "";
 
         }
@@ -99,7 +95,7 @@ namespace PicasaStarter
         private void textBoxDBBaseDir_TextChanged(object sender, EventArgs e)
         {
             PicasaDB.BaseDir = textBoxDBBaseDir.Text;
-            full38DBDirectory = PicasaDB.BaseDir + "\\Local Settings\\Application Data\\Google";
+            full38DBDirectory = PicasaDB.BaseDir + "\\Local Settings\\Application Data";
 
         }
 
@@ -184,6 +180,7 @@ namespace PicasaStarter
 
         private void buttonConvert38_Click(object sender, EventArgs e)
         {
+            messageBoxDB.ForeColor = Color.Blue;
             messageBoxDB.Text = "Converting Picasa 3.8 Database to 3.9+";
 
             // If it is the standard Picasa database, return AppData
@@ -240,6 +237,7 @@ namespace PicasaStarter
                             }
                             catch (Exception )
                             {
+                                messageBoxDB.ForeColor = Color.Red;
                                 messageBoxDB.Text = "Error converting the Picasa Version 3.8 Database";
                                 return;
                             }
@@ -247,6 +245,7 @@ namespace PicasaStarter
                         }
                         if (result == DialogResult.Cancel)
                         {
+                            messageBoxDB.ForeColor = Color.Red;
                             messageBoxDB.Text = "Picasa 3.8 Database conversion was cancelled ";
                             return;
                         }
@@ -264,6 +263,7 @@ namespace PicasaStarter
                         }
                         catch (Exception )
                         {
+                            messageBoxDB.ForeColor = Color.Red;
                             messageBoxDB.Text = "Error moving the Picasa Version 3.8 Database";
                             return;
                         }
@@ -272,9 +272,11 @@ namespace PicasaStarter
                 }
                 else
                 {
+                    messageBoxDB.ForeColor = Color.Red;
                     messageBoxDB.Text = "Existing Picasa version 3.8 database not found";
                     return;
                 }
+                messageBoxDB.ForeColor = Color.Blue;
                 messageBoxDB.Text = "Picasa 3.8 Database Converted to 3.9+";
             }
  
@@ -282,6 +284,7 @@ namespace PicasaStarter
 
         private void buttonCreateNewDB_Click(object sender, EventArgs e)
         {
+            messageBoxDB.ForeColor = Color.Blue;
             messageBoxDB.Text = "Creating Empty Database ";
             if (Directory.Exists(PicasaDB.BaseDir + "\\Google\\Picasa2\\db3"))
             {
@@ -325,6 +328,7 @@ namespace PicasaStarter
                     }
                     catch (Exception )
                     {
+                        messageBoxDB.ForeColor = Color.Red ;
                         messageBoxDB.Text = "Error Creating Empty Database ";
                         return;
                     }
@@ -332,9 +336,17 @@ namespace PicasaStarter
                 }
                 if (result == DialogResult.Cancel)
                 {
+                    messageBoxDB.ForeColor = Color.Red;
                     messageBoxDB.Text = "Empty Database creation was cancelled ";
                     return;
                 }
+            }
+            else if (Directory.Exists(full38DBDirectory + "\\Google\\Picasa2\\db3"))
+            {
+                messageBoxDB.ForeColor = Color.Red;
+                messageBoxDB.Text = " 3.8 Database Directory exists, Use Convert From 3.8 Instead";
+                return;
+
             }
             else if (Directory.Exists(PicasaDB.BaseDir))
             {
@@ -342,18 +354,22 @@ namespace PicasaStarter
             }
             else
             {
+                messageBoxDB.ForeColor = Color.Red;
                 messageBoxDB.Text = "Database Directory doesn't exist";
                 return;
             }
+            messageBoxDB.ForeColor = Color.Blue;
             messageBoxDB.Text = "Empty Database Directory successfully created ";
         }
 
         private void buttonCopyDB_Click(object sender, EventArgs e)
         {
+            messageBoxDB.ForeColor = Color.Blue;
             messageBoxDB.Text = "Copying an existing database";
             // Show Copy Database menu 
             CopyExistingDBForm copyDBForm = new CopyExistingDBForm(PicasaDB, _settings);
             copyDBForm.ShowDialog();
+            messageBoxDB.ForeColor = copyDBForm.ReturnColor;
             messageBoxDB.Text = copyDBForm.ReturnMessage;
              
         }
