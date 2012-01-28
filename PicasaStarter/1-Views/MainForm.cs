@@ -18,7 +18,7 @@ namespace PicasaStarter
 
         private string _appDataDir = "";
         private string _appSettingsDir = "";
-        private bool _firstRun = false;
+        private bool _configFileExists = true;
         private Backup _backup = null;
         private BackupProgressForm _progressForm = null;
         private int lastSelectedIndexListBoxPicasaDBs = -1;
@@ -32,13 +32,13 @@ namespace PicasaStarter
         internal Settings _settings { get; private set; }
 
 
-        public MainForm(Settings settings, string appDataDir, string appSettingsDir, bool firstRun)
+        public MainForm(Settings settings, string appDataDir, string appSettingsDir, bool configFileExists)
         {
             InitializeComponent();
             _settings = settings;
             _appDataDir = appDataDir;
             _appSettingsDir = appSettingsDir;
-            _firstRun = firstRun;
+            _configFileExists = configFileExists;
             appSettingsBaseDir = Path.GetDirectoryName(_appSettingsDir);
             VirtualDrive = "";
 
@@ -79,7 +79,7 @@ namespace PicasaStarter
             }
 
             // If new instance... ask for spot to put configuration file...
-            if (_firstRun == true)
+            if (_configFileExists == false)
             {
                 FirstRunWizardStep2 firstRunWizardStep2 = new FirstRunWizardStep2(SettingsHelper.ConfigurationDir);
                 DialogResult result = firstRunWizardStep2.ShowDialog();

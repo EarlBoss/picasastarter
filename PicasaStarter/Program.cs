@@ -27,7 +27,7 @@ namespace PicasaStarter
 
             Configuration config;
              Settings settings;
-            bool notConfigured = false;
+            bool ConfigFileExists = true;
             bool settingsfound = false;
 
             configurationDir = SettingsHelper.DetermineConfigDir();
@@ -45,13 +45,13 @@ namespace PicasaStarter
                 catch (Exception)
                 {
                     //No config file, set config & settings defaults and signal first time run
-                    notConfigured = true;
+                    ConfigFileExists = false;
                     config.picasaStarterSettingsXMLPath = "";
                     config.configPicasaExePath = SettingsHelper.ProgramFilesx86();
                     settings.picasaDBs.Add(SettingsHelper.GetDefaultPicasaDB());
                 }
                 // load settings...
-                if (!notConfigured)
+                if (ConfigFileExists)
                 {
                     bool cancelSettingsFileSearch = false;
                     string currentDir = appSettingsDir;
@@ -82,12 +82,12 @@ namespace PicasaStarter
                             if (result == DialogResult.Cancel)
                             {
                                 cancelSettingsFileSearch = true;
-                                notConfigured = true;
+                                ConfigFileExists = false;
                                 showGUI = false;
                             }
                             else if (result == DialogResult.No)
                             {
-                                notConfigured = true;
+                                ConfigFileExists = false;
                                 cancelSettingsFileSearch = true;
                                 settings.picasaDBs.Add(SettingsHelper.GetDefaultPicasaDB());
                             }
@@ -112,7 +112,7 @@ namespace PicasaStarter
                         }
                     }
                 }
-                if (!notConfigured)
+                if (ConfigFileExists)
                 {
                     // Save settings
                     //---------------------------------------------------------------------------
@@ -348,7 +348,7 @@ namespace PicasaStarter
 
                 if (showGUI == true)
                 {
-                    Application.Run(new MainForm(settings, appDataDir, appSettingsDir, notConfigured));
+                    Application.Run(new MainForm(settings, appDataDir, appSettingsDir, ConfigFileExists));
                 }
 
             }
