@@ -383,8 +383,8 @@ namespace PicasaStarter
             try
             {
                 // Initialise the paths where the database and the albums can be found
-                String picasaDBPath = SettingsHelper.GetFullDBDirectory(_db) + "\\Picasa2";
-                String picasaAlbumsPath = SettingsHelper.GetFullDBDirectory(_db) + "\\Picasa2Albums";
+                String picasaDBPath = _db.BaseDir + "\\Google\\Picasa2";
+                String picasaAlbumsPath = _db.BaseDir + "\\Google\\Picasa2Albums";
 
                 // Read directories watched/excluded by Picasa in the text files in the Album dir... 
                 string watched = File.ReadAllText(picasaAlbumsPath + "\\watchedfolders.txt");
