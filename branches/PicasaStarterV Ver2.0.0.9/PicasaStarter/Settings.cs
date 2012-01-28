@@ -299,12 +299,13 @@ namespace PicasaStarter
             PicasaDB picasaDB = new PicasaDB();
             picasaDB.Name = "Personal database of " + Environment.GetEnvironmentVariable("username") + " (=default for picasa)";
             string versionSpecificDir;
-            if (Environment.OSVersion.Version.Major <= 5)
-                    versionSpecificDir = "\\Local Settings\\Application Data";
-            else
-                    versionSpecificDir = "\\Appdata\\Local";
+            //versionSpecificDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            //if (Environment.OSVersion.Version.Major <= 5)
+            //        versionSpecificDir = "\\Local Settings\\Application Data";
+            //else
+            //        versionSpecificDir = "\\Appdata\\Local";
 
-            picasaDB.BaseDir = Environment.GetEnvironmentVariable("userprofile") + versionSpecificDir;
+            picasaDB.BaseDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             picasaDB.IsStandardDB = true;
             picasaDB.Description = "This is the database Picasa always uses if you don't use Picasa starter. Because of some "
                     + "technical reasons in some situations it is not recommended to share this database. You cannot change any settings "
