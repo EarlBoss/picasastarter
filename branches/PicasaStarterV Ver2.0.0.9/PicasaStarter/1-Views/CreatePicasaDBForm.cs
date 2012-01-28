@@ -53,12 +53,12 @@ namespace PicasaStarter
             full38DBDirectory = PicasaDB.BaseDir + "\\Local Settings\\Application Data";
             if (standardDatabase == true)
             {
-                string versionSpecificDir;
-                if (Environment.OSVersion.Version.Major <= 5)
-                    versionSpecificDir = "\\Local Settings\\Application Data";
-                else
-                    versionSpecificDir = "\\Appdata\\Local";
-                textBoxDBBaseDir.Text = picasaDB.BaseDir + versionSpecificDir;
+                //string versionSpecificDir;
+                //if (Environment.OSVersion.Version.Major <= 5)
+                //    versionSpecificDir = "\\Local Settings\\Application Data";
+               // else
+               //     versionSpecificDir = "\\Appdata\\Local";
+                textBoxDBBaseDir.Text = picasaDB.BaseDir; // +versionSpecificDir;
                 textBoxDBName.Enabled = false;
                 textBoxDBDescription.Enabled = false;
                 buttonBrowseDBBaseDir.Enabled = false;
