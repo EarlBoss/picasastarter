@@ -97,7 +97,11 @@ namespace PicasaStarter
                 }
 
                 Configuration config = new Configuration();
-                config.picasaStarterSettingsXMLPath = _appSettingsDir;
+                if(firstRunWizardStep2.IsDefaultLocation)
+                    config.picasaStarterSettingsXMLPath = "";
+                else
+                    config.picasaStarterSettingsXMLPath = _appSettingsDir;
+                //config.configPicasaExePath = SettingsHelper.ProgramFilesx86();
 
                 try
                 {

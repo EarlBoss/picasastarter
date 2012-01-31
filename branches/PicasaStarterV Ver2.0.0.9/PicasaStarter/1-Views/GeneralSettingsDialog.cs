@@ -82,7 +82,6 @@ namespace PicasaStarter
                             config.picasaStarterSettingsXMLPath = textBoxSettingsXMLPath.Text;
                             ReturnAppSettingsDir = config.picasaStarterSettingsXMLPath;
                         }
-                        config.configPicasaExePath = PicasaExePath;
                         try
                         {
                             SettingsHelper.SerializeConfig(config,
