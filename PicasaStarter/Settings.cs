@@ -166,7 +166,7 @@ namespace PicasaStarter
         /// The Directory that holds the PicasaStarterSettings.xml file when starting PicasaStarter.
         /// </summary>
         public string picasaStarterSettingsXMLPath;
-        public string configPicasaExePath;
+        //public string configPicasaExePath;
     }
 
     public static class SettingsHelper

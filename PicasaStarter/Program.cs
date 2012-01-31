@@ -47,7 +47,7 @@ namespace PicasaStarter
                     //No config file, set config & settings defaults and signal first time run
                     ConfigFileExists = false;
                     config.picasaStarterSettingsXMLPath = "";
-                    config.configPicasaExePath = SettingsHelper.ProgramFilesx86();
+                    //config.configPicasaExePath = SettingsHelper.ProgramFilesx86();
                     settings.picasaDBs.Add(SettingsHelper.GetDefaultPicasaDB());
                 }
                 // load settings...

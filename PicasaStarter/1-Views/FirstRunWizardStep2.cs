@@ -12,16 +12,18 @@ namespace PicasaStarter
     public partial class FirstRunWizardStep2 : Form
     {
         public string AppSettingsDir { get; private set; }
+        public bool IsDefaultLocation { get; private set; }
         public string DefaultAppSettingsDir { get; private set; }
         public Settings Settings { get; private set; }
 
-        private Boolean IsDefaultLocation = true;
+        //private Boolean IsDefaultLocation = true;
 
         public FirstRunWizardStep2(string defaultAppSettingsDir)
         {
             InitializeComponent();
 
             AppSettingsDir = DefaultAppSettingsDir = defaultAppSettingsDir;
+            IsDefaultLocation = true;
         }
 
         private void FirstRunWizardStep2_Load(object sender, EventArgs e)
@@ -31,7 +33,7 @@ namespace PicasaStarter
 
         private void ButtonSetXMLToDef_Click(object sender, EventArgs e)
         {
-            textBoxSettingsXMLPath.Text = DefaultAppSettingsDir;
+            textBoxSettingsXMLPath.Text = "Default: " + DefaultAppSettingsDir;
             IsDefaultLocation = true;
         }
 
