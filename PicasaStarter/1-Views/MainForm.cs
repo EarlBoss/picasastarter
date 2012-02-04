@@ -619,6 +619,7 @@ namespace PicasaStarter
                 // Initialise the paths where the database and the albums can be found
                 String picasaDBPath = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir + "\\Google\\Picasa2";
                 String picasaAlbumsPath = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir + "\\Google\\Picasa2Albums";
+                String psSettingsPath = _appSettingsDir;
 
                 // Read directories watched/excluded by Picasa in the text files in the Album dir... 
                 string watched = File.ReadAllText(picasaAlbumsPath + "\\watchedfolders.txt");
@@ -632,6 +633,7 @@ namespace PicasaStarter
                 _backup.DirsToBackup.AddRange(watchedDirs);     // Backup watched dirs
                 _backup.DirsToBackup.Add(picasaDBPath);         // Backup Picasa database
                 _backup.DirsToBackup.Add(picasaAlbumsPath);     // Backup albums
+                _backup.DirsToBackup.Add(psSettingsPath);     // Backup Settings
                 _backup.DirsToExclude.AddRange(excludedDirs);   // Exclude explicitly unwatched dirs
                 _backup.MaxNbBackups = 100;                     // Max nb. backups to keep
 
