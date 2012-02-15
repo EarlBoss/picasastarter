@@ -555,10 +555,27 @@ namespace BackupNS
 
             // If it was a mapped drive
             if (storageDevice != "")
+            {
                 storageDevice += curDirToBackup.Substring(2);
+                if (storageDevice.Substring(0, 2) == "\\\\")
+                {
+                    storageDevice = storageDevice.Substring(1);
+                }
+                else
+                {
+                    storageDevice = storageDevice.Replace(":", "");
+                }
+            }
             else
-                storageDevice = '\\' + System.Environment.MachineName + "_Drive-" + curDirToBackup.Replace(":", "");
-
+                //Here we try to take care of the case where current dir is network drive
+                if (curDirToBackup.Substring(0, 2) == "\\\\")
+                {
+                    storageDevice = curDirToBackup.Substring(1);
+                }
+                else
+                {
+                    storageDevice = '\\' + System.Environment.MachineName + "_Drive-" + curDirToBackup.Replace(":", "");
+                }
             return storageDevice;
         }
 
