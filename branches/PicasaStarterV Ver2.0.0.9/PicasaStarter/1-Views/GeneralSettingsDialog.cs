@@ -192,7 +192,7 @@ namespace PicasaStarter
         {
             try
             {
-                string logDir = Path.GetTempPath() + "\\PicasaStarter\\Log";
+                string logDir = Path.GetTempPath() + "PicasaStarter\\Log";
                 Directory.CreateDirectory(logDir);
                 System.Diagnostics.Process.Start(logDir);
             }

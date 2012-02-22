@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreatePicasaDBForm));
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.messageBoxDB = new System.Windows.Forms.TextBox();
             this.buttonConvert38 = new System.Windows.Forms.Button();
@@ -52,9 +53,9 @@
             this.backupgroupBox = new System.Windows.Forms.GroupBox();
             this.buttonNoBackupDir = new System.Windows.Forms.Button();
             this.VDgroupBox1 = new System.Windows.Forms.GroupBox();
-            this.buttonDoVDNow = new System.Windows.Forms.Button();
-            this.textBoxVDSource = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.textBoxVDSource = new System.Windows.Forms.TextBox();
+            this.buttonDoVDNow = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             this.backupgroupBox.SuspendLayout();
             this.VDgroupBox1.SuspendLayout();
@@ -338,24 +339,6 @@
             this.VDgroupBox1.TabStop = false;
             this.VDgroupBox1.Text = "Map Virtual Picture Drive";
             // 
-            // buttonDoVDNow
-            // 
-            this.buttonDoVDNow.Location = new System.Drawing.Point(479, 19);
-            this.buttonDoVDNow.Name = "buttonDoVDNow";
-            this.buttonDoVDNow.Size = new System.Drawing.Size(75, 36);
-            this.buttonDoVDNow.TabIndex = 48;
-            this.buttonDoVDNow.Text = "Map Drive Now!";
-            this.buttonDoVDNow.UseVisualStyleBackColor = true;
-            this.buttonDoVDNow.Click += new System.EventHandler(this.buttonDoVDNow_Click);
-            // 
-            // textBoxVDSource
-            // 
-            this.textBoxVDSource.Location = new System.Drawing.Point(118, 65);
-            this.textBoxVDSource.Name = "textBoxVDSource";
-            this.textBoxVDSource.ReadOnly = true;
-            this.textBoxVDSource.Size = new System.Drawing.Size(435, 20);
-            this.textBoxVDSource.TabIndex = 49;
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -365,6 +348,24 @@
             this.label3.TabIndex = 50;
             this.label3.Text = "Virtual Drive Source:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // textBoxVDSource
+            // 
+            this.textBoxVDSource.Location = new System.Drawing.Point(118, 65);
+            this.textBoxVDSource.Name = "textBoxVDSource";
+            this.textBoxVDSource.ReadOnly = true;
+            this.textBoxVDSource.Size = new System.Drawing.Size(435, 20);
+            this.textBoxVDSource.TabIndex = 49;
+            // 
+            // buttonDoVDNow
+            // 
+            this.buttonDoVDNow.Location = new System.Drawing.Point(479, 19);
+            this.buttonDoVDNow.Name = "buttonDoVDNow";
+            this.buttonDoVDNow.Size = new System.Drawing.Size(75, 36);
+            this.buttonDoVDNow.TabIndex = 48;
+            this.buttonDoVDNow.Text = "Map Drive Now!";
+            this.buttonDoVDNow.UseVisualStyleBackColor = true;
+            this.buttonDoVDNow.Click += new System.EventHandler(this.buttonDoVDNow_Click);
             // 
             // CreatePicasaDBForm
             // 
@@ -377,10 +378,11 @@
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.groupBox2);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "CreatePicasaDBForm";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "CreatePicasaDatabase";
+            this.Text = "Picasa Database Configuration";
             this.Load += new System.EventHandler(this.CreatePicasaDBForm_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();

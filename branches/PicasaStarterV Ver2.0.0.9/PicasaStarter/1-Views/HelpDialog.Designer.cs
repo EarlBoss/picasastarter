@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HelpDialog));
             this.buttonClose = new System.Windows.Forms.Button();
             this.richTextBoxHelp = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
@@ -62,6 +63,7 @@
             this.ClientSize = new System.Drawing.Size(706, 484);
             this.Controls.Add(this.richTextBoxHelp);
             this.Controls.Add(this.buttonClose);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "HelpDialog";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

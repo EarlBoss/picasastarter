@@ -402,6 +402,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.buttonCancel);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "CreatePicasaButtonForm";
             this.ShowInTaskbar = false;

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BackupProgressForm));
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.labelStatus = new System.Windows.Forms.Label();
             this.labelNumberFiles = new System.Windows.Forms.Label();
@@ -194,11 +195,13 @@
             this.Controls.Add(this.labelNumberFiles);
             this.Controls.Add(this.labelStatus);
             this.Controls.Add(this.progressBar);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "BackupProgressForm";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "BackupProgressForm";
+            this.Text = "Picasa Backup Progress";
+            this.Load += new System.EventHandler(this.BackupProgressForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
