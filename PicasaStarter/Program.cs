@@ -12,6 +12,7 @@ namespace PicasaStarter
     static class Program
     {
         /// <summary>
+        public static Backup _backup = null;
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
@@ -29,6 +30,7 @@ namespace PicasaStarter
              Settings settings;
             bool ConfigFileExists = true;
             bool settingsfound = false;
+            bool settingsChanged = true;
 
             configurationDir = SettingsHelper.DetermineConfigDir();
             appSettingsDir = SettingsHelper.DetermineSettingsDir(configurationDir);
@@ -104,11 +106,13 @@ namespace PicasaStarter
                             settings = SettingsHelper.DeSerializeSettings(
                                 appSettingsDir + "\\" + SettingsHelper.SettingsFileName);
                             settingsfound = true;
+                            settingsChanged = false;
                         }
                         catch (Exception ex)
                         {
                             MessageBox.Show("Error reading settings file: " + ex.Message);
                             settings.picasaDBs.Add(SettingsHelper.GetDefaultPicasaDB());
+                            settingsfound = false;
                         }
                     }
                 }
@@ -116,14 +120,17 @@ namespace PicasaStarter
                 {
                     // Save settings
                     //---------------------------------------------------------------------------
-                    try
+                    if (settingsChanged)
                     {
-                        SettingsHelper.SerializeSettings(settings,
-                                appSettingsDir + "\\" + SettingsHelper.SettingsFileName);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Error saving settings: " + ex.Message);
+                        try
+                        {
+                            SettingsHelper.SerializeSettings(settings,
+                                    appSettingsDir + "\\" + SettingsHelper.SettingsFileName);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Error saving settings: " + ex.Message);
+                        }
                     }
 
                     // Process command line arguments...
@@ -307,7 +314,7 @@ namespace PicasaStarter
                         if (backupDatabaseName.Equals("personal", StringComparison.CurrentCultureIgnoreCase))
                         {
                             // If the user wants to backup his personal default database... (cmd line arg was "personal") 
-                            StartBackup(settings.picasaDBs[0]); 
+                            Application.Run(new BackupForm_CL(settings.picasaDBs[0], appSettingsDir)); 
                         }
                         else
                         {
@@ -331,7 +338,7 @@ namespace PicasaStarter
                                 {
                                     MappedDrive = IOHelper.MapFolderToDrive(foundDB.PictureVirtualDrive, appSettingsBaseDir);
                                 }
-                                StartBackup(foundDB); 
+                                Application.Run(new BackupForm_CL(foundDB, appSettingsDir)); 
 
                               bool xyz;
                                 xyz = IOHelper.UnmapVDrive();
@@ -353,87 +360,6 @@ namespace PicasaStarter
 
             }
 
-        #region private helper functions...
-         private static Backup _backup = null;
-         //private static BackupProgressForm _progressForm = null;
-         private static PicasaDB _db = null;
-
-        //Function will back up pictures and database when cmd line arg is /backup "database name"
-        //Broken at the moment.
-        private static void StartBackup(PicasaDB db)
-        {
-            _db = db;
-
-           if (!Directory.Exists(_db.BaseDir))
-            {
-                MessageBox.Show("The base directory of this database doesn't exist or you didn't choose one yet.");
-                return;
-            }
-           if (!Directory.Exists(_db.BackupDir))
-            {
-                MessageBox.Show("The backup directory of this database doesn't exist or you didn't choose one yet.");
-                return;
-            }
-            if (_backup != null)
-            {
-                MessageBox.Show("There is a backup still running... please wait until it is finished before starting one again.");
-                return;
-            }
- 
-            try
-            {
-                // Initialise the paths where the database and the albums can be found
-                String picasaDBPath = _db.BaseDir + "\\Google\\Picasa2";
-                String picasaAlbumsPath = _db.BaseDir + "\\Google\\Picasa2Albums";
-
-                // Read directories watched/excluded by Picasa in the text files in the Album dir... 
-                string watched = File.ReadAllText(picasaAlbumsPath + "\\watchedfolders.txt");
-                string excluded = File.ReadAllText(picasaAlbumsPath + "\\frexcludefolders.txt");
-
-                string[] watchedDirs = watched.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-                string[] excludedDirs = excluded.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-                //MessageBox.Show("watch: " + watched + "\nexcluded: " + excluded);
-
-                MessageBox.Show("Command line backup function not working yet.... \nPlease try again when it is fixed" + 
-                "\n\nwatched Picture Dirs: \n" + watched + "\n\nexcluded Picture Dirs: \n" + excluded);
-
-/*
-                _backup = new Backup();
-                _backup.DestinationDir = _db.BackupDir;
-                _backup.DirsToBackup.AddRange(watchedDirs);     // Backup watched dirs
-                _backup.DirsToBackup.Add(picasaDBPath);         // Backup Picasa database
-                _backup.DirsToBackup.Add(picasaAlbumsPath);     // Backup albums
-                _backup.DirsToExclude.AddRange(excludedDirs);   // Exclude explicitly unwatched dirs
-                _backup.MaxNbBackups = 100;                     // Max nb. backups to keep
-
-                _progressForm = new BackupProgressForm(null);
-                _progressForm.Show();
-                //this.Enabled = false;
-
-                _backup.ProgressEvent += new Backup.BackupProgressEventHandler(_progressForm.Progress);
-                _backup.CompletedEvent += new Backup.BackupCompletedEventHandler(BackupCompleted);
-
-                // Start the asynchronous operation.
-                _backup.StartBackupAssync();
-*/
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-        }
-/*
-        private static void BackupCompleted(object sender, EventArgs e)
-        {
-            //this.Enabled = true;
-            _progressForm.Hide();
-            _progressForm = null;
-            _backup = null;
-        }
- 
- */
-       #endregion
 
     }
 

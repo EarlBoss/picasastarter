@@ -38,8 +38,8 @@ namespace HelperClasses.Logger
         {
             try
             {
-                string LogFilePath = Path.GetTempPath() + "\\PicasaStarter\\Log\\"
-                        + System.DateTime.Now.ToString("yyyy'-'MM'-'dd") + ".log";
+                string LogFilePath = Path.GetTempPath() +"PicasaStarter\\Log\\"
+                       + System.DateTime.Now.ToString("yyyy'-'MM'-'dd") + ".log";
                 _FileLogger.LogFile = new FileInfo(LogFilePath);
             }
             catch (Exception ex)

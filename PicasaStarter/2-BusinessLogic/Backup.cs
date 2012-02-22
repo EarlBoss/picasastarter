@@ -269,9 +269,8 @@ namespace BackupNS
 
             // Initialize the backgroundworker...
             _bw = new BackgroundWorker();
-            _bw.WorkerReportsProgress = true;
-            _bw.WorkerSupportsCancellation = true;
-
+                _bw.WorkerReportsProgress = true;
+                _bw.WorkerSupportsCancellation = true;
             // Initialise the cancelled flag to false...
             _backupCancelled = false;
 
@@ -563,7 +562,9 @@ namespace BackupNS
                 }
                 else
                 {
+                    //I don't think this can ever happen
                     storageDevice = storageDevice.Replace(":", "");
+                    Log.Error("GetMappedDriveName returned a non-network drive: <" + storageDevice + "> in GetDriveToBackup...");
                 }
             }
             else

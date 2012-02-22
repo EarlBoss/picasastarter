@@ -33,7 +33,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.buttonBrowsePicasaExePath = new System.Windows.Forms.Button();
             this.textBoxPicasaExePath = new System.Windows.Forms.TextBox();
-            this.generalSettingsDialogBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -43,6 +42,7 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.buttonExploreLogging = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
+            this.generalSettingsDialogBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.generalSettingsDialogBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -79,10 +79,6 @@
             this.textBoxPicasaExePath.TabIndex = 5;
             this.textBoxPicasaExePath.Tag = "";
             this.textBoxPicasaExePath.TextChanged += new System.EventHandler(this.textBoxPicasaExePath_TextChanged);
-            // 
-            // generalSettingsDialogBindingSource
-            // 
-            this.generalSettingsDialogBindingSource.DataSource = typeof(PicasaStarter.GeneralSettingsDialog);
             // 
             // buttonCancel
             // 
@@ -168,6 +164,10 @@
             this.label4.Size = new System.Drawing.Size(117, 13);
             this.label4.TabIndex = 17;
             this.label4.Text = "Picasa Starter Logging:";
+            // 
+            // generalSettingsDialogBindingSource
+            // 
+            this.generalSettingsDialogBindingSource.DataSource = typeof(PicasaStarter.GeneralSettingsDialog);
             // 
             // GeneralSettingsDialog
             // 

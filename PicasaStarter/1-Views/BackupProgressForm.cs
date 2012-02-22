@@ -132,5 +132,10 @@ namespace PicasaStarter
         }
 
         #endregion
-    }
+
+        private void BackupProgressForm_Load(object sender, EventArgs e)
+        {
+
+        }
+        }
 }
