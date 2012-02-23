@@ -38,6 +38,7 @@
             this.buttonCancel = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.checkDBMenu1 = new System.Windows.Forms.CheckBox();
+            this.checkBackup = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // checkDesktopShortcut
@@ -45,7 +46,7 @@
             this.checkDesktopShortcut.AutoSize = true;
             this.checkDesktopShortcut.Checked = true;
             this.checkDesktopShortcut.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkDesktopShortcut.Location = new System.Drawing.Point(15, 75);
+            this.checkDesktopShortcut.Location = new System.Drawing.Point(15, 82);
             this.checkDesktopShortcut.Name = "checkDesktopShortcut";
             this.checkDesktopShortcut.Size = new System.Drawing.Size(152, 17);
             this.checkDesktopShortcut.TabIndex = 0;
@@ -57,7 +58,7 @@
             this.checkShortutAppsDir.AutoSize = true;
             this.checkShortutAppsDir.Checked = true;
             this.checkShortutAppsDir.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkShortutAppsDir.Location = new System.Drawing.Point(15, 98);
+            this.checkShortutAppsDir.Location = new System.Drawing.Point(15, 105);
             this.checkShortutAppsDir.Name = "checkShortutAppsDir";
             this.checkShortutAppsDir.Size = new System.Drawing.Size(381, 17);
             this.checkShortutAppsDir.TabIndex = 1;
@@ -115,11 +116,23 @@
             this.checkDBMenu1.UseVisualStyleBackColor = true;
             this.checkDBMenu1.CheckedChanged += new System.EventHandler(this.checkDBMenu1_CheckedChanged);
             // 
+            // checkBackup
+            // 
+            this.checkBackup.AutoSize = true;
+            this.checkBackup.Location = new System.Drawing.Point(49, 59);
+            this.checkBackup.Name = "checkBackup";
+            this.checkBackup.Size = new System.Drawing.Size(300, 17);
+            this.checkBackup.TabIndex = 7;
+            this.checkBackup.Text = "Shortcut will start Backup of selected Database && Pictures";
+            this.checkBackup.UseVisualStyleBackColor = true;
+            this.checkBackup.CheckedChanged += new System.EventHandler(this.checkBackup_CheckedChanged);
+            // 
             // CreateShortcutDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(490, 168);
+            this.Controls.Add(this.checkBackup);
             this.Controls.Add(this.checkDBMenu1);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonCreateShortcut);
@@ -150,5 +163,6 @@
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.CheckBox checkDBMenu1;
+        private System.Windows.Forms.CheckBox checkBackup;
     }
 }
