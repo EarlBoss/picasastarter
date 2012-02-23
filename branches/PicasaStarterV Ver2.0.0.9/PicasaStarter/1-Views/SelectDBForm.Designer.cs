@@ -84,9 +84,9 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(9, 9);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(63, 13);
+            this.label3.Size = new System.Drawing.Size(87, 13);
             this.label3.TabIndex = 41;
-            this.label3.Text = "Description:";
+            this.label3.Text = "Database Name:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // textBoxDBBaseDir
@@ -136,7 +136,6 @@
             this.MinimizeBox = false;
             this.Name = "SelectDBForm";
             this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Select Picasa Database to Run";
             this.Load += new System.EventHandler(this.SelectDBForm_Load);
             this.ResumeLayout(false);

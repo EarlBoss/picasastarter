@@ -14,16 +14,23 @@ namespace PicasaStarter
         public int ReturnDBIndex = 0;
         private string returnDBName = null;
         private Settings _settings;
-        public SelectDBForm(Settings settings)
+        private bool _isBackup;
+        public SelectDBForm(Settings settings, bool IsBackup)
         {
             InitializeComponent();
             _settings = settings;
+            _isBackup = IsBackup;
         }
 
         private void SelectDBForm_Load(object sender, EventArgs e)
         {
             // Initialise all controls on the screen with the proper data
             ReFillPicasaDBList(false);
+            if (_isBackup)
+            {
+                this.Text = "Select Database & Pictures to Backup";
+                buttonRunPicasa.Text = "Start Backup";
+            }
 
             // If the saved defaultselectedDB is valid, select it in the list...
             int defaultSelectedDBIndex = listBoxPicasaDBs.FindStringExact(_settings.picasaDefaultSelectedDB);

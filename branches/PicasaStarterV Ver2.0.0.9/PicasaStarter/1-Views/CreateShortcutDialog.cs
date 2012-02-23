@@ -66,10 +66,18 @@ namespace PicasaStarter
              // Where the shortcut should point to
              MyShortcut.TargetPath = target + "\\" + "picasastarter.exe";
              MyShortcut.WorkingDirectory = target;
-
-             MyShortcut.Arguments = "/autorun \"" + _localdatabasename + "\"";
-             // Description for the shortcut
-             MyShortcut.Description = "Start Picasa with custom database";
+             if (checkBackup.Checked)
+             {
+                 MyShortcut.Arguments = "/backup \"" + _localdatabasename + "\"";
+                 // Description for the shortcut
+                 MyShortcut.Description = "Backup custom database && Pictures";
+             }
+             else
+             {
+                 MyShortcut.Arguments = "/autorun \"" + _localdatabasename + "\"";
+                 // Description for the shortcut
+                 MyShortcut.Description = "Start Picasa with custom database";
+             }
 
              // Location for the shortcut's icon
              MyShortcut.IconLocation = Application.StartupPath + @"\picasastarter.exe,0";
@@ -81,6 +89,21 @@ namespace PicasaStarter
 
         private void checkDBMenu1_CheckedChanged(object sender, EventArgs e)
         {
+
+        }
+
+        private void checkBackup_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBackup.Checked)
+            {
+
+                textShortcutName.Text = "Backup " + _databasename;
+            }
+            else
+            {
+
+                textShortcutName.Text = "Picasa " + _databasename;
+            }
 
         }
     }

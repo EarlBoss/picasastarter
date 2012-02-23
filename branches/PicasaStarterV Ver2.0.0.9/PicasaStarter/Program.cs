@@ -191,7 +191,7 @@ namespace PicasaStarter
                         if (autoRunDatabaseName.Equals("AskUser", StringComparison.CurrentCultureIgnoreCase))
                         {
                             // Show Database selection menu 
-                            SelectDBForm selectDBForm = new SelectDBForm(settings);
+                            SelectDBForm selectDBForm = new SelectDBForm(settings, false);
                             selectDBForm.ShowDialog();
 
                             if (selectDBForm.ReturnDBName != null)
@@ -301,7 +301,7 @@ namespace PicasaStarter
                         if (backupDatabaseName.Equals("AskUser", StringComparison.CurrentCultureIgnoreCase))
                         {
                             // Show Database selection menu 
-                            SelectDBForm selectDBForm = new SelectDBForm(settings);
+                            SelectDBForm selectDBForm = new SelectDBForm(settings, true);
                             selectDBForm.ShowDialog();
 
                             if (selectDBForm.ReturnDBName != null)

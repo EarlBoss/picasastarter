@@ -80,7 +80,7 @@
             this.Name = "CreatePicasaButtonScriptForm";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "CreatePicasaButtonScript";
+            this.Text = "Create Picasa Button Script";
             this.ResumeLayout(false);
             this.PerformLayout();
 

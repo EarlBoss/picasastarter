@@ -198,9 +198,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "BackupProgressForm";
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Picasa Backup Progress";
+            this.Text = "Backup Picasa - Progress";
             this.Load += new System.EventHandler(this.BackupProgressForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
