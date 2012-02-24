@@ -29,9 +29,6 @@ namespace PicasaStarter
         #region Public or internal methods
         internal string VirtualDrive { get; private set; }
         internal Settings _settings { get; private set; }
-       // internal Settings _settingsCopy { get; private set;}
-        bool settingsChanged = true;
-
 
         public MainForm(Settings settings, string appDataDir, string appSettingsDir, bool configFileExists)
         {
@@ -141,8 +138,10 @@ namespace PicasaStarter
             if ((listBoxPicasaDBs.SelectedIndex > -1)
                     && listBoxPicasaDBs.SelectedIndex < _settings.picasaDBs.Count)
             {
-                if(_settings.picasaDefaultSelectedDB != _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].Name)
+                if (_settings.picasaDefaultSelectedDB != _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].Name)
+                {
                     _settings.picasaDefaultSelectedDB = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].Name;
+                }
             }
 
             // Save settings before exiting
@@ -516,7 +515,9 @@ namespace PicasaStarter
                 DialogResult result = MessageBox.Show("Do you want to make a backup of the latest version of your images and database?",
                         "Backup?", MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
+                {
                     StartBackup();
+                }
             }
         }
 
@@ -731,29 +732,26 @@ namespace PicasaStarter
 
             listBoxPicasaButtons.EndUpdate();
         }
+
         private void SaveSettings()
         {
-            if(settingsChanged == true)
-                
+            try
             {
-                try
-                {
-                    SettingsHelper.SerializeSettings(_settings,
-                            _appSettingsDir + "\\" + SettingsHelper.SettingsFileName);
-                }
-                catch (Exception ex)
-                {
-                    string message = "Error saving settings: " + ex.Message +
-                    "\n\nThe Settings directory was not writable or it was on a NAS or Portable Drive that was disconnected." +
-                    "        ---->   PicasaStarter will Exit.   <----" +
-                    "\n\nMake sure the NAS or Portable drive is available and try again." +
-                    "\nGo to General Settings if you wish to select a new settings directory,";
+                SettingsHelper.SerializeSettings(_settings,
+                        _appSettingsDir + "\\" + SettingsHelper.SettingsFileName);
+            }
+            catch (Exception ex)
+            {
+                string message = "Error saving settings: " + ex.Message +
+                "\n\nThe Settings directory was not writable or it was on a NAS or Portable Drive that was disconnected." +
+                "        ---->   PicasaStarter will Exit.   <----" +
+                "\n\nMake sure the NAS or Portable drive is available and try again." +
+                "\nGo to General Settings if you wish to select a new settings directory,";
 
-                    string caption = "Can't Save Settings File";
+                string caption = "Can't Save Settings File";
 
-                    // Displays the MessageBox.
-                    MessageBox.Show(message, caption);
-                }
+                // Displays the MessageBox.
+                MessageBox.Show(message, caption);
             }
         }
  

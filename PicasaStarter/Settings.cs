@@ -324,16 +324,37 @@ namespace PicasaStarter
 
         public static void SerializeSettings(Settings settings, string settingsFilePath)
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(settingsFilePath));
-            
-            // Serialize settings to file
-            XmlSerializer serializer = new XmlSerializer(typeof(Settings));
-            using (TextWriter tw = new StreamWriter(settingsFilePath))
-            {
-            serializer.Serialize(tw, settings);
-            }
-       }
+            string NewSettingsText = "";
+            string PresentSettingsText = "";
 
+            Directory.CreateDirectory(Path.GetDirectoryName(settingsFilePath));
+
+            try
+            {
+                // Serialize settings to file
+                XmlSerializer serializer = new XmlSerializer(typeof(Settings));
+                using (TextWriter tw = new StreamWriter(settingsFilePath + ".tmp"))
+                {
+                    serializer.Serialize(tw, settings);
+                }
+                NewSettingsText = File.ReadAllText(settingsFilePath + ".tmp");
+                if(File.Exists(settingsFilePath))
+                    PresentSettingsText = File.ReadAllText(settingsFilePath);
+                if (NewSettingsText != PresentSettingsText)
+                {
+                    // Serialize settings to file
+                    //XmlSerializer serializer = new XmlSerializer(typeof(Settings));
+                    using (TextWriter tw = new StreamWriter(settingsFilePath))
+                    {
+                        serializer.Serialize(tw, settings);
+                    }
+                }
+            }
+            catch
+            {
+            }
+            File.Delete(settingsFilePath + ".tmp");
+        }
         public static Settings DeSerializeSettings(string settingsFilePath)
         {
             // Deserialize settings
