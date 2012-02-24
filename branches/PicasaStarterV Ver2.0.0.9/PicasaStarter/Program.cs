@@ -30,7 +30,6 @@ namespace PicasaStarter
              Settings settings;
             bool ConfigFileExists = true;
             bool settingsfound = false;
-            bool settingsChanged = true;
 
             configurationDir = SettingsHelper.DetermineConfigDir();
             appSettingsDir = SettingsHelper.DetermineSettingsDir(configurationDir);
@@ -106,7 +105,6 @@ namespace PicasaStarter
                             settings = SettingsHelper.DeSerializeSettings(
                                 appSettingsDir + "\\" + SettingsHelper.SettingsFileName);
                             settingsfound = true;
-                            settingsChanged = false;
                         }
                         catch (Exception ex)
                         {
@@ -120,17 +118,14 @@ namespace PicasaStarter
                 {
                     // Save settings
                     //---------------------------------------------------------------------------
-                    if (settingsChanged)
+                    try
                     {
-                        try
-                        {
-                            SettingsHelper.SerializeSettings(settings,
-                                    appSettingsDir + "\\" + SettingsHelper.SettingsFileName);
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show("Error saving settings: " + ex.Message);
-                        }
+                        SettingsHelper.SerializeSettings(settings,
+                                appSettingsDir + "\\" + SettingsHelper.SettingsFileName);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error saving settings: " + ex.Message);
                     }
 
                     // Process command line arguments...
