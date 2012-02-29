@@ -24,6 +24,8 @@ namespace PicasaStarter
         private int lastSelectedIndexListBoxPicasaDBs = -1;
         private string appSettingsBaseDir = "";
         private int saveListIndex = 0;
+        DateTime PresentBackupDate; // Save the previous backup date to restore later if backup is cancelled
+        bool backupCancelled = false;
         #endregion
 
         #region Public or internal methods
@@ -45,8 +47,11 @@ namespace PicasaStarter
 
         internal void CancelBackup()
         {
-            if(_backup != null)
+            if (_backup != null)
+            {
                 _backup.CancelBackupAssync();
+                backupCancelled = true;
+            }
         }
 
         #endregion
@@ -509,14 +514,38 @@ namespace PicasaStarter
             WindowState = FormWindowState.Normal;
 
             // Does the user want a backup? Only ask if directory exists
-            if ( _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir != "" &&
-                 _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir != null)
+            if ( !string.IsNullOrEmpty(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir) &&
+                Directory.Exists(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir) &&
+                  _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupFrequency != 4)
             {
-                DialogResult result = MessageBox.Show("Do you want to make a backup of the latest version of your images and database?",
-                        "Backup?", MessageBoxButtons.YesNo);
-                if (result == DialogResult.Yes)
+                PresentBackupDate = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].LastBackupDate;
+                DateTime nextBackupDate = PresentBackupDate;
+                switch (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupFrequency)
                 {
-                    StartBackup();
+                    case 0:
+                        nextBackupDate.AddDays(-1); // Always (date always yesterday)
+                        break;
+                    case 1:
+                        nextBackupDate = nextBackupDate.AddDays(1); // Once a Day
+                        break;
+                    case 2:
+                        nextBackupDate = nextBackupDate.AddDays(7); //Once a week
+                        break;
+                    case 3:
+                        nextBackupDate = nextBackupDate.AddMonths(1); // Once a month
+                        break;
+                    default:
+                        nextBackupDate = DateTime.Today.AddDays(1);
+                        break;
+                }
+                if (DateTime.Today >= nextBackupDate)
+                {
+                    DialogResult result = MessageBox.Show("Do you want to make a backup of the latest version of your images and database?",
+                            "Backup?", MessageBoxButtons.YesNo);
+                    if (result == DialogResult.Yes)
+                    {
+                        StartBackup();
+                    }
                 }
             }
         }
@@ -532,6 +561,16 @@ namespace PicasaStarter
             _progressForm.Hide();
             _progressForm = null;
             _backup = null;
+            if (!backupCancelled)
+            {
+                BackupDateUpdate();
+                backupCancelled = false;
+            }
+        }
+
+        public void BackupDateUpdate()
+        {
+            _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].LastBackupDate = DateTime.Today;
         }
 
         private void buttonViewBackups_Click(object sender, EventArgs e)
