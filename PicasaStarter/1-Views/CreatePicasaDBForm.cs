@@ -16,6 +16,7 @@ namespace PicasaStarter
         public PicasaDB PicasaDB { get; private set; }
         private string AppSettingsDir = "";
         private string appSettingsBaseDir = "";
+        //private DateTime LastBackupDateOnEntry;
         internal string full38DBDirectory = "";
         //public string VirtualDrive = "";
         //public bool VirtualDriveRemapped = false;
@@ -42,6 +43,11 @@ namespace PicasaStarter
             _settings = settings;
 
             textBoxBackupDir.Text = PicasaDB.BackupDir;
+            BackupFrequencyBox.SelectedIndex = PicasaDB.BackupFrequency;
+            if(PicasaDB.LastBackupDate.Year <= 1900)
+                textLastBackupDate.Text = "Never Backed Up";
+            else
+                textLastBackupDate.Text = PicasaDB.LastBackupDate.ToString();
             textBoxDBBaseDir.Text = PicasaDB.BaseDir;
             textBoxDBDescription.Text = PicasaDB.Description;
             textBoxDBName.Text = PicasaDB.Name;
@@ -86,10 +92,15 @@ namespace PicasaStarter
         private void buttonBackupDir_Click(object sender, EventArgs e)
         {
             textBoxBackupDir.Text = DialogHelper.AskDirectoryPath(PicasaDB.BackupDir);
+            PicasaDB.LastBackupDate = new DateTime();
+            textLastBackupDate.Text = "Never Backed Up";
+
         }
         private void buttonNoBackupDir_Click(object sender, EventArgs e)
         {
             textBoxBackupDir.Text = null;
+            PicasaDB.LastBackupDate = new DateTime();
+            textLastBackupDate.Text = "Never Backed Up";
         }
 
         private void textBoxDBBaseDir_TextChanged(object sender, EventArgs e)
@@ -102,6 +113,7 @@ namespace PicasaStarter
         private void buttonOK_Click(object sender, EventArgs e)
         {
                 PicasaDB.BackupDir = textBoxBackupDir.Text;
+                PicasaDB.BackupFrequency = BackupFrequencyBox.SelectedIndex;
                 PicasaDB.BaseDir = textBoxDBBaseDir.Text;
                 PicasaDB.Description = textBoxDBDescription.Text;
                 PicasaDB.Name = textBoxDBName.Text;
@@ -373,5 +385,6 @@ namespace PicasaStarter
             messageBoxDB.Text = copyDBForm.ReturnMessage;
              
         }
+
     }
 }

@@ -18,6 +18,8 @@ namespace PicasaStarter
         private static BackupProgressForm_CL _progressForm;
         private static PicasaDB _db = null;
         private static String settingsDir;
+        public bool backupCancelled = false;
+
         public BackupForm_CL(PicasaDB db, String _settingsDir)
         {
             InitializeComponent();
@@ -30,6 +32,7 @@ namespace PicasaStarter
             if (_backup != null)
             {
                 _backup.CancelBackupAssync();
+                backupCancelled = true;
             }
         }
 
@@ -111,7 +114,17 @@ namespace PicasaStarter
             _progressForm.Hide();
             _progressForm = null;
             _backup = null;
+            if (!backupCancelled)
+            {
+                BackupDateUpdate();
+                backupCancelled = false;
+            }
             Close();
+        }
+
+        public void BackupDateUpdate()
+        {
+            Program.BackupComplete = true;
         }
 
         #endregion

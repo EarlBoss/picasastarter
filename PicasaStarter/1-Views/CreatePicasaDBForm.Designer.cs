@@ -51,6 +51,10 @@
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.backupgroupBox = new System.Windows.Forms.GroupBox();
+            this.textLastBackupDate = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.BackupFrequencyBox = new System.Windows.Forms.ComboBox();
             this.buttonNoBackupDir = new System.Windows.Forms.Button();
             this.VDgroupBox1 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -245,7 +249,7 @@
             // 
             // buttonCreateShortcut
             // 
-            this.buttonCreateShortcut.Location = new System.Drawing.Point(21, 433);
+            this.buttonCreateShortcut.Location = new System.Drawing.Point(21, 458);
             this.buttonCreateShortcut.Name = "buttonCreateShortcut";
             this.buttonCreateShortcut.Size = new System.Drawing.Size(133, 23);
             this.buttonCreateShortcut.TabIndex = 43;
@@ -283,7 +287,7 @@
             // 
             // buttonCancel
             // 
-            this.buttonCancel.Location = new System.Drawing.Point(491, 447);
+            this.buttonCancel.Location = new System.Drawing.Point(491, 472);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 46;
@@ -293,7 +297,7 @@
             // 
             // buttonOK
             // 
-            this.buttonOK.Location = new System.Drawing.Point(410, 447);
+            this.buttonOK.Location = new System.Drawing.Point(410, 472);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
             this.buttonOK.TabIndex = 47;
@@ -303,16 +307,66 @@
             // 
             // backupgroupBox
             // 
+            this.backupgroupBox.BackColor = System.Drawing.SystemColors.Control;
+            this.backupgroupBox.Controls.Add(this.textLastBackupDate);
+            this.backupgroupBox.Controls.Add(this.label6);
+            this.backupgroupBox.Controls.Add(this.label5);
+            this.backupgroupBox.Controls.Add(this.BackupFrequencyBox);
             this.backupgroupBox.Controls.Add(this.buttonNoBackupDir);
             this.backupgroupBox.Controls.Add(this.textBoxBackupDir);
             this.backupgroupBox.Controls.Add(this.buttonBackupDir);
             this.backupgroupBox.Controls.Add(this.label1);
             this.backupgroupBox.Location = new System.Drawing.Point(13, 245);
             this.backupgroupBox.Name = "backupgroupBox";
-            this.backupgroupBox.Size = new System.Drawing.Size(559, 81);
+            this.backupgroupBox.Size = new System.Drawing.Size(559, 106);
             this.backupgroupBox.TabIndex = 48;
             this.backupgroupBox.TabStop = false;
-            this.backupgroupBox.Text = "Backup && Restore";
+            this.backupgroupBox.Text = "Backup Settings";
+            // 
+            // textLastBackupDate
+            // 
+            this.textLastBackupDate.BackColor = System.Drawing.SystemColors.Control;
+            this.textLastBackupDate.Location = new System.Drawing.Point(278, 45);
+            this.textLastBackupDate.Name = "textLastBackupDate";
+            this.textLastBackupDate.ReadOnly = true;
+            this.textLastBackupDate.Size = new System.Drawing.Size(154, 20);
+            this.textLastBackupDate.TabIndex = 47;
+            this.textLastBackupDate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(172, 48);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(100, 13);
+            this.label6.TabIndex = 46;
+            this.label6.Text = "Last Backed up on:";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(13, 80);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(95, 13);
+            this.label5.TabIndex = 45;
+            this.label5.Text = "Backup Reminder:";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // BackupFrequencyBox
+            // 
+            this.BackupFrequencyBox.FormattingEnabled = true;
+            this.BackupFrequencyBox.Items.AddRange(new object[] {
+            "Always Remind",
+            "Remind if Older Than One Day",
+            "Remind if Older Than One Week",
+            "Remind if Older Than One Month",
+            "Never Remind"});
+            this.BackupFrequencyBox.Location = new System.Drawing.Point(116, 77);
+            this.BackupFrequencyBox.Name = "BackupFrequencyBox";
+            this.BackupFrequencyBox.Size = new System.Drawing.Size(192, 21);
+            this.BackupFrequencyBox.TabIndex = 44;
+            this.BackupFrequencyBox.Text = "Backup Reminder Interval";
             // 
             // buttonNoBackupDir
             // 
@@ -332,7 +386,7 @@
             this.VDgroupBox1.Controls.Add(this.label4);
             this.VDgroupBox1.Controls.Add(this.PicDrivecomboBox);
             this.VDgroupBox1.Controls.Add(this.EnablecheckBox);
-            this.VDgroupBox1.Location = new System.Drawing.Point(13, 332);
+            this.VDgroupBox1.Location = new System.Drawing.Point(13, 357);
             this.VDgroupBox1.Name = "VDgroupBox1";
             this.VDgroupBox1.Size = new System.Drawing.Size(560, 95);
             this.VDgroupBox1.TabIndex = 49;
@@ -371,7 +425,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 477);
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.ClientSize = new System.Drawing.Size(584, 503);
             this.Controls.Add(this.VDgroupBox1);
             this.Controls.Add(this.backupgroupBox);
             this.Controls.Add(this.buttonCreateShortcut);
@@ -424,5 +479,9 @@
         private System.Windows.Forms.Button buttonNoBackupDir;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxVDSource;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox BackupFrequencyBox;
+        private System.Windows.Forms.TextBox textLastBackupDate;
+        private System.Windows.Forms.Label label6;
     }
 }
