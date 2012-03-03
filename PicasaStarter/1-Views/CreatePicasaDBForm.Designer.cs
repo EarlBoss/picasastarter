@@ -30,7 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreatePicasaDBForm));
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.messageBoxDB = new System.Windows.Forms.TextBox();
             this.buttonConvert38 = new System.Windows.Forms.Button();
             this.buttonCreateNewDB = new System.Windows.Forms.Button();
             this.buttonCopyDB = new System.Windows.Forms.Button();
@@ -60,6 +59,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxVDSource = new System.Windows.Forms.TextBox();
             this.buttonDoVDNow = new System.Windows.Forms.Button();
+            this.messageBoxDB = new System.Windows.Forms.TextBox();
             this.groupBox2.SuspendLayout();
             this.backupgroupBox.SuspendLayout();
             this.VDgroupBox1.SuspendLayout();
@@ -85,23 +85,11 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Database details";
             // 
-            // messageBoxDB
-            // 
-            this.messageBoxDB.BackColor = System.Drawing.SystemColors.Control;
-            this.messageBoxDB.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.messageBoxDB.ForeColor = System.Drawing.Color.Blue;
-            this.messageBoxDB.Location = new System.Drawing.Point(10, 167);
-            this.messageBoxDB.Multiline = true;
-            this.messageBoxDB.Name = "messageBoxDB";
-            this.messageBoxDB.Size = new System.Drawing.Size(103, 54);
-            this.messageBoxDB.TabIndex = 46;
-            this.messageBoxDB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // buttonConvert38
             // 
-            this.buttonConvert38.Location = new System.Drawing.Point(426, 172);
+            this.buttonConvert38.Location = new System.Drawing.Point(383, 172);
             this.buttonConvert38.Name = "buttonConvert38";
-            this.buttonConvert38.Size = new System.Drawing.Size(61, 34);
+            this.buttonConvert38.Size = new System.Drawing.Size(104, 34);
             this.buttonConvert38.TabIndex = 44;
             this.buttonConvert38.Text = "Convert From 3.8";
             this.buttonConvert38.UseVisualStyleBackColor = true;
@@ -109,7 +97,7 @@
             // 
             // buttonCreateNewDB
             // 
-            this.buttonCreateNewDB.Location = new System.Drawing.Point(138, 172);
+            this.buttonCreateNewDB.Location = new System.Drawing.Point(117, 172);
             this.buttonCreateNewDB.Name = "buttonCreateNewDB";
             this.buttonCreateNewDB.Size = new System.Drawing.Size(127, 34);
             this.buttonCreateNewDB.TabIndex = 43;
@@ -119,7 +107,7 @@
             // 
             // buttonCopyDB
             // 
-            this.buttonCopyDB.Location = new System.Drawing.Point(271, 172);
+            this.buttonCopyDB.Location = new System.Drawing.Point(250, 172);
             this.buttonCopyDB.Name = "buttonCopyDB";
             this.buttonCopyDB.Size = new System.Drawing.Size(127, 34);
             this.buttonCopyDB.TabIndex = 42;
@@ -137,7 +125,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(14, 142);
+            this.label7.Location = new System.Drawing.Point(14, 143);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(81, 13);
             this.label7.TabIndex = 24;
@@ -155,7 +143,7 @@
             // 
             // buttonBrowseDBBaseDir
             // 
-            this.buttonBrowseDBBaseDir.Location = new System.Drawing.Point(493, 140);
+            this.buttonBrowseDBBaseDir.Location = new System.Drawing.Point(493, 139);
             this.buttonBrowseDBBaseDir.Name = "buttonBrowseDBBaseDir";
             this.buttonBrowseDBBaseDir.Size = new System.Drawing.Size(61, 23);
             this.buttonBrowseDBBaseDir.TabIndex = 5;
@@ -249,7 +237,7 @@
             // 
             // buttonCreateShortcut
             // 
-            this.buttonCreateShortcut.Location = new System.Drawing.Point(21, 458);
+            this.buttonCreateShortcut.Location = new System.Drawing.Point(13, 472);
             this.buttonCreateShortcut.Name = "buttonCreateShortcut";
             this.buttonCreateShortcut.Size = new System.Drawing.Size(133, 23);
             this.buttonCreateShortcut.TabIndex = 43;
@@ -326,7 +314,7 @@
             // textLastBackupDate
             // 
             this.textLastBackupDate.BackColor = System.Drawing.SystemColors.Control;
-            this.textLastBackupDate.Location = new System.Drawing.Point(278, 45);
+            this.textLastBackupDate.Location = new System.Drawing.Point(115, 46);
             this.textLastBackupDate.Name = "textLastBackupDate";
             this.textLastBackupDate.ReadOnly = true;
             this.textLastBackupDate.Size = new System.Drawing.Size(154, 20);
@@ -336,7 +324,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(172, 48);
+            this.label6.Location = new System.Drawing.Point(14, 49);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(100, 13);
             this.label6.TabIndex = 46;
@@ -346,7 +334,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(13, 80);
+            this.label5.Location = new System.Drawing.Point(13, 75);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(95, 13);
             this.label5.TabIndex = 45;
@@ -355,6 +343,7 @@
             // 
             // BackupFrequencyBox
             // 
+            this.BackupFrequencyBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.BackupFrequencyBox.FormattingEnabled = true;
             this.BackupFrequencyBox.Items.AddRange(new object[] {
             "Always Remind",
@@ -362,11 +351,10 @@
             "Remind if Older Than One Week",
             "Remind if Older Than One Month",
             "Never Remind"});
-            this.BackupFrequencyBox.Location = new System.Drawing.Point(116, 77);
+            this.BackupFrequencyBox.Location = new System.Drawing.Point(116, 72);
             this.BackupFrequencyBox.Name = "BackupFrequencyBox";
             this.BackupFrequencyBox.Size = new System.Drawing.Size(192, 21);
             this.BackupFrequencyBox.TabIndex = 44;
-            this.BackupFrequencyBox.Text = "Backup Reminder Interval";
             // 
             // buttonNoBackupDir
             // 
@@ -421,6 +409,18 @@
             this.buttonDoVDNow.UseVisualStyleBackColor = true;
             this.buttonDoVDNow.Click += new System.EventHandler(this.buttonDoVDNow_Click);
             // 
+            // messageBoxDB
+            // 
+            this.messageBoxDB.BackColor = System.Drawing.SystemColors.Control;
+            this.messageBoxDB.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.messageBoxDB.ForeColor = System.Drawing.Color.Blue;
+            this.messageBoxDB.Location = new System.Drawing.Point(10, 167);
+            this.messageBoxDB.Multiline = true;
+            this.messageBoxDB.Name = "messageBoxDB";
+            this.messageBoxDB.Size = new System.Drawing.Size(103, 54);
+            this.messageBoxDB.TabIndex = 46;
+            this.messageBoxDB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // CreatePicasaDBForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -472,7 +472,6 @@
         private System.Windows.Forms.GroupBox backupgroupBox;
         private System.Windows.Forms.GroupBox VDgroupBox1;
         private System.Windows.Forms.Button buttonDoVDNow;
-        private System.Windows.Forms.TextBox messageBoxDB;
         private System.Windows.Forms.Button buttonConvert38;
         private System.Windows.Forms.Button buttonCreateNewDB;
         private System.Windows.Forms.Button buttonCopyDB;
@@ -483,5 +482,6 @@
         private System.Windows.Forms.ComboBox BackupFrequencyBox;
         private System.Windows.Forms.TextBox textLastBackupDate;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox messageBoxDB;
     }
 }
