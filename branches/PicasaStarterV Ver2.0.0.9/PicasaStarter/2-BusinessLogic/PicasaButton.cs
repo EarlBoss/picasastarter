@@ -98,10 +98,10 @@ namespace PicasaStarter
             // Init correct paths
             string pbfFilePath = System.IO.Path.GetTempPath() + "PicasaStarter\\" + ButtonID + ".pbf";
             string psdFilePath = System.IO.Path.GetTempPath() + "PicasaStarter\\" + ButtonID + ".psd";
-            string scriptFileName = "PS_Button" + Label + ".bat";
+            string scriptFileName = "PSButton" + Label + ".bat";
             string scriptFilePath = scriptDir + "\\" + scriptFileName;
             
-            FileInfo pbzFile = new FileInfo(destDirectory + '\\' + "PS_Button" + Label + ".pbz");
+            FileInfo pbzFile = new FileInfo(destDirectory + '\\' + "PSButton" + Label + ".pbz");
             if (!pbzFile.Directory.Exists)
                 pbzFile.Directory.Create();
 

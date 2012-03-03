@@ -484,7 +484,7 @@ namespace PicasaStarter
             string sourceButtonDir = _appSettingsDir + '\\' + SettingsHelper.PicasaButtons;
 
             // Copy Buttons and scripts and set the correct Path variable to be able to start scripts...
-            IOHelper.TryDeleteFiles(destButtonDir, "PS_Button*");
+            IOHelper.TryDeleteFiles(destButtonDir, "PSButton*");
             foreach (PicasaButton button in _settings.picasaButtons.ButtonList)
             {
                 try
