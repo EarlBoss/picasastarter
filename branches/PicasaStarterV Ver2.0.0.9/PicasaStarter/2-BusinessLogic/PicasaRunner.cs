@@ -115,7 +115,7 @@ namespace PicasaStarter
                     else
                     {
                         originalUserProfile = savedUserProfile;
-                     }
+                    }
                 }
                 else
                 {

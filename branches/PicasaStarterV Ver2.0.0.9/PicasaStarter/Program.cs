@@ -11,9 +11,10 @@ namespace PicasaStarter
 {
     static class Program
     {
-        /// <summary>
         public static Backup _backup = null;
         public static bool BackupComplete = false;
+
+        /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
