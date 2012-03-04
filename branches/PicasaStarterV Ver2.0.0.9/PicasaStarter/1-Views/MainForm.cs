@@ -523,7 +523,7 @@ namespace PicasaStarter
                 switch (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupFrequency)
                 {
                     case 0:
-                        nextBackupDate.AddDays(-1); // Always (date always yesterday)
+                        nextBackupDate = DateTime.Today.AddDays(-1); // Always (date always yesterday)
                         break;
                     case 1:
                         nextBackupDate = nextBackupDate.AddDays(1); // Once a Day
