@@ -393,7 +393,8 @@ namespace PicasaStarter
                 // NewLine's in an XML file are stored as \n while Windows wants \r\n in it's textboxes,...
                 // For all field that can contain newlines... replace them.
                 settings.picasaButtons.ButtonList[i].Description = settings.picasaButtons.ButtonList[i].Description.Replace("\n", Environment.NewLine);
-                settings.picasaButtons.ButtonList[i].Script = settings.picasaButtons.ButtonList[i].Script.Replace("\n", Environment.NewLine);
+                if(!string.IsNullOrEmpty(settings.picasaButtons.ButtonList[i].Script))
+                    settings.picasaButtons.ButtonList[i].Script = settings.picasaButtons.ButtonList[i].Script.Replace("\n", Environment.NewLine);
             }
 
             // Check if the settings contained a PicasaExePath. It will be null if the settings don't contain
