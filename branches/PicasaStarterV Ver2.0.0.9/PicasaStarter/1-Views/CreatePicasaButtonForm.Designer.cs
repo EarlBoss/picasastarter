@@ -154,7 +154,7 @@
             this.buttonChangeIcon.TabIndex = 3;
             this.buttonChangeIcon.Text = "Change...";
             this.toolTip.SetToolTip(this.buttonChangeIcon, "Press browse to add/change the icon for the Picasa Button. Mind: only .psd (Photo" +
-        "shop) files are supported.");
+                    "shop) files are supported.");
             this.buttonChangeIcon.UseVisualStyleBackColor = true;
             this.buttonChangeIcon.Click += new System.EventHandler(this.buttonChangeIcon_Click);
             // 
@@ -209,7 +209,7 @@
             this.buttonRemoveIcon.TabIndex = 4;
             this.buttonRemoveIcon.Text = "Remove";
             this.toolTip.SetToolTip(this.buttonRemoveIcon, "Press browse to add/change the icon for the Picasa Button. Mind: only .psd (Photo" +
-        "shop) files are supported.");
+                    "shop) files are supported.");
             this.buttonRemoveIcon.UseVisualStyleBackColor = true;
             this.buttonRemoveIcon.Click += new System.EventHandler(this.buttonRemoveIcon_Click);
             // 
@@ -221,7 +221,7 @@
             this.buttonEditScript.TabIndex = 4;
             this.buttonEditScript.Text = "Edit script...";
             this.toolTip.SetToolTip(this.buttonEditScript, "Press browse to add/change the icon for the Picasa Button. Mind: only .psd (Photo" +
-        "shop) files are supported.");
+                    "shop) files are supported.");
             this.buttonEditScript.UseVisualStyleBackColor = true;
             this.buttonEditScript.Click += new System.EventHandler(this.buttonEditScript_Click);
             // 
@@ -233,7 +233,7 @@
             this.buttonExport.TabIndex = 29;
             this.buttonExport.Text = "Export portable version...";
             this.toolTip.SetToolTip(this.buttonExport, "Export a version of the button that will work in anyone\'s standard Picasa databas" +
-        "e (= without using PicasaStarter)...");
+                    "e (= without using PicasaStarter)...");
             this.buttonExport.UseVisualStyleBackColor = true;
             this.buttonExport.Click += new System.EventHandler(this.buttonExport_Click);
             // 
@@ -244,7 +244,7 @@
             this.textBoxExeDir.Size = new System.Drawing.Size(383, 20);
             this.textBoxExeDir.TabIndex = 14;
             this.toolTip.SetToolTip(this.textBoxExeDir, "Directory where the executable can be found. If a registry key is specified for t" +
-        "he directory as well, this should be a relative path.");
+                    "he directory as well, this should be a relative path.");
             // 
             // textBoxExeFileName
             // 
@@ -253,8 +253,8 @@
             this.textBoxExeFileName.Size = new System.Drawing.Size(383, 20);
             this.textBoxExeFileName.TabIndex = 12;
             this.toolTip.SetToolTip(this.textBoxExeFileName, "Filename of the executable (without directory!). If only this field is filled out" +
-        ", and no directory field(s), the executable must be fount in the directories in " +
-        "the PATH environment variable.");
+                    ", and no directory field(s), the executable must be fount in the directories in " +
+                    "the PATH environment variable.");
             // 
             // textBoxExeFileRegKey
             // 
@@ -286,7 +286,7 @@
             this.radioButtonScript.TabIndex = 3;
             this.radioButtonScript.TabStop = true;
             this.radioButtonScript.Text = "The button needs to start a batch script (.bat or .cmd) that does the actual work" +
-    "";
+                "";
             this.radioButtonScript.UseVisualStyleBackColor = true;
             this.radioButtonScript.CheckedChanged += new System.EventHandler(this.radioButtonScript_CheckedChanged);
             // 
@@ -377,7 +377,7 @@
             this.checkBoxExportFirst.Size = new System.Drawing.Size(449, 17);
             this.checkBoxExportFirst.TabIndex = 1;
             this.checkBoxExportFirst.Text = "Execute the action on a copy of the images that includes the unsaved changes in P" +
-    "icasa.";
+                "icasa.";
             this.checkBoxExportFirst.UseVisualStyleBackColor = true;
             // 
             // checkBoxExecuteForeach
@@ -388,7 +388,7 @@
             this.checkBoxExecuteForeach.Size = new System.Drawing.Size(531, 17);
             this.checkBoxExecuteForeach.TabIndex = 0;
             this.checkBoxExecuteForeach.Text = "Execute the action for every selected image seperately (versus pass all images in" +
-    " one time to the command)";
+                " one time to the command)";
             this.checkBoxExecuteForeach.UseVisualStyleBackColor = true;
             // 
             // CreatePicasaButtonForm
