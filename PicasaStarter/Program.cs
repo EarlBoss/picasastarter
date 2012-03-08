@@ -232,11 +232,15 @@ namespace PicasaStarter
 
                             PicasaRunner runner = new PicasaRunner(appDataDir, settings.PicasaExePath);
                             String dbPath;
+                            string destButtonDir;
 
                             // If the user wants to run his personal default database... 
                             if (foundDB.IsStandardDB == true)
                             {
                                 dbPath = null;
+                                // Set the directory to put the PicasaButtons in the PicasaDB...
+                                destButtonDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
+                                        "\\Google\\Picasa2\\buttons";
                             }
 
                             // If the user wants to run a custom database...
@@ -266,8 +270,27 @@ namespace PicasaStarter
                                     return;
                                 }
                                 dbPath = foundDB.BaseDir;
+                                // Set the directory to put the PicasaButtons in the PicasaDB...
+                                destButtonDir = foundDB.BaseDir + "\\Google\\Picasa2\\buttons";
                             }
 
+                            // Copy Buttons and scripts and set the correct Path variable to be able to start scripts...
+                            IOHelper.TryDeleteFiles(destButtonDir, "PSButton*");
+                            foreach (PicasaButton button in settings.picasaButtons.ButtonList)
+                            {
+                                try
+                                {
+                                    button.CreateButtonFile(destButtonDir);
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
+
+                            settings.picasaButtons.Registerbuttons();
+
+                            // Go!
                             try
                             {
                                 runner.RunPicasa(dbPath, appSettingsDir);
