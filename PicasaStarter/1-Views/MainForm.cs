@@ -16,7 +16,6 @@ namespace PicasaStarter
     {
         #region Private members
 
-        private string _appDataDir = "";
         private string _appSettingsDir = "";
         private bool _configFileExists = true;
         private Backup _backup = null;
@@ -32,11 +31,10 @@ namespace PicasaStarter
         internal string VirtualDrive { get; private set; }
         internal Settings _settings { get; private set; }
 
-        public MainForm(Settings settings, string appDataDir, string appSettingsDir, bool configFileExists)
+        public MainForm(Settings settings, string appSettingsDir, bool configFileExists)
         {
             InitializeComponent();
             _settings = settings;
-            _appDataDir = appDataDir;
             _appSettingsDir = appSettingsDir;
             _configFileExists = configFileExists;
             appSettingsBaseDir = Path.GetDirectoryName(_appSettingsDir);
@@ -426,7 +424,7 @@ namespace PicasaStarter
             WindowState = FormWindowState.Minimized; //Remove PicasaStarter window from desktop while Picasa is running
             this.Text = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].Name + " <--PicasaStarter Database";
             
-            PicasaRunner runner = new PicasaRunner(_appDataDir, _settings.PicasaExePath);
+            PicasaRunner runner = new PicasaRunner(_settings.PicasaExePath);
 
             // If the user wants to run his personal default database... 
             string dbBaseDir;
@@ -481,7 +479,7 @@ namespace PicasaStarter
                 return;
             }
 
-            string sourceButtonDir = _appSettingsDir + '\\' + SettingsHelper.PicasaButtons;
+            //string sourceButtonDir = _appSettingsDir + '\\' + SettingsHelper.PicasaButtons;
 
             // Copy Buttons and scripts and set the correct Path variable to be able to start scripts...
             IOHelper.TryDeleteFiles(destButtonDir, "PSButton*");

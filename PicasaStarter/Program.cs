@@ -23,8 +23,7 @@ namespace PicasaStarter
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            string appDataDir = Environment.GetEnvironmentVariable("appdata") + "\\PicasaStarter";
-            string appSettingsDir = "";
+            string appSettingsDir = "";  //Directory containing PicasaStarter settings
             string appSettingsBaseDir = "";
             string configurationDir = "";
 
@@ -203,112 +202,99 @@ namespace PicasaStarter
                     // Next check if he wants to run with the standard personal database...
                     if (autoRunDatabaseName.Equals("personal", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        // If the user wants to run his personal default database... (cmd line arg was "personal") 
-                        PicasaRunner runner = new PicasaRunner(appDataDir, settings.PicasaExePath);
-
-                        try
-                        {
-                            runner.RunPicasa(null, appSettingsDir);
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show(ex.Message);
-                        }
+                        autoRunDatabaseName = settings.picasaDBs[0].Name;
                     }
-                    else
+                    foreach (PicasaDB db in settings.picasaDBs)
                     {
-                        foreach (PicasaDB db in settings.picasaDBs)
+                        if (db.Name.Equals(autoRunDatabaseName, StringComparison.CurrentCultureIgnoreCase))
+                            foundDB = db;
+                    }
+
+                    if (foundDB != null)
+                    {
+                        if (foundDB.EnableVirtualDrive == true)
                         {
-                            if (db.Name.Equals(autoRunDatabaseName, StringComparison.CurrentCultureIgnoreCase))
-                                foundDB = db;
+                            MappedDrive = IOHelper.MapFolderToDrive(foundDB.PictureVirtualDrive, appSettingsBaseDir);
                         }
 
-                        if (foundDB != null)
+                        PicasaRunner runner = new PicasaRunner(settings.PicasaExePath);
+                        String dbPath;
+                        string destButtonDir;
+
+                        // If the user wants to run his personal default database... 
+                        if (foundDB.IsStandardDB == true)
                         {
-                            if (foundDB.EnableVirtualDrive == true)
+                            dbPath = null;
+                            // Set the directory to put the PicasaButtons in the PicasaDB...
+                            destButtonDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
+                                    "\\Google\\Picasa2\\buttons";
+                        }
+
+                        // If the user wants to run a custom database...
+                        else
+                        {
+                            // Set the choosen BaseDir
+                            if (!Directory.Exists(foundDB.BaseDir + "\\Google\\Picasa2") &&
+                                Directory.Exists(foundDB.BaseDir + "\\Local Settings\\Application Data\\Google\\Picasa2"))
                             {
-                                MappedDrive = IOHelper.MapFolderToDrive(foundDB.PictureVirtualDrive, appSettingsBaseDir);
-                            }
 
-                            PicasaRunner runner = new PicasaRunner(appDataDir, settings.PicasaExePath);
-                            String dbPath;
-                            string destButtonDir;
-
-                            // If the user wants to run his personal default database... 
-                            if (foundDB.IsStandardDB == true)
-                            {
-                                dbPath = null;
-                                // Set the directory to put the PicasaButtons in the PicasaDB...
-                                destButtonDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
-                                        "\\Google\\Picasa2\\buttons";
-                            }
-
-                            // If the user wants to run a custom database...
-                            else
-                            {
-                                // Set the choosen BaseDir
-                                if (!Directory.Exists(foundDB.BaseDir + "\\Google\\Picasa2") &&
-                                   Directory.Exists(foundDB.BaseDir + "\\Local Settings\\Application Data\\Google\\Picasa2"))
+                                DialogResult result = MessageBox.Show("Do you want to temporarily use the Picasa version 3.8 database?\n" +
+                                    "This Picasa 3.8 Database path is:\n " + foundDB.BaseDir + "\\Local Settings\\Application Data" +
+                                    "\n\n Please edit the database settings, and convert the database to version 3.9 to stop receiving this warning message",
+                                        "Database Not Converted for Picasa Version 3.9+", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1,
+                                        (MessageBoxOptions)0x40000);
+                                if (result == DialogResult.Yes)
                                 {
-
-                                    DialogResult result = MessageBox.Show("Do you want to temporarily use the Picasa version 3.8 database?\n" +
-                                        "This Picasa 3.8 Database path is:\n " + foundDB.BaseDir + "\\Local Settings\\Application Data" +
-                                       "\n\n Please edit the database settings, and convert the database to version 3.9 to stop receiving this warning message",
-                                           "Database Not Converted for Picasa Version 3.9+", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1,
-                                           (MessageBoxOptions)0x40000);
-                                    if (result == DialogResult.Yes)
-                                    {
-                                        foundDB.BaseDir = foundDB.BaseDir + "\\Local Settings\\Application Data";
-                                    }
-                                }
-                                // Get out without creating a database if the database directory doesn't exist
-                                if (!Directory.Exists(foundDB.BaseDir + "\\Google\\Picasa2"))
-                                {
-                                    MessageBox.Show("The database doesn't exist at this location, please choose an existing database or create one.",
-                                                "Database doesn't exist or not created", MessageBoxButtons.OK, MessageBoxIcon.None, MessageBoxDefaultButton.Button1,
-                                                (MessageBoxOptions)0x40000);
-                                    return;
-                                }
-                                dbPath = foundDB.BaseDir;
-                                // Set the directory to put the PicasaButtons in the PicasaDB...
-                                destButtonDir = foundDB.BaseDir + "\\Google\\Picasa2\\buttons";
-                            }
-
-                            // Copy Buttons and scripts and set the correct Path variable to be able to start scripts...
-                            IOHelper.TryDeleteFiles(destButtonDir, "PSButton*");
-                            foreach (PicasaButton button in settings.picasaButtons.ButtonList)
-                            {
-                                try
-                                {
-                                    button.CreateButtonFile(destButtonDir);
-                                }
-                                catch (Exception ex)
-                                {
-                                    MessageBox.Show(ex.Message);
+                                    foundDB.BaseDir = foundDB.BaseDir + "\\Local Settings\\Application Data";
                                 }
                             }
+                            // Get out without creating a database if the database directory doesn't exist
+                            if (!Directory.Exists(foundDB.BaseDir + "\\Google\\Picasa2"))
+                            {
+                                MessageBox.Show("The database doesn't exist at this location, please choose an existing database or create one.",
+                                            "Database doesn't exist or not created", MessageBoxButtons.OK, MessageBoxIcon.None, MessageBoxDefaultButton.Button1,
+                                            (MessageBoxOptions)0x40000);
+                                return;
+                            }
+                            dbPath = foundDB.BaseDir;
+                            // Set the directory to put the PicasaButtons in the PicasaDB...
+                            destButtonDir = foundDB.BaseDir + "\\Google\\Picasa2\\buttons";
+                        }
 
-                            settings.picasaButtons.Registerbuttons();
-
-                            // Go!
+                        // Copy Buttons and scripts and set the correct Path variable to be able to start scripts...
+                        IOHelper.TryDeleteFiles(destButtonDir, "PSButton*");
+                        foreach (PicasaButton button in settings.picasaButtons.ButtonList)
+                        {
                             try
                             {
-                                runner.RunPicasa(dbPath, appSettingsDir);
+                                button.CreateButtonFile(destButtonDir);
                             }
                             catch (Exception ex)
                             {
                                 MessageBox.Show(ex.Message);
                             }
-
-                            bool xyz;
-                            xyz = IOHelper.UnmapVDrive();
-
                         }
-                        else
+
+                        settings.picasaButtons.Registerbuttons();
+
+                        // Go!
+                        try
                         {
-                            MessageBox.Show("The database passed with the /autorun parameter was not found: (" + autoRunDatabaseName + ")");
-                            autoRunDatabaseName = null;
+                            runner.RunPicasa(dbPath, appSettingsDir);
                         }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
+
+                        bool xyz;
+                        xyz = IOHelper.UnmapVDrive();
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("The database passed with the /autorun parameter was not found: (" + autoRunDatabaseName + ")");
+                        autoRunDatabaseName = null;
                     }
                 }
 
@@ -402,7 +388,7 @@ namespace PicasaStarter
 
             if (showGUI == true)
             {
-                Application.Run(new MainForm(settings, appDataDir, appSettingsDir, ConfigFileExists));
+                Application.Run(new MainForm(settings, appSettingsDir, ConfigFileExists));
             }
 
         }
