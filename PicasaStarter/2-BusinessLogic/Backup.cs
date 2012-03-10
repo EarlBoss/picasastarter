@@ -128,6 +128,8 @@ namespace BackupNS
         private BackgroundWorker _bw = null;
         private bool _backupCancelled;
 
+        private FileInfo _reportFile;
+
         #endregion
 
         #region Constructors
@@ -413,6 +415,9 @@ namespace BackupNS
             // First cleanup excess backups...
             CleanupBackupLocation();
 
+            // Init thereport file in the backup dir...
+            _reportFile = new FileInfo(_dirToBackupTo + "\\BackupReport.log");
+
             // Get list of all files...
             DirectoryWithFiles[] dirsAndFiles = null;
             Log.Info("Start getting dirs and files");
@@ -427,7 +432,7 @@ namespace BackupNS
                 return;
             }
 
-            Log.Info("Stop getting dirs and files");
+            Log.Info("Ready getting dirs and files");
 
             FileInfo curFileToBackup = null;
             string curDirToBackup = null;
@@ -448,7 +453,7 @@ namespace BackupNS
                 totalNbFiles += dirsAndFiles[i].Files.Length;
             }
 
-            Log.Info("Stop counting files");
+            Log.Info("Ready counting files");
 
             // Take the necessary actions directory per directory...
             for (int i = 0; i <= (nbDirs - 1); i++)
@@ -473,7 +478,7 @@ namespace BackupNS
                         Log.Info("Backup cancelled... delete partial backup...");
                         try
                         {
-                            Directory.Delete(_dirToBackupTo, true);
+                            IOHelper.DeleteRecursive(_dirToBackupTo);
                             Log.Info("Partial backup deleted");
                         }
                         catch (Exception ex)
@@ -534,7 +539,7 @@ namespace BackupNS
 
                 try
                 {
-                    Directory.Delete(_dirToBackupTo, true);
+                    IOHelper.DeleteRecursive(_dirToBackupTo);
                     Log.Info("Partial backup deleted");
                 }
                 catch (Exception ex)
@@ -562,21 +567,17 @@ namespace BackupNS
                 }
                 else
                 {
-                    //I don't think this can ever happen
+                    // I don't think this can ever happen
                     storageDevice = storageDevice.Replace(":", "");
                     Log.Error("GetMappedDriveName returned a non-network drive: <" + storageDevice + "> in GetDriveToBackup...");
                 }
             }
             else
-                //Here we try to take care of the case where current dir is network drive
+                // Here we try to take care of the case where current dir is network drive
                 if (curDirToBackup.Substring(0, 2) == "\\\\")
-                {
                     storageDevice = curDirToBackup.Substring(1);
-                }
                 else
-                {
                     storageDevice = '\\' + System.Environment.MachineName + "_Drive-" + curDirToBackup.Replace(":", "");
-                }
             return storageDevice;
         }
 
@@ -636,6 +637,11 @@ namespace BackupNS
                     if (OnlySimulate != true)
                         File.Copy(fileToBackup.FullName, fileToBackupTo.FullName);
                     Log.Debug("COPY " + fileToBackup + " TO " + fileToBackupTo.FullName);
+
+                    if (prevBackupFile.Exists)
+                        ReportToFile("CHANGED - " + fileToBackupTo.FullName);
+                    else
+                        ReportToFile("NEW     - " + fileToBackupTo.FullName);
                 }
             }
             catch (Exception ex)
@@ -644,6 +650,31 @@ namespace BackupNS
             }
 
             return fileChanged;
+        }
+
+        private void ReportToFile(string message)
+        {
+            FileStream fileStream = null;
+            StreamWriter writer = null;
+            
+            try
+            {
+                fileStream = _reportFile.Open(FileMode.OpenOrCreate,
+                          FileAccess.Write, FileShare.Read);
+                writer = new StreamWriter(fileStream);
+
+                // Set the file pointer to the end of the file
+                writer.BaseStream.Seek(0, SeekOrigin.End);
+
+                // Force the write to the underlying file
+                writer.WriteLine(message);
+                writer.Flush();
+            }
+            finally
+            {
+                if (writer != null) 
+                    writer.Close();
+            }
         }
 
         /// <summary>

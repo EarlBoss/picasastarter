@@ -59,9 +59,11 @@ namespace HelperClasses
         }
 
         /// <summary>
-        /// Delete the directory recursive...
+        /// Delete the directory recursive... 
+        /// 
+        /// Works also if there are read-only files in the directories...
         /// </summary>
-        /// <param name="currentDir">The directory to delete.</param>
+        /// <param name="currentDir"> The directory to delete. </param>
         public static void DeleteRecursive(string currentDir)
         {
             string dirName = @currentDir;
