@@ -16,7 +16,7 @@ namespace PicasaStarter
         public string GoogleAppDir { get; private set; }
         public string AppSettingsDir { get; private set; }
         
-        public PicasaRunner(string symlinkBaseDir, string picasaExePath)
+        public PicasaRunner(string picasaExePath)
         {
             PicasaExePath = picasaExePath;     //Path from the settings File
         }

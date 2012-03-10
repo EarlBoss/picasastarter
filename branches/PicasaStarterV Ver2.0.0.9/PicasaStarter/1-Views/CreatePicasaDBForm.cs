@@ -77,10 +77,11 @@ namespace PicasaStarter
             {
                 string xyz = "";
                 xyz = IOHelper.MapFolderToDrive(PicDrivecomboBox.Text, appSettingsBaseDir);
-                if (xyz != PicDrivecomboBox.Text)
-                {
-                    MessageBox.Show("Virtual Drive not mapped Successfully \nDrive letter " + PicDrivecomboBox.Text + " Not Available");
-                }
+                //if (xyz != PicDrivecomboBox.Text)
+                //{
+                //    MessageBox.Show("Virtual Drive not mapped Successfully \nDrive letter " + PicDrivecomboBox.Text + " is already mapped," +
+                //        "\nOr already exists on this PC.");
+                //}
             }
             textBoxDBBaseDir.Text = DialogHelper.AskDirectoryPath(PicasaDB.BaseDir);
             PicasaDB.BaseDir = textBoxDBBaseDir.Text;
@@ -178,7 +179,8 @@ namespace PicasaStarter
                 xyz = IOHelper.MapFolderToDrive(PicDrivecomboBox.Text, appSettingsBaseDir);
                 if (xyz != PicDrivecomboBox.Text)
                 {
-                    MessageBox.Show ("Virtual Drive not mapped Successfully \nDrive letter "+ PicDrivecomboBox.Text + " Not Available");
+                    MessageBox.Show("Virtual Drive not mapped Successfully \nDrive letter " + PicDrivecomboBox.Text + " is already mapped," +
+                            "\nOr already exists on this PC.");
                 }
             }
                 
