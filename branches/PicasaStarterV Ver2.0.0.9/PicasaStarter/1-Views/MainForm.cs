@@ -512,8 +512,10 @@ namespace PicasaStarter
             WindowState = FormWindowState.Normal;
 
             // Does the user want a backup? Only ask if directory exists
-            if ( !string.IsNullOrEmpty(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir) &&
+            if (!string.IsNullOrEmpty(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir) &&
                 Directory.Exists(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir) &&
+                !string.IsNullOrEmpty(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupComputerName) &&
+                _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupComputerName == Environment.MachineName &&
                   _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupFrequency != 4)
             {
                 PresentBackupDate = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].LastBackupDate;
@@ -550,7 +552,21 @@ namespace PicasaStarter
 
         private void buttonBackupPics_Click(object sender, EventArgs e)
         {
-            StartBackup();
+            if (!string.IsNullOrEmpty(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupComputerName) &&
+            _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupComputerName == Environment.MachineName)
+            {
+                StartBackup();
+            }
+            else
+            {
+                 DialogResult result = MessageBox.Show("This Backup job was created for the: " +_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupComputerName + " Computer" +
+                     "\n This Computer is: " + Environment.MachineName + " and may have a different drive structure\n    Do you still wish to run this backup?",
+                        "Backup?", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    StartBackup();
+                }
+            }
         }
 
         private void BackupCompleted(object sender, EventArgs e)
