@@ -43,6 +43,10 @@ namespace PicasaStarter
             _settings = settings;
 
             textBoxBackupDir.Text = PicasaDB.BackupDir;
+            if (string.IsNullOrEmpty(PicasaDB.BackupComputerName))
+                textBoxBackupName.Text = Environment.MachineName;
+            else
+                textBoxBackupName.Text = PicasaDB.BackupComputerName;
             BackupFrequencyBox.SelectedIndex = PicasaDB.BackupFrequency;
             if(PicasaDB.LastBackupDate.Year <= 1900)
                 textLastBackupDate.Text = "Never Backed Up";
@@ -115,6 +119,7 @@ namespace PicasaStarter
         {
                 PicasaDB.BackupDir = textBoxBackupDir.Text;
                 PicasaDB.BackupFrequency = BackupFrequencyBox.SelectedIndex;
+                PicasaDB.BackupComputerName = textBoxBackupName.Text; 
                 PicasaDB.BaseDir = textBoxDBBaseDir.Text;
                 PicasaDB.Description = textBoxDBDescription.Text;
                 PicasaDB.Name = textBoxDBName.Text;
@@ -386,6 +391,11 @@ namespace PicasaStarter
             messageBoxDB.ForeColor = copyDBForm.ReturnColor;
             messageBoxDB.Text = copyDBForm.ReturnMessage;
              
+        }
+
+        private void btnTakeoverBackup_Click(object sender, EventArgs e)
+        {
+            textBoxBackupName.Text = Environment.MachineName;
         }
 
     }

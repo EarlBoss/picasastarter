@@ -18,6 +18,7 @@ namespace PicasaStarter
         public string BackupDir { get; set; }
         public int BackupFrequency { get; set; }
         public DateTime LastBackupDate { get; set; }
+        public string BackupComputerName { get; set; }
         public bool IsStandardDB { get; set; }
         public string PictureVirtualDrive { get; set; }
         public bool EnableVirtualDrive { get; set; }
@@ -38,6 +39,7 @@ namespace PicasaStarter
             BaseDir = picasaDB.BaseDir;
             BackupDir = picasaDB.BackupDir;
             BackupFrequency = picasaDB.BackupFrequency;
+            BackupComputerName = picasaDB.BackupComputerName;
             LastBackupDate = picasaDB.LastBackupDate;
             IsStandardDB = picasaDB.IsStandardDB;
             PictureVirtualDrive = picasaDB.PictureVirtualDrive;
