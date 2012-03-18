@@ -30,16 +30,15 @@ namespace PicasaStarter
             {
                 throw new Exception("Picasa exe not found at: " + PicasaExePath);
             }
-
             // The user should run Picasa 3.9 or higher... so check file version of the Picasa Exe File
             FileVersionInfo.GetVersionInfo(PicasaExePath);
             FileVersionInfo myFileVersionInfo = FileVersionInfo.GetVersionInfo(PicasaExePath);
-            Single picasaversion = Convert.ToSingle(myFileVersionInfo.FileVersion.Substring(0, 3));
-            if (picasaversion <= 3.85)
+            string Picasaversionstring = myFileVersionInfo.FileVersion.Substring(0, 1) + myFileVersionInfo.FileVersion.Substring(2, 1);
+            Int32 picasaversion = Convert.ToInt32(Picasaversionstring);
+            if (picasaversion <= 38)
             {
-                throw new Exception("PicasaStarter 2.x only supports Picasa 3.9 and higher... Please upgrade Picasa from picasa.google.com");
+                throw new Exception("PicasaStarter 2.x only supports Picasa 3.9, \n   Please upgrade Picasa from picasa.google.com");
             }
-
             // Everything seems OK... so go for it!
             FileInfo lockFile = null;
             try
@@ -75,8 +74,7 @@ namespace PicasaStarter
                         + Environment.NewLine + Environment.NewLine + ex.Message);
                 return;
             }
-
-            // Prepare the environment to start Picasa, if a custom db path was provided...
+           // Prepare the environment to start Picasa, if a custom db path was provided...
             string originalUserProfile = "";
             string savedUserProfile = "";
 
