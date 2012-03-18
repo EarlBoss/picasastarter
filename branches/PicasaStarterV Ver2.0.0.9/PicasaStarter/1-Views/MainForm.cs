@@ -500,11 +500,11 @@ namespace PicasaStarter
             // Go!
             try
             {
-                runner.RunPicasa(dbBaseDir, _appSettingsDir);
+                 runner.RunPicasa(dbBaseDir, _appSettingsDir);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show( "Picasa did not start successfully\n Error Message:\n " + ex.Message);
             }
 
             // Restore the MainForm...
