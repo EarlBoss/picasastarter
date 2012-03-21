@@ -49,6 +49,8 @@ namespace PicasaStarter
             {
                 _backup.CancelBackupAssync();
                 backupCancelled = true;
+                this.Enabled = true;
+                WindowState = FormWindowState.Normal;
             }
         }
 
