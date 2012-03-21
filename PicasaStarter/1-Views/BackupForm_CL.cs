@@ -79,13 +79,27 @@ namespace PicasaStarter
                 string[] excludedDirs = excluded.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
                 _backup = new Backup();
-                _backup.DestinationDir = _db.BackupDir;
-                _backup.DirsToBackup.AddRange(watchedDirs);     // Backup watched dirs
-                _backup.DirsToBackup.Add(picasaDBPath);         // Backup Picasa database
-                _backup.DirsToBackup.Add(picasaAlbumsPath);     // Backup albums
-                _backup.DirsToBackup.Add(psSettingsPath);       // Backup Settings
-                _backup.DirsToExclude.AddRange(excludedDirs);   // Exclude explicitly unwatched dirs
-                _backup.MaxNbBackups = 100;                     // Max nb. backups to keep
+                if (_db.BackupDBOnly == false)
+                {
+                    _backup.DestDirPrefix = "Backup_";
+                    _backup.DestinationDir = _db.BackupDir;
+                    _backup.DirsToBackup.AddRange(watchedDirs);     // Backup watched dirs
+                    _backup.DirsToBackup.Add(picasaDBPath);         // Backup Picasa database
+                    _backup.DirsToBackup.Add(picasaAlbumsPath);     // Backup albums
+                    _backup.DirsToBackup.Add(psSettingsPath);     // Backup Settings
+                    _backup.DirsToExclude.AddRange(excludedDirs);   // Exclude explicitly unwatched dirs
+                    _backup.MaxNbBackups = 100;                     // Max nb. backups to keep
+                }
+                else
+                {
+                    _backup.DestDirPrefix = "DBBackup_";
+                    _backup.DestinationDir = _db.BackupDir;
+                    _backup.DirsToBackup.Add(picasaDBPath);         // Backup Picasa database
+                    _backup.DirsToBackup.Add(picasaAlbumsPath);     // Backup albums
+                    _backup.DirsToBackup.Add(psSettingsPath);     // Backup Settings
+                    _backup.MaxNbBackups = 100;                     // Max nb. backups to keep
+
+                }
 
                 _progressForm = new BackupProgressForm_CL(this);
                 _progressForm.Show();

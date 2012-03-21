@@ -117,6 +117,7 @@ namespace BackupNS
 
         private BackupStrategy _strategy = BackupStrategy.SISRotating;
         private string _destinationDir;
+        private string _destDirPrefix;
         private List<string> _dirsToBackup = new List<string>();
         private List<string> _dirsToExclude = new List<string>();
 
@@ -194,6 +195,11 @@ namespace BackupNS
         {
             get { return _destinationDir; }
             set { _destinationDir = value; }
+        }
+        public string DestDirPrefix
+        {
+            get { return _destDirPrefix; }
+            set { _destDirPrefix = value; }
         }
         public int MaxNbBackups
         {
@@ -731,7 +737,7 @@ namespace BackupNS
             try
             {
                 // Get list of all dirs in the backup destination dir...
-                string[] dirList = Directory.GetDirectories(DestinationDir, "Backup*", SearchOption.TopDirectoryOnly);
+                string[] dirList = Directory.GetDirectories(DestinationDir, _destDirPrefix + "*", SearchOption.TopDirectoryOnly);
 
                 // Loop over all dirs in the list and keep the "Largest" -> is the latest backup 
                 // because of the way the directory name is created
@@ -761,7 +767,7 @@ namespace BackupNS
         /// <remarks></remarks>
         private string GetNewBackupDir()
         {
-            string destDirName = "Backup_" + System.DateTime.Now.ToString("yyyy-MM-dd");
+            string destDirName = DestDirPrefix + System.DateTime.Now.ToString("yyyy-MM-dd");
             string fullDestDir = DestinationDir + '\\' + destDirName;
 
             try

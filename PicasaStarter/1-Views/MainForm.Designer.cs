@@ -129,7 +129,7 @@
             // 
             // buttonEditDB
             // 
-            this.buttonEditDB.Location = new System.Drawing.Point(155, 210);
+            this.buttonEditDB.Location = new System.Drawing.Point(120, 204);
             this.buttonEditDB.Name = "buttonEditDB";
             this.buttonEditDB.Size = new System.Drawing.Size(60, 23);
             this.buttonEditDB.TabIndex = 47;
@@ -153,7 +153,7 @@
             // buttonAddDB
             // 
             this.buttonAddDB.BackColor = System.Drawing.Color.Transparent;
-            this.buttonAddDB.Location = new System.Drawing.Point(85, 210);
+            this.buttonAddDB.Location = new System.Drawing.Point(50, 204);
             this.buttonAddDB.Name = "buttonAddDB";
             this.buttonAddDB.Size = new System.Drawing.Size(60, 23);
             this.buttonAddDB.TabIndex = 45;
@@ -164,7 +164,7 @@
             // 
             // buttonRemoveDB
             // 
-            this.buttonRemoveDB.Location = new System.Drawing.Point(226, 210);
+            this.buttonRemoveDB.Location = new System.Drawing.Point(191, 204);
             this.buttonRemoveDB.Name = "buttonRemoveDB";
             this.buttonRemoveDB.Size = new System.Drawing.Size(60, 23);
             this.buttonRemoveDB.TabIndex = 46;
@@ -204,7 +204,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(82, 26);
+            this.label3.Location = new System.Drawing.Point(33, 26);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(94, 13);
             this.label3.TabIndex = 50;
@@ -213,9 +213,9 @@
             // listBoxPicasaDBs
             // 
             this.listBoxPicasaDBs.FormattingEnabled = true;
-            this.listBoxPicasaDBs.Location = new System.Drawing.Point(86, 42);
+            this.listBoxPicasaDBs.Location = new System.Drawing.Point(36, 42);
             this.listBoxPicasaDBs.Name = "listBoxPicasaDBs";
-            this.listBoxPicasaDBs.Size = new System.Drawing.Size(200, 147);
+            this.listBoxPicasaDBs.Size = new System.Drawing.Size(235, 147);
             this.listBoxPicasaDBs.TabIndex = 43;
             this.listBoxPicasaDBs.SelectedIndexChanged += new System.EventHandler(this.listBoxPicasaDBs_SelectedIndexChanged);
             this.listBoxPicasaDBs.DoubleClick += new System.EventHandler(this.listBoxPicasaDBs_DoubleClick);
@@ -224,6 +224,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.tabPage2.Controls.Add(this.label1);
             this.tabPage2.Controls.Add(this.textBoxPicasaButtonDesc);
             this.tabPage2.Controls.Add(this.label2);
@@ -242,7 +243,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(57, 26);
+            this.label1.Location = new System.Drawing.Point(33, 26);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(80, 13);
             this.label1.TabIndex = 31;
@@ -268,7 +269,7 @@
             // 
             // buttonRemovePicasaButton
             // 
-            this.buttonRemovePicasaButton.Location = new System.Drawing.Point(200, 209);
+            this.buttonRemovePicasaButton.Location = new System.Drawing.Point(192, 204);
             this.buttonRemovePicasaButton.Name = "buttonRemovePicasaButton";
             this.buttonRemovePicasaButton.Size = new System.Drawing.Size(60, 23);
             this.buttonRemovePicasaButton.TabIndex = 28;
@@ -278,7 +279,7 @@
             // 
             // buttonEditPicasaButton
             // 
-            this.buttonEditPicasaButton.Location = new System.Drawing.Point(130, 209);
+            this.buttonEditPicasaButton.Location = new System.Drawing.Point(122, 204);
             this.buttonEditPicasaButton.Name = "buttonEditPicasaButton";
             this.buttonEditPicasaButton.Size = new System.Drawing.Size(60, 23);
             this.buttonEditPicasaButton.TabIndex = 27;
@@ -289,16 +290,16 @@
             // listBoxPicasaButtons
             // 
             this.listBoxPicasaButtons.FormattingEnabled = true;
-            this.listBoxPicasaButtons.Location = new System.Drawing.Point(60, 42);
+            this.listBoxPicasaButtons.Location = new System.Drawing.Point(36, 42);
             this.listBoxPicasaButtons.Name = "listBoxPicasaButtons";
-            this.listBoxPicasaButtons.Size = new System.Drawing.Size(200, 147);
+            this.listBoxPicasaButtons.Size = new System.Drawing.Size(236, 147);
             this.listBoxPicasaButtons.TabIndex = 25;
             this.listBoxPicasaButtons.SelectedIndexChanged += new System.EventHandler(this.listBoxPicasaButtons_SelectedIndexChanged);
             this.listBoxPicasaButtons.DoubleClick += new System.EventHandler(this.listBoxPicasaButtons_DoubleClick);
             // 
             // buttonAddPicasaButton
             // 
-            this.buttonAddPicasaButton.Location = new System.Drawing.Point(59, 209);
+            this.buttonAddPicasaButton.Location = new System.Drawing.Point(51, 204);
             this.buttonAddPicasaButton.Name = "buttonAddPicasaButton";
             this.buttonAddPicasaButton.Size = new System.Drawing.Size(60, 23);
             this.buttonAddPicasaButton.TabIndex = 26;
