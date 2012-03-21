@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreatePicasaDBForm));
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.messageBoxDB = new System.Windows.Forms.TextBox();
             this.buttonConvert38 = new System.Windows.Forms.Button();
             this.buttonCreateNewDB = new System.Windows.Forms.Button();
@@ -50,71 +49,60 @@
             this.textBoxBackupDir = new System.Windows.Forms.TextBox();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
-            this.backupgroupBox = new System.Windows.Forms.GroupBox();
+            this.btnTakeoverBackup = new System.Windows.Forms.Button();
+            this.textBoxBackupName = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.textLastBackupDate = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.BackupFrequencyBox = new System.Windows.Forms.ComboBox();
             this.buttonNoBackupDir = new System.Windows.Forms.Button();
-            this.VDgroupBox1 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxVDSource = new System.Windows.Forms.TextBox();
             this.buttonDoVDNow = new System.Windows.Forms.Button();
-            this.label9 = new System.Windows.Forms.Label();
-            this.textBoxBackupName = new System.Windows.Forms.TextBox();
-            this.btnTakeoverBackup = new System.Windows.Forms.Button();
-            this.groupBox2.SuspendLayout();
-            this.backupgroupBox.SuspendLayout();
-            this.VDgroupBox1.SuspendLayout();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label10 = new System.Windows.Forms.Label();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label11 = new System.Windows.Forms.Label();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.CheckBackupDBOnly = new System.Windows.Forms.CheckBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.messageBoxDB);
-            this.groupBox2.Controls.Add(this.buttonConvert38);
-            this.groupBox2.Controls.Add(this.buttonCreateNewDB);
-            this.groupBox2.Controls.Add(this.buttonCopyDB);
-            this.groupBox2.Controls.Add(this.textBoxDBName);
-            this.groupBox2.Controls.Add(this.label7);
-            this.groupBox2.Controls.Add(this.textBoxDBBaseDir);
-            this.groupBox2.Controls.Add(this.buttonBrowseDBBaseDir);
-            this.groupBox2.Controls.Add(this.label8);
-            this.groupBox2.Controls.Add(this.textBoxDBDescription);
-            this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Location = new System.Drawing.Point(12, 12);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(560, 215);
-            this.groupBox2.TabIndex = 45;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Database Details";
             // 
             // messageBoxDB
             // 
-            this.messageBoxDB.BackColor = System.Drawing.SystemColors.Control;
+            this.messageBoxDB.BackColor = System.Drawing.SystemColors.Window;
             this.messageBoxDB.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.messageBoxDB.ForeColor = System.Drawing.Color.Blue;
-            this.messageBoxDB.Location = new System.Drawing.Point(10, 167);
+            this.messageBoxDB.Location = new System.Drawing.Point(7, 164);
             this.messageBoxDB.Multiline = true;
             this.messageBoxDB.Name = "messageBoxDB";
-            this.messageBoxDB.Size = new System.Drawing.Size(103, 54);
+            this.messageBoxDB.Size = new System.Drawing.Size(116, 54);
             this.messageBoxDB.TabIndex = 46;
             this.messageBoxDB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // buttonConvert38
             // 
-            this.buttonConvert38.Location = new System.Drawing.Point(371, 169);
+            this.buttonConvert38.Location = new System.Drawing.Point(420, 182);
             this.buttonConvert38.Name = "buttonConvert38";
-            this.buttonConvert38.Size = new System.Drawing.Size(115, 34);
+            this.buttonConvert38.Size = new System.Drawing.Size(104, 34);
             this.buttonConvert38.TabIndex = 44;
-            this.buttonConvert38.Text = "Convert From 3.8";
+            this.buttonConvert38.Text = "Convert 3.8 Database";
             this.buttonConvert38.UseVisualStyleBackColor = true;
             this.buttonConvert38.Click += new System.EventHandler(this.buttonConvert38_Click);
             // 
             // buttonCreateNewDB
             // 
-            this.buttonCreateNewDB.Location = new System.Drawing.Point(129, 169);
+            this.buttonCreateNewDB.Location = new System.Drawing.Point(131, 182);
             this.buttonCreateNewDB.Name = "buttonCreateNewDB";
-            this.buttonCreateNewDB.Size = new System.Drawing.Size(115, 34);
+            this.buttonCreateNewDB.Size = new System.Drawing.Size(128, 34);
             this.buttonCreateNewDB.TabIndex = 43;
             this.buttonCreateNewDB.Text = "Create\r\nEmpty Database";
             this.buttonCreateNewDB.UseVisualStyleBackColor = true;
@@ -122,9 +110,9 @@
             // 
             // buttonCopyDB
             // 
-            this.buttonCopyDB.Location = new System.Drawing.Point(250, 169);
+            this.buttonCopyDB.Location = new System.Drawing.Point(252, 182);
             this.buttonCopyDB.Name = "buttonCopyDB";
-            this.buttonCopyDB.Size = new System.Drawing.Size(115, 34);
+            this.buttonCopyDB.Size = new System.Drawing.Size(128, 34);
             this.buttonCopyDB.TabIndex = 42;
             this.buttonCopyDB.Text = "Copy an Existing Database";
             this.buttonCopyDB.UseVisualStyleBackColor = true;
@@ -132,7 +120,7 @@
             // 
             // textBoxDBName
             // 
-            this.textBoxDBName.Location = new System.Drawing.Point(129, 26);
+            this.textBoxDBName.Location = new System.Drawing.Point(99, 10);
             this.textBoxDBName.Name = "textBoxDBName";
             this.textBoxDBName.Size = new System.Drawing.Size(248, 20);
             this.textBoxDBName.TabIndex = 26;
@@ -140,7 +128,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(24, 140);
+            this.label7.Location = new System.Drawing.Point(9, 121);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(81, 13);
             this.label7.TabIndex = 24;
@@ -149,7 +137,7 @@
             // 
             // textBoxDBBaseDir
             // 
-            this.textBoxDBBaseDir.Location = new System.Drawing.Point(129, 140);
+            this.textBoxDBBaseDir.Location = new System.Drawing.Point(99, 121);
             this.textBoxDBBaseDir.Name = "textBoxDBBaseDir";
             this.textBoxDBBaseDir.ReadOnly = true;
             this.textBoxDBBaseDir.Size = new System.Drawing.Size(358, 20);
@@ -158,7 +146,7 @@
             // 
             // buttonBrowseDBBaseDir
             // 
-            this.buttonBrowseDBBaseDir.Location = new System.Drawing.Point(493, 139);
+            this.buttonBrowseDBBaseDir.Location = new System.Drawing.Point(463, 120);
             this.buttonBrowseDBBaseDir.Name = "buttonBrowseDBBaseDir";
             this.buttonBrowseDBBaseDir.Size = new System.Drawing.Size(61, 23);
             this.buttonBrowseDBBaseDir.TabIndex = 5;
@@ -169,7 +157,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(67, 26);
+            this.label8.Location = new System.Drawing.Point(37, 10);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(38, 13);
             this.label8.TabIndex = 25;
@@ -178,7 +166,7 @@
             // 
             // textBoxDBDescription
             // 
-            this.textBoxDBDescription.Location = new System.Drawing.Point(129, 52);
+            this.textBoxDBDescription.Location = new System.Drawing.Point(99, 36);
             this.textBoxDBDescription.Multiline = true;
             this.textBoxDBDescription.Name = "textBoxDBDescription";
             this.textBoxDBDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -188,7 +176,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(42, 55);
+            this.label2.Location = new System.Drawing.Point(12, 39);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(63, 13);
             this.label2.TabIndex = 36;
@@ -198,7 +186,7 @@
             // EnablecheckBox
             // 
             this.EnablecheckBox.AutoSize = true;
-            this.EnablecheckBox.Location = new System.Drawing.Point(187, 23);
+            this.EnablecheckBox.Location = new System.Drawing.Point(228, 96);
             this.EnablecheckBox.Name = "EnablecheckBox";
             this.EnablecheckBox.Size = new System.Drawing.Size(275, 30);
             this.EnablecheckBox.TabIndex = 47;
@@ -234,7 +222,7 @@
             "X:",
             "Y:",
             "Z:"});
-            this.PicDrivecomboBox.Location = new System.Drawing.Point(128, 28);
+            this.PicDrivecomboBox.Location = new System.Drawing.Point(167, 102);
             this.PicDrivecomboBox.Name = "PicDrivecomboBox";
             this.PicDrivecomboBox.Size = new System.Drawing.Size(39, 21);
             this.PicDrivecomboBox.TabIndex = 46;
@@ -243,16 +231,16 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 24);
+            this.label4.Location = new System.Drawing.Point(36, 98);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(116, 26);
+            this.label4.Size = new System.Drawing.Size(125, 26);
             this.label4.TabIndex = 45;
-            this.label4.Text = "Database Will Expect\r\nPictures On This Drive:";
+            this.label4.Text = "Map Virtual Drive Source\r\nTo This Drive Letter:";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // buttonCreateShortcut
             // 
-            this.buttonCreateShortcut.Location = new System.Drawing.Point(13, 472);
+            this.buttonCreateShortcut.Location = new System.Drawing.Point(12, 285);
             this.buttonCreateShortcut.Name = "buttonCreateShortcut";
             this.buttonCreateShortcut.Size = new System.Drawing.Size(122, 23);
             this.buttonCreateShortcut.TabIndex = 43;
@@ -262,9 +250,9 @@
             // 
             // buttonBackupDir
             // 
-            this.buttonBackupDir.Location = new System.Drawing.Point(491, 10);
+            this.buttonBackupDir.Location = new System.Drawing.Point(445, 155);
             this.buttonBackupDir.Name = "buttonBackupDir";
-            this.buttonBackupDir.Size = new System.Drawing.Size(61, 23);
+            this.buttonBackupDir.Size = new System.Drawing.Size(68, 24);
             this.buttonBackupDir.TabIndex = 42;
             this.buttonBackupDir.Text = "Browse...";
             this.buttonBackupDir.UseVisualStyleBackColor = true;
@@ -273,24 +261,25 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(24, 26);
+            this.label1.Location = new System.Drawing.Point(194, 150);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(90, 13);
+            this.label1.Size = new System.Drawing.Size(89, 13);
             this.label1.TabIndex = 41;
-            this.label1.Text = "Backup directory:";
+            this.label1.Text = "Backup Directory";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // textBoxBackupDir
             // 
-            this.textBoxBackupDir.Location = new System.Drawing.Point(128, 23);
+            this.textBoxBackupDir.Location = new System.Drawing.Point(40, 166);
             this.textBoxBackupDir.Name = "textBoxBackupDir";
             this.textBoxBackupDir.ReadOnly = true;
-            this.textBoxBackupDir.Size = new System.Drawing.Size(359, 20);
+            this.textBoxBackupDir.Size = new System.Drawing.Size(374, 20);
             this.textBoxBackupDir.TabIndex = 40;
+            this.textBoxBackupDir.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // buttonCancel
             // 
-            this.buttonCancel.Location = new System.Drawing.Point(491, 472);
+            this.buttonCancel.Location = new System.Drawing.Point(477, 285);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 46;
@@ -300,7 +289,7 @@
             // 
             // buttonOK
             // 
-            this.buttonOK.Location = new System.Drawing.Point(410, 472);
+            this.buttonOK.Location = new System.Drawing.Point(396, 285);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
             this.buttonOK.TabIndex = 47;
@@ -308,54 +297,64 @@
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 
-            // backupgroupBox
+            // btnTakeoverBackup
             // 
-            this.backupgroupBox.BackColor = System.Drawing.SystemColors.Control;
-            this.backupgroupBox.Controls.Add(this.btnTakeoverBackup);
-            this.backupgroupBox.Controls.Add(this.textBoxBackupName);
-            this.backupgroupBox.Controls.Add(this.label9);
-            this.backupgroupBox.Controls.Add(this.textLastBackupDate);
-            this.backupgroupBox.Controls.Add(this.label6);
-            this.backupgroupBox.Controls.Add(this.label5);
-            this.backupgroupBox.Controls.Add(this.BackupFrequencyBox);
-            this.backupgroupBox.Controls.Add(this.buttonNoBackupDir);
-            this.backupgroupBox.Controls.Add(this.textBoxBackupDir);
-            this.backupgroupBox.Controls.Add(this.buttonBackupDir);
-            this.backupgroupBox.Controls.Add(this.label1);
-            this.backupgroupBox.Location = new System.Drawing.Point(13, 233);
-            this.backupgroupBox.Name = "backupgroupBox";
-            this.backupgroupBox.Size = new System.Drawing.Size(559, 129);
-            this.backupgroupBox.TabIndex = 48;
-            this.backupgroupBox.TabStop = false;
-            this.backupgroupBox.Text = "Backup Settings";
+            this.btnTakeoverBackup.Location = new System.Drawing.Point(131, 80);
+            this.btnTakeoverBackup.Name = "btnTakeoverBackup";
+            this.btnTakeoverBackup.Size = new System.Drawing.Size(135, 22);
+            this.btnTakeoverBackup.TabIndex = 50;
+            this.btnTakeoverBackup.Text = "Take Over Backup Task";
+            this.btnTakeoverBackup.UseVisualStyleBackColor = true;
+            this.btnTakeoverBackup.Click += new System.EventHandler(this.btnTakeoverBackup_Click);
+            // 
+            // textBoxBackupName
+            // 
+            this.textBoxBackupName.BackColor = System.Drawing.SystemColors.Control;
+            this.textBoxBackupName.Location = new System.Drawing.Point(107, 15);
+            this.textBoxBackupName.Name = "textBoxBackupName";
+            this.textBoxBackupName.ReadOnly = true;
+            this.textBoxBackupName.Size = new System.Drawing.Size(119, 20);
+            this.textBoxBackupName.TabIndex = 49;
+            this.textBoxBackupName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 18);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(95, 13);
+            this.label9.TabIndex = 48;
+            this.label9.Text = "Backup Computer:";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // textLastBackupDate
             // 
             this.textLastBackupDate.BackColor = System.Drawing.SystemColors.Control;
-            this.textLastBackupDate.Location = new System.Drawing.Point(128, 52);
+            this.textLastBackupDate.Location = new System.Drawing.Point(107, 43);
             this.textLastBackupDate.Name = "textLastBackupDate";
             this.textLastBackupDate.ReadOnly = true;
-            this.textLastBackupDate.Size = new System.Drawing.Size(192, 20);
+            this.textLastBackupDate.Size = new System.Drawing.Size(119, 20);
             this.textLastBackupDate.TabIndex = 47;
+            this.textLastBackupDate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(14, 55);
+            this.label6.Location = new System.Drawing.Point(8, 46);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(100, 13);
+            this.label6.Size = new System.Drawing.Size(93, 13);
             this.label6.TabIndex = 46;
-            this.label6.Text = "Last Backed up on:";
+            this.label6.Text = "Last Backup Date";
             this.label6.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(17, 81);
+            this.label5.Location = new System.Drawing.Point(6, 69);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(95, 13);
+            this.label5.Size = new System.Drawing.Size(55, 26);
             this.label5.TabIndex = 45;
-            this.label5.Text = "Backup Reminder:";
+            this.label5.Text = "Backup\r\nReminder:";
             this.label5.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // BackupFrequencyBox
@@ -364,44 +363,29 @@
             this.BackupFrequencyBox.FormattingEnabled = true;
             this.BackupFrequencyBox.Items.AddRange(new object[] {
             "Always Remind",
-            "Remind if Older Than One Day",
+            "Remind Every Day",
             "Remind if Older Than One Week",
             "Remind if Older Than One Month",
             "Never Remind"});
-            this.BackupFrequencyBox.Location = new System.Drawing.Point(128, 78);
+            this.BackupFrequencyBox.Location = new System.Drawing.Point(67, 74);
             this.BackupFrequencyBox.Name = "BackupFrequencyBox";
-            this.BackupFrequencyBox.Size = new System.Drawing.Size(192, 21);
+            this.BackupFrequencyBox.Size = new System.Drawing.Size(159, 21);
             this.BackupFrequencyBox.TabIndex = 44;
             // 
             // buttonNoBackupDir
             // 
-            this.buttonNoBackupDir.Location = new System.Drawing.Point(491, 34);
+            this.buttonNoBackupDir.Location = new System.Drawing.Point(445, 179);
             this.buttonNoBackupDir.Name = "buttonNoBackupDir";
-            this.buttonNoBackupDir.Size = new System.Drawing.Size(61, 23);
+            this.buttonNoBackupDir.Size = new System.Drawing.Size(68, 24);
             this.buttonNoBackupDir.TabIndex = 43;
             this.buttonNoBackupDir.Text = "None";
             this.buttonNoBackupDir.UseVisualStyleBackColor = true;
             this.buttonNoBackupDir.Click += new System.EventHandler(this.buttonNoBackupDir_Click);
             // 
-            // VDgroupBox1
-            // 
-            this.VDgroupBox1.Controls.Add(this.label3);
-            this.VDgroupBox1.Controls.Add(this.textBoxVDSource);
-            this.VDgroupBox1.Controls.Add(this.buttonDoVDNow);
-            this.VDgroupBox1.Controls.Add(this.label4);
-            this.VDgroupBox1.Controls.Add(this.PicDrivecomboBox);
-            this.VDgroupBox1.Controls.Add(this.EnablecheckBox);
-            this.VDgroupBox1.Location = new System.Drawing.Point(13, 368);
-            this.VDgroupBox1.Name = "VDgroupBox1";
-            this.VDgroupBox1.Size = new System.Drawing.Size(560, 98);
-            this.VDgroupBox1.TabIndex = 49;
-            this.VDgroupBox1.TabStop = false;
-            this.VDgroupBox1.Text = "Map Virtual Picture Drive";
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(8, 68);
+            this.label3.Location = new System.Drawing.Point(192, 30);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(104, 13);
             this.label3.TabIndex = 50;
@@ -410,15 +394,15 @@
             // 
             // textBoxVDSource
             // 
-            this.textBoxVDSource.Location = new System.Drawing.Point(128, 65);
+            this.textBoxVDSource.Location = new System.Drawing.Point(34, 46);
             this.textBoxVDSource.Name = "textBoxVDSource";
             this.textBoxVDSource.ReadOnly = true;
-            this.textBoxVDSource.Size = new System.Drawing.Size(425, 20);
+            this.textBoxVDSource.Size = new System.Drawing.Size(463, 20);
             this.textBoxVDSource.TabIndex = 49;
             // 
             // buttonDoVDNow
             // 
-            this.buttonDoVDNow.Location = new System.Drawing.Point(479, 19);
+            this.buttonDoVDNow.Location = new System.Drawing.Point(436, 168);
             this.buttonDoVDNow.Name = "buttonDoVDNow";
             this.buttonDoVDNow.Size = new System.Drawing.Size(75, 36);
             this.buttonDoVDNow.TabIndex = 48;
@@ -426,47 +410,140 @@
             this.buttonDoVDNow.UseVisualStyleBackColor = true;
             this.buttonDoVDNow.Click += new System.EventHandler(this.buttonDoVDNow_Click);
             // 
-            // label9
+            // tabControl1
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(356, 60);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(83, 26);
-            this.label9.TabIndex = 48;
-            this.label9.Text = "Present Backup\r\nComputer Name";
-            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Location = new System.Drawing.Point(13, 12);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.Padding = new System.Drawing.Point(20, 3);
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(544, 257);
+            this.tabControl1.TabIndex = 50;
             // 
-            // textBoxBackupName
+            // tabPage1
             // 
-            this.textBoxBackupName.BackColor = System.Drawing.SystemColors.Control;
-            this.textBoxBackupName.Location = new System.Drawing.Point(334, 90);
-            this.textBoxBackupName.Name = "textBoxBackupName";
-            this.textBoxBackupName.ReadOnly = true;
-            this.textBoxBackupName.Size = new System.Drawing.Size(144, 20);
-            this.textBoxBackupName.TabIndex = 49;
+            this.tabPage1.Controls.Add(this.label10);
+            this.tabPage1.Controls.Add(this.messageBoxDB);
+            this.tabPage1.Controls.Add(this.textBoxDBDescription);
+            this.tabPage1.Controls.Add(this.buttonConvert38);
+            this.tabPage1.Controls.Add(this.label2);
+            this.tabPage1.Controls.Add(this.buttonCreateNewDB);
+            this.tabPage1.Controls.Add(this.label8);
+            this.tabPage1.Controls.Add(this.buttonCopyDB);
+            this.tabPage1.Controls.Add(this.textBoxDBName);
+            this.tabPage1.Controls.Add(this.label7);
+            this.tabPage1.Controls.Add(this.textBoxDBBaseDir);
+            this.tabPage1.Controls.Add(this.buttonBrowseDBBaseDir);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(536, 231);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Database ";
+            this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // btnTakeoverBackup
+            // label10
             // 
-            this.btnTakeoverBackup.Location = new System.Drawing.Point(484, 78);
-            this.btnTakeoverBackup.Name = "btnTakeoverBackup";
-            this.btnTakeoverBackup.Size = new System.Drawing.Size(68, 42);
-            this.btnTakeoverBackup.TabIndex = 50;
-            this.btnTakeoverBackup.Text = "Take Over Backup";
-            this.btnTakeoverBackup.UseVisualStyleBackColor = true;
-            this.btnTakeoverBackup.Click += new System.EventHandler(this.btnTakeoverBackup_Click);
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(96, 144);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(321, 26);
+            this.label10.TabIndex = 47;
+            this.label10.Text = "NOTE: If Database Path will be on a Virtual Drive, please go to the\r\n            " +
+                "Virtual Drive tab and configure the Virtual Drive first.";
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.label11);
+            this.tabPage3.Controls.Add(this.label3);
+            this.tabPage3.Controls.Add(this.EnablecheckBox);
+            this.tabPage3.Controls.Add(this.textBoxVDSource);
+            this.tabPage3.Controls.Add(this.PicDrivecomboBox);
+            this.tabPage3.Controls.Add(this.buttonDoVDNow);
+            this.tabPage3.Controls.Add(this.label4);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(536, 231);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Virtual Drive";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(31, 168);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(263, 52);
+            this.label11.TabIndex = 51;
+            this.label11.Text = "NOTE:\r\nThe Virtual Drive Source is the folder containing\r\nthe PicasaStarter setti" +
+                "ngs folder and the Picture folder.\r\n\r\n";
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.groupBox1);
+            this.tabPage2.Controls.Add(this.CheckBackupDBOnly);
+            this.tabPage2.Controls.Add(this.textLastBackupDate);
+            this.tabPage2.Controls.Add(this.label6);
+            this.tabPage2.Controls.Add(this.textBoxBackupDir);
+            this.tabPage2.Controls.Add(this.label5);
+            this.tabPage2.Controls.Add(this.textBoxBackupName);
+            this.tabPage2.Controls.Add(this.BackupFrequencyBox);
+            this.tabPage2.Controls.Add(this.label9);
+            this.tabPage2.Controls.Add(this.label1);
+            this.tabPage2.Controls.Add(this.buttonBackupDir);
+            this.tabPage2.Controls.Add(this.buttonNoBackupDir);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(536, 231);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Backup";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // CheckBackupDBOnly
+            // 
+            this.CheckBackupDBOnly.AutoSize = true;
+            this.CheckBackupDBOnly.Location = new System.Drawing.Point(40, 201);
+            this.CheckBackupDBOnly.Name = "CheckBackupDBOnly";
+            this.CheckBackupDBOnly.Size = new System.Drawing.Size(141, 17);
+            this.CheckBackupDBOnly.TabIndex = 51;
+            this.CheckBackupDBOnly.Text = "Back Up Database Only";
+            this.CheckBackupDBOnly.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label12);
+            this.groupBox1.Controls.Add(this.btnTakeoverBackup);
+            this.groupBox1.Location = new System.Drawing.Point(246, 15);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(279, 117);
+            this.groupBox1.TabIndex = 52;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Change Backup Task Owner:";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(18, 21);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(248, 52);
+            this.label12.TabIndex = 51;
+            this.label12.Text = "The Backup will be done by the Backup Computer.\r\nTo take over the Backup Task, cl" +
+                "ick below.\r\nThis Computer will then control the Backup Task.\r\nNOTE: The first ba" +
+                "ckup will be a Full Backup.";
             // 
             // CreatePicasaDBForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(584, 503);
-            this.Controls.Add(this.VDgroupBox1);
-            this.Controls.Add(this.backupgroupBox);
+            this.ClientSize = new System.Drawing.Size(567, 320);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.buttonCreateShortcut);
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.buttonCancel);
-            this.Controls.Add(this.groupBox2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "CreatePicasaDBForm";
@@ -474,19 +551,21 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Picasa Database Configuration";
             this.Load += new System.EventHandler(this.CreatePicasaDBForm_Load);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.backupgroupBox.ResumeLayout(false);
-            this.backupgroupBox.PerformLayout();
-            this.VDgroupBox1.ResumeLayout(false);
-            this.VDgroupBox1.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button buttonBackupDir;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBoxBackupDir;
@@ -503,8 +582,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox PicDrivecomboBox;
         private System.Windows.Forms.CheckBox EnablecheckBox;
-        private System.Windows.Forms.GroupBox backupgroupBox;
-        private System.Windows.Forms.GroupBox VDgroupBox1;
         private System.Windows.Forms.Button buttonDoVDNow;
         private System.Windows.Forms.Button buttonConvert38;
         private System.Windows.Forms.Button buttonCreateNewDB;
@@ -520,5 +597,14 @@
         private System.Windows.Forms.Button btnTakeoverBackup;
         private System.Windows.Forms.TextBox textBoxBackupName;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.CheckBox CheckBackupDBOnly;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label12;
     }
 }

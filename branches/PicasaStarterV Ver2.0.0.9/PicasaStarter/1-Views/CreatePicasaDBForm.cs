@@ -48,10 +48,11 @@ namespace PicasaStarter
             else
                 textBoxBackupName.Text = PicasaDB.BackupComputerName;
             BackupFrequencyBox.SelectedIndex = PicasaDB.BackupFrequency;
-            if(PicasaDB.LastBackupDate.Year <= 1900)
+            CheckBackupDBOnly.Checked = PicasaDB.BackupDBOnly;
+            if (PicasaDB.LastBackupDate.Year <= 1900)
                 textLastBackupDate.Text = "Never Backed Up";
             else
-                textLastBackupDate.Text = PicasaDB.LastBackupDate.ToString();
+                textLastBackupDate.Text = PicasaDB.LastBackupDate.ToString("d");
             textBoxDBBaseDir.Text = PicasaDB.BaseDir;
             textBoxDBDescription.Text = PicasaDB.Description;
             textBoxDBName.Text = PicasaDB.Name;
@@ -119,6 +120,7 @@ namespace PicasaStarter
         {
                 PicasaDB.BackupDir = textBoxBackupDir.Text;
                 PicasaDB.BackupFrequency = BackupFrequencyBox.SelectedIndex;
+                PicasaDB.BackupDBOnly = CheckBackupDBOnly.Checked;
                 PicasaDB.BackupComputerName = textBoxBackupName.Text; 
                 PicasaDB.BaseDir = textBoxDBBaseDir.Text;
                 PicasaDB.Description = textBoxDBDescription.Text;
@@ -328,7 +330,9 @@ namespace PicasaStarter
                         //Delete backup before making another if answer is No
                         if (Directory.Exists(PicasaDB.BaseDir + "\\GoogleOld") && result == DialogResult.No)
                         {
-                            Directory.Delete(PicasaDB.BaseDir + "\\GoogleOld", true);
+                            messageBoxDB.ForeColor = Color.Red;
+                            messageBoxDB.Text = "GoogleOld Already Exists, Rename or Delete it First";
+                            return;
                         }
                         //If destination directory exists, rename it
                         if (result == DialogResult.No)

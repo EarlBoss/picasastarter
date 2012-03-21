@@ -559,13 +559,9 @@ namespace PicasaStarter
             }
             else
             {
-                 DialogResult result = MessageBox.Show("This Backup job was created for the: " +_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupComputerName + " Computer" +
-                     "\n This Computer is: " + Environment.MachineName + " and may have a different drive structure\n    Do you still wish to run this backup?",
-                        "Backup?", MessageBoxButtons.YesNo);
-                if (result == DialogResult.Yes)
-                {
-                    StartBackup();
-                }
+                 MessageBox.Show("This Backup job was created for the: " +_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupComputerName + " Computer" +
+                     "\nThis Computer is: " + Environment.MachineName + " and may have a different drive structure\n\n" +
+                     "If you still wish to run the backup from this computer,\nplease Edit the Database Configuration");
             }
         }
 
@@ -651,14 +647,29 @@ namespace PicasaStarter
                 string[] excludedDirs = excluded.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
                 _backup = new Backup();
-                _backup.DestinationDir = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir;
-                _backup.DirsToBackup.AddRange(watchedDirs);     // Backup watched dirs
-                _backup.DirsToBackup.Add(picasaDBPath);         // Backup Picasa database
-                _backup.DirsToBackup.Add(picasaAlbumsPath);     // Backup albums
-                _backup.DirsToBackup.Add(psSettingsPath);     // Backup Settings
-                _backup.DirsToExclude.AddRange(excludedDirs);   // Exclude explicitly unwatched dirs
-                _backup.MaxNbBackups = 100;                     // Max nb. backups to keep
+                if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDBOnly == false)
+                {
+                    _backup.DestDirPrefix = "Backup_";
+                    _backup.DestinationDir = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir;
+                    _backup.DirsToBackup.AddRange(watchedDirs);     // Backup watched dirs
+                    _backup.DirsToBackup.Add(picasaDBPath);         // Backup Picasa database
+                    _backup.DirsToBackup.Add(picasaAlbumsPath);     // Backup albums
+                    _backup.DirsToBackup.Add(psSettingsPath);     // Backup Settings
+                    _backup.DirsToExclude.AddRange(excludedDirs);   // Exclude explicitly unwatched dirs
+                    _backup.MaxNbBackups = 100;                     // Max nb. backups to keep
+                }
+                else
+                {
+                    _backup.DestDirPrefix = "DBBackup_";
+                    _backup.DestinationDir = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir;
+                    //_backup.DirsToBackup.AddRange(watchedDirs);     // Backup watched dirs
+                    _backup.DirsToBackup.Add(picasaDBPath);         // Backup Picasa database
+                    _backup.DirsToBackup.Add(picasaAlbumsPath);     // Backup albums
+                    _backup.DirsToBackup.Add(psSettingsPath);     // Backup Settings
+                    _backup.DirsToExclude.AddRange(excludedDirs);   // Exclude explicitly unwatched dirs
+                    _backup.MaxNbBackups = 100;                     // Max nb. backups to keep
 
+                }
                 _progressForm = new BackupProgressForm(this);
                 _progressForm.Show();
                 this.Enabled = false;
@@ -809,6 +820,7 @@ namespace PicasaStarter
         }
  
         #endregion
+
 
     }
 }
