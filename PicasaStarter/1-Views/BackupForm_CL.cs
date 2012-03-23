@@ -39,9 +39,24 @@ namespace PicasaStarter
 
         private void BackupForm_CL_Load(object sender, EventArgs e)
         {
-            WindowState = FormWindowState.Minimized; //Remove PicasaStarter window from desktop while Picasa is running
-            StartBackupCL();
+            //Quick & Dirty way to make this form invisible - 2000 pixels offscreen top left           
+            FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            ShowInTaskbar = false;
+            StartPosition = FormStartPosition.Manual;
+            Location = new System.Drawing.Point(-2000, -2000);
+            Size = new System.Drawing.Size(1, 1);
+             
 
+            // Don't do the backup if this is not the defined backup Computer
+            if (!string.IsNullOrEmpty(_db.BackupComputerName) &&
+            _db.BackupComputerName == Environment.MachineName)
+            {
+                StartBackupCL();
+            }
+            else
+            {
+                Close();
+            }
         }
 
         //Function will back up pictures and database when cmd line arg is /backup "database name"
@@ -104,6 +119,7 @@ namespace PicasaStarter
                 _progressForm = new BackupProgressForm_CL(this);
                 _progressForm.Show();
                 this.Enabled = false;
+                this.Opacity = 0.3 ;
 
                 _backup.ProgressEvent += new Backup.BackupProgressEventHandler(_progressForm.Progress);
                 _backup.CompletedEvent += new Backup.BackupCompletedEventHandler(BackupCompleted);
