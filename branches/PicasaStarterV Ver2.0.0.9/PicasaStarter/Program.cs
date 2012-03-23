@@ -357,10 +357,23 @@ namespace PicasaStarter
                             {
                                 MappedDrive = IOHelper.MapFolderToDrive(foundDB.PictureVirtualDrive, appSettingsBaseDir);
                             }
-                            Application.Run(new BackupForm_CL(foundDB, appSettingsDir));
-                            if (BackupComplete)
+                            // Set new backup date
+                            DateTime  SaveBUDate = foundDB.LastBackupDate;
+                            foundDB.LastBackupDate = DateTime.Today;
+                            try
                             {
-                                foundDB.LastBackupDate = DateTime.Today;
+                                SettingsHelper.SerializeSettings(settings,
+                                        appSettingsDir + "\\" + SettingsHelper.SettingsFileName);
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("Error saving settings: " + ex.Message);
+                            }
+                            Application.Run(new BackupForm_CL(foundDB, appSettingsDir));
+                            if (!BackupComplete)
+                            {
+                                // try to save old backup date if backup does not complete
+                                foundDB.LastBackupDate = SaveBUDate;
                                 try
                                 {
                                     SettingsHelper.SerializeSettings(settings,

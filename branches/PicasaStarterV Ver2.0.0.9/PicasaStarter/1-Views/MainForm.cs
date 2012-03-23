@@ -23,7 +23,7 @@ namespace PicasaStarter
         private int lastSelectedIndexListBoxPicasaDBs = -1;
         private string appSettingsBaseDir = "";
         private int saveListIndex = 0;
-        DateTime PresentBackupDate; // Save the previous backup date to restore later if backup is cancelled
+        DateTime PresentBackupDate = DateTime.Today; // Save the previous backup date to restore later if backup is cancelled
         bool backupCancelled = false;
         #endregion
 
@@ -49,6 +49,8 @@ namespace PicasaStarter
             {
                 _backup.CancelBackupAssync();
                 backupCancelled = true;
+                _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].LastBackupDate = PresentBackupDate;
+                SaveSettings();
                 this.Enabled = true;
                 WindowState = FormWindowState.Normal;
             }
@@ -542,7 +544,7 @@ namespace PicasaStarter
                 }
                 if (DateTime.Today >= nextBackupDate)
                 {
-                    DialogResult result = MessageBox.Show("Do you want to make a backup of the latest version of your images and database?",
+                    DialogResult result = MessageBox.Show("Backup Reminder:\nIt's time for another Backup.\n Click YES to do Backup now.",
                             "Backup?", MessageBoxButtons.YesNo);
                     if (result == DialogResult.Yes)
                     {
@@ -633,6 +635,8 @@ namespace PicasaStarter
                 MessageBox.Show("There is a backup still running... please wait until it is finished before starting one again.");
                 return;
             }
+            // Set in the new backup date (will be reversed if backup doesn't complete)
+            _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].LastBackupDate = DateTime.Today;
             SaveSettings();
             try
             {
