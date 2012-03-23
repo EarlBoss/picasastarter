@@ -107,7 +107,7 @@
             // 
             // buttonViewBackups
             // 
-            this.buttonViewBackups.Location = new System.Drawing.Point(310, 154);
+            this.buttonViewBackups.Location = new System.Drawing.Point(311, 165);
             this.buttonViewBackups.Name = "buttonViewBackups";
             this.buttonViewBackups.Size = new System.Drawing.Size(150, 35);
             this.buttonViewBackups.TabIndex = 49;
@@ -118,7 +118,7 @@
             // 
             // buttonBackupPics
             // 
-            this.buttonBackupPics.Location = new System.Drawing.Point(310, 98);
+            this.buttonBackupPics.Location = new System.Drawing.Point(311, 109);
             this.buttonBackupPics.Name = "buttonBackupPics";
             this.buttonBackupPics.Size = new System.Drawing.Size(150, 35);
             this.buttonBackupPics.TabIndex = 48;
@@ -129,7 +129,7 @@
             // 
             // buttonEditDB
             // 
-            this.buttonEditDB.Location = new System.Drawing.Point(120, 204);
+            this.buttonEditDB.Location = new System.Drawing.Point(121, 215);
             this.buttonEditDB.Name = "buttonEditDB";
             this.buttonEditDB.Size = new System.Drawing.Size(60, 23);
             this.buttonEditDB.TabIndex = 47;
@@ -141,7 +141,7 @@
             // buttonRunPicasa
             // 
             this.buttonRunPicasa.BackColor = System.Drawing.Color.Transparent;
-            this.buttonRunPicasa.Location = new System.Drawing.Point(310, 42);
+            this.buttonRunPicasa.Location = new System.Drawing.Point(311, 53);
             this.buttonRunPicasa.Name = "buttonRunPicasa";
             this.buttonRunPicasa.Size = new System.Drawing.Size(150, 35);
             this.buttonRunPicasa.TabIndex = 44;
@@ -153,7 +153,7 @@
             // buttonAddDB
             // 
             this.buttonAddDB.BackColor = System.Drawing.Color.Transparent;
-            this.buttonAddDB.Location = new System.Drawing.Point(50, 204);
+            this.buttonAddDB.Location = new System.Drawing.Point(51, 215);
             this.buttonAddDB.Name = "buttonAddDB";
             this.buttonAddDB.Size = new System.Drawing.Size(60, 23);
             this.buttonAddDB.TabIndex = 45;
@@ -164,7 +164,7 @@
             // 
             // buttonRemoveDB
             // 
-            this.buttonRemoveDB.Location = new System.Drawing.Point(191, 204);
+            this.buttonRemoveDB.Location = new System.Drawing.Point(192, 215);
             this.buttonRemoveDB.Name = "buttonRemoveDB";
             this.buttonRemoveDB.Size = new System.Drawing.Size(60, 23);
             this.buttonRemoveDB.TabIndex = 46;
@@ -180,7 +180,7 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(566, 296);
+            this.tabControl1.Size = new System.Drawing.Size(566, 308);
             this.tabControl1.TabIndex = 43;
             // 
             // tabPage1
@@ -196,7 +196,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(558, 270);
+            this.tabPage1.Size = new System.Drawing.Size(558, 282);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Picasa databases";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -204,7 +204,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(33, 26);
+            this.label3.Location = new System.Drawing.Point(34, 37);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(94, 13);
             this.label3.TabIndex = 50;
@@ -213,7 +213,7 @@
             // listBoxPicasaDBs
             // 
             this.listBoxPicasaDBs.FormattingEnabled = true;
-            this.listBoxPicasaDBs.Location = new System.Drawing.Point(36, 42);
+            this.listBoxPicasaDBs.Location = new System.Drawing.Point(37, 53);
             this.listBoxPicasaDBs.Name = "listBoxPicasaDBs";
             this.listBoxPicasaDBs.Size = new System.Drawing.Size(235, 147);
             this.listBoxPicasaDBs.TabIndex = 43;
@@ -235,7 +235,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(558, 270);
+            this.tabPage2.Size = new System.Drawing.Size(558, 282);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Picasa buttons";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -243,7 +243,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(33, 26);
+            this.label1.Location = new System.Drawing.Point(32, 37);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(80, 13);
             this.label1.TabIndex = 31;
@@ -252,7 +252,7 @@
             // textBoxPicasaButtonDesc
             // 
             this.textBoxPicasaButtonDesc.Enabled = false;
-            this.textBoxPicasaButtonDesc.Location = new System.Drawing.Point(292, 42);
+            this.textBoxPicasaButtonDesc.Location = new System.Drawing.Point(291, 53);
             this.textBoxPicasaButtonDesc.Multiline = true;
             this.textBoxPicasaButtonDesc.Name = "textBoxPicasaButtonDesc";
             this.textBoxPicasaButtonDesc.Size = new System.Drawing.Size(200, 147);
@@ -261,7 +261,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(289, 26);
+            this.label2.Location = new System.Drawing.Point(288, 37);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(63, 13);
             this.label2.TabIndex = 30;
@@ -269,7 +269,7 @@
             // 
             // buttonRemovePicasaButton
             // 
-            this.buttonRemovePicasaButton.Location = new System.Drawing.Point(192, 204);
+            this.buttonRemovePicasaButton.Location = new System.Drawing.Point(191, 215);
             this.buttonRemovePicasaButton.Name = "buttonRemovePicasaButton";
             this.buttonRemovePicasaButton.Size = new System.Drawing.Size(60, 23);
             this.buttonRemovePicasaButton.TabIndex = 28;
@@ -279,7 +279,7 @@
             // 
             // buttonEditPicasaButton
             // 
-            this.buttonEditPicasaButton.Location = new System.Drawing.Point(122, 204);
+            this.buttonEditPicasaButton.Location = new System.Drawing.Point(121, 215);
             this.buttonEditPicasaButton.Name = "buttonEditPicasaButton";
             this.buttonEditPicasaButton.Size = new System.Drawing.Size(60, 23);
             this.buttonEditPicasaButton.TabIndex = 27;
@@ -290,7 +290,7 @@
             // listBoxPicasaButtons
             // 
             this.listBoxPicasaButtons.FormattingEnabled = true;
-            this.listBoxPicasaButtons.Location = new System.Drawing.Point(36, 42);
+            this.listBoxPicasaButtons.Location = new System.Drawing.Point(35, 53);
             this.listBoxPicasaButtons.Name = "listBoxPicasaButtons";
             this.listBoxPicasaButtons.Size = new System.Drawing.Size(236, 147);
             this.listBoxPicasaButtons.TabIndex = 25;
@@ -299,7 +299,7 @@
             // 
             // buttonAddPicasaButton
             // 
-            this.buttonAddPicasaButton.Location = new System.Drawing.Point(51, 204);
+            this.buttonAddPicasaButton.Location = new System.Drawing.Point(50, 215);
             this.buttonAddPicasaButton.Name = "buttonAddPicasaButton";
             this.buttonAddPicasaButton.Size = new System.Drawing.Size(60, 23);
             this.buttonAddPicasaButton.TabIndex = 26;
