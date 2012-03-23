@@ -744,9 +744,7 @@ namespace BackupNS
                 foreach (string Dir in dirList)
                 {
                     if (string.Compare(Dir, returnPath) > 0)
-                    {
                         returnPath = Dir;
-                    }
                 }
             }
             catch (Exception ex)
