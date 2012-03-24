@@ -20,6 +20,7 @@ namespace PicasaStarter
         [STAThread]
         static void Main()
         {
+            #region Initialization
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
@@ -115,6 +116,9 @@ namespace PicasaStarter
                     }
                 }
             }
+            #endregion
+
+            #region Process Command Line Arguments
             if (ConfigFileExists)
             {
                 // Save settings
@@ -357,7 +361,7 @@ namespace PicasaStarter
                             {
                                 MappedDrive = IOHelper.MapFolderToDrive(foundDB.PictureVirtualDrive, appSettingsBaseDir);
                             }
-                            // Set new backup date
+                            // Set backup date to now in settings and then save new date to settings file before backup
                             DateTime  SaveBUDate = foundDB.LastBackupDate;
                             foundDB.LastBackupDate = DateTime.Today;
                             try
@@ -370,6 +374,8 @@ namespace PicasaStarter
                                 MessageBox.Show("Error saving settings: " + ex.Message);
                             }
                             Application.Run(new BackupForm_CL(foundDB, appSettingsDir));
+
+                            //If backup was cancelled, try to restore settings file backup date to original
                             if (!BackupComplete)
                             {
                                 // try to save old backup date if backup does not complete
@@ -398,14 +404,16 @@ namespace PicasaStarter
                     }
                 }
             }
+            #endregion
+
+            #region Start GUI
 
             if (showGUI == true)
             {
                 Application.Run(new MainForm(settings, appSettingsDir, ConfigFileExists));
             }
-
+            #endregion
         }
-
 
     }
 

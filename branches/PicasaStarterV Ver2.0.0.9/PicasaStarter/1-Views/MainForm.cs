@@ -23,11 +23,12 @@ namespace PicasaStarter
         private int lastSelectedIndexListBoxPicasaDBs = -1;
         private string appSettingsBaseDir = "";
         private int saveListIndex = 0;
-        DateTime PresentBackupDate = DateTime.Today; // Save the previous backup date to restore later if backup is cancelled
-        bool backupCancelled = false;
         #endregion
 
         #region Public or internal methods
+
+        DateTime PresentBackupDate = DateTime.Today; // Save the previous backup date to restore later if backup is cancelled
+        bool backupCancelled = false;
         internal string VirtualDrive { get; private set; }
         internal Settings _settings { get; private set; }
 
@@ -156,6 +157,28 @@ namespace PicasaStarter
             // UnMap Picture folder if it was mapped.
             bool xyz = false;
             xyz = IOHelper.UnmapVDrive();
+        }
+
+        private void SaveSettings()
+        {
+            try
+            {
+                SettingsHelper.SerializeSettings(_settings,
+                        _appSettingsDir + "\\" + SettingsHelper.SettingsFileName);
+            }
+            catch (Exception ex)
+            {
+                string message = "Error saving settings: " + ex.Message +
+                "\n\nThe Settings directory was not writable or it was on a NAS or Portable Drive that was disconnected." +
+                "        ---->   PicasaStarter will Exit.   <----" +
+                "\n\nMake sure the NAS or Portable drive is available and try again." +
+                "\nGo to General Settings if you wish to select a new settings directory,";
+
+                string caption = "Can't Save Settings File";
+
+                // Displays the MessageBox.
+                MessageBox.Show(message, caption);
+            }
         }
 
         #endregion
@@ -515,7 +538,7 @@ namespace PicasaStarter
             this.Text = MainFormCaption;
             WindowState = FormWindowState.Normal;
 
-            // Does the user want a backup? Only ask if directory exists
+            // Does the user want a backup? Only ask if directory exists, this is the backup PC, and backup frequency not "never"
             if (!string.IsNullOrEmpty(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir) &&
                 Directory.Exists(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir) &&
                 !string.IsNullOrEmpty(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupComputerName) &&
@@ -577,14 +600,9 @@ namespace PicasaStarter
             _backup = null;
             if (!backupCancelled)
             {
-                BackupDateUpdate();
+                _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].LastBackupDate = DateTime.Today;
                 backupCancelled = false;
             }
-        }
-
-        public void BackupDateUpdate()
-        {
-            _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].LastBackupDate = DateTime.Today;
         }
 
         private void buttonViewBackups_Click(object sender, EventArgs e)
@@ -803,30 +821,7 @@ namespace PicasaStarter
             listBoxPicasaButtons.EndUpdate();
         }
 
-        private void SaveSettings()
-        {
-            try
-            {
-                SettingsHelper.SerializeSettings(_settings,
-                        _appSettingsDir + "\\" + SettingsHelper.SettingsFileName);
-            }
-            catch (Exception ex)
-            {
-                string message = "Error saving settings: " + ex.Message +
-                "\n\nThe Settings directory was not writable or it was on a NAS or Portable Drive that was disconnected." +
-                "        ---->   PicasaStarter will Exit.   <----" +
-                "\n\nMake sure the NAS or Portable drive is available and try again." +
-                "\nGo to General Settings if you wish to select a new settings directory,";
-
-                string caption = "Can't Save Settings File";
-
-                // Displays the MessageBox.
-                MessageBox.Show(message, caption);
-            }
-        }
- 
         #endregion
-
 
     }
 }

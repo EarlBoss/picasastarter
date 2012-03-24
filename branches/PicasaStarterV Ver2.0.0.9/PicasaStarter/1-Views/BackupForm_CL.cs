@@ -36,7 +36,6 @@ namespace PicasaStarter
             }
         }
 
-
         private void BackupForm_CL_Load(object sender, EventArgs e)
         {
             //Quick & Dirty way to make this form invisible - 2000 pixels offscreen top left           
@@ -59,9 +58,9 @@ namespace PicasaStarter
             }
         }
 
-        //Function will back up pictures and database when cmd line arg is /backup "database name"
         private void StartBackupCL()
         {
+            //Function will back up pictures and database when cmd line arg is /backup "database name"
  
             if (!Directory.Exists(_db.BaseDir))
             {
@@ -135,8 +134,6 @@ namespace PicasaStarter
 
         }
 
-        #region private helper functions...
-
         private void BackupCompleted(object sender, EventArgs e)
         {
             this.Enabled = true;
@@ -157,6 +154,5 @@ namespace PicasaStarter
             Program.BackupComplete = true;
         }
 
-        #endregion
     }
 }
