@@ -39,6 +39,13 @@ namespace PicasaStarter
             ReturnMessage = "Copy Existing Database Task: Nothing Done"; 
         }
 
+        private void buttonClose_Click(object sender, EventArgs e)
+        {
+            //ReturnMessage = null;
+            //ReturnMessage = "Copy Database Complete";
+            Close();
+
+        }
 
         private void listBoxPicasaDBs_SelectedIndexChanged_1(object sender, EventArgs e)
         {
@@ -65,9 +72,6 @@ namespace PicasaStarter
             textBoxDBDescription.Text = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].Description;
         }
 
-
-
-
         private void ReFillPicasaDBList(bool selectLastItem)
         {
             listBoxPicasaDBs.BeginUpdate();
@@ -93,16 +97,6 @@ namespace PicasaStarter
         {
 
         }
-
-        private void buttonClose_Click(object sender, EventArgs e)
-        {
-            //ReturnMessage = null;
-            //ReturnMessage = "Copy Database Complete";
-            Close();
-
-        }
-
- 
 
         private void buttonDBExplore_Click(object sender, EventArgs e)
         {

@@ -16,12 +16,11 @@ namespace PicasaStarter
         public PicasaDB PicasaDB { get; private set; }
         private string AppSettingsDir = "";
         private string appSettingsBaseDir = "";
-        //private DateTime LastBackupDateOnEntry;
         internal string full38DBDirectory = "";
-        //public string VirtualDrive = "";
-        //public bool VirtualDriveRemapped = false;
 
+        #region Public or internal methods
 
+        // Called by ADD button
         public CreatePicasaDBForm(string appSettingsDir, Settings settings)
         {
             InitializeComponent();
@@ -33,6 +32,7 @@ namespace PicasaStarter
             PicDrivecomboBox.Text = "";
         }
 
+        // Called ny EDIT button
         public CreatePicasaDBForm(PicasaDB picasaDB, string appSettingsDir, Settings settings, bool standardDatabase = false)
         {
             InitializeComponent();
@@ -76,6 +76,71 @@ namespace PicasaStarter
             }
         }
 
+        private void CreatePicasaDBForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        #endregion
+
+        #region Base Form Button Functions
+
+        private void buttonOK_Click(object sender, EventArgs e)
+        {
+            PicasaDB.BackupDir = textBoxBackupDir.Text;
+            PicasaDB.BackupFrequency = BackupFrequencyBox.SelectedIndex;
+            PicasaDB.BackupDBOnly = CheckBackupDBOnly.Checked;
+            PicasaDB.BackupComputerName = textBoxBackupName.Text;
+            PicasaDB.BaseDir = textBoxDBBaseDir.Text;
+            PicasaDB.Description = textBoxDBDescription.Text;
+            PicasaDB.Name = textBoxDBName.Text;
+            PicasaDB.PictureVirtualDrive = PicDrivecomboBox.Text;
+            PicasaDB.EnableVirtualDrive = EnablecheckBox.Checked;
+            if (!Directory.Exists(PicasaDB.BaseDir + "\\Google\\Picasa2"))
+            {
+                string msg = "";
+                if (Directory.Exists(PicasaDB.BaseDir + "\\Local Settings\\Application Data\\Google\\Picasa2"))
+                {
+                    msg = "Database selected is in Picasa 3.8 format.\n\nDo you still wish to continue? (YES/NO)";
+                }
+                else
+                    msg = "Database directory doesn't exist,\nor doesn't contain a Picasa database.\n\n Do you still wish to continue? (YES/NO)";
+
+                DialogResult result = MessageBox.Show(msg, "Exiting Database Creation", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+
+            }
+            else
+            {
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+
+            }
+
+        }
+
+        private void buttonCancel_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
+        }
+
+        private void buttonCreateShortcut_Click(object sender, EventArgs e)
+        {
+            CreateShortcutDialog createShortcutDialog = new CreateShortcutDialog(PicasaDB.Name);
+            DialogResult result = createShortcutDialog.ShowDialog();
+        }
+
+
+
+        #endregion
+
+        #region Database Tab
+
         private void buttonBrowseDBBaseDir_Click(object sender, EventArgs e)
         {
             if (EnablecheckBox.Checked == true && PicDrivecomboBox.Text != "")
@@ -95,212 +160,11 @@ namespace PicasaStarter
 
         }
 
-        private void buttonBackupDir_Click(object sender, EventArgs e)
-        {
-            textBoxBackupDir.Text = DialogHelper.AskDirectoryPath(PicasaDB.BackupDir);
-            PicasaDB.LastBackupDate = new DateTime();
-            textLastBackupDate.Text = "Never Backed Up";
-
-        }
-        private void buttonNoBackupDir_Click(object sender, EventArgs e)
-        {
-            textBoxBackupDir.Text = null;
-            PicasaDB.LastBackupDate = new DateTime();
-            textLastBackupDate.Text = "Never Backed Up";
-        }
-
         private void textBoxDBBaseDir_TextChanged(object sender, EventArgs e)
         {
             PicasaDB.BaseDir = textBoxDBBaseDir.Text;
             full38DBDirectory = PicasaDB.BaseDir + "\\Local Settings\\Application Data";
 
-        }
-
-        private void buttonOK_Click(object sender, EventArgs e)
-        {
-                PicasaDB.BackupDir = textBoxBackupDir.Text;
-                PicasaDB.BackupFrequency = BackupFrequencyBox.SelectedIndex;
-                PicasaDB.BackupDBOnly = CheckBackupDBOnly.Checked;
-                PicasaDB.BackupComputerName = textBoxBackupName.Text; 
-                PicasaDB.BaseDir = textBoxDBBaseDir.Text;
-                PicasaDB.Description = textBoxDBDescription.Text;
-                PicasaDB.Name = textBoxDBName.Text;
-                PicasaDB.PictureVirtualDrive = PicDrivecomboBox.Text;
-                PicasaDB.EnableVirtualDrive = EnablecheckBox.Checked;
-                if (!Directory.Exists(PicasaDB.BaseDir + "\\Google\\Picasa2"))
-                {
-                    string msg = "";
-                    if (Directory.Exists(PicasaDB.BaseDir + "\\Local Settings\\Application Data\\Google\\Picasa2"))
-                    {
-                       msg = "Database selected is in Picasa 3.8 format.\n\nDo you still wish to continue? (YES/NO)";
-                    }
-                    else
-                        msg = "Database directory doesn't exist,\nor doesn't contain a Picasa database.\n\n Do you still wish to continue? (YES/NO)";
-
-                    DialogResult result = MessageBox.Show(msg, "Exiting Database Creation", MessageBoxButtons.YesNo);
-                    if (result == DialogResult.Yes)
-                    {
-                        this.DialogResult = DialogResult.OK;
-                        this.Close();
-                    }
-
-                }
-                else
-                {
-                    this.DialogResult = DialogResult.OK;
-                    this.Close();
-
-                }
-
-        }
-
-        private void buttonCancel_Click(object sender, EventArgs e)
-        {
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
-        }
-
-        private void buttonCreateShortcut_Click(object sender, EventArgs e)
-        {
-            CreateShortcutDialog createShortcutDialog = new CreateShortcutDialog(PicasaDB.Name);
-            DialogResult result = createShortcutDialog.ShowDialog();
-        }
-
-
-        private void PicDrivecomboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void EnablecheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void buttonDoVDNow_Click(object sender, EventArgs e)
-        {
-            //Map folder or Path to drive letter if not already mapped
-            if (EnablecheckBox.Checked == true && PicDrivecomboBox.Text != "")
-            {
-                string xyz = "";
-                xyz = IOHelper.MapFolderToDrive(PicDrivecomboBox.Text, appSettingsBaseDir);
-                if (xyz != PicDrivecomboBox.Text)
-                {
-                    MessageBox.Show("Virtual Drive not mapped Successfully \nDrive letter " + PicDrivecomboBox.Text + " is already mapped," +
-                            "\nOr already exists on this PC.");
-                }
-            }
-                
-
-        }
-
-        private void CreatePicasaDBForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void buttonConvert38_Click(object sender, EventArgs e)
-        {
-            messageBoxDB.ForeColor = Color.Blue;
-            messageBoxDB.Text = "Converting Picasa 3.8 Database to 3.9+";
-
-            // If it is the standard Picasa database, return AppData
-            if (PicasaDB.IsStandardDB == true)
-            {
-                messageBoxDB.Text = "Picasa standard database does not require conversion";
-                return;
-            }
-            else
-            {
-                if (Directory.Exists(full38DBDirectory + "\\Google\\Picasa2"))
-                {
-                    if (Directory.Exists(PicasaDB.BaseDir + "\\Google\\Picasa2") || Directory.Exists(PicasaDB.BaseDir + "\\Google\\Picasa2Albums"))
-                    {
-                        // Ask user if he wants to overwrite the existing DB
-                        string message = "There may already be a Picasa database in:\n" + PicasaDB.BaseDir +
-                            "\nIf you convert the version 3.8 database, it will overwrite this database,\n" +
-                            " Click YES to continue the conversion\n\n" +
-                            "To back up the existing database directory to:\n" +
-                            PicasaDB.BaseDir + "\\GoogleOld\\,\n" +
-                            "and then convert the version 3.8 Database, Click NO\n\n" +
-                            "NOTE: If there is an existing \\GoogleOld\\ backup, it will be deleted\n\n" +
-                            "To Cancel conversion of the Picasa version 3.8 database, Click CANCEL.";
-                         string caption = "Convert Picasa Version 3.8 database to 3.9+";
-
-                        // Displays the MessageBox.
-                        DialogResult result = MessageBox.Show(message, caption, MessageBoxButtons.YesNoCancel);
-
-                        if (result == DialogResult.Yes || result == DialogResult.No)
-                        {
-                            try
-                            {
-                                //Delete backup before making another if answer is No
-                                if (Directory.Exists(PicasaDB.BaseDir + "\\GoogleOld") && result == DialogResult.No)
-                                {
-                                    Directory.Delete(PicasaDB.BaseDir + "\\GoogleOld", true);
-                                }
-                                //If destination directory exists, rename it
-                                if (result == DialogResult.No)
-                                {
-                                    //Save old database if answer is no
-                                    Directory.CreateDirectory(PicasaDB.BaseDir + "\\GoogleOld");
-                                    Directory.Move(PicasaDB.BaseDir + "\\Google\\Picasa2", PicasaDB.BaseDir + "\\GoogleOld\\Picasa2");
-                                    Directory.Move(PicasaDB.BaseDir + "\\Google\\Picasa2Albums", PicasaDB.BaseDir + "\\GoogleOld\\Picasa2Albums");
-                                }
-                                else
-                                    Directory.Delete(PicasaDB.BaseDir + "\\Google", true); //answer YES, Delete old db
-
-                                //Move Database directories to new location
-                                Directory.CreateDirectory(PicasaDB.BaseDir + "\\Google");
-                                Directory.Move(full38DBDirectory + "\\Google\\Picasa2", PicasaDB.BaseDir + "\\Google\\Picasa2");
-                                Directory.Move(full38DBDirectory + "\\Google\\Picasa2Albums", PicasaDB.BaseDir + "\\Google\\Picasa2Albums");
- 
-                            }
-                            catch (Exception )
-                            {
-                                messageBoxDB.ForeColor = Color.Red;
-                                messageBoxDB.Text = "Error converting the Picasa Version 3.8 Database";
-                                return;
-                            }
-
-                        }
-                        if (result == DialogResult.Cancel)
-                        {
-                            messageBoxDB.ForeColor = Color.Red;
-                            messageBoxDB.Text = "Picasa 3.8 Database conversion was cancelled ";
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        try
-                        {
-                            //Move the directories to the base dir
-                            //MessageBox.Show("Move Picasa database files in:\n" + full38DBDirectory + "\nto:\n" + PicasaDB.BaseDir);
-                            //Move Database directories to new location
-                            Directory.CreateDirectory(PicasaDB.BaseDir + "\\Google");
-                            Directory.Move(full38DBDirectory + "\\Google\\Picasa2", PicasaDB.BaseDir + "\\Google\\Picasa2");
-                            Directory.Move(full38DBDirectory + "\\Google\\Picasa2Albums", PicasaDB.BaseDir + "\\Google\\Picasa2Albums");
-                        }
-                        catch (Exception )
-                        {
-                            messageBoxDB.ForeColor = Color.Red;
-                            messageBoxDB.Text = "Error moving the Picasa Version 3.8 Database";
-                            return;
-                        }
-                    }
-
-                }
-                else
-                {
-                    messageBoxDB.ForeColor = Color.Red;
-                    messageBoxDB.Text = "Existing Picasa version 3.8 database not found";
-                    return;
-                }
-                messageBoxDB.ForeColor = Color.Blue;
-                messageBoxDB.Text = "Picasa 3.8 Database Converted to 3.9+";
-            }
- 
         }
 
         private void buttonCreateNewDB_Click(object sender, EventArgs e)
@@ -317,7 +181,7 @@ namespace PicasaStarter
                     "Click NO To rename the existing database directory to:\n" +
                     PicasaDB.BaseDir + "\\GoogleOld\\,\n" +
                     "and then Create an Empty Database\n\n" +
-                    "Click CANCEL to return to previous menu."; 
+                    "Click CANCEL to return to previous menu.";
                 string caption = "Create New Empty Database";
 
                 // Displays the MessageBox.
@@ -349,9 +213,9 @@ namespace PicasaStarter
                         Directory.CreateDirectory(PicasaDB.BaseDir + "\\Google\\Picasa2");
 
                     }
-                    catch (Exception )
+                    catch (Exception)
                     {
-                        messageBoxDB.ForeColor = Color.Red ;
+                        messageBoxDB.ForeColor = Color.Red;
                         messageBoxDB.Text = "Error Creating Empty Database ";
                         return;
                     }
@@ -394,13 +258,168 @@ namespace PicasaStarter
             copyDBForm.ShowDialog();
             messageBoxDB.ForeColor = copyDBForm.ReturnColor;
             messageBoxDB.Text = copyDBForm.ReturnMessage;
-             
+
+        }
+
+        private void buttonConvert38_Click(object sender, EventArgs e)
+        {
+            messageBoxDB.ForeColor = Color.Blue;
+            messageBoxDB.Text = "Converting Picasa 3.8 Database to 3.9+";
+
+            // If it is the standard Picasa database, return AppData
+            if (PicasaDB.IsStandardDB == true)
+            {
+                messageBoxDB.Text = "Picasa standard database does not require conversion";
+                return;
+            }
+            else
+            {
+                if (Directory.Exists(full38DBDirectory + "\\Google\\Picasa2"))
+                {
+                    if (Directory.Exists(PicasaDB.BaseDir + "\\Google\\Picasa2") || Directory.Exists(PicasaDB.BaseDir + "\\Google\\Picasa2Albums"))
+                    {
+                        // Ask user if he wants to overwrite the existing DB
+                        string message = "There may already be a Picasa database in:\n" + PicasaDB.BaseDir +
+                            "\nIf you convert the version 3.8 database, it will overwrite this database,\n" +
+                            " Click YES to continue the conversion\n\n" +
+                            "To back up the existing database directory to:\n" +
+                            PicasaDB.BaseDir + "\\GoogleOld\\,\n" +
+                            "and then convert the version 3.8 Database, Click NO\n\n" +
+                            "NOTE: If there is an existing \\GoogleOld\\ backup, it will be deleted\n\n" +
+                            "To Cancel conversion of the Picasa version 3.8 database, Click CANCEL.";
+                        string caption = "Convert Picasa Version 3.8 database to 3.9+";
+
+                        // Displays the MessageBox.
+                        DialogResult result = MessageBox.Show(message, caption, MessageBoxButtons.YesNoCancel);
+
+                        if (result == DialogResult.Yes || result == DialogResult.No)
+                        {
+                            try
+                            {
+                                //Delete backup before making another if answer is No
+                                if (Directory.Exists(PicasaDB.BaseDir + "\\GoogleOld") && result == DialogResult.No)
+                                {
+                                    Directory.Delete(PicasaDB.BaseDir + "\\GoogleOld", true);
+                                }
+                                //If destination directory exists, rename it
+                                if (result == DialogResult.No)
+                                {
+                                    //Save old database if answer is no
+                                    Directory.CreateDirectory(PicasaDB.BaseDir + "\\GoogleOld");
+                                    Directory.Move(PicasaDB.BaseDir + "\\Google\\Picasa2", PicasaDB.BaseDir + "\\GoogleOld\\Picasa2");
+                                    Directory.Move(PicasaDB.BaseDir + "\\Google\\Picasa2Albums", PicasaDB.BaseDir + "\\GoogleOld\\Picasa2Albums");
+                                }
+                                else
+                                    Directory.Delete(PicasaDB.BaseDir + "\\Google", true); //answer YES, Delete old db
+
+                                //Move Database directories to new location
+                                Directory.CreateDirectory(PicasaDB.BaseDir + "\\Google");
+                                Directory.Move(full38DBDirectory + "\\Google\\Picasa2", PicasaDB.BaseDir + "\\Google\\Picasa2");
+                                Directory.Move(full38DBDirectory + "\\Google\\Picasa2Albums", PicasaDB.BaseDir + "\\Google\\Picasa2Albums");
+
+                            }
+                            catch (Exception)
+                            {
+                                messageBoxDB.ForeColor = Color.Red;
+                                messageBoxDB.Text = "Error converting the Picasa Version 3.8 Database";
+                                return;
+                            }
+
+                        }
+                        if (result == DialogResult.Cancel)
+                        {
+                            messageBoxDB.ForeColor = Color.Red;
+                            messageBoxDB.Text = "Picasa 3.8 Database conversion was cancelled ";
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            //Move the directories to the base dir
+                            //MessageBox.Show("Move Picasa database files in:\n" + full38DBDirectory + "\nto:\n" + PicasaDB.BaseDir);
+                            //Move Database directories to new location
+                            Directory.CreateDirectory(PicasaDB.BaseDir + "\\Google");
+                            Directory.Move(full38DBDirectory + "\\Google\\Picasa2", PicasaDB.BaseDir + "\\Google\\Picasa2");
+                            Directory.Move(full38DBDirectory + "\\Google\\Picasa2Albums", PicasaDB.BaseDir + "\\Google\\Picasa2Albums");
+                        }
+                        catch (Exception)
+                        {
+                            messageBoxDB.ForeColor = Color.Red;
+                            messageBoxDB.Text = "Error moving the Picasa Version 3.8 Database";
+                            return;
+                        }
+                    }
+
+                }
+                else
+                {
+                    messageBoxDB.ForeColor = Color.Red;
+                    messageBoxDB.Text = "Existing Picasa version 3.8 database not found";
+                    return;
+                }
+                messageBoxDB.ForeColor = Color.Blue;
+                messageBoxDB.Text = "Picasa 3.8 Database Converted to 3.9+";
+            }
+
+        }
+
+        #endregion
+
+        #region Virtual Drive Tab
+
+        private void PicDrivecomboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void EnablecheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonDoVDNow_Click(object sender, EventArgs e)
+        {
+            //Map folder or Path to drive letter if not already mapped
+            if (EnablecheckBox.Checked == true && PicDrivecomboBox.Text != "")
+            {
+                string xyz = "";
+                xyz = IOHelper.MapFolderToDrive(PicDrivecomboBox.Text, appSettingsBaseDir);
+                if (xyz != PicDrivecomboBox.Text)
+                {
+                    MessageBox.Show("Virtual Drive not mapped Successfully \nDrive letter " + PicDrivecomboBox.Text + " is already mapped," +
+                            "\nOr already exists on this PC.");
+                }
+            }
+
+
+        }
+
+
+        #endregion
+
+        #region Backup Tab
+
+        private void buttonBackupDir_Click(object sender, EventArgs e)
+        {
+            textBoxBackupDir.Text = DialogHelper.AskDirectoryPath(PicasaDB.BackupDir);
+            PicasaDB.LastBackupDate = new DateTime();
+            textLastBackupDate.Text = "Never Backed Up";
+
+        }
+
+        private void buttonNoBackupDir_Click(object sender, EventArgs e)
+        {
+            textBoxBackupDir.Text = null;
+            PicasaDB.LastBackupDate = new DateTime();
+            textLastBackupDate.Text = "Never Backed Up";
         }
 
         private void btnTakeoverBackup_Click(object sender, EventArgs e)
         {
             textBoxBackupName.Text = Environment.MachineName;
         }
-
+        #endregion
     }
 }
