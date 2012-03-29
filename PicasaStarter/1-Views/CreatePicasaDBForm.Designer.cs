@@ -81,10 +81,10 @@
             this.messageBoxDB.BackColor = System.Drawing.SystemColors.Window;
             this.messageBoxDB.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.messageBoxDB.ForeColor = System.Drawing.Color.Blue;
-            this.messageBoxDB.Location = new System.Drawing.Point(12, 162);
+            this.messageBoxDB.Location = new System.Drawing.Point(12, 173);
             this.messageBoxDB.Multiline = true;
             this.messageBoxDB.Name = "messageBoxDB";
-            this.messageBoxDB.Size = new System.Drawing.Size(116, 54);
+            this.messageBoxDB.Size = new System.Drawing.Size(116, 68);
             this.messageBoxDB.TabIndex = 46;
             this.messageBoxDB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -186,12 +186,12 @@
             // EnablecheckBox
             // 
             this.EnablecheckBox.AutoSize = true;
-            this.EnablecheckBox.Location = new System.Drawing.Point(37, 89);
+            this.EnablecheckBox.Location = new System.Drawing.Point(37, 95);
             this.EnablecheckBox.Name = "EnablecheckBox";
             this.EnablecheckBox.Size = new System.Drawing.Size(397, 17);
             this.EnablecheckBox.TabIndex = 47;
             this.EnablecheckBox.Text = "If this drive is missing, allow PicasaStarter to map the virtual drive automatica" +
-    "lly.\r\n";
+                "lly.\r\n";
             this.EnablecheckBox.UseVisualStyleBackColor = true;
             this.EnablecheckBox.CheckedChanged += new System.EventHandler(this.EnablecheckBox_CheckedChanged);
             // 
@@ -222,7 +222,7 @@
             "X:",
             "Y:",
             "Z:"});
-            this.PicDrivecomboBox.Location = new System.Drawing.Point(261, 62);
+            this.PicDrivecomboBox.Location = new System.Drawing.Point(241, 66);
             this.PicDrivecomboBox.Name = "PicDrivecomboBox";
             this.PicDrivecomboBox.Size = new System.Drawing.Size(39, 21);
             this.PicDrivecomboBox.TabIndex = 46;
@@ -299,7 +299,7 @@
             // 
             // btnTakeoverBackup
             // 
-            this.btnTakeoverBackup.Location = new System.Drawing.Point(10, 80);
+            this.btnTakeoverBackup.Location = new System.Drawing.Point(9, 91);
             this.btnTakeoverBackup.Name = "btnTakeoverBackup";
             this.btnTakeoverBackup.Size = new System.Drawing.Size(135, 22);
             this.btnTakeoverBackup.TabIndex = 50;
@@ -401,7 +401,7 @@
             // 
             // buttonDoVDNow
             // 
-            this.buttonDoVDNow.Location = new System.Drawing.Point(16, 123);
+            this.buttonDoVDNow.Location = new System.Drawing.Point(16, 127);
             this.buttonDoVDNow.Name = "buttonDoVDNow";
             this.buttonDoVDNow.Size = new System.Drawing.Size(114, 23);
             this.buttonDoVDNow.TabIndex = 48;
@@ -446,12 +446,12 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(96, 144);
+            this.label10.Location = new System.Drawing.Point(117, 144);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(321, 26);
             this.label10.TabIndex = 47;
             this.label10.Text = "NOTE: If Database Path will be on a Virtual Drive, please go to the\r\n            " +
-    "Virtual Drive tab and configure the Virtual Drive first.";
+                "Virtual Drive tab and configure the Virtual Drive first.";
             // 
             // tabPage3
             // 
@@ -477,7 +477,7 @@
             this.label11.Size = new System.Drawing.Size(263, 52);
             this.label11.TabIndex = 51;
             this.label11.Text = "NOTE:\r\nThe Virtual Drive Source is the folder containing\r\nthe PicasaStarter setti" +
-    "ngs folder and the Picture folder.\r\n\r\n";
+                "ngs folder and the Picture folder.\r\n\r\n";
             // 
             // tabPage2
             // 
@@ -507,7 +507,7 @@
             this.groupBox1.Controls.Add(this.btnTakeoverBackup);
             this.groupBox1.Location = new System.Drawing.Point(288, 15);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(256, 117);
+            this.groupBox1.Size = new System.Drawing.Size(256, 128);
             this.groupBox1.TabIndex = 52;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Change Backup Task Owner:";
@@ -517,11 +517,9 @@
             this.label12.AutoSize = true;
             this.label12.Location = new System.Drawing.Point(6, 18);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(248, 52);
+            this.label12.Size = new System.Drawing.Size(248, 65);
             this.label12.TabIndex = 51;
-            this.label12.Text = "The Backup will be done by the Backup Computer.\r\nTo take over the Backup Task, cl" +
-    "ick below.\r\nThis Computer will then control the Backup Task.\r\nNOTE: The first ba" +
-    "ckup will be a Full Backup.";
+            this.label12.Text = resources.GetString("label12.Text");
             // 
             // CheckBackupDBOnly
             // 

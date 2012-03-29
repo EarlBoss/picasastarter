@@ -118,7 +118,6 @@ namespace PicasaStarter
                 _progressForm = new BackupProgressForm_CL(this);
                 _progressForm.Show();
                 this.Enabled = false;
-                this.Opacity = 0.3 ;
 
                 _backup.ProgressEvent += new Backup.BackupProgressEventHandler(_progressForm.Progress);
                 _backup.CompletedEvent += new Backup.BackupCompletedEventHandler(BackupCompleted);
@@ -137,22 +136,15 @@ namespace PicasaStarter
         private void BackupCompleted(object sender, EventArgs e)
         {
             this.Enabled = true;
-            //WindowState = FormWindowState.Normal; //Show
             _progressForm.Hide();
             _progressForm = null;
             _backup = null;
             if (!backupCancelled)
             {
-                BackupDateUpdate();
+                Program.BackupComplete = true;
                 backupCancelled = false;
             }
             Close();
         }
-
-        public void BackupDateUpdate()
-        {
-            Program.BackupComplete = true;
-        }
-
     }
 }

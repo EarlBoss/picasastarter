@@ -6,6 +6,7 @@ using System.Management;               // To be able to use ManagementObject
 using System.Runtime.InteropServices;
 using System.ComponentModel;           // Added to use kernel32.dll for creating symbolic links
 using HelperClasses.Logger;            // Static logging class
+using System.Diagnostics; 
 
 namespace HelperClasses
 {
@@ -639,6 +640,29 @@ namespace HelperClasses
             else
                 return false;
         }
+
+        internal static bool IsProcessOpen(string name)
+        {
+            //here we're going to get a list of all running processes on 
+            //the computer 
+            foreach (Process clsProcess in Process.GetProcesses())
+            {
+                //now we're going to see if any of the running processes 
+                //match the currently running processes. Be sure to not 
+                //add the .exe to the name you provide, i.e: NOTEPAD, 
+                //not NOTEPAD.EXE or false is always returned even if 
+                //notepad is running. 
+                if (clsProcess.ProcessName.Contains(name))
+                {
+                    //if the process is found to be running then we 
+                    //return a true 
+                    return true;
+                }
+            }
+            //otherwise we return a false 
+            return false;
+        } 
+       
 
     }
 }

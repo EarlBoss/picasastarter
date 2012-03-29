@@ -65,7 +65,7 @@ namespace PicasaStarter
         {
             // Set version + build time in title bar
             this.Text = this.Text + " " + System.Diagnostics.FileVersionInfo.GetVersionInfo(Application.ExecutablePath).FileVersion
-                + "   (Build of " + File.GetLastWriteTimeUtc(Application.ExecutablePath).ToString("u", System.Globalization.DateTimeFormatInfo.InvariantInfo) + ")";
+                + "   (Build of 2012-03-29 - RC1)" ;
 
             // If Picasa exe isn't found... ask path...
             if (!File.Exists(_settings.PicasaExePath))
@@ -424,7 +424,14 @@ namespace PicasaStarter
 
         private void buttonRunPicasa_Click(object sender, EventArgs e)
         {
+           if (IOHelper.IsProcessOpen("Picasa3"))
+            {
+                MessageBox.Show("Picasa 3 is presently running on this computer." +
+                "\n\nPlease Exit Picasa before trying to\nrun it from PicasaStarter", "Picasa Already Running");
+                return;
+            }
             string MainFormCaption = this.Text;
+
             if (listBoxPicasaDBs.SelectedIndex == -1)
             {
                 MessageBox.Show("Please choose a picasa database from the list first");
@@ -543,8 +550,12 @@ namespace PicasaStarter
                 Directory.Exists(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDir) &&
                 !string.IsNullOrEmpty(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupComputerName) &&
                 _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupComputerName == Environment.MachineName &&
-                  _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupFrequency != 4)
+                _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupFrequency != 4)
             {
+                if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].LastBackupDate == null ||
+                    _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].LastBackupDate.Year <= 1900)
+                        _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].LastBackupDate = DateTime.Today.AddMonths(-2);
+
                 PresentBackupDate = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].LastBackupDate;
                 DateTime nextBackupDate = PresentBackupDate;
                 switch (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupFrequency)
@@ -567,7 +578,12 @@ namespace PicasaStarter
                 }
                 if (DateTime.Today >= nextBackupDate)
                 {
-                    DialogResult result = MessageBox.Show("Backup Reminder:\nIt's time for another Backup.\n Click YES to do Backup now.",
+                    string buType = "Pictures and Database";
+                    if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupDBOnly)
+                        buType = "Database only";
+
+                    DialogResult result = MessageBox.Show("Backup Reminder:\nIt's time for another Backup." +
+                        "\nClick YES to back up " +buType + " now.",
                             "Backup?", MessageBoxButtons.YesNo);
                     if (result == DialogResult.Yes)
                     {
@@ -579,17 +595,26 @@ namespace PicasaStarter
 
         private void buttonBackupPics_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupComputerName) &&
-            _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupComputerName == Environment.MachineName)
+            if (!string.IsNullOrEmpty(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupComputerName))
             {
-                StartBackup();
+                if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupComputerName == Environment.MachineName)
+                {
+                    StartBackup();
+                }
+                else
+                {
+                    MessageBox.Show("This Backup job was created for the: " + _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupComputerName + " Computer" +
+                        "\nThis Computer is: " + Environment.MachineName + " and may have a different drive structure\n\n" +
+                        "If you still wish to run the backup from this computer,\nplease Edit the Database Configuration");
+                }
             }
             else
             {
-                 MessageBox.Show("This Backup job was created for the: " +_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BackupComputerName + " Computer" +
-                     "\nThis Computer is: " + Environment.MachineName + " and may have a different drive structure\n\n" +
-                     "If you still wish to run the backup from this computer,\nplease Edit the Database Configuration");
+                MessageBox.Show("No Computer was defined for this Backup Job\n" +
+                                "Please Edit the Database Configuration and\n" +
+                                "define the backup Computer.");
             }
+
         }
 
         private void BackupCompleted(object sender, EventArgs e)
@@ -731,7 +756,7 @@ namespace PicasaStarter
             listBoxPicasaDBs.EndUpdate();
         }
 
-        #endregion        
+        #endregion 
 
         #region Tab PicasaButtons
 

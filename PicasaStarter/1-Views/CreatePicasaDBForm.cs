@@ -44,7 +44,7 @@ namespace PicasaStarter
 
             textBoxBackupDir.Text = PicasaDB.BackupDir;
             if (string.IsNullOrEmpty(PicasaDB.BackupComputerName))
-                textBoxBackupName.Text = Environment.MachineName;
+                textBoxBackupName.Text = "Not Defined";
             else
                 textBoxBackupName.Text = PicasaDB.BackupComputerName;
             BackupFrequencyBox.SelectedIndex = PicasaDB.BackupFrequency;
