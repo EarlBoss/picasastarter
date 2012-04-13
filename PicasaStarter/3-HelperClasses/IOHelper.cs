@@ -15,6 +15,7 @@ namespace HelperClasses
         internal static string VirtualDrive = "";
         internal static string VirtualDriveSource = "";
         internal static bool VirtualDriveMapped = false;
+        internal static bool VirtualDriveIsUNC = false;
 
         /// <summary>
         /// This method add a sequence number to the filename to make the filename unique in the directory.
@@ -395,6 +396,8 @@ namespace HelperClasses
                     VirtualDrive = driveLetter;
                     VirtualDriveSource = folderName;
                     VirtualDriveMapped = true;
+                    VirtualDriveIsUNC = false;
+
                     return driveLetter;
                 }
                 VirtualDriveMapped = false;
@@ -410,6 +413,8 @@ namespace HelperClasses
                     VirtualDrive = driveLetter;
                     VirtualDriveSource = folderName;
                     VirtualDriveMapped = true;
+                    VirtualDriveIsUNC = true;
+
                     return driveLetter;
                 }
                 VirtualDriveMapped = false;
@@ -454,35 +459,38 @@ namespace HelperClasses
             if (VirtualDriveMapped == true)
             {
 
-                string UNCPath = "";
+                //string UNCPath = "";
 
                 //Get UNC Path if the source is a network drive
-                UNCPath = IOHelper.GetUNCPath(VirtualDrive + "\\");
-                if ((UNCPath == VirtualDrive + "\\") && (!VirtualDriveSource.StartsWith("\\\\")))
+                //UNCPath = IOHelper.GetUNCPath(VirtualDrive + "\\");
+                if (!VirtualDriveIsUNC)
                 {
                     // UnMap Local Drive
                     //This works only for local drives
-                    bool xyz = false;
-                    xyz = DefineDosDevice(DDD_REMOVE_DEFINITION, VirtualDrive, VirtualDriveSource);
-                    if (xyz == false)
-                        result = true;
+                    bool xxx = false;
+                    //xyz = DefineDosDevice(DDD_REMOVE_DEFINITION, VirtualDrive, VirtualDriveSource);
+                    xxx = DefineDosDevice(DDD_REMOVE_DEFINITION, VirtualDrive, null);
+                    if (xxx)
+                       result = true;
+                   // xxx = DefineDosDevice(DDD_REMOVE_DEFINITION, VirtualDrive, null);
+                   // if (xxx)
+                   //     result = true;
                 }
                 else
                 {
-                    if ((UNCPath.StartsWith("\\\\")))
-                    {
                         //UnMap the network drive
                         string xyz = "";
                         xyz = UnmapUNCFromDrive(VirtualDrive);
-                        result = true;
-                    }
+                        //xyz = UnmapUNCFromDrive(VirtualDrive);
+                        if(xyz != "")
+                            result = true;
                 }
 
                 VirtualDriveMapped = false;
+                VirtualDrive = "";
+                VirtualDriveSource = "";
 
             }
-            VirtualDrive = "";
-            VirtualDriveSource = "";
             return result;
         }
 
@@ -595,7 +603,7 @@ namespace HelperClasses
         /// <returns></returns>
         internal static string UnmapUNCFromDrive(string driveLetter)
         {
-            uint result = WNetCancelConnection2(driveLetter, 0, true);
+            uint result = WNetCancelConnection2(driveLetter, 1, true);
             if (result != NO_ERROR)
                 return ("");
             return driveLetter;
@@ -661,7 +669,57 @@ namespace HelperClasses
             }
             //otherwise we return a false 
             return false;
-        } 
+        }
+
+        //Map Virtual drive. Returns false if successful
+        internal static bool MapVirtualDrive( PicasaStarter.PicasaDB db, string SettingsDir)
+        {
+            if (db.EnableVirtualDrive)
+            {
+                //Update 2.0 db to include missing Virtual drive base dir
+                if (string.IsNullOrEmpty(db.VirtualDriveBaseDir))
+                {
+                    db.VirtualDriveBaseDir = Path.GetDirectoryName(SettingsDir);
+                    db.VirtualDrivePathAbsolute = false;
+                }
+                try
+                {
+                    bool _VDPathAbsolute = db.VirtualDrivePathAbsolute;
+                    string _VDriveBaseDir = db.VirtualDriveBaseDir;
+                    string _VDriveBaseDirRoot = Path.GetPathRoot(_VDriveBaseDir);
+                    string _VDriveRootTrimmed = _VDriveBaseDirRoot.TrimEnd('\\');
+                    if (!_VDPathAbsolute)
+                    {
+                        //_VDriveBaseDirRoot = Path.GetPathRoot(_VDriveBaseDir);
+                        //string _VDriveRootTrimmed = _VDriveBaseDirRoot.TrimEnd('\\');
+                        int _VDRootLength = _VDriveBaseDirRoot.Length;
+                        if (_VDriveBaseDirRoot.StartsWith("\\\\"))
+                            _VDRootLength += 1;
+                        string AppsBaseDirRoot = Path.GetPathRoot(SettingsDir);
+                        string AppRootTrimmed = AppsBaseDirRoot.TrimEnd('\\');
+                        if (_VDriveBaseDirRoot == _VDriveBaseDir)
+                            _VDriveBaseDir = AppsBaseDirRoot;
+                        else
+                            _VDriveBaseDir = AppRootTrimmed + "\\" + _VDriveBaseDir.Substring(_VDRootLength);
+                    }
+
+                    //Map folder or Path to drive letter if not already mapped
+                    VirtualDrive = IOHelper.MapFolderToDrive(db.PictureVirtualDrive, _VDriveBaseDir);
+                }
+                catch 
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                //Unmap old Virtual Drive if it was mapped
+                bool xyz = false;
+                xyz = IOHelper.UnmapVDrive();
+
+            }
+            return false;
+        }
        
 
     }

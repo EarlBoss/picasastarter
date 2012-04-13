@@ -25,7 +25,6 @@ namespace PicasaStarter
             Application.SetCompatibleTextRenderingDefault(false);
 
             string appSettingsDir = "";  //Directory containing PicasaStarter settings
-            string appSettingsBaseDir = "";
             string configurationDir = "";
 
             Configuration config;
@@ -38,7 +37,6 @@ namespace PicasaStarter
             settings = new Settings();
             config = new Configuration();
             bool showGUI = true;
-            string MappedDrive = "";
 
             try
             {
@@ -50,7 +48,6 @@ namespace PicasaStarter
                 //No config file, set config & settings defaults and signal first time run
                 ConfigFileExists = false;
                 config.picasaStarterSettingsXMLPath = "";
-                //config.configPicasaExePath = SettingsHelper.ProgramFilesx86();
                 settings.picasaDBs.Add(SettingsHelper.GetDefaultPicasaDB());
             }
             // load settings...
@@ -59,7 +56,7 @@ namespace PicasaStarter
                 bool cancelSettingsFileSearch = false;
                 string currentDir = appSettingsDir;
                 currentDir = Path.GetDirectoryName(currentDir);
-                appSettingsBaseDir = currentDir;
+
 
                 while (!settingsfound && cancelSettingsFileSearch == false)
                 {
@@ -216,11 +213,8 @@ namespace PicasaStarter
 
                     if (foundDB != null)
                     {
-                        if (foundDB.EnableVirtualDrive == true)
-                        {
-                            MappedDrive = IOHelper.MapFolderToDrive(foundDB.PictureVirtualDrive, appSettingsBaseDir);
-                        }
-
+                        bool xxx = IOHelper.MapVirtualDrive(foundDB, appSettingsDir);
+ 
                         PicasaRunner runner = new PicasaRunner(settings.PicasaExePath);
                         String dbPath;
                         string destButtonDir;
@@ -357,10 +351,8 @@ namespace PicasaStarter
 
                         if (foundDB != null)
                         {
-                            if (foundDB.EnableVirtualDrive == true)
-                            {
-                                MappedDrive = IOHelper.MapFolderToDrive(foundDB.PictureVirtualDrive, appSettingsBaseDir);
-                            }
+                            bool xxx = IOHelper.MapVirtualDrive(foundDB, appSettingsDir);
+
                             // Set backup date to now in settings and then save new date to settings file before backup
                             DateTime  SaveBUDate = foundDB.LastBackupDate;
                             foundDB.LastBackupDate = DateTime.Today;

@@ -18,18 +18,17 @@ namespace PicasaStarter
 
         private string _appSettingsDir = "";
         private bool _configFileExists = true;
+        private int saveListIndex = 0;
+        private int lastSelectedIndexListBoxPicasaDBs = -1;
+        //Backup variable defines
         private Backup _backup = null;
         private BackupProgressForm _progressForm = null;
-        private int lastSelectedIndexListBoxPicasaDBs = -1;
-        private string appSettingsBaseDir = "";
-        private int saveListIndex = 0;
         #endregion
 
         #region Public or internal methods
 
         DateTime PresentBackupDate = DateTime.Today; // Save the previous backup date to restore later if backup is cancelled
         bool backupCancelled = false;
-        internal string VirtualDrive { get; private set; }
         internal Settings _settings { get; private set; }
 
         public MainForm(Settings settings, string appSettingsDir, bool configFileExists)
@@ -38,8 +37,6 @@ namespace PicasaStarter
             _settings = settings;
             _appSettingsDir = appSettingsDir;
             _configFileExists = configFileExists;
-            appSettingsBaseDir = Path.GetDirectoryName(_appSettingsDir);
-            VirtualDrive = "";
 
             ReFillPicasaButtonList();
         }
@@ -65,7 +62,7 @@ namespace PicasaStarter
         {
             // Set version + build time in title bar
             this.Text = this.Text + " " + System.Diagnostics.FileVersionInfo.GetVersionInfo(Application.ExecutablePath).FileVersion
-                + "   (Build of 2012-03-29 - RC1)" ;
+                + "   (Build of 2012-04-13 - RC2)" ;
 
             // If Picasa exe isn't found... ask path...
             if (!File.Exists(_settings.PicasaExePath))
@@ -93,7 +90,7 @@ namespace PicasaStarter
                 if (result == DialogResult.OK)
                 {
                     _appSettingsDir = firstRunWizardStep2.AppSettingsDir;
-                    appSettingsBaseDir = Path.GetDirectoryName(_appSettingsDir);
+                    //_VDriveBaseDir = Path.GetDirectoryName(_appSettingsDir);
                     _settings = firstRunWizardStep2.Settings;
                 }
                 else
@@ -130,13 +127,13 @@ namespace PicasaStarter
                 listBoxPicasaDBs.SelectedIndex = defaultSelectedDBIndex;
                 //Map the directory below the PicasaStarter Directory to the Virtual drive
                 // if the drive is not mapped and virtual drive is enabled
-                bool xyz = false;
-                xyz = IOHelper.UnmapVDrive();
-                if (_settings.picasaDBs[defaultSelectedDBIndex].EnableVirtualDrive)
+                bool xxx = IOHelper.MapVirtualDrive(_settings.picasaDBs[defaultSelectedDBIndex], _appSettingsDir);
+                if (xxx)
                 {
-                    //Map folder or Path to drive letter if not already mapped
-                    VirtualDrive = IOHelper.MapFolderToDrive(_settings.picasaDBs[defaultSelectedDBIndex].PictureVirtualDrive, appSettingsBaseDir);
+                    MessageBox.Show("Error Mapping Virtual Drive" +
+                     "\nCheck the Virtual Drive settings and Path.");
                 }
+
             }
             saveListIndex = defaultSelectedDBIndex;
        }
@@ -200,7 +197,7 @@ namespace PicasaStarter
                 }
                 _settings.PicasaExePath = generalSettingsDialog.ReturnPicasaExePath;
                 _appSettingsDir = generalSettingsDialog.ReturnAppSettingsDir;
-                appSettingsBaseDir = Path.GetDirectoryName(_appSettingsDir);
+                //_VDriveBaseDir = Path.GetDirectoryName(_appSettingsDir);
                 // Initialise all controls on the screen with the proper data
                 ReFillPicasaDBList(false);
                 // Save settings
@@ -211,24 +208,12 @@ namespace PicasaStarter
                 if (defaultSelectedDBIndex != ListBox.NoMatches)
                     listBoxPicasaDBs.SelectedIndex = defaultSelectedDBIndex;
                 saveListIndex = defaultSelectedDBIndex;
-                if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].EnableVirtualDrive)
+                bool xxx = IOHelper.MapVirtualDrive(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex], _appSettingsDir);
+                if (xxx)
                 {
-
-                    //Map folder or Path to drive letter if not already mapped
-                    VirtualDrive = IOHelper.MapFolderToDrive(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].PictureVirtualDrive, appSettingsBaseDir);
+                    MessageBox.Show("Error Mapping Virtual Drive" +
+                     "\nCheck the Virtual Drive settings and Path.");
                 }
-                else
-                {
-                    //Unmap old Virtual Drive if it was mapped
-                    bool xyz = false;
-                    xyz = IOHelper.UnmapVDrive();
-
-                }
-
-               // if (_firstRun == true)
-               // {
-               //     ShowHelp();
-               // }
 
             }
         }
@@ -269,20 +254,12 @@ namespace PicasaStarter
         {
             //Map the directory below the PicasaStarter Directory to the Virtual drive
             // if the drive is not mapped and virtual drive is enabled
-            if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].EnableVirtualDrive)
+            bool xxx = IOHelper.MapVirtualDrive(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex], _appSettingsDir);
+            if (xxx)
             {
-
-                //Map folder or Path to drive letter if not already mapped
-                VirtualDrive = IOHelper.MapFolderToDrive(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].PictureVirtualDrive, appSettingsBaseDir);
+                MessageBox.Show("Error Mapping Virtual Drive" +
+                    "\nCheck the Virtual Drive settings and Path.");
             }
-            else
-            {
-                //Unmap old Virtual Drive if it was mapped
-                bool xyz = false;
-                xyz = IOHelper.UnmapVDrive();
-
-            }
-
         }
 
         private void OnListBoxMouseMove(object sender, MouseEventArgs e)
@@ -324,18 +301,13 @@ namespace PicasaStarter
             {
                 _settings.picasaDBs.Add(createPicasaDB.PicasaDB);
                 ReFillPicasaDBList(true);
-                if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].EnableVirtualDrive)
+                bool xxx = IOHelper.MapVirtualDrive(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex], _appSettingsDir);
+                if (xxx)
                 {
-
-                    //Map folder or Path to drive letter if not already mapped
-                    VirtualDrive = IOHelper.MapFolderToDrive(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].PictureVirtualDrive, appSettingsBaseDir);
+                    MessageBox.Show("Error Mapping Virtual Drive" +
+                     "\nCheck the Virtual Drive settings and Path.");
                 }
-                else
-                {
-                    //Unmap old Virtual Drive if it was mapped
-                    xyz = IOHelper.UnmapVDrive();
 
-                }
             }
         }
 
@@ -368,19 +340,13 @@ namespace PicasaStarter
                 listBoxPicasaDBs.SelectedIndex = saveIndex;
                 //Map the directory below the PicasaStarter Directory to the Virtual drive
                 // if the drive is not mapped and virtual drive is enabled
-                if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].EnableVirtualDrive)
+                bool xxx = IOHelper.MapVirtualDrive(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex], _appSettingsDir);
+                if (xxx)
                 {
-
-                    //Map folder or Path to drive letter if not already mapped
-                    VirtualDrive = IOHelper.MapFolderToDrive(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].PictureVirtualDrive, appSettingsBaseDir);
+                    MessageBox.Show("Error Mapping Virtual Drive" +
+                     "\nCheck the Virtual Drive settings and Path.");
                 }
-                else
-                {
-                    //Unmap old Virtual Drive if it was mapped
-                    bool xyz = false;
-                    xyz = IOHelper.UnmapVDrive();
 
-                }
             }
         }
 
@@ -406,19 +372,13 @@ namespace PicasaStarter
             {
                 _settings.picasaDBs.RemoveAt(listBoxPicasaDBs.SelectedIndex);
                 ReFillPicasaDBList(false);
-                if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].EnableVirtualDrive)
+                bool xxx = IOHelper.MapVirtualDrive(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex], _appSettingsDir);
+                if (xxx)
                 {
-
-                    //Map folder or Path to drive letter if not already mapped
-                    VirtualDrive = IOHelper.MapFolderToDrive(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].PictureVirtualDrive, appSettingsBaseDir);
+                    MessageBox.Show("Error Mapping Virtual Drive" +
+                     "\nCheck the Virtual Drive settings and Path.");
                 }
-                else
-                {
-                    //Unmap old Virtual Drive if it was mapped
-                    bool xyz = false;
-                    xyz = IOHelper.UnmapVDrive();
 
-                }
             }
         }
 
@@ -442,19 +402,13 @@ namespace PicasaStarter
                 MessageBox.Show("The base directory of this database doesn't exist or you didn't choose one yet.");
                 return;
             }
-            if (_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].EnableVirtualDrive)
+            bool xxx = IOHelper.MapVirtualDrive(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex], _appSettingsDir);
+            if (xxx)
             {
-
-                //Map folder or Path to drive letter if not already mapped
-                VirtualDrive = IOHelper.MapFolderToDrive(_settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].PictureVirtualDrive, appSettingsBaseDir);
+                MessageBox.Show("Error Mapping Virtual Drive" +
+                    "\nCheck the Virtual Drive settings and Path.");
             }
-            else
-            {
-                //Unmap old Virtual Drive if it was mapped
-                bool xyz = false;
-                xyz = IOHelper.UnmapVDrive();
 
-            }
             WindowState = FormWindowState.Minimized; //Remove PicasaStarter window from desktop while Picasa is running
             this.Text = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].Name + " <--PicasaStarter Database";
             
@@ -683,9 +637,28 @@ namespace PicasaStarter
             SaveSettings();
             try
             {
+                String tmpDBPath = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir;
+                if (!Directory.Exists(tmpDBPath + "\\Google\\Picasa2") &&
+                   Directory.Exists(tmpDBPath + "\\Local Settings\\Application Data\\Google\\Picasa2"))
+                {
+                     DialogResult result = MessageBox.Show("Do you want to temporarily back up the Picasa version 3.8 database?\n" +
+                         "This Picasa 3.8 Database path is:\n " + _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir + "\\Local Settings\\Application Data" +
+                        "\n\n Please edit the database settings, and convert the database to version 3.9 to stop receiving this warning message",
+                            "Database Not Converted for Picasa Version 3.9+", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1,
+                            (MessageBoxOptions)0x40000);
+                     if (result == DialogResult.Yes)
+                     {
+                         tmpDBPath = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir + "\\Local Settings\\Application Data";
+                     }
+                     else
+                     {
+                         return;
+                     }
+
+                }
                 // Initialise the paths where the database and the albums can be found
-                String picasaDBPath = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir + "\\Google\\Picasa2";
-                String picasaAlbumsPath = _settings.picasaDBs[listBoxPicasaDBs.SelectedIndex].BaseDir + "\\Google\\Picasa2Albums";
+                String picasaDBPath = tmpDBPath + "\\Google\\Picasa2";
+                String picasaAlbumsPath = tmpDBPath + "\\Google\\Picasa2Albums";
                 String psSettingsPath = _appSettingsDir;
 
                 // Read directories watched/excluded by Picasa in the text files in the Album dir... 

@@ -23,6 +23,8 @@ namespace PicasaStarter
         public bool IsStandardDB { get; set; }
         public string PictureVirtualDrive { get; set; }
         public bool EnableVirtualDrive { get; set; }
+        public string VirtualDriveBaseDir { get; set; }
+        public bool VirtualDrivePathAbsolute { get; set; }
 
         public PicasaDB()
         {
@@ -46,6 +48,8 @@ namespace PicasaStarter
             IsStandardDB = picasaDB.IsStandardDB;
             PictureVirtualDrive = picasaDB.PictureVirtualDrive;
             EnableVirtualDrive = picasaDB.EnableVirtualDrive;
+            VirtualDriveBaseDir = picasaDB.VirtualDriveBaseDir;
+            VirtualDrivePathAbsolute = picasaDB.VirtualDrivePathAbsolute;
         }
     }
 

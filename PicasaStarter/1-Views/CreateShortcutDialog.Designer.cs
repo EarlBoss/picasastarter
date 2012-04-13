@@ -56,8 +56,6 @@
             // checkShortutAppsDir
             // 
             this.checkShortutAppsDir.AutoSize = true;
-            this.checkShortutAppsDir.Checked = true;
-            this.checkShortutAppsDir.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkShortutAppsDir.Location = new System.Drawing.Point(15, 105);
             this.checkShortutAppsDir.Name = "checkShortutAppsDir";
             this.checkShortutAppsDir.Size = new System.Drawing.Size(381, 17);

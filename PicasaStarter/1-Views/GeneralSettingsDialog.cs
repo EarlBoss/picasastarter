@@ -65,7 +65,10 @@ namespace PicasaStarter
             if ((_localSettings != null) || _iniPathChanged)
             {
                 DialogResult result = MessageBox.Show(
-                        "If you proceed, the selected settings file\nwill become your current settings.\n    Are you sure you want to do this?",
+                        "If you proceed, the selected settings file will become your new current settings.\n" +
+                        "Are you sure you want to do this?" +
+                        "\n\nWarning!\nAny changes made to the current database settings during the\n" +
+                        "current session will be lost unless you click NO and restart PicasaStarter",
                         "Change current settings?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
                 if (result == DialogResult.Yes)

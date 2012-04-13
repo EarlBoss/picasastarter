@@ -80,9 +80,15 @@ namespace PicasaStarter
 
             try
             {
+                String tmpDBPath = _db.BaseDir;
+                if (!Directory.Exists(tmpDBPath + "\\Google\\Picasa2") &&
+                   Directory.Exists(tmpDBPath + "\\Local Settings\\Application Data\\Google\\Picasa2"))
+                {
+                    tmpDBPath = _db.BaseDir + "\\Local Settings\\Application Data";
+                }
                 // Initialise the paths where the database and the albums can be found
-                String picasaDBPath = _db.BaseDir + "\\Google\\Picasa2";
-                String picasaAlbumsPath = _db.BaseDir + "\\Google\\Picasa2Albums";
+                String picasaDBPath = tmpDBPath + "\\Google\\Picasa2";
+                String picasaAlbumsPath = tmpDBPath + "\\Google\\Picasa2Albums";
                 String psSettingsPath = settingsDir;
 
                 // Read directories watched/excluded by Picasa in the text files in the Album dir... 
