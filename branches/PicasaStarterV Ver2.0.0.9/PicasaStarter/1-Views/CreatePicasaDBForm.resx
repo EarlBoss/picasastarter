@@ -117,6 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="label13.Text" xml:space="preserve">
+    <value>Picasa requires that the pictures to be displayed appear in the same directory path and drive letter as they
+were when they were indexed originally. With the PicasaStarter Virtual Drive feature, the picture path can be
+mapped to a virtual drive letter so it appears in the same path as when it was initially indexed in Picasa.</value>
+  </data>
   <data name="label12.Text" xml:space="preserve">
     <value>The Backup will be done by the Backup Computer.
 To take over the Backup Task, click below.
