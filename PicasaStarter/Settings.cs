@@ -433,7 +433,7 @@ namespace PicasaStarter
             XmlSerializer serializer = new XmlSerializer(typeof(Configuration));
             using (TextWriter tw = new StreamWriter(configFilePath))
             {
-            serializer.Serialize(tw, config);
+                serializer.Serialize(tw, config);
             }
         }
 
