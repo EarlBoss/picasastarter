@@ -144,9 +144,16 @@ namespace PicasaStarter
         /// </summary>
         public Settings()
         {
-            RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Google\\Picasa\\Picasa2\\Runtime\\");
-            string value = (string)key.GetValue("appPath");
-
+            string value = "";
+            try
+            {
+                RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Google\\Picasa\\Picasa2\\Runtime\\");
+                value = (string)key.GetValue("appPath");
+            }
+            catch (Exception Ex)
+            {
+                throw Ex;
+            }
             if (string.IsNullOrEmpty(value) == false)
                 PicasaExePaths.SetPath(new PathOnComputer(Environment.MachineName, value));
             else

@@ -26,7 +26,6 @@ namespace PicasaStarter
 
             string appSettingsDir = "";  //Directory containing PicasaStarter settings
             string configurationDir = "";
-
             Configuration config;
             Settings settings;
             bool ConfigFileExists = true;
@@ -34,9 +33,21 @@ namespace PicasaStarter
 
             configurationDir = SettingsHelper.DetermineConfigDir();
             appSettingsDir = SettingsHelper.DetermineSettingsDir(configurationDir);
-            settings = new Settings();
+            try
+            {
+                settings = new Settings();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Picasa 3.9 Has not been Initialized for this user.\n" +
+                    "Please run Picasa3 from the start menu to set up the registry.\n " +
+                      "Error Msg:  " + ex.Message);
+                return;
+
+            }
             config = new Configuration();
             bool showGUI = true;
+
 
             try
             {
@@ -51,6 +62,7 @@ namespace PicasaStarter
                 settings.picasaDBs.Add(SettingsHelper.GetDefaultPicasaDB());
             }
             // load settings...
+
             if (ConfigFileExists)
             {
                 bool cancelSettingsFileSearch = false;
@@ -97,6 +109,7 @@ namespace PicasaStarter
                 }
 
                 // Try to read the settings file...
+
                 if (settingsfound == true)
                 {
                     try
@@ -118,7 +131,7 @@ namespace PicasaStarter
             #region Process Command Line Arguments
             if (ConfigFileExists)
             {
-                // Save settings
+               // Save settings
                 //---------------------------------------------------------------------------
                 try
                 {
@@ -183,6 +196,12 @@ namespace PicasaStarter
                 if (autoRunDatabaseName != null)
                 {
                     PicasaDB foundDB = null;
+                    if (IOHelper.IsProcessOpen("Picasa3"))
+                    {
+                        MessageBox.Show("Picasa 3 is presently running on this computer." +
+                        "\n\nPlease Exit Picasa before trying to\nrun it from PicasaStarter", "Picasa Already Running");
+                        return;
+                    }
 
                     // First check if he wants to be asked which database to run
                     if (autoRunDatabaseName.Equals("AskUser", StringComparison.CurrentCultureIgnoreCase))

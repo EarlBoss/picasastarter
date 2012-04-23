@@ -62,7 +62,7 @@ namespace PicasaStarter
         {
             // Set version + build time in title bar
             this.Text = this.Text + " " + System.Diagnostics.FileVersionInfo.GetVersionInfo(Application.ExecutablePath).FileVersion
-                + "   (Build of 2012-04-13 - RC2)" ;
+                + "   (Build of 2012-04-22 - RC2+)" ;
 
             // If Picasa exe isn't found... ask path...
             if (!File.Exists(_settings.PicasaExePath))
