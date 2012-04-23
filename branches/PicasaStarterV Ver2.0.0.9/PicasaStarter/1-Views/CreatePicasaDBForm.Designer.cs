@@ -61,22 +61,22 @@
             this.buttonDoVDNow = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label4 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label15 = new System.Windows.Forms.Label();
+            this.textBoxSourceRoot = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.BrowseVDSource = new System.Windows.Forms.Button();
             this.buttonVDAbsPath = new System.Windows.Forms.RadioButton();
             this.buttonVDRelPath = new System.Windows.Forms.RadioButton();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label16 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label12 = new System.Windows.Forms.Label();
             this.CheckBackupDBOnly = new System.Windows.Forms.CheckBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.textBoxSourceRoot = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -272,7 +272,6 @@
             this.textBoxBackupDir.ReadOnly = true;
             this.textBoxBackupDir.Size = new System.Drawing.Size(387, 20);
             this.textBoxBackupDir.TabIndex = 40;
-            this.textBoxBackupDir.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // buttonCancel
             // 
@@ -312,7 +311,6 @@
             this.textBoxBackupName.ReadOnly = true;
             this.textBoxBackupName.Size = new System.Drawing.Size(155, 20);
             this.textBoxBackupName.TabIndex = 49;
-            this.textBoxBackupName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label9
             // 
@@ -332,7 +330,6 @@
             this.textLastBackupDate.ReadOnly = true;
             this.textLastBackupDate.Size = new System.Drawing.Size(155, 20);
             this.textLastBackupDate.TabIndex = 47;
-            this.textLastBackupDate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label6
             // 
@@ -442,6 +439,16 @@
             this.tabPage1.Text = "Database ";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(109, 7);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(303, 16);
+            this.label4.TabIndex = 55;
+            this.label4.Text = "Define a Picasa Database Path and Configuration";
+            // 
             // label10
             // 
             this.label10.AutoSize = true;
@@ -450,7 +457,7 @@
             this.label10.Size = new System.Drawing.Size(321, 26);
             this.label10.TabIndex = 47;
             this.label10.Text = "NOTE: If Database Path will be on a Virtual Drive, please go to the\r\n            " +
-                "Virtual Drive tab and configure the Virtual Drive first.";
+    "Virtual Drive tab and configure the Virtual Drive first.";
             // 
             // tabPage3
             // 
@@ -473,6 +480,32 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Virtual Drive";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(13, 227);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(94, 13);
+            this.label15.TabIndex = 58;
+            this.label15.Text = "Virtual Drive Letter";
+            this.label15.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // textBoxSourceRoot
+            // 
+            this.textBoxSourceRoot.Location = new System.Drawing.Point(153, 83);
+            this.textBoxSourceRoot.Name = "textBoxSourceRoot";
+            this.textBoxSourceRoot.Size = new System.Drawing.Size(251, 20);
+            this.textBoxSourceRoot.TabIndex = 57;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(33, 86);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(114, 13);
+            this.label14.TabIndex = 56;
+            this.label14.Text = "Relative Source Drive:";
             // 
             // label13
             // 
@@ -514,7 +547,7 @@
             this.buttonVDAbsPath.TabIndex = 52;
             this.buttonVDAbsPath.TabStop = true;
             this.buttonVDAbsPath.Text = "Absolute Path   (Source Path or UNC Path must be the same for all users)\r\nPicasaS" +
-                "tarter can map any drive letter\\path, or UNC path to the Virtual Drive letter";
+    "tarter can map any drive letter\\path, or UNC path to the Virtual Drive letter";
             this.buttonVDAbsPath.UseVisualStyleBackColor = true;
             this.buttonVDAbsPath.CheckedChanged += new System.EventHandler(this.buttonVDAbsPath_CheckedChanged);
             // 
@@ -527,7 +560,7 @@
             this.buttonVDRelPath.Size = new System.Drawing.Size(400, 30);
             this.buttonVDRelPath.TabIndex = 51;
             this.buttonVDRelPath.Text = "Relative Path   (Source Path or UNC path must be on this Source Drive )\r\nPicasaSt" +
-                "arter can map any path on the Source Drive to the  Virtual Drive Letter.";
+    "arter can map any path on the Source Drive to the  Virtual Drive Letter.";
             this.buttonVDRelPath.UseVisualStyleBackColor = true;
             this.buttonVDRelPath.CheckedChanged += new System.EventHandler(this.buttonVDRelPath_CheckedChanged);
             // 
@@ -553,6 +586,16 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Backup";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.Location = new System.Drawing.Point(115, 10);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(231, 16);
+            this.label16.TabIndex = 55;
+            this.label16.Text = "Configure the Picasa Backup Settings\r\n";
             // 
             // groupBox1
             // 
@@ -583,52 +626,6 @@
             this.CheckBackupDBOnly.TabIndex = 51;
             this.CheckBackupDBOnly.Text = "Back Up Database Only";
             this.CheckBackupDBOnly.UseVisualStyleBackColor = true;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(33, 86);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(114, 13);
-            this.label14.TabIndex = 56;
-            this.label14.Text = "Relative Source Drive:";
-            // 
-            // textBoxSourceRoot
-            // 
-            this.textBoxSourceRoot.Location = new System.Drawing.Point(153, 83);
-            this.textBoxSourceRoot.Name = "textBoxSourceRoot";
-            this.textBoxSourceRoot.Size = new System.Drawing.Size(251, 20);
-            this.textBoxSourceRoot.TabIndex = 57;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(13, 227);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(94, 13);
-            this.label15.TabIndex = 58;
-            this.label15.Text = "Virtual Drive Letter";
-            this.label15.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(109, 7);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(303, 16);
-            this.label4.TabIndex = 55;
-            this.label4.Text = "Define a Picasa Database Path and Configuration";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(115, 10);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(231, 16);
-            this.label16.TabIndex = 55;
-            this.label16.Text = "Configure the Picasa Backup Settings\r\n";
             // 
             // CreatePicasaDBForm
             // 

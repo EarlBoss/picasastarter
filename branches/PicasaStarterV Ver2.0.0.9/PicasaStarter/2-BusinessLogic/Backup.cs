@@ -579,11 +579,13 @@ namespace BackupNS
                 }
             }
             else
+            {
                 // Here we try to take care of the case where current dir is network drive
                 if (curDirToBackup.Substring(0, 2) == "\\\\")
                     storageDevice = curDirToBackup.Substring(1);
                 else
-                    storageDevice = '\\' + System.Environment.MachineName + "_Drive-" + curDirToBackup.Replace(":", "");
+                    storageDevice = '\\' + System.Environment.MachineName + "\\Drive-" + curDirToBackup.Replace(":", "");
+            }
             return storageDevice;
         }
 
