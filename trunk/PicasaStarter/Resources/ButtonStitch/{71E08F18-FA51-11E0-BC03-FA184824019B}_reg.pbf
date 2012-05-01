@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<buttons format="1" version="1">
+  <button id="{71E08F18-FA51-11E0-BC03-FA184824019B}" type="dynamic">
+    <label>Stitch</label>
+    <icon name="{71E08F18-FA51-11E0-BC03-FA184824019B}/puzzlenext" src="pbz"/>
+    <tooltip>Stitch selected images with Microsoft ICE</tooltip>
+    <action verb="trayexec">
+      <param  name="exe_name_regkey" value="HKEY_CLASSES_ROOT\Applications\ICE.exe\shell\open\command\"/>
+    </action>
+  </button>
+</buttons>
