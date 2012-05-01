@@ -4,71 +4,85 @@ using System.Text;
 using System.Xml.Serialization;     // Added to use serialisation
 using System.IO;                    // Added to use serialisation to file
 using System.Collections;           // Test for serialisation
+using Microsoft.Win32;              // For manipulating the registry...
 
 namespace PicasaStarter
 {
     public class PicasaDB
     {
         private string _name;
-        private string _description;
-        private string _baseDir;
-        private bool _isDefaultDB;
 
         public string Name { get { return _name; } set { _name = value.Trim(new char[] { ' ', '"' }); } }
-        public string Description { get { return _description; } set { _description = value; } }
-        public string BaseDir { get { return _baseDir; } set { _baseDir = value; } }
-        public bool IsStandardDB { get { return _isDefaultDB; } set { _isDefaultDB = value; } }
+        public string Description { get; set; }
+        public string BaseDir { get; set; }
+        public string BackupDir { get; set; }
+        public int BackupFrequency { get; set; }
+        public bool BackupDBOnly { get; set; }
+        public DateTime LastBackupDate { get; set; }
+        public string BackupComputerName { get; set; }
+        public bool IsStandardDB { get; set; }
+        public string PictureVirtualDrive { get; set; }
+        public bool EnableVirtualDrive { get; set; }
+        public string VirtualDriveBaseDir { get; set; }
+        public bool VirtualDrivePathAbsolute { get; set; }
 
         public PicasaDB()
         {
-            _name = "";
-            _description = "";
-            _baseDir = "";
-            _isDefaultDB = false;
         }
 
         public PicasaDB(string name)
         {
-            _name = name;
-            _description = "";
-            _baseDir = "";
-            _isDefaultDB = false;
+            Name = name;
+        }
+
+        public PicasaDB(PicasaDB picasaDB)
+        {
+            Name = picasaDB.Name;
+            Description = picasaDB.Description;
+            BaseDir = picasaDB.BaseDir;
+            BackupDir = picasaDB.BackupDir;
+            BackupFrequency = picasaDB.BackupFrequency;
+            BackupDBOnly = picasaDB.BackupDBOnly;
+            BackupComputerName = picasaDB.BackupComputerName;
+            LastBackupDate = picasaDB.LastBackupDate;
+            IsStandardDB = picasaDB.IsStandardDB;
+            PictureVirtualDrive = picasaDB.PictureVirtualDrive;
+            EnableVirtualDrive = picasaDB.EnableVirtualDrive;
+            VirtualDriveBaseDir = picasaDB.VirtualDriveBaseDir;
+            VirtualDrivePathAbsolute = picasaDB.VirtualDrivePathAbsolute;
         }
     }
 
-
     public class PathOnComputer
-    {
-        private string _computerName;
-        private string _path;
-    
-        public string ComputerName { get { return _computerName; } set { _computerName = value; } }
-        public string Path { get { return _path; } set { _path = value; } }
+    {    
+        public string ComputerName { get; set; }
+        public string Path { get; set; }
 
         public PathOnComputer()
         {
-            _computerName = "";
-            _path = "";
         }
 
         public PathOnComputer(string computerName, string exePath)
         {
-            _computerName = computerName;
-            _path = exePath;
+            ComputerName = computerName;
+            Path = exePath;
         }
     }
 
     public class PathOnComputerCollection
     {
-        private List<PathOnComputer> _paths = new List<PathOnComputer>();
+        public List<PathOnComputer> Paths { get; set; }
 
-        public List<PathOnComputer> Paths { get { return _paths; } }
+        public PathOnComputerCollection()
+        {
+            Paths = new List<PathOnComputer>();
+        }
 
         public void SetPath(PathOnComputer path)
         {
             bool found = false;
 
-            foreach (PathOnComputer curPath in _paths)
+            foreach (PathOnComputer curPath in Paths)
             {
                 if (curPath.ComputerName == path.ComputerName)
                 {
@@ -79,12 +93,12 @@ namespace PicasaStarter
             }
 
             if (found != true)
-                _paths.Add(path);
+                Paths.Add(path);
         }
 
         public string GetPath(string computerName)
         {
-            foreach (PathOnComputer curPath in _paths)
+            foreach (PathOnComputer curPath in Paths)
             {
                 if (curPath.ComputerName == computerName)
                 {
@@ -117,14 +131,33 @@ namespace PicasaStarter
         /// <summary>
         /// The list of databases defined in PicasaStarter.
         /// </summary>
-        [NonSerialized] public List<PicasaDB> picasaDBs = new List<PicasaDB> ();
+        [NonSerialized] 
+        public List<PicasaDB> picasaDBs = new List<PicasaDB> ();
+
+        /// <summary>
+        /// The list of databases defined in PicasaStarter.
+        /// </summary>        
+        public PicasaButtons picasaButtons = new PicasaButtons();
 
         /// <summary>
         /// Contstructor of the settings class.
         /// </summary>
         public Settings()
         {
-            PicasaExePaths.SetPath(new PathOnComputer(Environment.MachineName, SettingsHelper.ProgramFilesx86() + "\\google\\Picasa3\\picasa3.exe"));
+            string value = "";
+            try
+            {
+                RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Google\\Picasa\\Picasa2\\Runtime\\");
+                value = (string)key.GetValue("appPath");
+            }
+            catch (Exception Ex)
+            {
+                throw Ex;
+            }
+            if (string.IsNullOrEmpty(value) == false)
+                PicasaExePaths.SetPath(new PathOnComputer(Environment.MachineName, value));
+            else
+                PicasaExePaths.SetPath(new PathOnComputer(Environment.MachineName, SettingsHelper.ProgramFilesx86() + "\\google\\Picasa3\\picasa3.exe"));
         }
 
         /// <summary>
@@ -134,7 +167,8 @@ namespace PicasaStarter
         /// that the feature to have a path per computer didn't work: this "last used path" always overruled 
         /// the previously saved path because it was deserialised later than the saved paths.
         /// </summary>
-        [XmlIgnore] public string PicasaExePath
+        [XmlIgnore] 
+        public string PicasaExePath
         {
             get { return PicasaExePaths.GetPath(Environment.MachineName); }
             set { PicasaExePaths.SetPath(new PathOnComputer(Environment.MachineName, value)); }
@@ -151,7 +185,7 @@ namespace PicasaStarter
         /// The Directory that holds the PicasaStarterSettings.xml file when starting PicasaStarter.
         /// </summary>
         public string picasaStarterSettingsXMLPath;
-        public string configPicasaExePath;
+        //public string configPicasaExePath;
     }
 
     public static class SettingsHelper
@@ -160,6 +194,7 @@ namespace PicasaStarter
         public const string ConfigFileName = "PicasaStarterConfiguration.xml";
         public static string ConfigurationDir = "";
         public static string ConfigPicasaExePath = "";
+        public static string PicasaButtons = "PicasaButtons";
 
         public static string DetermineConfigDir()
         {
@@ -210,8 +245,6 @@ namespace PicasaStarter
             ConfigurationDir = configurationDir;
             return configurationDir;
         }
-
-
 
         public static string DetermineSettingsDir(string ConfigurationDir)
         {
@@ -280,41 +313,22 @@ namespace PicasaStarter
             return settingsDir;
         }
 
-
         public static PicasaDB GetDefaultPicasaDB()
         {
             PicasaDB picasaDB = new PicasaDB();
             picasaDB.Name = "Personal database of " + Environment.GetEnvironmentVariable("username") + " (=default for picasa)";
-            picasaDB.BaseDir = Environment.GetEnvironmentVariable("userprofile");
+            picasaDB.BaseDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             picasaDB.IsStandardDB = true;
             picasaDB.Description = "This is the database Picasa always uses if you don't use Picasa starter. Because of some "
                     + "technical reasons in some situations it is not recommended to share this database. You cannot change any settings "
                     + "for this database either. Create a new one if you want to share a database... and if you want, copy your default "
                     + "one into it.";
+            picasaDB.PictureVirtualDrive = "C:";
+            picasaDB.EnableVirtualDrive = false;
 
             return picasaDB;
         }
 
-        public static string GetFullDBDirectory(PicasaDB picasaDB)
-        {
-            string fullDBDirectory;
-
-            // If it is the standard Picasa database, return AppData
-            if (picasaDB.IsStandardDB == true)
-            {
-                string versionSpecificDir;
-                if (Environment.OSVersion.Version.Major <= 5)
-                    versionSpecificDir = "\\Local Settings\\Application Data\\Google";
-                else
-                    versionSpecificDir = "\\Appdata\\Local\\Google";
-                fullDBDirectory = picasaDB.BaseDir + versionSpecificDir;
-            }
-            else
-            {
-                fullDBDirectory = picasaDB.BaseDir + "\\Local Settings\\Application Data\\Google";
-            }
-            return fullDBDirectory;
-        }
 
         public static string ProgramFilesx86()
         {
@@ -329,37 +343,73 @@ namespace PicasaStarter
 
         public static void SerializeSettings(Settings settings, string settingsFilePath)
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(settingsFilePath));
-            
-            // Serialize settings to file
-            XmlSerializer serializer = new XmlSerializer(typeof(Settings));
-            TextWriter tw = new StreamWriter(settingsFilePath);
-            serializer.Serialize(tw, settings);
-            tw.Close();
-       }
+            string NewSettingsText = "";
+            string PresentSettingsText = "";
 
+            Directory.CreateDirectory(Path.GetDirectoryName(settingsFilePath));
+
+            try
+            {
+                // Serialize settings to file
+                XmlSerializer serializer = new XmlSerializer(typeof(Settings));
+                using (TextWriter tw = new StreamWriter(settingsFilePath + ".tmp"))
+                {
+                    serializer.Serialize(tw, settings);
+                }
+                NewSettingsText = File.ReadAllText(settingsFilePath + ".tmp");
+                if(File.Exists(settingsFilePath))
+                    PresentSettingsText = File.ReadAllText(settingsFilePath);
+                if (NewSettingsText != PresentSettingsText)
+                {
+                    // Serialize settings to file
+                    //XmlSerializer serializer = new XmlSerializer(typeof(Settings));
+                    using (TextWriter tw = new StreamWriter(settingsFilePath))
+                    {
+                        serializer.Serialize(tw, settings);
+                    }
+                }
+            }
+            catch
+            {
+            }
+            File.Delete(settingsFilePath + ".tmp");
+        }
         public static Settings DeSerializeSettings(string settingsFilePath)
         {
             // Deserialize settings
             XmlSerializer serializer = new XmlSerializer(typeof(Settings));
-            TextReader tr = new StreamReader(settingsFilePath);
-            Settings settings = (Settings)serializer.Deserialize(tr);
-            tr.Close();
+            Settings settings;
+            using (StreamReader tr = new StreamReader(settingsFilePath))
+            {
+                settings = (Settings)serializer.Deserialize(tr);
+            }
 
-            // Loop through the PicasaDB object to set some things right after deserialising...
+            // Loop through the PicasaDB objects to set some things right after deserialising...
             bool defaultDBFound = false;
             for (int i = 0; i < settings.picasaDBs.Count; i++)
             {
                 // Overwrite the default DB with the just added version...
                 if (settings.picasaDBs[i].IsStandardDB == true)
                 {
+                    string backupDir = settings.picasaDBs[i].BackupDir;
                     settings.picasaDBs[i] = GetDefaultPicasaDB();
+                    settings.picasaDBs[i].BackupDir = backupDir;
                     defaultDBFound = true;
                 }
 
                 // NewLine's in an XML file are stored as \n while Windows wants \r\n in it's textboxes,...
                 // Because the description can contain newlines... replace them.
                 settings.picasaDBs[i].Description = settings.picasaDBs[i].Description.Replace("\n", Environment.NewLine);
+            }
+
+            // Loop through the PicasaButton objects to set some things right after deserialising...
+            for (int i = 0; i < settings.picasaButtons.ButtonList.Count; i++)
+            {
+                // NewLine's in an XML file are stored as \n while Windows wants \r\n in it's textboxes,...
+                // For all field that can contain newlines... replace them.
+                settings.picasaButtons.ButtonList[i].Description = settings.picasaButtons.ButtonList[i].Description.Replace("\n", Environment.NewLine);
+                if(!string.IsNullOrEmpty(settings.picasaButtons.ButtonList[i].Script))
+                    settings.picasaButtons.ButtonList[i].Script = settings.picasaButtons.ButtonList[i].Script.Replace("\n", Environment.NewLine);
             }
 
             // Check if the settings contained a PicasaExePath. It will be null if the settings don't contain
@@ -381,19 +431,22 @@ namespace PicasaStarter
 
             // Serialize configuration to file
             XmlSerializer serializer = new XmlSerializer(typeof(Configuration));
-            TextWriter tw = new StreamWriter(configFilePath);
-            serializer.Serialize(tw, config);
-            tw.Close();
+            using (TextWriter tw = new StreamWriter(configFilePath))
+            {
+                serializer.Serialize(tw, config);
+            }
         }
 
         public static Configuration DeSerializeConfig(string configFilePath)
         {
             Configuration config;
+            
             // Deserialize Configuration
                 XmlSerializer serializer = new XmlSerializer(typeof(Configuration));
-                TextReader tr = new StreamReader(configFilePath);
+            using (TextReader tr = new StreamReader(configFilePath))
+            {
                 config = (Configuration)serializer.Deserialize(tr);
-                tr.Close();
+            }
 
             return config;
         }

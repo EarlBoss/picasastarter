@@ -1,0 +1,440 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Diagnostics;               // Needed for creating a process...
+using System.IO;
+using System.Windows.Forms;             // Added to be able to show messageboxes
+using System.ComponentModel;            // Added to use Win32Exception
+using HelperClasses;                    // Needed to make symbolic links,...
+using HelperClasses.Logger;             // For logging...
+// it's required for reading/writing into the registry:
+using Microsoft.Win32;      
+
+namespace PicasaStarter
+{
+    class PicasaRunner
+    {
+        public string PicasaExePath { get; private set; }
+        public string SymlinkBaseDir { get; private set; }
+        public string PicasaDBBasePath { get; private set; }
+        public string GoogleAppDir { get; private set; }
+        public string AppSettingsDir { get; private set; }
+        public bool PicasaVersion39 { get; private set; }
+
+        public PicasaRunner(string symlinkBaseDir, string picasaExePath)
+        {
+            SymlinkBaseDir = symlinkBaseDir;
+            PicasaExePath = picasaExePath;     //Path from the settings File
+        }
+
+        public void RunPicasa(string customDBBasePath, string appSettingsDir)
+        {
+            PicasaDBBasePath = customDBBasePath;
+            AppSettingsDir = appSettingsDir;
+
+            // Check if the executable from settings exists...
+            if (!File.Exists(PicasaExePath))
+            {
+                //Saved path doesn't exist, try Path from local Config File
+                PicasaExePath = (SettingsHelper.ConfigPicasaExePath);
+            }
+            if (!File.Exists(PicasaExePath))
+            {
+                //Saved path doesn't exist, try default for this OS
+                PicasaExePath = (SettingsHelper.ProgramFilesx86() + "\\google\\Picasa3\\picasa3.exe");
+            }
+            if (!File.Exists(PicasaExePath))
+            {
+                MessageBox.Show("Picasa executable isn't found here: " + PicasaExePath);
+                return;
+            }
+            // Get the file version for the Picasa Exe File
+            PicasaVersion39 = false;
+            FileVersionInfo.GetVersionInfo(PicasaExePath);
+            FileVersionInfo myFileVersionInfo = FileVersionInfo.GetVersionInfo(PicasaExePath);
+            Single picasaversion = Convert.ToSingle(myFileVersionInfo.FileVersion.Substring(0, 3));
+            if (picasaversion > 3.85)
+                PicasaVersion39 = true;
+
+
+
+            FileInfo lockFile = null;
+            try
+            {
+                // Now check the lock file, and create it if it doesn't exist yet...
+                DialogResult res = DialogResult.Yes;
+                lockFile = GetLockFile();
+                if (lockFile.Exists)
+                {
+                    string messageRead = File.ReadAllText(lockFile.FullName);
+
+                    string message = "Running Picasa two times on the same database leads to a corrupted database, so you shouldn't do this! " 
+                            + "PicasaStarter detected that another Picasa is probably running using this same database:"
+                            + Environment.NewLine + Environment.NewLine + messageRead + Environment.NewLine + Environment.NewLine
+                            + "If you are really sure this is not the case, you can override this check. So are you sure you want to start Picasa?";
+                    res = MessageBox.Show(message, "Are you sure there is no other Picasa running using the same database?",
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2, 
+                            (MessageBoxOptions)0x40000);
+
+                    // If the user isn't sure that there is no other Picasa is running... stop!
+                    if (res == DialogResult.No)
+                        return;
+                }
+
+                string messageToWrite = "That Picasa was started by " + Environment.UserName
+                    + " on computer " + Environment.MachineName + " at " + DateTime.Now;
+                lockFile.Directory.Create();
+                File.WriteAllText(lockFile.FullName, messageToWrite);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error creating lock file in database path <" + PicasaDBBasePath + ">: " 
+                        + Environment.NewLine + Environment.NewLine + ex.Message);
+                return;
+            }
+
+            // Prepare the environment to start Picasa, if a custom db path was provided...
+            string originalUserProfile;
+            originalUserProfile = "";
+
+            // This information is needed if running from a localized (non-english) XP.
+            string localAppDataXPEngPart1 = "\\Local Settings";
+            string localAppDataXPEngPart2 = "\\Application Data";
+            string localAppDataXPLocalPart1 = "";
+            string localAppDataXPLocalPart2 = "";
+            bool isLocalizedXP = false;
+            
+            // If no custom path was provided... only init DB so popup doesn't show to scan entire PC...
+            if (PicasaDBBasePath == null)
+            {
+                BaseRegistryKey = Registry.CurrentUser;
+                SubKey = "SOFTWARE\\Google\\Picasa\\Picasa2\\Preferences";
+                bool xyz = false;
+
+                // Save Original Picasa Data Path (debugging help)
+                originalUserProfile = ReadKey("AppLocalDataPath");
+                if(originalUserProfile != null && originalUserProfile != "")
+                {
+                    MessageBox.Show("Picasa Database Directory was not at it's default location when PicasaStarter was started, " +
+                                    "It may have been moved by the Experimental Move Database Location command in Picasa or PicasaStarter " +
+                                    "may have exited unexpectedly. When Picasa exits this time the default location will be restored, but " + 
+                                    "if database was moved with the Experimental command, the database may need to be restored manually from:\n " +
+                                    originalUserProfile + "  to the default User's  \\Application Data\\Google\\  directory",
+                                    "Picasa Database Not at Default Location",
+                            MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1,
+                            (MessageBoxOptions)0x40000);      // specify MB_TOPMOST 
+                }
+
+                // Remove any registry key left in error
+                xyz = DeleteKey("AppLocalDataPath");
+                // Remove any move database registry key
+                xyz = DeleteKey("AppLocalDataPathCopy");
+
+
+                // This is the path where the Picasa database will be put...
+                GoogleAppDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\Google";
+
+                this.InitializeDB(GoogleAppDir);
+                this.StartBatFile("Pre_RunPicasa.bat");
+            }
+            else
+            {
+                string tmpUserProfile;
+
+                // Default database path is the path for Windows XP. Needed for mixed systems.
+                string CustomDBFullPath = PicasaDBBasePath + localAppDataXPEngPart1 + localAppDataXPEngPart2;
+                GoogleAppDir = CustomDBFullPath + "\\Google";
+
+                this.InitializeDB(GoogleAppDir);
+
+                // Picasa 3.8 and below - set up paths for non-english versions of Windows XP
+
+                // Check if the custom database directory is available, otherwise try to create it...
+                try
+                {
+                    Directory.CreateDirectory(CustomDBFullPath);
+                    // Otherwise Export functionality gives error
+                    Directory.CreateDirectory(PicasaDBBasePath + "\\Desktop");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message + ", Path: " + CustomDBFullPath);
+                    lockFile.Delete();
+                    return;
+                }
+
+                BaseRegistryKey = Registry.CurrentUser;
+                SubKey = "SOFTWARE\\Google\\Picasa\\Picasa2\\Preferences";
+                bool xyz = false;
+
+                // Save Original Picasa Data Path (debugging help)
+                originalUserProfile = ReadKey("AppLocalDataPath");
+
+                if (originalUserProfile != null && originalUserProfile != "")
+                {
+                    MessageBox.Show("Picasa Database Directory was not at it's default location when PicasaStarter was started,\n" +
+                                    "It may have been moved by the Experimental Move Database Location command in Picasa or PicasaStarter\n" +
+                                    "may have exited unexpectedly. When Picasa exits this time the default location will be restored, but\n" +
+                                    "if database was moved with the Experimental command, the database may need to be restored manually from\n" +
+                                    originalUserProfile + "  to the default User's  \\Application Data\\Google\\  directory",
+                                    "Picasa Database Not at Default Location",
+                            MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1,
+                            (MessageBoxOptions)0x40000);      // specify MB_TOPMOST 
+                }
+
+                // Remove any registry key left in error
+                xyz = DeleteKey("AppLocalDataPath");
+                // Remove any move database registry key
+                xyz = DeleteKey("AppLocalDataPathCopy");
+
+                // Add custom DB path to Picasa Registry unless it is default path
+                if (PicasaDBBasePath != null)
+                {
+                    xyz = WriteKey("AppLocalDataPath", CustomDBFullPath + "\\");
+                }
+                
+            }
+
+            StartBatFile("Pre_RunPicasa.bat");
+
+            // Create a process to launch Picasa in...
+            Process picasa = new Process();
+            picasa.StartInfo.FileName = PicasaExePath;
+            picasa.StartInfo.WorkingDirectory = PicasaDBBasePath;
+
+            try
+            {
+                // Start picasa...
+                picasa.Start();
+
+                // Wait until the process started is finished
+                picasa.WaitForExit();
+
+                // Release the resources        
+                picasa.Close();
+
+                // Run the Post_RunPicasa.bat script if it exists, for users that want to do some preprocessing before starting Picasa.
+                StartBatFile("Post_Runpicasa.bat");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + ": <" + PicasaExePath + ">");
+            }
+            finally
+            {
+                BaseRegistryKey = Registry.CurrentUser;
+                SubKey = "SOFTWARE\\Google\\Picasa\\Picasa2\\Preferences";
+                bool xyz = false;
+
+                // Remove any registry key for custom Database
+                xyz = DeleteKey("AppLocalDataPath");
+                // Remove any move database registry key
+                xyz = DeleteKey("AppLocalDataPathCopy");
+
+                lockFile.Delete();
+            }
+        }
+
+        #region private helper functions...
+
+        private void StartBatFile(string fileName)
+        {
+            // Run the Pre_RunPicasa.bat script if it exists, for users that want to do some preprocessing before starting Picasa.
+            try
+            {
+                // Set some environment variables for Pre_RunPicasa.bat and Post_RunPicasa.bat
+                Environment.SetEnvironmentVariable("PS_PicasaDBGoogleDir", GoogleAppDir);
+                Environment.SetEnvironmentVariable("PS_SettingsDir", AppSettingsDir);
+            
+                string batFilePreRunPicasa = AppSettingsDir + "\\" + fileName;
+
+                if (File.Exists(batFilePreRunPicasa))
+                {
+                    Process batFile = System.Diagnostics.Process.Start(batFilePreRunPicasa);
+                    // Wait until the process started is finished
+                    batFile.WaitForExit();
+
+                    // Release the resources        
+                    batFile.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex);
+                MessageBox.Show("Error running " + fileName + ": " + ex.Message);
+            }
+        }
+
+        private FileInfo GetLockFile()
+        {
+            // Check if a picasa is running already on this database...
+            string lockFileDir = PicasaDBBasePath;
+            string lockFilePath = lockFileDir + "\\PicasaRunning.txt";
+
+            // If no custom path was provided... search the lock file in userprofile...
+            if (PicasaDBBasePath == null)
+            {
+                lockFileDir = Environment.GetEnvironmentVariable("userprofile");
+                lockFilePath = lockFileDir + "\\PicasaRunning.txt";
+            }
+
+            return new FileInfo(lockFilePath);
+        }
+
+        private void InitializeDB(string googleAppDir)
+        {
+            // If the DB existst already... don't do anything...
+            string PicasaAlbumsDir = googleAppDir + "\\Picasa2Albums";
+            string PicasaDBDir = googleAppDir + "\\Picasa2";
+            if (Directory.Exists(PicasaAlbumsDir))
+                return;
+            
+            // Ask if the user want the popup to let Picasa scan the computer...
+            DialogResult result = MessageBox.Show(
+                    "Do you want to let Picasa search for all your images on your computer?" +
+                    "\n\nIf not, you need to add the folders you want to be scanned by Picasa using " +
+                    "\"File\"/\"Add folder to Picasa\".", "Do you want to let Picasa search your images?",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, 
+                    (MessageBoxOptions)0x40000);
+
+            // If yes, nothing more to do...
+            if (result == DialogResult.Yes)
+                return;
+
+            // Otherwise, initialise the necessary files so the popup for choosing doesn't show...
+            Directory.CreateDirectory(PicasaAlbumsDir);
+            File.WriteAllText(PicasaAlbumsDir + "\\watchedfolders.txt", "");
+            File.WriteAllText(PicasaAlbumsDir + "\\frexcludefolders.txt", "");
+            if (!Directory.Exists(PicasaDBDir + "\\db3"))
+                Directory.CreateDirectory(PicasaDBDir + "\\db3");
+            File.WriteAllBytes(PicasaDBDir + "\\db3\\thumbs_index.db", Properties.Resources.thumbs_index);
+        }
+
+        //Registry Key Functions
+        
+
+
+		private string subKey = "SOFTWARE\\Google\\Picasa\\Picasa2\\Preferences";
+		/// <summary>
+		/// A property to set the SubKey value
+		/// (default = "SOFTWARE\\" + Application.ProductName.ToUpper())
+		/// </summary>
+		public string SubKey
+		{
+			get { return subKey; }
+			set	{ subKey = value; }
+		}
+
+		private RegistryKey baseRegistryKey = Registry.CurrentUser;
+		/// <summary>
+		/// A property to set the BaseRegistryKey value.
+		/// (default = Registry.LocalMachine)
+		/// </summary>
+		public RegistryKey BaseRegistryKey
+		{
+			get { return baseRegistryKey; }
+			set	{ baseRegistryKey = value; }
+		}
+
+		/* **************************************************************************
+		 * **************************************************************************/
+
+		/// <summary>
+		/// To read a registry key.
+		/// input: KeyName (string)
+		/// output: value (string) 
+		/// </summary>
+		public string ReadKey(string KeyName)
+		{
+			// Opening the registry key
+			RegistryKey rk = baseRegistryKey ;
+			// Open a subKey as read-only
+			RegistryKey sk1 = rk.OpenSubKey(subKey);
+			// If the RegistrySubKey doesn't exist -> (null)
+			if ( sk1 == null )
+			{
+				return null;
+			}
+			else
+			{
+				try 
+				{
+					// If the RegistryKey exists I get its value
+					// or null is returned.
+					return (string)sk1.GetValue(KeyName.ToUpper());
+				}
+				catch (Exception)
+				{
+					// AAAAAAAAAAARGH, an error!
+					return null;
+				}
+			}
+		}	
+
+		/* **************************************************************************
+		 * **************************************************************************/
+
+		/// <summary>
+		/// To write into a registry key.
+		/// input: KeyName (string) , Value (object)
+		/// output: true or false 
+		/// </summary>
+		public bool WriteKey(string KeyName, object Value)
+		{
+			try
+			{
+				// Setting
+				RegistryKey rk = baseRegistryKey ;
+				// I have to use CreateSubKey 
+				// (create or open it if already exits), 
+				// 'cause OpenSubKey open a subKey as read-only
+				RegistryKey sk1 = rk.CreateSubKey(subKey);
+				// Save the value
+				sk1.SetValue(KeyName.ToUpper(), Value);
+
+				return true;
+			}
+			catch (Exception)
+			{
+				// AAAAAAAAAAARGH, an error!
+				return false;
+			}
+		}
+
+		/* **************************************************************************
+		 * **************************************************************************/
+
+		/// <summary>
+		/// To delete a registry key.
+		/// input: KeyName (string)
+		/// output: true or false 
+		/// </summary>
+		public bool DeleteKey(string KeyName)
+		{
+			try
+			{
+				// Setting
+				RegistryKey rk = baseRegistryKey ;
+				RegistryKey sk1 = rk.CreateSubKey(subKey);
+				// If the RegistrySubKey doesn't exists -> (true)
+				if ( sk1 == null )
+					return true;
+				else
+					sk1.DeleteValue(KeyName);
+
+				return true;
+			}
+			catch (Exception)
+			{
+				// AAAAAAAAAAARGH, an error!
+				return false;
+			}
+		}
+
+		/* **************************************************************************
+		 * **************************************************************************/
+
+        #endregion
+
+    }
+}
