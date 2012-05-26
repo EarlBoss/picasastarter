@@ -107,9 +107,9 @@
             // 
             // buttonViewBackups
             // 
-            this.buttonViewBackups.Location = new System.Drawing.Point(311, 165);
+            this.buttonViewBackups.Location = new System.Drawing.Point(334, 165);
             this.buttonViewBackups.Name = "buttonViewBackups";
-            this.buttonViewBackups.Size = new System.Drawing.Size(150, 35);
+            this.buttonViewBackups.Size = new System.Drawing.Size(175, 35);
             this.buttonViewBackups.TabIndex = 49;
             this.buttonViewBackups.Text = "View Backups...";
             this.toolTip.SetToolTip(this.buttonViewBackups, "Run Picasa using this database");
@@ -118,9 +118,9 @@
             // 
             // buttonBackupPics
             // 
-            this.buttonBackupPics.Location = new System.Drawing.Point(311, 109);
+            this.buttonBackupPics.Location = new System.Drawing.Point(334, 107);
             this.buttonBackupPics.Name = "buttonBackupPics";
-            this.buttonBackupPics.Size = new System.Drawing.Size(150, 35);
+            this.buttonBackupPics.Size = new System.Drawing.Size(175, 35);
             this.buttonBackupPics.TabIndex = 48;
             this.buttonBackupPics.Text = "Backup!";
             this.toolTip.SetToolTip(this.buttonBackupPics, "Run Picasa using this database");
@@ -129,9 +129,9 @@
             // 
             // buttonEditDB
             // 
-            this.buttonEditDB.Location = new System.Drawing.Point(121, 215);
+            this.buttonEditDB.Location = new System.Drawing.Point(123, 215);
             this.buttonEditDB.Name = "buttonEditDB";
-            this.buttonEditDB.Size = new System.Drawing.Size(60, 23);
+            this.buttonEditDB.Size = new System.Drawing.Size(65, 23);
             this.buttonEditDB.TabIndex = 47;
             this.buttonEditDB.Text = "Edit";
             this.toolTip.SetToolTip(this.buttonEditDB, "Remove the selected database from the list");
@@ -141,9 +141,9 @@
             // buttonRunPicasa
             // 
             this.buttonRunPicasa.BackColor = System.Drawing.Color.Transparent;
-            this.buttonRunPicasa.Location = new System.Drawing.Point(311, 53);
+            this.buttonRunPicasa.Location = new System.Drawing.Point(334, 53);
             this.buttonRunPicasa.Name = "buttonRunPicasa";
-            this.buttonRunPicasa.Size = new System.Drawing.Size(150, 35);
+            this.buttonRunPicasa.Size = new System.Drawing.Size(175, 35);
             this.buttonRunPicasa.TabIndex = 44;
             this.buttonRunPicasa.Text = "Run Picasa!";
             this.toolTip.SetToolTip(this.buttonRunPicasa, "Run Picasa using this database");
@@ -153,9 +153,9 @@
             // buttonAddDB
             // 
             this.buttonAddDB.BackColor = System.Drawing.Color.Transparent;
-            this.buttonAddDB.Location = new System.Drawing.Point(51, 215);
+            this.buttonAddDB.Location = new System.Drawing.Point(37, 215);
             this.buttonAddDB.Name = "buttonAddDB";
-            this.buttonAddDB.Size = new System.Drawing.Size(60, 23);
+            this.buttonAddDB.Size = new System.Drawing.Size(65, 23);
             this.buttonAddDB.TabIndex = 45;
             this.buttonAddDB.Text = "Add";
             this.toolTip.SetToolTip(this.buttonAddDB, "Add a new database to the list");
@@ -164,9 +164,9 @@
             // 
             // buttonRemoveDB
             // 
-            this.buttonRemoveDB.Location = new System.Drawing.Point(192, 215);
+            this.buttonRemoveDB.Location = new System.Drawing.Point(207, 215);
             this.buttonRemoveDB.Name = "buttonRemoveDB";
-            this.buttonRemoveDB.Size = new System.Drawing.Size(60, 23);
+            this.buttonRemoveDB.Size = new System.Drawing.Size(65, 23);
             this.buttonRemoveDB.TabIndex = 46;
             this.buttonRemoveDB.Text = "Remove";
             this.toolTip.SetToolTip(this.buttonRemoveDB, "Remove the selected database from the list");
@@ -252,7 +252,7 @@
             // textBoxPicasaButtonDesc
             // 
             this.textBoxPicasaButtonDesc.Enabled = false;
-            this.textBoxPicasaButtonDesc.Location = new System.Drawing.Point(291, 53);
+            this.textBoxPicasaButtonDesc.Location = new System.Drawing.Point(320, 53);
             this.textBoxPicasaButtonDesc.Multiline = true;
             this.textBoxPicasaButtonDesc.Name = "textBoxPicasaButtonDesc";
             this.textBoxPicasaButtonDesc.Size = new System.Drawing.Size(200, 147);
@@ -261,7 +261,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(288, 37);
+            this.label2.Location = new System.Drawing.Point(317, 37);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(63, 13);
             this.label2.TabIndex = 30;
@@ -269,9 +269,9 @@
             // 
             // buttonRemovePicasaButton
             // 
-            this.buttonRemovePicasaButton.Location = new System.Drawing.Point(191, 215);
+            this.buttonRemovePicasaButton.Location = new System.Drawing.Point(206, 215);
             this.buttonRemovePicasaButton.Name = "buttonRemovePicasaButton";
-            this.buttonRemovePicasaButton.Size = new System.Drawing.Size(60, 23);
+            this.buttonRemovePicasaButton.Size = new System.Drawing.Size(65, 23);
             this.buttonRemovePicasaButton.TabIndex = 28;
             this.buttonRemovePicasaButton.Text = "Remove";
             this.buttonRemovePicasaButton.UseVisualStyleBackColor = true;
@@ -281,7 +281,7 @@
             // 
             this.buttonEditPicasaButton.Location = new System.Drawing.Point(121, 215);
             this.buttonEditPicasaButton.Name = "buttonEditPicasaButton";
-            this.buttonEditPicasaButton.Size = new System.Drawing.Size(60, 23);
+            this.buttonEditPicasaButton.Size = new System.Drawing.Size(65, 23);
             this.buttonEditPicasaButton.TabIndex = 27;
             this.buttonEditPicasaButton.Text = "Edit";
             this.buttonEditPicasaButton.UseVisualStyleBackColor = true;
@@ -299,9 +299,9 @@
             // 
             // buttonAddPicasaButton
             // 
-            this.buttonAddPicasaButton.Location = new System.Drawing.Point(50, 215);
+            this.buttonAddPicasaButton.Location = new System.Drawing.Point(35, 215);
             this.buttonAddPicasaButton.Name = "buttonAddPicasaButton";
-            this.buttonAddPicasaButton.Size = new System.Drawing.Size(60, 23);
+            this.buttonAddPicasaButton.Size = new System.Drawing.Size(65, 23);
             this.buttonAddPicasaButton.TabIndex = 26;
             this.buttonAddPicasaButton.Text = "Add";
             this.buttonAddPicasaButton.UseVisualStyleBackColor = true;
