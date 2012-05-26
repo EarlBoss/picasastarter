@@ -190,14 +190,25 @@ namespace PicasaStarter
             PicasaDB.BaseDir = textBoxDBBaseDir.Text;
             messageBoxDB.ForeColor = Color.Blue;
             messageBoxDB.Text = "";
+        }
 
+        private void buttonExplore_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Directory.CreateDirectory(textBoxDBBaseDir.Text);
+                System.Diagnostics.Process.Start(textBoxDBBaseDir.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message + ", when trying to open directory: " + textBoxDBBaseDir.Text);
+            }
         }
 
         private void textBoxDBBaseDir_TextChanged(object sender, EventArgs e)
         {
             PicasaDB.BaseDir = textBoxDBBaseDir.Text;
             full38DBDirectory = PicasaDB.BaseDir + "\\Local Settings\\Application Data";
-
         }
 
         private void buttonCreateNewDB_Click(object sender, EventArgs e)
@@ -252,7 +263,6 @@ namespace PicasaStarter
                         messageBoxDB.Text = "Error Creating Empty Database ";
                         return;
                     }
-
                 }
                 if (result == DialogResult.Cancel)
                 {
@@ -291,7 +301,6 @@ namespace PicasaStarter
             copyDBForm.ShowDialog();
             messageBoxDB.ForeColor = copyDBForm.ReturnColor;
             messageBoxDB.Text = copyDBForm.ReturnMessage;
-
         }
 
         private void buttonConvert38_Click(object sender, EventArgs e)
@@ -395,9 +404,7 @@ namespace PicasaStarter
                 messageBoxDB.ForeColor = Color.Blue;
                 messageBoxDB.Text = "Picasa 3.8 Database Converted to 3.9+";
             }
-
         }
-
 
         #endregion
 
@@ -536,7 +543,6 @@ namespace PicasaStarter
             textBoxBackupName.Text = Environment.MachineName;
         }
         #endregion
-
 
     }
 }
