@@ -44,7 +44,6 @@ namespace PicasaStarter
             //ReturnMessage = null;
             //ReturnMessage = "Copy Database Complete";
             Close();
-
         }
 
         private void listBoxPicasaDBs_SelectedIndexChanged_1(object sender, EventArgs e)

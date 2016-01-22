@@ -40,6 +40,8 @@ namespace PicasaStarter
         private void ButtonSelXMLPath_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog fd = new FolderBrowserDialog();
+            string Msg = "Select the Path containing the selected\nPicasaStarter Settings file: PicasaStarterSettings.xml";
+            fd.Description = Msg;
             fd.ShowNewFolderButton = true;
             fd.SelectedPath = AppSettingsDir;
 

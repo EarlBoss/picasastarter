@@ -76,12 +76,17 @@ namespace PicasaStarter
                     {
                         // Take care of case where the settings file is not available but it is referenced in the config file (The settings drive/dir is missing).
                         // Initializes the variables to pass to the MessageBox.Show method.
-                        string message = "The Picasa Starter settings file was not found in:\n" + appSettingsDir + "\n\n If it is on a NAS or Portable Drive, " +
+                        string message = "The Picasa Starter settings file was not found in:\n" + appSettingsDir + "\n\n" +
+                            "NOTE:----------\n" +
+                            "If this is a new PicasaStarter Installation, Push NO,\n" +
+                            "Then define the Settings File location in the First Run dialog \n" +
+                            "----------------\n\n" +
+                            "If the Settings File is on a NAS or Portable Drive, " +
                             "\nPlease Connect the drive as the correct drive letter.\n" +
                             "When the Drive is connected, Push YES to Try Again.\n\n" +
                             "To define a new Settings File location, Push NO,\n" +
                             "Then Correct the Settings File location in the First Run dialog \n\n" +
-                             "To Exit PicasaStarter Without Trying Again, Push CANCEL.";
+                             "To Exit PicasaStarter immediately, Push CANCEL.";
                         string caption = "Missing Settings File";
 
                         // Displays the MessageBox.

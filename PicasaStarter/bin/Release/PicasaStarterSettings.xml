@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <picasaDefaultSelectedDB>Personal database of Earl Bossaller (=default for picasa)</picasaDefaultSelectedDB>
+  <PicasaExePaths>
+    <Paths>
+      <PathOnComputer>
+        <ComputerName>EARLSW7DESK</ComputerName>
+        <Path>C:\Program Files (x86)\Google\Picasa3\Picasa3.exe</Path>
+      </PathOnComputer>
+    </Paths>
+  </PicasaExePaths>
+  <picasaDBs>
+    <PicasaDB>
+      <Name>Personal database of Earl Bossaller (=default for picasa)</Name>
+      <Description>This is the database Picasa always uses if you don't use Picasa starter. Because of some technical reasons in some situations it is not recommended to share this database. You cannot change any settings for this database either. Create a new one if you want to share a database... and if you want, copy your default one into it.</Description>
+      <BaseDir>C:\Users\Earl Bossaller\AppData\Local</BaseDir>
+      <BackupFrequency>0</BackupFrequency>
+      <BackupDBOnly>false</BackupDBOnly>
+      <LastBackupDate>0001-01-01T00:00:00</LastBackupDate>
+      <IsStandardDB>true</IsStandardDB>
+      <PictureVirtualDrive>C:</PictureVirtualDrive>
+      <EnableVirtualDrive>false</EnableVirtualDrive>
+      <VirtualDrivePathAbsolute>false</VirtualDrivePathAbsolute>
+    </PicasaDB>
+  </picasaDBs>
+  <picasaButtons>
+    <ButtonList />
+  </picasaButtons>
+</Settings>

@@ -124,11 +124,16 @@ mapped to a virtual drive letter so it appears in the same path as when it was i
   </data>
   <data name="label12.Text" xml:space="preserve">
     <value>The Backup will be done by the Backup Computer.
+
 To take over the Backup Task, click below.
 This Computer will then control the Backup Task.
+
 NOTE: The first backup will be a Full Backup,
 subsequent backups will be Incremental.</value>
   </data>
+  <metadata name="folderBrowserDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

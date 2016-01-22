@@ -185,19 +185,31 @@ namespace PicasaStarter
 
         private void buttonBrowseDBBaseDir_Click(object sender, EventArgs e)
         {
+            string Msg = "Select the Path that will contain\n the Database Google Folder";
             MapVirtualDrive();
-            textBoxDBBaseDir.Text = DialogHelper.AskDirectoryPath(PicasaDB.BaseDir);
+            textBoxDBBaseDir.Text = DialogHelper.AskDirectoryPath(PicasaDB.BaseDir, Msg);
             PicasaDB.BaseDir = textBoxDBBaseDir.Text;
             messageBoxDB.ForeColor = Color.Blue;
             messageBoxDB.Text = "";
+        }
 
+        private void buttonExplore_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Directory.CreateDirectory(textBoxDBBaseDir.Text);
+                System.Diagnostics.Process.Start(textBoxDBBaseDir.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message + ", when trying to open directory: " + textBoxDBBaseDir.Text);
+            }
         }
 
         private void textBoxDBBaseDir_TextChanged(object sender, EventArgs e)
         {
             PicasaDB.BaseDir = textBoxDBBaseDir.Text;
             full38DBDirectory = PicasaDB.BaseDir + "\\Local Settings\\Application Data";
-
         }
 
         private void buttonCreateNewDB_Click(object sender, EventArgs e)
@@ -252,7 +264,6 @@ namespace PicasaStarter
                         messageBoxDB.Text = "Error Creating Empty Database ";
                         return;
                     }
-
                 }
                 if (result == DialogResult.Cancel)
                 {
@@ -291,6 +302,17 @@ namespace PicasaStarter
             copyDBForm.ShowDialog();
             messageBoxDB.ForeColor = copyDBForm.ReturnColor;
             messageBoxDB.Text = copyDBForm.ReturnMessage;
+        }
+
+        private void buttonRebuildDB_Click(object sender, EventArgs e)
+        {
+            messageBoxDB.ForeColor = Color.Blue;
+            messageBoxDB.Text = "Rebuilding an existing database";
+            // Show Rebuild Database menu 
+            RebuildRestoreForm rebuildDBForm = new RebuildRestoreForm(PicasaDB, _settings);
+            rebuildDBForm.ShowDialog();
+            messageBoxDB.ForeColor = rebuildDBForm.ReturnColor;
+            messageBoxDB.Text = rebuildDBForm.ReturnMessage;
 
         }
 
@@ -395,9 +417,7 @@ namespace PicasaStarter
                 messageBoxDB.ForeColor = Color.Blue;
                 messageBoxDB.Text = "Picasa 3.8 Database Converted to 3.9+";
             }
-
         }
-
 
         #endregion
 
@@ -518,6 +538,8 @@ namespace PicasaStarter
 
         private void buttonBackupDir_Click(object sender, EventArgs e)
         {
+            string Msg = "Select the Backup Folder";
+            textBoxDBBaseDir.Text = DialogHelper.AskDirectoryPath(PicasaDB.BaseDir, Msg);
             textBoxBackupDir.Text = DialogHelper.AskDirectoryPath(PicasaDB.BackupDir);
             PicasaDB.LastBackupDate = new DateTime();
             textLastBackupDate.Text = "Never Backed Up";
@@ -536,6 +558,21 @@ namespace PicasaStarter
             textBoxBackupName.Text = Environment.MachineName;
         }
         #endregion
+
+        private void folderBrowserDialog1_HelpRequest(object sender, EventArgs e)
+        {
+
+        }
+
+        private void CheckBackupDBOnly_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void bDefineOtherFolders_Click(object sender, EventArgs e)
+        {
+
+        }
 
 
     }

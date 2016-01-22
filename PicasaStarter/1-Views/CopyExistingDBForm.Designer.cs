@@ -91,19 +91,19 @@
             // 
             this.textBoxDBBaseDir.BackColor = System.Drawing.SystemColors.Control;
             this.textBoxDBBaseDir.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxDBBaseDir.Location = new System.Drawing.Point(80, 332);
+            this.textBoxDBBaseDir.Location = new System.Drawing.Point(102, 332);
             this.textBoxDBBaseDir.Name = "textBoxDBBaseDir";
             this.textBoxDBBaseDir.ReadOnly = true;
-            this.textBoxDBBaseDir.Size = new System.Drawing.Size(418, 20);
+            this.textBoxDBBaseDir.Size = new System.Drawing.Size(396, 20);
             this.textBoxDBBaseDir.TabIndex = 42;
             // 
             // buttonClose
             // 
-            this.buttonClose.Location = new System.Drawing.Point(498, 397);
+            this.buttonClose.Location = new System.Drawing.Point(504, 397);
             this.buttonClose.Name = "buttonClose";
-            this.buttonClose.Size = new System.Drawing.Size(80, 23);
+            this.buttonClose.Size = new System.Drawing.Size(74, 23);
             this.buttonClose.TabIndex = 44;
-            this.buttonClose.Text = "Done";
+            this.buttonClose.Text = "Close";
             this.buttonClose.UseVisualStyleBackColor = true;
             this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
             // 
@@ -129,36 +129,36 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(150, 402);
+            this.label2.Location = new System.Drawing.Point(9, 402);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(342, 13);
+            this.label2.Size = new System.Drawing.Size(337, 13);
             this.label2.TabIndex = 47;
-            this.label2.Text = "Note: Please close the Explorer windows above before Clicking DONE!";
+            this.label2.Text = "Note: Please close the Explorer windows above before Clicking Close!";
             // 
             // textBoxDestDir
             // 
             this.textBoxDestDir.BackColor = System.Drawing.SystemColors.Control;
             this.textBoxDestDir.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxDestDir.Location = new System.Drawing.Point(80, 358);
+            this.textBoxDestDir.Location = new System.Drawing.Point(102, 358);
             this.textBoxDestDir.Name = "textBoxDestDir";
             this.textBoxDestDir.ReadOnly = true;
-            this.textBoxDestDir.Size = new System.Drawing.Size(418, 20);
+            this.textBoxDestDir.Size = new System.Drawing.Size(396, 20);
             this.textBoxDestDir.TabIndex = 48;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(26, 327);
+            this.label5.Location = new System.Drawing.Point(9, 334);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(49, 26);
+            this.label5.Size = new System.Drawing.Size(87, 13);
             this.label5.TabIndex = 49;
-            this.label5.Text = "Selected\r\nSource:";
+            this.label5.Text = "Selected source:";
             this.label5.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 361);
+            this.label6.Location = new System.Drawing.Point(9, 360);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(63, 13);
             this.label6.TabIndex = 50;

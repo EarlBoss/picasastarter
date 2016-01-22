@@ -163,6 +163,11 @@ namespace PicasaStarter
                 preferencesKey.SetValue("AppLocalDataPath", picasaDBPath + "\\");
             }
 
+            // Set some environment variables for Pre_RunPicasa.bat and Post_RunPicasa.bat
+            Environment.SetEnvironmentVariable("PS_PicasaDBGoogleDir", GoogleAppDir);
+            Environment.SetEnvironmentVariable("PS_SettingsDir", AppSettingsDir);
+
+
             StartBatFile("Pre_RunPicasa.bat");
 
             // Create a process to launch Picasa in...
@@ -213,8 +218,8 @@ namespace PicasaStarter
             try
             {
                 // Set some environment variables for Pre_RunPicasa.bat and Post_RunPicasa.bat
-                Environment.SetEnvironmentVariable("PS_PicasaDBGoogleDir", GoogleAppDir);
-                Environment.SetEnvironmentVariable("PS_SettingsDir", AppSettingsDir);
+                //Environment.SetEnvironmentVariable("PS_PicasaDBGoogleDir", GoogleAppDir);
+                //Environment.SetEnvironmentVariable("PS_SettingsDir", AppSettingsDir);
             
                 string batFilePreRunPicasa = AppSettingsDir + "\\" + fileName;
 
