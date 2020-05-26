@@ -73,3 +73,30 @@ C:\Users\Earl Bossaller\Documents\Visual Studio 2015\Projects\picasastarter\Pica
 C:\Users\Earl Bossaller\Documents\Visual Studio 2015\Projects\picasastarter\PicasaStarter\obj\Release\PicasaStarter.SelectDBForm.resources
 C:\Users\Earl Bossaller\Documents\Visual Studio 2015\Projects\picasastarter\PicasaStarter\obj\Release\PicasaStarter.Properties.Resources.resources
 C:\Users\Earl Bossaller\Documents\Visual Studio 2015\Projects\picasastarter\PicasaStarter\obj\Release\PicasaStarter.csproj.GenerateResource.Cache
+C:\Users\Earl Bossaller\Documents\GitHub\picasastarter\PicasaStarter\bin\Release\PicasaStarter.exe.config
+C:\Users\Earl Bossaller\Documents\GitHub\picasastarter\PicasaStarter\bin\Release\PicasaStarter.exe
+C:\Users\Earl Bossaller\Documents\GitHub\picasastarter\PicasaStarter\bin\Release\PicasaStarter.pdb
+C:\Users\Earl Bossaller\Documents\GitHub\picasastarter\PicasaStarter\bin\Release\Interop.IWshRuntimeLibrary.dll
+C:\Users\Earl Bossaller\Documents\GitHub\picasastarter\PicasaStarter\bin\Release\Ionic.Zip.dll
+C:\Users\Earl Bossaller\Documents\GitHub\picasastarter\PicasaStarter\obj\Release\PicasaStarter.BackupForm_CL.resources
+C:\Users\Earl Bossaller\Documents\GitHub\picasastarter\PicasaStarter\obj\Release\PicasaStarter.BackupProgressForm_CL.resources
+C:\Users\Earl Bossaller\Documents\GitHub\picasastarter\PicasaStarter\obj\Release\PicasaStarter.BackupProgressForm.resources
+C:\Users\Earl Bossaller\Documents\GitHub\picasastarter\PicasaStarter\obj\Release\PicasaStarter.CopyExistingDBForm.resources
+C:\Users\Earl Bossaller\Documents\GitHub\picasastarter\PicasaStarter\obj\Release\PicasaStarter.CreatePicasaButtonForm.resources
+C:\Users\Earl Bossaller\Documents\GitHub\picasastarter\PicasaStarter\obj\Release\PicasaStarter.CreatePicasaButtonScriptForm.resources
+C:\Users\Earl Bossaller\Documents\GitHub\picasastarter\PicasaStarter\obj\Release\PicasaStarter.CreatePicasaDBForm.resources
+C:\Users\Earl Bossaller\Documents\GitHub\picasastarter\PicasaStarter\obj\Release\PicasaStarter.CreateShortcutDialog.resources
+C:\Users\Earl Bossaller\Documents\GitHub\picasastarter\PicasaStarter\obj\Release\PicasaStarter.FirstRunWizardStep1.resources
+C:\Users\Earl Bossaller\Documents\GitHub\picasastarter\PicasaStarter\obj\Release\PicasaStarter.FirstRunWizardStep2.resources
+C:\Users\Earl Bossaller\Documents\GitHub\picasastarter\PicasaStarter\obj\Release\PicasaStarter.GeneralSettingsDialog.resources
+C:\Users\Earl Bossaller\Documents\GitHub\picasastarter\PicasaStarter\obj\Release\PicasaStarter.HelpDialog.resources
+C:\Users\Earl Bossaller\Documents\GitHub\picasastarter\PicasaStarter\obj\Release\PicasaStarter.MainForm.resources
+C:\Users\Earl Bossaller\Documents\GitHub\picasastarter\PicasaStarter\obj\Release\PicasaStarter.RebuildRestoreForm.resources
+C:\Users\Earl Bossaller\Documents\GitHub\picasastarter\PicasaStarter\obj\Release\PicasaStarter.SelectDBForm.resources
+C:\Users\Earl Bossaller\Documents\GitHub\picasastarter\PicasaStarter\obj\Release\PicasaStarter.Properties.Resources.resources
+C:\Users\Earl Bossaller\Documents\GitHub\picasastarter\PicasaStarter\obj\Release\PicasaStarter.csproj.GenerateResource.cache
+C:\Users\Earl Bossaller\Documents\GitHub\picasastarter\PicasaStarter\obj\Release\PicasaStarter.csproj.CoreCompileInputs.cache
+C:\Users\Earl Bossaller\Documents\GitHub\picasastarter\PicasaStarter\obj\Release\PicasaStarter.csproj.CopyComplete
+C:\Users\Earl Bossaller\Documents\GitHub\picasastarter\PicasaStarter\obj\Release\PicasaStarter.exe
+C:\Users\Earl Bossaller\Documents\GitHub\picasastarter\PicasaStarter\obj\Release\PicasaStarter.pdb
+C:\Users\Earl Bossaller\Documents\GitHub\picasastarter\PicasaStarter\obj\Release\PicasaStarter.csprojAssemblyReference.cache
